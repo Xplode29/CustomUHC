@@ -1,17 +1,21 @@
 package me.butter.api;
 
+import me.butter.api.player.PlayerHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class API extends JavaPlugin {
+public abstract class API extends JavaPlugin {
 
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
+    private static API api;
 
+    public static void setInstance(API api) {
+        if (API.api != null)
+            throw new IllegalStateException("API already set!");
+        API.api = api;
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    public static API get() {
+        return api;
     }
+
+    public abstract PlayerHandler getPlayerHandler();
 }

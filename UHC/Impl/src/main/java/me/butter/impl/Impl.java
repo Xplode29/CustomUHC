@@ -1,17 +1,24 @@
 package me.butter.impl;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import me.butter.api.API;
+import me.butter.api.player.PlayerHandler;
 
-public final class Impl extends JavaPlugin {
+public final class Impl extends API {
+
+    private static Impl instance;
 
     @Override
-    public void onEnable() {
-        // Plugin startup logic
+    public void onLoad() {
+        API.setInstance(this);
+        Impl.instance = this;
+    }
 
+    public static Impl get() {
+        return instance;
     }
 
     @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    public PlayerHandler getPlayerHandler() {
+        return null;
     }
 }

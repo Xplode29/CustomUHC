@@ -20,10 +20,4 @@ public interface PlayerHandler {
     List<UHCPlayer> getPlayersDead();
 
     List<UHCPlayer> getPlayersInSpec();
-
-    List<UHCPlayer> getPlayersHavingRole();
-
-    List<UHCPlayer> getPlayersNotHavingRole();
-
-    void resetPlayer();
 }

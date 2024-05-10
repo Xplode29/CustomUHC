@@ -1,4 +1,0 @@
-name: Impl
-version: '${project.version}'
-main: me.butter.impl.Impl
-load: STARTUP

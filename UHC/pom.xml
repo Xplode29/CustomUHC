@@ -13,8 +13,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>API</module>
-        <module>Impl</module>
+        <module>UHCAPI</module>
+        <module>UHCImpl</module>
     </modules>
 
     <properties>

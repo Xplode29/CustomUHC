@@ -1,0 +1,7 @@
+name: Impl
+version: '${project.version}'
+main: me.butter.impl.UHCImpl
+
+commands:
+    start:
+        description: Start the game

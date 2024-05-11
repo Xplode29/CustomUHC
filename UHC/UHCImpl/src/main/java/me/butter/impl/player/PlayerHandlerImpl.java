@@ -23,6 +23,16 @@ public class PlayerHandlerImpl implements PlayerHandler {
     }
 
     @Override
+    public UHCPlayer getUHCPlayer(String name) {
+        for(UHCPlayer uhcPlayer : uhcPlayers) {
+            if(uhcPlayer.getName().equals(name)) {
+                return uhcPlayer;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public UHCPlayer getUHCPlayer(UUID uuid) {
         for(UHCPlayer uhcPlayer : uhcPlayers) {
             if(uhcPlayer.getUniqueId().equals(uuid)) {

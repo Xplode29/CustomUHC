@@ -3,7 +3,7 @@ package me.butter.impl.listeners;
 import me.butter.api.UHCAPI;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
-import me.butter.impl.chat.ChatPrefixes;
+import me.butter.api.utils.ChatUtils;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import org.bukkit.Bukkit;
@@ -58,7 +58,7 @@ public class CombatListener implements Listener {
                 uhcVictim.loadInventory();
                 uhcVictim.setCanPickItems(false);
 
-                Bukkit.broadcastMessage(ChatPrefixes.GLOBAL_INFO.getMessage(uhcVictim.getName() + " a été réanimé !"));
+                Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(uhcVictim.getName() + " a été réanimé !"));
                 for (Entity entity : uhcVictim.getDeathLocation().getWorld().getNearbyEntities(uhcVictim.getDeathLocation(), 5, 100, 5)) {
                     if (!(entity instanceof Item)) {
                         continue;
@@ -78,10 +78,10 @@ public class CombatListener implements Listener {
             return;
         }
 
-        Bukkit.broadcastMessage(ChatPrefixes.SEPARATOR.getPrefix());
+        Bukkit.broadcastMessage(ChatUtils.SEPARATOR.getPrefix());
         Bukkit.broadcastMessage("");
-        Bukkit.broadcastMessage(ChatPrefixes.GLOBAL_INFO.getMessage("§c" + uhcVictim.getName() + "§r est mort !"));
+        Bukkit.broadcastMessage(uhcVictim.getName() + " est mort !");
         Bukkit.broadcastMessage("");
-        Bukkit.broadcastMessage(ChatPrefixes.SEPARATOR.getPrefix());
+        Bukkit.broadcastMessage(ChatUtils.SEPARATOR.getPrefix());
     }
 }

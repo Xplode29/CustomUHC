@@ -5,7 +5,8 @@ import me.butter.api.game.GameState;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.BlockUtils;
-import me.butter.impl.chat.ChatPrefixes;
+import me.butter.api.utils.ChatUtils;
+import me.butter.impl.scoreboard.list.LobbyScoreboard;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -62,9 +63,11 @@ public class LobbyListener implements Listener {
             return;
         }
 
+        UHCAPI.get().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
+
         uhcPlayer.setPlayerState(PlayerState.IN_LOBBY);
-        Bukkit.broadcastMessage(ChatPrefixes.JOINED.getMessage(
-                "[" + (UHCAPI.get().getPlayerHandler().getPlayers().size() > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) + UHCAPI.get().getPlayerHandler().getPlayers().size() + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] " + player.getDisplayName() + ChatColor.WHITE + " a rejoint le lobby"
+        Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage(
+                 player.getDisplayName() + ChatColor.WHITE + " a rejoint le lobby [" + (UHCAPI.get().getPlayerHandler().getPlayers().size() > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) + UHCAPI.get().getPlayerHandler().getPlayers().size() + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
         ));
     }
 
@@ -80,8 +83,12 @@ public class LobbyListener implements Listener {
             return;
         }
 
-        Bukkit.broadcastMessage(ChatPrefixes.LEFT.getMessage(
-                "[" + ((UHCAPI.get().getPlayerHandler().getPlayers().size() - 1) > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) + (UHCAPI.get().getPlayerHandler().getPlayers().size() - 1) + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] " + player.getDisplayName() + ChatColor.WHITE + " a quitté le lobby"
+        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+
+        UHCAPI.get().getScoreboardHandler().removePlayerScoreboard(uhcPlayer);
+
+        Bukkit.broadcastMessage(ChatUtils.LEFT.getMessage(
+                 player.getDisplayName() + ChatColor.WHITE + " a quitté le lobby [" + ((UHCAPI.get().getPlayerHandler().getPlayers().size() - 1) > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) + (UHCAPI.get().getPlayerHandler().getPlayers().size() - 1) + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
         ));
     }
 

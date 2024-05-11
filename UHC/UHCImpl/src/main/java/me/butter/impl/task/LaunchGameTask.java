@@ -5,6 +5,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.impl.UHCImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class LaunchGameTask extends BukkitRunnable {
@@ -26,9 +27,11 @@ public class LaunchGameTask extends BukkitRunnable {
         for(UHCPlayer uhcPlayer : UHCAPI.get().getPlayerHandler().getPlayersInLobby()) {
             if(timer == 0) {
                 uhcPlayer.sendTitle("Partie Lancée !", ChatColor.GREEN);
+                uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_BASS, 6.0F, 1.0F);
             }
             else {
                 uhcPlayer.sendTitle("Début dans " + timer, ChatColor.GREEN);
+                uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_PLING, 6.0F, 1.0F);
             }
         }
 

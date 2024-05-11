@@ -1,6 +1,6 @@
-package me.butter.impl.chat;
+package me.butter.api.utils;
 
-public enum ChatPrefixes {
+public enum ChatUtils {
     //https://www.digminecraft.com/lists/color_list_pc.php
     //https://gist.github.com/Arcensoth/7be59706aab15429ded8d7586a79f466
 
@@ -10,6 +10,7 @@ public enum ChatPrefixes {
     GLOBAL_INFO("§e│ "),
     PLAYER_INFO("§e│ "),
     ERROR("§c│ "),
+    WARNING("§c│ "),
     LIST_HEADER("▷ "),
     LIST_ELEMENT("  ◆ "),
     SUBLIST_ELEMENT("    - "),
@@ -17,7 +18,7 @@ public enum ChatPrefixes {
 
     private final String prefix;
 
-    ChatPrefixes(String prefix) {
+    ChatUtils(String prefix) {
         this.prefix = prefix;
     }
 

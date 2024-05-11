@@ -2,6 +2,7 @@ package me.butter.impl.timer.list;
 
 
 import me.butter.api.UHCAPI;
+import me.butter.api.utils.ChatUtils;
 import me.butter.impl.timer.AbstractTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,8 +26,7 @@ public class BorderTimer extends AbstractTimer {
     @Override
     public void onTimerDone() {
         UHCAPI.get().getGameHandler().getWorldConfig().setBorderMoving(true);
-
-        Bukkit.broadcastMessage("§rLa bordure commence à se réduire.");
+        Bukkit.broadcastMessage(ChatUtils.WARNING.getMessage("La bordure commence à se réduire."));
         moveBorder();
     }
 
@@ -34,7 +34,7 @@ public class BorderTimer extends AbstractTimer {
     @Override
     public void onUpdate(int timer) {
         if ((getMaxTimer() - 300) - timer == 0) {
-            Bukkit.broadcastMessage("§rLa bordure vas se réduire dans 5 minutes !");
+            Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("La bordure vas se réduire dans 5 minutes !"));
         }
     }
 

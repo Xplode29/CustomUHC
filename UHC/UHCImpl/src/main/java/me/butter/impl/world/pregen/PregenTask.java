@@ -6,45 +6,40 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.text.DecimalFormat;
-
 public class PregenTask extends BukkitRunnable {
 
     public static boolean finished;
 
-    private Double currentChunkLoad;
-
-    private final Double totalChunkToLoad;
-
+    private final int startX, startZ;
     private int x, z;
-
-    private final int radius;
+    private double currentChunkLoad;
+    private final double totalChunkToLoad;
 
     private final World world;
 
     public PregenTask(World world, int radius) {
-        radius += 150;
         finished = false;
         this.totalChunkToLoad = Math.pow(radius, 2.0D) / 64.0D;
         this.currentChunkLoad = 0.0D;
-        this.x = -radius;
-        this.z = -radius;
         this.world = world;
-        this.radius = radius;
+        radius += 150;
+
+        this.startX = -radius; this.startZ = -radius;
+        this.x = this.startX; this.z = this.startZ;
     }
 
     @Override
     public void run() {
-        for (int i = 0; i < 40 && !finished; i++) {
-            Location loc = new Location(world, x, 0.0D, z);
+        for (int i = 0; i < 30 && !finished; i++) {
+            Location loc = new Location(world, x, 0, z);
             if (!loc.getChunk().isLoaded())
                 loc.getWorld().loadChunk(loc.getChunk().getX(), loc.getChunk().getZ(), true);
-            x = x + 16;
-            currentChunkLoad = currentChunkLoad + 1.0D;
-            if (x > radius) {
-                x = -radius;
-                z = z + 16;
-                if (z > radius) {
+            x += 16;
+            currentChunkLoad ++;
+            if (x > -startX) {
+                x = startX;
+                z += 16;
+                if (z > -startZ) {
                     finished = true;
                     currentChunkLoad = totalChunkToLoad;
                     cancel();
@@ -52,18 +47,13 @@ public class PregenTask extends BukkitRunnable {
             }
         }
 
-        double percentage = currentChunkLoad / totalChunkToLoad * 100.0D;
-
-        if (percentage > 99.9)
-            return;
-        DecimalFormat format = new DecimalFormat("##.#");
-        String pb = getProgressBar(currentChunkLoad.intValue(), totalChunkToLoad.intValue(), 15, '|', ChatColor.GREEN, ChatColor.RED);
-        UHCAPI.get().getPlayerHandler().getPlayers().forEach(p -> p.sendActionBar("§cPrégénération §7[" + pb + "§7] §f§l» §e" + format.format(percentage) + "%"));
+        UHCAPI.get().getPlayerHandler().getPlayers().forEach(p -> p.sendActionBar(
+                getProgressBar(currentChunkLoad, totalChunkToLoad, 15, '|', ChatColor.GREEN, ChatColor.RED)
+        ));
     }
 
-    public static String getProgressBar(int current, int max, int totalBars, char symbol, ChatColor completedColor, ChatColor notCompletedColor) {
-        float percent = (float) current / max;
-        int progressBars = (int) (totalBars * percent);
+    public static String getProgressBar(double current, double max, int totalBars, char symbol, ChatColor completedColor, ChatColor notCompletedColor) {
+        int progressBars = (int) (totalBars * (current / max));
 
         return com.google.common.base.Strings.repeat("" + completedColor + symbol, progressBars)
                 + com.google.common.base.Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);

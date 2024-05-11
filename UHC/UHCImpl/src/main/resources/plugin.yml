@@ -3,5 +3,7 @@ version: '${project.version}'
 main: me.butter.impl.UHCImpl
 
 commands:
-    start:
-        description: Start the game
+    host:
+        description: Définit l'host d'une partie
+        usage: /host <argument>
+        aliases: h

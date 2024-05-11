@@ -4,6 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.world.OrePopulator;
 import me.butter.api.world.WorldHandler;
 import me.butter.impl.UHCImpl;
+import me.butter.api.utils.ChatUtils;
 import me.butter.impl.world.pregen.PregenTask;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
@@ -50,17 +51,17 @@ public class WorldHandlerImpl implements WorldHandler {
 
     @Override
     public void createWorld(String worldName) {
-        Bukkit.broadcastMessage(
-                "Le monde \"arena\" est en cours de création..."
-        );
+        Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(
+                "Le monde arena est en cours de création..."
+        ));
         Bukkit.getScheduler().runTaskLater(UHCImpl.get(), () -> {
             deleteWorld(worldName);
             WorldCreator creator = new WorldCreator(worldName);
             this.setWorld(creator.createWorld());
             this.getWorld().getPopulators().add(this.orePopulator);
-            Bukkit.broadcastMessage(
-                    "Le monde \"arena\" a bien été créé avec succès !"
-            );
+            Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(
+                    "Le monde arena a bien été créé avec succès !"
+            ));
             getWorld().getWorldBorder().setCenter(new Location(getWorld(), 0.0D, 0.0D, 0.0D));
             getWorld().getWorldBorder().setSize(UHCAPI.get().getGameHandler().getWorldConfig().getStartingBorderSize());
         }, 10);

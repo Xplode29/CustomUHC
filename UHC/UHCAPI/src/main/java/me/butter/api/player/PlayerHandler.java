@@ -9,7 +9,7 @@ public interface PlayerHandler {
 
     List<UHCPlayer> getPlayers();
 
-    UHCPlayer getUHCPlayer(UUID uuid); UHCPlayer getUHCPlayer(Player player);
+    UHCPlayer getUHCPlayer(String name); UHCPlayer getUHCPlayer(UUID uuid); UHCPlayer getUHCPlayer(Player player);
 
     void addPlayer(Player player); void removePlayer(Player player);
 

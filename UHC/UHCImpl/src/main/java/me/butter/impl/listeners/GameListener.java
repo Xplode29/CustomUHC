@@ -3,13 +3,10 @@ package me.butter.impl.listeners;
 import me.butter.api.UHCAPI;
 import me.butter.api.enchant.Enchant;
 import me.butter.api.game.GameState;
-import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
-import me.butter.impl.chat.ChatPrefixes;
-import me.butter.impl.events.EventUtils;
+import me.butter.api.utils.ChatUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,14 +27,54 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class GameListener implements Listener {
 
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+
+        if (player == null) {
+            return;
+        }
+
+        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+
+        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
+            return;
+        }
+
+        Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage(
+                player.getDisplayName() + ChatColor.WHITE + " s'est connecté à la partie. [" + UHCAPI.get().getPlayerHandler().getPlayersInGame().size() + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
+        ));
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+
+        if (player == null) {
+            return;
+        }
+
+        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
+            return;
+        }
+
+        Bukkit.broadcastMessage(ChatUtils.LEFT.getMessage(
+                player.getDisplayName() + ChatColor.WHITE + " s'est déconnecté de la partie. [" + (UHCAPI.get().getPlayerHandler().getPlayersInGame().size() - 1) + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "]"
+        ));
+    }
 
     @EventHandler
     public void onItemPickup(PlayerPickupItemEvent event) {
@@ -128,21 +165,21 @@ public class GameListener implements Listener {
                 if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getDiamondLimit()) {
                     result.removeEnchantment(enchant.getEnchantment());
                     result.addEnchantment(enchant.getEnchantment(), enchant.getDiamondLimit());
-                    player.sendMessage(ChatPrefixes.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getDiamondLimit() + " sur les items en diamant."));
+                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getDiamondLimit() + " sur les items en diamant."));
                 }
             }
             else if (result.getType().name().contains("IRON")) {
                 if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getIronLimit()) {
                     result.removeEnchantment(enchant.getEnchantment());
                     result.addEnchantment(enchant.getEnchantment(), enchant.getIronLimit());
-                    player.sendMessage(ChatPrefixes.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getIronLimit() + " sur les items en fer."));
+                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getIronLimit() + " sur les items en fer."));
                 }
             }
             else {
                 if (result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getMaxLevel()) {
                     result.removeEnchantment(enchant.getEnchantment());
                     result.addEnchantment(enchant.getEnchantment(), enchant.getMaxLevel());
-                    player.sendMessage(ChatPrefixes.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getMaxLevel() + "."));
+                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getMaxLevel() + "."));
                 }
             }
         }
@@ -205,21 +242,21 @@ public class GameListener implements Listener {
                 if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getDiamondLimit()) {
                     result.removeEnchantment(enchant.getEnchantment());
                     result.addEnchantment(enchant.getEnchantment(), enchant.getDiamondLimit());
-                    player.sendMessage(ChatPrefixes.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getDiamondLimit() + " sur les items en diamant."));
+                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getDiamondLimit() + " sur les items en diamant."));
                 }
             }
             else if (result.getType().name().contains("IRON")) {
                 if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getIronLimit()) {
                     result.removeEnchantment(enchant.getEnchantment());
                     result.addEnchantment(enchant.getEnchantment(), enchant.getIronLimit());
-                    player.sendMessage(ChatPrefixes.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getIronLimit() + " sur les items en fer."));
+                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getIronLimit() + " sur les items en fer."));
                 }
             }
             else {
                 if (result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getMaxLevel()) {
                     result.removeEnchantment(enchant.getEnchantment());
                     result.addEnchantment(enchant.getEnchantment(), enchant.getMaxLevel());
-                    player.sendMessage(ChatPrefixes.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getMaxLevel() + "."));
+                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getMaxLevel() + "."));
                 }
             }
         }
@@ -241,50 +278,6 @@ public class GameListener implements Listener {
         if ((new Random()).nextInt(100) <= UHCAPI.get().getGameHandler().getWorldConfig().getEnderPearlDropRate()) {
             b.getWorld().dropItemNaturally(loc, new ItemStack(Material.ENDER_PEARL, 1));
         }
-    }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
-            return;
-        }
-
-        Player player = event.getPlayer();
-
-        if (player == null) {
-            return;
-        }
-
-        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
-
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
-            return;
-        }
-
-        Bukkit.broadcastMessage(ChatPrefixes.JOINED.getMessage(
-                "[" + UHCAPI.get().getPlayerHandler().getPlayersInGame().size() + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] " + player.getDisplayName() + ChatColor.WHITE + " s'est connecté à la partie."
-        ));
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
-            return;
-        }
-
-        Player player = event.getPlayer();
-
-        if (player == null) {
-            return;
-        }
-
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
-            return;
-        }
-
-        Bukkit.broadcastMessage(ChatPrefixes.LEFT.getMessage(
-                "[" + (UHCAPI.get().getPlayerHandler().getPlayersInGame().size() - 1) + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] " + player.getDisplayName() + ChatColor.WHITE + " s'est déconnecté de la partie."
-        ));
     }
 
     @EventHandler
@@ -339,7 +332,7 @@ public class GameListener implements Listener {
             return;
         }
 
-        player.sendMessage(ChatPrefixes.ERROR.getMessage("Le chat est actuellement désactivé."));
+        player.sendMessage(ChatUtils.ERROR.getMessage("Le chat est actuellement désactivé."));
         event.setCancelled(true);
     }
 

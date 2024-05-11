@@ -4,7 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
-import me.butter.impl.chat.ChatPrefixes;
+import me.butter.api.utils.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -57,8 +57,8 @@ public class StartingListener implements Listener {
             return;
         }
 
-        Bukkit.broadcastMessage(ChatPrefixes.LEFT.getMessage(
-                "[" + (UHCAPI.get().getPlayerHandler().getPlayersInGame().size() - 1) + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] " + player.getDisplayName() + ChatColor.WHITE + " s'est déconnecté pendant le lancement de la partie."
+        Bukkit.broadcastMessage(ChatUtils.LEFT.getMessage(
+                 player.getDisplayName() + ChatColor.WHITE + " s'est déconnecté pendant le lancement de la partie."
         ));
     }
 
@@ -81,7 +81,7 @@ public class StartingListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMovePlate(PlayerMoveEvent event) {
+    public void onPlayerMove(PlayerMoveEvent event) {
         if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
@@ -104,7 +104,6 @@ public class StartingListener implements Listener {
 
         player.teleport(uhcPlayer.getSpawnLocation());
     }
-
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {

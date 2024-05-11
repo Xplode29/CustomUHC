@@ -6,6 +6,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.impl.UHCImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -32,15 +33,26 @@ public class TeleportingTask extends BukkitRunnable {
 
         UHCPlayer uhcPlayer = this.players.get(0);
 
-        Location teleport = uhcPlayer.getSpawnLocation().clone().add(0, 3, 0);
+        Location teleport = uhcPlayer.getSpawnLocation().clone().add(0.5, 3, 0.5);
 
-        if (uhcPlayer.getPlayer() != null)
-            uhcPlayer.getPlayer().teleport(teleport);
+        if (uhcPlayer.getPlayer() != null) {
+            if(!uhcPlayer.getSpawnLocation().getChunk().isLoaded()) uhcPlayer.getSpawnLocation().getChunk().load();
+
+            new BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    uhcPlayer.getPlayer().teleport(teleport);
+                }
+            }.runTaskLater(UHCAPI.get(), 1);
+        }
 
         playerTeleported += 1;
         UHCAPI.get().getPlayerHandler().getPlayersInLobby().forEach(uhcPlayer1 -> uhcPlayer1.sendActionBar(
-                "§aTéléportation de " + uhcPlayer.getName() + " §7(" + playerTeleported + "/" + UHCAPI.get().getPlayerHandler().getPlayersInLobby().size() + ")"
+                "Téléportation de " + uhcPlayer.getName() + " (" + playerTeleported + "/" + UHCAPI.get().getPlayerHandler().getPlayersInLobby().size() + ")"
         ));
+
+        uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_STICKS, 6.0F, 1.0F);
 
         this.players.remove(0);
     }

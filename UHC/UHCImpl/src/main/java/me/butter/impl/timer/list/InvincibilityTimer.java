@@ -1,6 +1,7 @@
 package me.butter.impl.timer.list;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.utils.ChatUtils;
 import me.butter.impl.timer.AbstractTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,7 +26,7 @@ public class InvincibilityTimer extends AbstractTimer {
     public void onTimerDone() {
         UHCAPI.get().getGameHandler().getGameConfig().setInvincibility(false);
 
-        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "§rL'invincibilité viens de s'arreter."));
+        Bukkit.broadcastMessage(ChatUtils.WARNING.getMessage("Vous n'êtes plus invincible."));
     }
 
     @Override
@@ -36,7 +37,6 @@ public class InvincibilityTimer extends AbstractTimer {
             ));
         }
     }
-
 
     public String getProgressBar(int current, int max, int totalBars, char symbol, ChatColor completedColor, ChatColor notCompletedColor) {
         float percent = (float) current / max;

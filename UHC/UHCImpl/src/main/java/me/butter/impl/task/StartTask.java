@@ -7,6 +7,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.BlockUtils;
 import me.butter.impl.UHCImpl;
 import me.butter.impl.player.PotionUpdaterTask;
+import me.butter.impl.scoreboard.list.GameScoreboard;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -31,14 +32,20 @@ public class StartTask extends BukkitRunnable {
         this.timer -= 1;
 
         for (UHCPlayer uhcPlayer : UHCAPI.get().getPlayerHandler().getPlayers()) {
-            uhcPlayer.sendTitle("" + timer, ChatColor.GREEN);
-            uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_PLING, 5.0F, 1.0F);
+            if(timer == 0) {
+                uhcPlayer.sendTitle("Bonne Chance !", ChatColor.GREEN);
+                uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_BASS, 6.0F, 1.0F);
+            }
+            else {
+                uhcPlayer.sendTitle("" + timer, ChatColor.GREEN);
+                uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_PLING, 6.0F, 1.0F);
+            }
         }
 
         if (timer == 0) {
             for(UHCPlayer uhcPlayer : UHCAPI.get().getPlayerHandler().getPlayersInLobby()) {
                 uhcPlayer.setPlayerState(PlayerState.IN_GAME);
-                int platformSize = 3;
+                int platformSize = 5;
                 BlockUtils.fillBlocks(uhcPlayer.getSpawnLocation().getWorld(), uhcPlayer.getSpawnLocation().getBlockX() - platformSize/2, uhcPlayer.getSpawnLocation().getBlockY() - 1, uhcPlayer.getSpawnLocation().getBlockZ() - platformSize/2, platformSize, 1, platformSize, Material.AIR);
             }
 
@@ -52,7 +59,10 @@ public class StartTask extends BukkitRunnable {
 
     private void setPlayerInGame(UHCPlayer uhcPlayer) {
         if (uhcPlayer.getPlayerState().equals(PlayerState.IN_LOBBY)) {
+            UHCAPI.get().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
+
             uhcPlayer.getPlayer().getInventory().clear();
+
             if (!UHCAPI.get().getGameHandler().getItemConfig().getStartingInventory().isEmpty()) {
                 for (ItemStack itemStack : UHCAPI.get().getGameHandler().getItemConfig().getStartingInventory()) {
                     if (itemStack == null) {

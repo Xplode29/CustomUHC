@@ -4,16 +4,20 @@ import me.butter.api.UHCAPI;
 import me.butter.api.enchant.EnchantHandler;
 import me.butter.api.game.GameHandler;
 import me.butter.api.player.PlayerHandler;
+import me.butter.api.scoreboard.ScoreboardHandler;
 import me.butter.api.timer.TimerHandler;
 import me.butter.api.world.WorldHandler;
-import me.butter.impl.commands.CommandStart;
+import me.butter.api.utils.ChatUtils;
+import me.butter.impl.commands.CommandHost;
 import me.butter.impl.enchant.EnchantHandlerImpl;
 import me.butter.impl.game.GameHandlerImpl;
 import me.butter.impl.listeners.*;
 import me.butter.impl.player.PlayerHandlerImpl;
+import me.butter.impl.scoreboard.ScoreboardHandlerImpl;
 import me.butter.impl.timer.TimerHandlerImpl;
 import me.butter.impl.world.WorldHandlerImpl;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public final class UHCImpl extends UHCAPI {
 
@@ -24,9 +28,14 @@ public final class UHCImpl extends UHCAPI {
     private EnchantHandler enchantHandler;
     private WorldHandler worldHandler;
     private TimerHandler timerHandler;
+    private ScoreboardHandler scoreboardHandler;
 
     @Override
     public void onLoad() {
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            player.kickPlayer("Please Reconnect!");
+        }
+
         UHCAPI.setInstance(this);
         UHCImpl.instance = this;
 
@@ -39,12 +48,12 @@ public final class UHCImpl extends UHCAPI {
     @Override
     public void onEnable() {
         worldHandler = new WorldHandlerImpl();
+        scoreboardHandler = new ScoreboardHandlerImpl();
 
         registerCommands();
         registerListeners();
 
-        //Commands
-        getCommand("start").setExecutor(new CommandStart());
+        Bukkit.broadcastMessage(ChatUtils.SEPARATOR.getPrefix() + ChatUtils.SEPARATOR.getPrefix() + ChatUtils.SEPARATOR.getPrefix());
     }
 
     public static UHCImpl get() {
@@ -52,7 +61,7 @@ public final class UHCImpl extends UHCAPI {
     }
 
     void registerCommands() {
-        getCommand("start").setExecutor(new CommandStart());
+        getCommand("host").setExecutor(new CommandHost());
     }
 
     void registerListeners() {
@@ -89,5 +98,10 @@ public final class UHCImpl extends UHCAPI {
     @Override
     public TimerHandler getTimerHandler() {
         return timerHandler;
+    }
+
+    @Override
+    public ScoreboardHandler getScoreboardHandler() {
+        return scoreboardHandler;
     }
 }

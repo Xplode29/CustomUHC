@@ -1,6 +1,7 @@
 package me.butter.impl.timer.list;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.utils.ChatUtils;
 import me.butter.impl.timer.AbstractTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,9 +24,8 @@ public class PVPTimer extends AbstractTimer {
 
     @Override
     public void onTimerDone() {
+        Bukkit.broadcastMessage(ChatUtils.WARNING.getMessage("Le PVP est maintenant actif."));
         UHCAPI.get().getGameHandler().getGameConfig().setPvp(true);
-
-        Bukkit.broadcastMessage("§rLe §cPVP§r est maintenant activé.");
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PVPTimer extends AbstractTimer {
     @Override
     public void onUpdate(int timer) {
         if ((getMaxTimer() - 300) - timer == 0) {
-            Bukkit.broadcastMessage("§rLe §cPVP§r sera actif dans 5 minutes !");
+            Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Le PVP sera actif dans 5 minutes !"));
         }
         if (!UHCAPI.get().getGameHandler().getGameConfig().isInvincibility()) {
             if (!UHCAPI.get().getGameHandler().getGameConfig().isPvp()) {
@@ -46,7 +46,7 @@ public class PVPTimer extends AbstractTimer {
             }
         }
     }
-
+    
     public String getProgressBar(int current, int max, int totalBars, char symbol, ChatColor completedColor, ChatColor notCompletedColor) {
         float percent = (float) current / max;
         int progressBars = (int) (totalBars * percent);

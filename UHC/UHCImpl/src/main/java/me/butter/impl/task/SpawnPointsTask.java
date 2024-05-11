@@ -9,6 +9,7 @@ import me.butter.impl.UHCImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -46,13 +47,18 @@ public class SpawnPointsTask extends BukkitRunnable {
 
         UHCAPI.get().getPlayerHandler().getUHCPlayer(uhcPlayer.getUniqueId()).setSpawnLocation(randomLoc);
 
-        int platformSize = 3;
+        int platformSize = 5;
         BlockUtils.fillBlocks(uhcPlayer.getSpawnLocation().getWorld(), uhcPlayer.getSpawnLocation().getBlockX() - platformSize/2, uhcPlayer.getSpawnLocation().getBlockY() - 1, uhcPlayer.getSpawnLocation().getBlockZ() - platformSize/2, platformSize, 1, platformSize, Material.GLASS);
 
+        if(!uhcPlayer.getSpawnLocation().getChunk().isLoaded()) uhcPlayer.getSpawnLocation().getChunk().load();
 
         spawnPoints += 1;
         UHCAPI.get().getPlayerHandler().getPlayersInLobby().forEach(uhcPlayer1 -> uhcPlayer1.sendActionBar(
-                "§aGénération des points d'apparitions §7(" + spawnPoints + "/" + UHCAPI.get().getPlayerHandler().getPlayersInLobby().size() + ")"
+                "Spawns: " + spawnPoints + "/" + UHCAPI.get().getPlayerHandler().getPlayersInLobby().size()
+        ));
+
+        UHCAPI.get().getPlayerHandler().getPlayersInLobby().forEach(uhcPlayer1 -> uhcPlayer1.getPlayer().playSound(
+                uhcPlayer1.getLocation(), Sound.NOTE_STICKS, 6.0F, 1.0F
         ));
 
         this.players.remove(0);

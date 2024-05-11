@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class UHCPlayerListener implements Listener {
@@ -42,12 +43,22 @@ public class UHCPlayerListener implements Listener {
             return;
         }
 
-        UHCPlayer uhcPlayer = UHCImpl.get().getPlayerHandler().getUHCPlayer(player.getUniqueId());
+        UHCPlayer uhcPlayer = UHCImpl.get().getPlayerHandler().getUHCPlayer(player);
 
         if (uhcPlayer.getPlayerState().equals(PlayerState.DEAD) || uhcPlayer.getPlayerState().equals(PlayerState.IN_GAME)) {
             return;
         }
 
         UHCAPI.get().getPlayerHandler().removePlayer(player);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        if (player == null) return;
+
+        UHCPlayer uhcPlayer = UHCImpl.get().getPlayerHandler().getUHCPlayer(player);
+
+        uhcPlayer.setLocation(player.getLocation());
     }
 }

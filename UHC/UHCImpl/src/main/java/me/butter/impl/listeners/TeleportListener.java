@@ -4,7 +4,9 @@ import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.ChatUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -55,7 +57,9 @@ public class TeleportListener implements Listener {
             return;
         }
 
-        Bukkit.broadcastMessage("§l" + player.getName() + "§r§c c'est déconnecté pendant le lancement de la partie.");
+        Bukkit.broadcastMessage(ChatUtils.LEFT.getMessage(
+                player.getDisplayName() + ChatColor.WHITE + " s'est déconnecté pendant le lancement de la partie."
+        ));
     }
 
     @EventHandler
@@ -77,7 +81,7 @@ public class TeleportListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMovePlate(PlayerMoveEvent event) {
+    public void onPlayerMove(PlayerMoveEvent event) {
         if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.TELEPORTING)) {
             return;
         }
@@ -100,7 +104,6 @@ public class TeleportListener implements Listener {
 
         player.teleport(uhcPlayer.getSpawnLocation());
     }
-
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {

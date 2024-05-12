@@ -8,6 +8,8 @@ public interface GameConfig {
 
     int getMaxPlayers(); void setMaxPlayers(int maxPlayers);
 
+    int getGroupSize(); void setGroupSize(int groupSize);
+
     boolean isStarting(); void setStarting(boolean starting);
 
     int getTimer(); void setTimer(int timer);

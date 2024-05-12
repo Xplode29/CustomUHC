@@ -3,7 +3,9 @@ package me.butter.api;
 import me.butter.api.enchant.EnchantHandler;
 import me.butter.api.game.GameHandler;
 import me.butter.api.player.PlayerHandler;
+import me.butter.api.scenario.ScenarioHandler;
 import me.butter.api.scoreboard.ScoreboardHandler;
+import me.butter.api.tab.TabHandler;
 import me.butter.api.timer.TimerHandler;
 import me.butter.api.world.WorldHandler;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,4 +35,8 @@ public abstract class UHCAPI extends JavaPlugin {
     public abstract TimerHandler getTimerHandler();
 
     public abstract ScoreboardHandler getScoreboardHandler();
+
+    public abstract ScenarioHandler getScenarioHandler();
+
+    public abstract TabHandler getTabHandler();
 }

@@ -4,16 +4,20 @@ import me.butter.api.UHCAPI;
 import me.butter.api.enchant.EnchantHandler;
 import me.butter.api.game.GameHandler;
 import me.butter.api.player.PlayerHandler;
+import me.butter.api.scenario.ScenarioHandler;
 import me.butter.api.scoreboard.ScoreboardHandler;
+import me.butter.api.tab.TabHandler;
 import me.butter.api.timer.TimerHandler;
-import me.butter.api.world.WorldHandler;
 import me.butter.api.utils.ChatUtils;
+import me.butter.api.world.WorldHandler;
 import me.butter.impl.commands.CommandHost;
 import me.butter.impl.enchant.EnchantHandlerImpl;
 import me.butter.impl.game.GameHandlerImpl;
 import me.butter.impl.listeners.*;
 import me.butter.impl.player.PlayerHandlerImpl;
+import me.butter.impl.scenario.ScenarioHandlerImpl;
 import me.butter.impl.scoreboard.ScoreboardHandlerImpl;
+import me.butter.impl.tab.TabHandlerImpl;
 import me.butter.impl.timer.TimerHandlerImpl;
 import me.butter.impl.world.WorldHandlerImpl;
 import org.bukkit.Bukkit;
@@ -29,6 +33,8 @@ public final class UHCImpl extends UHCAPI {
     private WorldHandler worldHandler;
     private TimerHandler timerHandler;
     private ScoreboardHandler scoreboardHandler;
+    private ScenarioHandler scenarioHandler;
+    private TabHandler tabHandler;
 
     @Override
     public void onLoad() {
@@ -43,12 +49,14 @@ public final class UHCImpl extends UHCAPI {
         gameHandler = new GameHandlerImpl();
         enchantHandler = new EnchantHandlerImpl();
         timerHandler = new TimerHandlerImpl();
+        scenarioHandler = new ScenarioHandlerImpl();
     }
 
     @Override
     public void onEnable() {
         worldHandler = new WorldHandlerImpl();
         scoreboardHandler = new ScoreboardHandlerImpl();
+        tabHandler = new TabHandlerImpl();
 
         registerCommands();
         registerListeners();
@@ -103,5 +111,15 @@ public final class UHCImpl extends UHCAPI {
     @Override
     public ScoreboardHandler getScoreboardHandler() {
         return scoreboardHandler;
+    }
+
+    @Override
+    public ScenarioHandler getScenarioHandler() {
+        return scenarioHandler;
+    }
+
+    @Override
+    public TabHandler getTabHandler() {
+        return tabHandler;
     }
 }

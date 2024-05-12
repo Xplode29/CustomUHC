@@ -8,6 +8,7 @@ import me.butter.api.utils.BlockUtils;
 import me.butter.impl.UHCImpl;
 import me.butter.impl.player.PotionUpdaterTask;
 import me.butter.impl.scoreboard.list.GameScoreboard;
+import me.butter.impl.tab.list.GameTab;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -47,6 +48,9 @@ public class StartTask extends BukkitRunnable {
                 uhcPlayer.setPlayerState(PlayerState.IN_GAME);
                 int platformSize = 5;
                 BlockUtils.fillBlocks(uhcPlayer.getSpawnLocation().getWorld(), uhcPlayer.getSpawnLocation().getBlockX() - platformSize/2, uhcPlayer.getSpawnLocation().getBlockY() - 1, uhcPlayer.getSpawnLocation().getBlockZ() - platformSize/2, platformSize, 1, platformSize, Material.AIR);
+
+                UHCAPI.get().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
+                UHCAPI.get().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
             }
 
             UHCAPI.get().getGameHandler().setGameState(GameState.IN_GAME);
@@ -59,8 +63,6 @@ public class StartTask extends BukkitRunnable {
 
     private void setPlayerInGame(UHCPlayer uhcPlayer) {
         if (uhcPlayer.getPlayerState().equals(PlayerState.IN_LOBBY)) {
-            UHCAPI.get().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
-
             uhcPlayer.getPlayer().getInventory().clear();
 
             if (!UHCAPI.get().getGameHandler().getItemConfig().getStartingInventory().isEmpty()) {
@@ -94,6 +96,7 @@ public class StartTask extends BukkitRunnable {
                     }
                 }
             }
+            uhcPlayer.saveInventory();
         }
     }
 }

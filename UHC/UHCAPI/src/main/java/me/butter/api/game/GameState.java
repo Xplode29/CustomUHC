@@ -1,9 +1,19 @@
 package me.butter.api.game;
 
 public enum GameState {
-    LOBBY,
-    STARTING,
-    TELEPORTING,
-    IN_GAME,
-    ENDING
+    LOBBY("Lobby"),
+    STARTING("Starting"),
+    TELEPORTING("Teleporting"),
+    IN_GAME("In Game"),
+    ENDING("Ending");
+
+    private final String name;
+
+    GameState(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

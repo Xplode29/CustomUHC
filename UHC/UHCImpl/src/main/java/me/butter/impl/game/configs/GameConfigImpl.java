@@ -7,12 +7,13 @@ public class GameConfigImpl implements GameConfig {
 
     UHCPlayer host;
 
-    int maxPlayers, timer;
+    int maxPlayers, timer, groupSize;
 
     boolean day, starting, invincibility, pvp, meetup, chatEnabled;
 
     public GameConfigImpl() {
         this.maxPlayers = 39;
+        this.groupSize = 6;
         this.timer = 0;
         this.day = true;
         this.invincibility = true;
@@ -39,6 +40,16 @@ public class GameConfigImpl implements GameConfig {
     @Override
     public void setMaxPlayers(int maxPlayers) {
         this.maxPlayers = maxPlayers;
+    }
+
+    @Override
+    public int getGroupSize() {
+        return groupSize;
+    }
+
+    @Override
+    public void setGroupSize(int groupSize) {
+        this.groupSize = groupSize;
     }
 
     @Override

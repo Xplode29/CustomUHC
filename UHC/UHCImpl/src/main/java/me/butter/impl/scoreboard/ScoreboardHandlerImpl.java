@@ -26,7 +26,6 @@ public class ScoreboardHandlerImpl implements ScoreboardHandler {
         scoreboardList.add(new GameScoreboard(scoreboardManager.getNewScoreboard()));
 
         new BukkitRunnable() {
-
             @Override
             public void run() {
                 for(AbstractScoreboard scoreboard : scoreboardList) {

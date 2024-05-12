@@ -1,10 +1,10 @@
 package me.butter.impl.world;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.utils.ChatUtils;
 import me.butter.api.world.OrePopulator;
 import me.butter.api.world.WorldHandler;
 import me.butter.impl.UHCImpl;
-import me.butter.api.utils.ChatUtils;
 import me.butter.impl.world.pregen.PregenTask;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.*;

@@ -1,5 +1,6 @@
 package me.butter.api.player;
 
+import me.butter.api.item.CustomItem;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -40,6 +41,8 @@ public interface UHCPlayer {
     Location getLocation(); void setLocation(Location newLocation);
 
     List<ItemStack> getInventory(); void saveInventory(); void loadInventory();
+
+    void giveItem(ItemStack item); void setItem(int slot, ItemStack item);
 
     List<Potion> getPotionEffects(); @Deprecated void setPotionEffects(List<Potion> potionEffects);
 

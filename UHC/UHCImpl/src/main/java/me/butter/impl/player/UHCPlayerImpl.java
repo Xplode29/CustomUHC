@@ -201,6 +201,18 @@ public class UHCPlayerImpl implements UHCPlayer {
     }
 
     @Override
+    public void giveItem(ItemStack item) {
+        if(getPlayer() == null) return;
+        getPlayer().getInventory().addItem(item);
+    }
+
+    @Override
+    public void setItem(int slot, ItemStack item) {
+        if(getPlayer() == null) return;
+        getPlayer().getInventory().setItem(slot, item);
+    }
+
+    @Override
     public Location getSpawnLocation() {
         return spawnLocation;
     }

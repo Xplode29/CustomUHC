@@ -14,7 +14,7 @@ public enum ChatUtils {
     LIST_HEADER("▷ "),
     LIST_ELEMENT("  ◆ "),
     SUBLIST_ELEMENT("    - "),
-    SEPARATOR("§m                                                         ");
+    SEPARATOR("§m                                                    ");
 
     private final String prefix;
 

@@ -12,28 +12,22 @@ import java.util.Arrays;
 public class GameScoreboard extends AbstractScoreboard {
     public GameScoreboard(Scoreboard scoreboard) {
         super(scoreboard, "In Game", Arrays.asList(
-                new DuplicateString("§l§m----------------", 0).getString(),
+                new DuplicateString("§7§m---------------------", 0).getString(),
                 new DuplicateString("", 0).getString(),
-                "Host: ",
-                "Players: " + UHCAPI.get().getPlayerHandler().getPlayersInGame() + "/" + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers(),
                 "Timer: " + StringUtils.convertToAccurateTime(UHCAPI.get().getGameHandler().getGameConfig().getTimer()),
-                "Kills: 0",
                 new DuplicateString("", 1).getString(),
-                new DuplicateString("§l§m----------------", 1).getString()
+                "Players: " + UHCAPI.get().getPlayerHandler().getPlayersInGame() + "/" + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers(),
+                "§cGroupes de " + UHCAPI.get().getGameHandler().getGameConfig().getGroupSize(),
+                new DuplicateString("", 2).getString(),
+                new DuplicateString("§7§m---------------------", 1).getString()
         ));
     }
 
     @Override
     public void update() {
-        setLine(2, "Host: " + (UHCAPI.get().getGameHandler().getGameConfig().getHost() == null ? "§cNon défini" : UHCAPI.get().getGameHandler().getGameConfig().getHost().getName()));
-        setLine(3, "Players: " + UHCAPI.get().getPlayerHandler().getPlayersInGame().size() + "/" + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers());
-        setLine(4, "Timer: " + StringUtils.convertToAccurateTime(UHCAPI.get().getGameHandler().getGameConfig().getTimer()));
+        setLine(2, "Timer: " + StringUtils.convertToAccurateTime(UHCAPI.get().getGameHandler().getGameConfig().getTimer()));
+        setLine(4, "Players: " + UHCAPI.get().getPlayerHandler().getPlayersInGame().size() + "/" + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers());
+        setLine(5, "§cGroupes de " + UHCAPI.get().getGameHandler().getGameConfig().getGroupSize());
         super.update();
-    }
-
-    @Override
-    public void updatePlayer(UHCPlayer uhcPlayer) {
-        setLine(5, "Kills: " + uhcPlayer.getKilledPlayers().size());
-        super.updatePlayer(uhcPlayer);
     }
 }

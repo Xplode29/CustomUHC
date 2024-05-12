@@ -23,7 +23,7 @@ public abstract class AbstractScoreboard {
     public AbstractScoreboard(Scoreboard scoreboard, String title, List<String> lines) {
         this.scoreboard = scoreboard;
 
-        this.objective = scoreboard.registerNewObjective(title, "dummy");
+        this.objective = scoreboard.registerNewObjective("§l" + title, "dummy");
         this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         this.lines = new ArrayList<>();
@@ -69,8 +69,8 @@ public abstract class AbstractScoreboard {
     }
 
     public void setLine(int line, String text) {
-        if(lines.size() < line) {
-            for(int i = lines.size(); i < line; i++) {
+        if(lines.size() <= line) {
+            for(int i = lines.size(); i <= line; i++) {
                 lines.add("");
                 objective.getScore(lines.get(i)).setScore(lines.size() - i - 1);
             }

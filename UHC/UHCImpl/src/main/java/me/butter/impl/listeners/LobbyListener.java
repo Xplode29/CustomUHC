@@ -7,6 +7,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.BlockUtils;
 import me.butter.api.utils.ChatUtils;
 import me.butter.impl.scoreboard.list.LobbyScoreboard;
+import me.butter.impl.tab.list.LobbyTab;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -63,11 +64,11 @@ public class LobbyListener implements Listener {
             return;
         }
 
-        UHCAPI.get().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
-
         uhcPlayer.setPlayerState(PlayerState.IN_LOBBY);
         Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage(
-                 player.getDisplayName() + ChatColor.WHITE + " a rejoint le lobby [" + (UHCAPI.get().getPlayerHandler().getPlayers().size() > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) + UHCAPI.get().getPlayerHandler().getPlayers().size() + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
+                 player.getDisplayName() + ChatColor.WHITE + " a rejoint le lobby [" +
+                         (UHCAPI.get().getPlayerHandler().getPlayers().size() > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
+                         UHCAPI.get().getPlayerHandler().getPlayers().size() + "/" + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
         ));
     }
 
@@ -83,12 +84,10 @@ public class LobbyListener implements Listener {
             return;
         }
 
-        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
-
-        UHCAPI.get().getScoreboardHandler().removePlayerScoreboard(uhcPlayer);
-
         Bukkit.broadcastMessage(ChatUtils.LEFT.getMessage(
-                 player.getDisplayName() + ChatColor.WHITE + " a quitté le lobby [" + ((UHCAPI.get().getPlayerHandler().getPlayers().size() - 1) > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) + (UHCAPI.get().getPlayerHandler().getPlayers().size() - 1) + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
+                 player.getDisplayName() + ChatColor.WHITE + " a quitté le lobby [" +
+                         ((UHCAPI.get().getPlayerHandler().getPlayers().size() - 1) > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
+                         (UHCAPI.get().getPlayerHandler().getPlayers().size() - 1) + "/" + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
         ));
     }
 
@@ -111,9 +110,7 @@ public class LobbyListener implements Listener {
             return;
         }
 
-        if (event.getCause().equals(EntityDamageEvent.DamageCause.FALL) || event.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK) || event.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) || event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) {
-            event.setCancelled(true);
-        }
+        event.setCancelled(true);
     }
 
     @EventHandler

@@ -5,7 +5,6 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public abstract class AbstractItem implements CustomItem {
 
@@ -28,7 +27,7 @@ public abstract class AbstractItem implements CustomItem {
 
     @Override
     public ItemStack format(Material material, String name) {
-        return new ItemBuilder(material).setName(name).toItemStack();
+        return new ItemBuilder(material).setName(name).setInfinityDurability().toItemStack();
     }
 
     @Override

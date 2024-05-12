@@ -21,6 +21,8 @@ public interface UHCPlayer {
 
     UUID getUniqueId();
 
+    boolean equals(Object obj);
+
     Player getPlayer(); boolean isPlayer(Player player);
 
     String getName(); void setName(String newName);

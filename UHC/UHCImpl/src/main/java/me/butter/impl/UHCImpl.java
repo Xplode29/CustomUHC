@@ -3,6 +3,7 @@ package me.butter.impl;
 import me.butter.api.UHCAPI;
 import me.butter.api.enchant.EnchantHandler;
 import me.butter.api.game.GameHandler;
+import me.butter.api.item.ItemHandler;
 import me.butter.api.player.PlayerHandler;
 import me.butter.api.scenario.ScenarioHandler;
 import me.butter.api.scoreboard.ScoreboardHandler;
@@ -13,6 +14,7 @@ import me.butter.api.world.WorldHandler;
 import me.butter.impl.commands.CommandHost;
 import me.butter.impl.enchant.EnchantHandlerImpl;
 import me.butter.impl.game.GameHandlerImpl;
+import me.butter.impl.item.ItemHandlerImpl;
 import me.butter.impl.listeners.*;
 import me.butter.impl.player.PlayerHandlerImpl;
 import me.butter.impl.scenario.ScenarioHandlerImpl;
@@ -35,6 +37,7 @@ public final class UHCImpl extends UHCAPI {
     private ScoreboardHandler scoreboardHandler;
     private ScenarioHandler scenarioHandler;
     private TabHandler tabHandler;
+    private ItemHandler itemHandler;
 
     @Override
     public void onLoad() {
@@ -57,6 +60,7 @@ public final class UHCImpl extends UHCAPI {
         worldHandler = new WorldHandlerImpl();
         scoreboardHandler = new ScoreboardHandlerImpl();
         tabHandler = new TabHandlerImpl();
+        itemHandler = new ItemHandlerImpl();
 
         registerCommands();
         registerListeners();
@@ -121,5 +125,10 @@ public final class UHCImpl extends UHCAPI {
     @Override
     public TabHandler getTabHandler() {
         return tabHandler;
+    }
+
+    @Override
+    public ItemHandler getItemHandler() {
+        return itemHandler;
     }
 }

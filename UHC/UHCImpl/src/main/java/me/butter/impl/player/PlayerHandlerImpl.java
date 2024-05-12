@@ -25,7 +25,7 @@ public class PlayerHandlerImpl implements PlayerHandler {
     @Override
     public UHCPlayer getUHCPlayer(String name) {
         for(UHCPlayer uhcPlayer : uhcPlayers) {
-            if(uhcPlayer.getName().equals(name)) {
+            if(uhcPlayer.getName().equalsIgnoreCase(name)) {
                 return uhcPlayer;
             }
         }

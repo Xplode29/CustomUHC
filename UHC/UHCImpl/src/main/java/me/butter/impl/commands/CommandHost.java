@@ -5,6 +5,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ChatUtils;
+import me.butter.impl.item.list.MenuItem;
 import me.butter.impl.task.LaunchGameTask;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -28,7 +29,18 @@ public class CommandHost implements TabExecutor {
 
         if(strings.length == 0) {
                 if(player.isOp() && uhcPlayer != null) {
+                    if(uhcPlayer.equals(UHCAPI.get().getGameHandler().getGameConfig().getHost())) {
+                        player.sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + uhcPlayer.getName() + " est déja le host de la partie !"));
+                        return true;
+                    }
+
+                    if(UHCAPI.get().getGameHandler().getGameConfig().getHost() != null) {
+                        UHCAPI.get().getItemHandler().removeItemFromPlayer(MenuItem.class, UHCAPI.get().getGameHandler().getGameConfig().getHost());
+                    }
+                    UHCAPI.get().getItemHandler().giveItemToPlayer(MenuItem.class, uhcPlayer);
+
                     UHCAPI.get().getGameHandler().getGameConfig().setHost(uhcPlayer);
+
                     Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(uhcPlayer.getName() + " est maintenant le host de la partie."));
                     return true;
                 }
@@ -63,6 +75,7 @@ public class CommandHost implements TabExecutor {
                         player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h sethost <joueur>"));
                         return true;
                     }
+
                     UHCPlayer target = UHCAPI.get().getPlayerHandler().getUHCPlayer(strings[1]);
 
                     if(target == null) {
@@ -70,8 +83,20 @@ public class CommandHost implements TabExecutor {
                         return true;
                     }
 
-                    UHCAPI.get().getGameHandler().getGameConfig().setHost(UHCAPI.get().getPlayerHandler().getUHCPlayer(strings[1]));
+                    if(target.equals(UHCAPI.get().getGameHandler().getGameConfig().getHost())) {
+                        player.sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + strings[1] + " est déja le host de la partie !"));
+                        return true;
+                    }
+
+                    if(UHCAPI.get().getGameHandler().getGameConfig().getHost() != null) {
+                        UHCAPI.get().getItemHandler().removeItemFromPlayer(MenuItem.class, UHCAPI.get().getGameHandler().getGameConfig().getHost());
+                    }
+                    UHCAPI.get().getItemHandler().giveItemToPlayer(MenuItem.class, target);
+
+                    UHCAPI.get().getGameHandler().getGameConfig().setHost(target);
+
                     Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(target.getName() + " est maintenant le host de la partie."));
+
                     return true;
                 default:
                     player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h <start|stop|sethost>"));

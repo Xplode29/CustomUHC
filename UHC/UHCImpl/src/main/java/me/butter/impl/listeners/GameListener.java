@@ -186,7 +186,7 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onDamagePatch(EntityDamageByEntityEvent event) {
+    public void damagePatch(EntityDamageByEntityEvent event) {
         if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
             return;
         }
@@ -294,27 +294,12 @@ public class GameListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         if (isOutsideOfBorder(e.getTo())) {
-            if (!isOutsideOfBorder(e.getFrom()))
-                e.getPlayer().teleport(new Location(e.getPlayer().getWorld(), 0, 90, 0));
-            else {
-                WorldBorder border = e.getTo().getWorld().getWorldBorder();
-                double size = border.getSize() / 2;
-                double x = e.getTo().getX();
-                double z = e.getTo().getZ();
-                if (x > size)
-                    e.getPlayer().teleport(new Location(e.getPlayer().getWorld(), 0, 90, 0));
-                if ((-x) > size)
-                    e.getPlayer().teleport(new Location(e.getPlayer().getWorld(), 0, 90, 0));
-                if (z > size)
-                    e.getPlayer().teleport(new Location(e.getPlayer().getWorld(), 0, 90, 0));
-                if ((-z) > size)
-                    e.getPlayer().teleport(new Location(e.getPlayer().getWorld(), 0, 90, 0));
-            }
+            e.getPlayer().teleport(new Location(e.getPlayer().getWorld(), 0, 90, 0));
         }
+
         UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(e.getPlayer());
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
-            return;
-        }
+        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) return;
+
         float speedWhitePercent = (float) (0.2 + (0.2 * uhcPlayer.getSpeed() / 100));
         uhcPlayer.getPlayer().setWalkSpeed(speedWhitePercent);
     }

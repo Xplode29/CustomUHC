@@ -6,8 +6,9 @@ import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.BlockUtils;
 import me.butter.api.utils.ChatUtils;
-import me.butter.impl.scoreboard.list.LobbyScoreboard;
-import me.butter.impl.tab.list.LobbyTab;
+import me.butter.api.utils.ParticleUtils;
+import me.butter.impl.item.list.GrapplingItem;
+import me.butter.impl.item.list.MenuItem;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,8 +45,8 @@ public class LobbyListener implements Listener {
 
         if (!generate) {
             //Build the spawn
-            int spawnSize = 20, spawnHeight = 5;
-            BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2, spawnLocation.getBlockY() - 1, spawnLocation.getBlockZ() - spawnSize/2, spawnSize, spawnHeight, spawnSize, Material.BARRIER);
+            int spawnSize = 40, spawnHeight = 10;
+            BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2, spawnLocation.getBlockY() - 1, spawnLocation.getBlockZ() - spawnSize/2, spawnSize, spawnHeight, spawnSize, Material.GLASS);
             BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2 + 1, spawnLocation.getBlockY(), spawnLocation.getBlockZ() - spawnSize/2 + 1, spawnSize - 2, spawnHeight - 2, spawnSize - 2, Material.AIR);
 
             generate = true;
@@ -59,10 +60,11 @@ public class LobbyListener implements Listener {
         player.teleport(spawnLocation);
 
         UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+        if (uhcPlayer == null) return;
 
-        if (uhcPlayer == null) {
-            return;
-        }
+        UHCAPI.get().getItemHandler().giveLobbyItems(uhcPlayer);
+
+        ParticleUtils.tornadoEffect(uhcPlayer.getPlayer(), Color.fromRGB(255, 255, 255));
 
         uhcPlayer.setPlayerState(PlayerState.IN_LOBBY);
         Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage(
@@ -74,15 +76,15 @@ public class LobbyListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.LOBBY)) {
-            return;
-        }
+        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.LOBBY)) return;
 
         Player player = event.getPlayer();
+        if (player == null) return;
 
-        if (player == null) {
-            return;
-        }
+        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+        if (uhcPlayer == null) return;
+
+        UHCAPI.get().getItemHandler().removeLobbyItems(uhcPlayer);
 
         Bukkit.broadcastMessage(ChatUtils.LEFT.getMessage(
                  player.getDisplayName() + ChatColor.WHITE + " a quitté le lobby [" +
@@ -128,7 +130,7 @@ public class LobbyListener implements Listener {
             return;
         }
 
-        if (event.getPlayer().isOp() && event.getBlock().getType() != Material.BARRIER) {
+        if (event.getPlayer().isOp() && event.getBlock().getType() != Material.GLASS) {
             return;
         }
 
@@ -141,7 +143,7 @@ public class LobbyListener implements Listener {
             return;
         }
 
-        if (event.getPlayer().isOp() && event.getBlock().getType() != Material.BARRIER) {
+        if (event.getPlayer().isOp() && event.getBlock().getType() != Material.GLASS) {
             return;
         }
 

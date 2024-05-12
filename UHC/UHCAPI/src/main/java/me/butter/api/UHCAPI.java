@@ -2,6 +2,7 @@ package me.butter.api;
 
 import me.butter.api.enchant.EnchantHandler;
 import me.butter.api.game.GameHandler;
+import me.butter.api.item.ItemHandler;
 import me.butter.api.player.PlayerHandler;
 import me.butter.api.scenario.ScenarioHandler;
 import me.butter.api.scoreboard.ScoreboardHandler;
@@ -39,4 +40,6 @@ public abstract class UHCAPI extends JavaPlugin {
     public abstract ScenarioHandler getScenarioHandler();
 
     public abstract TabHandler getTabHandler();
+
+    public abstract ItemHandler getItemHandler();
 }

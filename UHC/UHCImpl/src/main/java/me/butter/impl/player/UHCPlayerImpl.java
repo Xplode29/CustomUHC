@@ -19,6 +19,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class UHCPlayerImpl implements UHCPlayer {
@@ -94,6 +95,19 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override
     public UUID getUniqueId() {
         return playerUUID;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof UHCPlayerImpl)) return false;
+        UHCPlayerImpl uhcPlayer = (UHCPlayerImpl) object;
+        return playerUUID.equals(uhcPlayer.playerUUID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(playerUUID);
     }
 
     @Override

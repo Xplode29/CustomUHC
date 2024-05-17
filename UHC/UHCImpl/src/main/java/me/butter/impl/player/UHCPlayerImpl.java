@@ -1,5 +1,7 @@
 package me.butter.impl.player;
 
+import me.butter.api.UHCAPI;
+import me.butter.api.menu.Menu;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
@@ -30,6 +32,8 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     boolean canPickItems;
 
+    int diamondMined;
+
     List<UUID> killedPlayers;
 
     Location playerLocation, deathLocation, spawnLocation;
@@ -46,6 +50,8 @@ public class UHCPlayerImpl implements UHCPlayer {
         this.playerState = PlayerState.IN_SPEC;
 
         this.canPickItems = true;
+
+        this.diamondMined = 0;
 
         this.killedPlayers = new ArrayList<>();
 
@@ -90,6 +96,12 @@ public class UHCPlayerImpl implements UHCPlayer {
 
         ((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(title);
         ((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(length);
+    }
+
+    @Override
+    public void openMenu(Menu menu, boolean isPrevMenu) {
+        if(getPlayer() == null) return;
+        UHCAPI.get().getMenuHandler().openMenu(this, menu, isPrevMenu);
     }
 
     @Override
@@ -138,6 +150,16 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override
     public void setPlayerState(PlayerState newState) {
         playerState = newState;
+    }
+
+    @Override
+    public int getDiamondMined() {
+        return diamondMined;
+    }
+
+    @Override
+    public void setDiamondMined(int amount) {
+        this.diamondMined = amount;
     }
 
     @Override
@@ -212,6 +234,13 @@ public class UHCPlayerImpl implements UHCPlayer {
             if(itemStack == null) itemStack = new ItemStack(Material.AIR);
             getPlayer().getInventory().setItem(i, itemStack);
         }
+    }
+
+    @Override
+    public void clearInventory() {
+        if(getPlayer() == null) return;
+        getPlayer().getInventory().clear();
+        getPlayer().getInventory().setArmorContents(null);
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.bukkit.Material;
 
 public class MeetupTimer extends AbstractTimer {
     public MeetupTimer() {
-        super(60);
+        super(60 * 60);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class MeetupTimer extends AbstractTimer {
     }
 
     @Override
-    public Material getMaterial() {
+    public Material getIcon() {
         return Material.GOLD_PICKAXE;
     }
 

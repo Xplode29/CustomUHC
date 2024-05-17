@@ -109,6 +109,12 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder hideEnchants() {
+        ItemMeta im = this.is.getItemMeta();
+        im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        this.is.setItemMeta(im);
+        return this;
+    }
 
     public ItemBuilder setAmount(int amount) {
         this.is.setAmount(amount);

@@ -63,7 +63,7 @@ public class StartTask extends BukkitRunnable {
 
     private void setPlayerInGame(UHCPlayer uhcPlayer) {
         if (uhcPlayer.getPlayerState().equals(PlayerState.IN_LOBBY)) {
-            uhcPlayer.getPlayer().getInventory().clear();
+            uhcPlayer.clearInventory();
 
             if (!UHCAPI.get().getGameHandler().getItemConfig().getStartingInventory().isEmpty()) {
                 for (ItemStack itemStack : UHCAPI.get().getGameHandler().getItemConfig().getStartingInventory()) {

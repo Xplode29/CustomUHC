@@ -12,6 +12,8 @@ public interface Scenario {
 
     void onEnable(); void onDisable();
 
+    void toggle();
+
     void openConfig();
 
     boolean isEnabled(); void setEnabled(boolean enabled);

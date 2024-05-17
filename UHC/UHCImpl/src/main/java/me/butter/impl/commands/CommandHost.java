@@ -8,12 +8,14 @@ import me.butter.api.utils.ChatUtils;
 import me.butter.impl.item.list.MenuItem;
 import me.butter.impl.task.LaunchGameTask;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,9 +28,10 @@ public class CommandHost implements TabExecutor {
 
         Player player = (Player) commandSender;
         UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+        if(uhcPlayer == null) return true;
 
         if(strings.length == 0) {
-                if(player.isOp() && uhcPlayer != null) {
+                if(player.isOp()) {
                     if(uhcPlayer.equals(UHCAPI.get().getGameHandler().getGameConfig().getHost())) {
                         player.sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + uhcPlayer.getName() + " est déja le host de la partie !"));
                         return true;
@@ -70,6 +73,20 @@ public class CommandHost implements TabExecutor {
                         new LaunchGameTask();
                     }
                     return true;
+                case "save":
+                    UHCAPI.get().getGameHandler().getItemConfig().setStartingArmor(
+                            Arrays.asList(uhcPlayer.getPlayer().getInventory().getArmorContents())
+                    );
+                    UHCAPI.get().getGameHandler().getItemConfig().setStartingInventory(
+                            Arrays.asList(uhcPlayer.getPlayer().getInventory().getContents())
+                    );
+
+                    uhcPlayer.clearInventory();
+
+                    uhcPlayer.getPlayer().setGameMode(GameMode.SURVIVAL);
+
+                    UHCAPI.get().getItemHandler().giveLobbyItems(uhcPlayer);
+                    return true;
                 case "sethost":
                     if(strings.length < 2) {
                         player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h sethost <joueur>"));
@@ -99,7 +116,7 @@ public class CommandHost implements TabExecutor {
 
                     return true;
                 default:
-                    player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h <start|stop|sethost>"));
+                    player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h <start|stop|sethost|save>"));
                     return true;
             }
         }
@@ -118,7 +135,7 @@ public class CommandHost implements TabExecutor {
         }
 
         if(strings.length == 1) {
-            return Lists.newArrayList("start", "stop", "sethost");
+            return Lists.newArrayList("start", "stop", "sethost", "save");
         }
 
         if(strings.length == 2) {

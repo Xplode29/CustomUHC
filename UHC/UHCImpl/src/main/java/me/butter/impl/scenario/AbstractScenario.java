@@ -2,6 +2,7 @@ package me.butter.impl.scenario;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.scenario.Scenario;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -41,6 +42,14 @@ public abstract class AbstractScenario implements Scenario, Listener {
     @Override
     public void onDisable() {
         HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public void toggle() {
+        enabled = !enabled;
+
+        if (enabled) onEnable();
+        else onDisable();
     }
 
     @Override

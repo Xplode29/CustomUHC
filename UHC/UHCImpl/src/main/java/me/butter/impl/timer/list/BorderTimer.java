@@ -10,7 +10,7 @@ import org.bukkit.WorldBorder;
 
 public class BorderTimer extends AbstractTimer {
     public BorderTimer() {
-        super(80);
+        super(80 * 60);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class BorderTimer extends AbstractTimer {
     }
 
     @Override
-    public Material getMaterial() {
+    public Material getIcon() {
         return Material.BARRIER;
     }
 

@@ -1,7 +1,8 @@
-package me.butter.api.scoreboard;
+package me.butter.impl.scoreboard;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.scoreboard.CustomScoreboard;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class AbstractScoreboard {
+public abstract class AbstractScoreboard implements CustomScoreboard {
 
     private final Scoreboard scoreboard;
     private final Objective objective;
@@ -47,7 +48,6 @@ public abstract class AbstractScoreboard {
         return players;
     }
 
-
     public void update() {
         for(UUID uuid : players) {
             if(UHCAPI.get().getPlayerHandler().getUHCPlayer(uuid) != null) {
@@ -55,7 +55,6 @@ public abstract class AbstractScoreboard {
             }
         }
     }
-
 
     public void updatePlayer(UHCPlayer uhcPlayer) {
         if(uhcPlayer.getPlayer() != null) {

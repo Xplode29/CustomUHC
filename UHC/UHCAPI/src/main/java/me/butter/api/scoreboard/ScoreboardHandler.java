@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface ScoreboardHandler {
 
-    void setPlayerScoreboard(Class<? extends AbstractScoreboard> scoreboardClass, UHCPlayer uhcPlayer);
+    void setPlayerScoreboard(Class<? extends CustomScoreboard> scoreboardClass, UHCPlayer uhcPlayer);
 
     void removePlayerScoreboard(UHCPlayer uhcPlayer);
 
     void updatePlayerScoreboard(UHCPlayer uhcPlayer);
 
-    List<AbstractScoreboard> getScoreboards();
+    List<CustomScoreboard> getScoreboards();
 }

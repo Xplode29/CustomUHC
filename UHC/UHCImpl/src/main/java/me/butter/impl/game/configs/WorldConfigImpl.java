@@ -15,8 +15,8 @@ public class WorldConfigImpl implements WorldConfig {
         this.appleDropRate = 20;
         this.flintDropRate = 20;
         this.enderPearlDropRate = 20;
-        this.diamondLimit = -1;
-        this.expBoost = 0;
+        this.diamondLimit = 22;
+        this.expBoost = 50;
 
         this.borderMoving = false;
         this.startingBorderSize = 500;

@@ -9,11 +9,13 @@ import me.butter.impl.item.list.MenuItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ItemHandlerImpl implements ItemHandler, Listener {
 
@@ -96,5 +98,17 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
         customItems.stream()
                 .filter(item -> item.getItemStack().isSimilar(event.getItem()))
                 .findFirst().ifPresent(item -> item.onClick(uhcPlayer));
+    }
+
+    @EventHandler
+    public void onDropItem(PlayerDropItemEvent event) {
+        Player player = event.getPlayer();
+        if(player == null) return;
+        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+        if(uhcPlayer == null) return;
+
+        if(customItems.stream().filter(item -> item.getItemStack().isSimilar(event.getItemDrop().getItemStack())).count() > 0) {
+            event.setCancelled(true);
+        }
     }
 }

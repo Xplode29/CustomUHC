@@ -154,7 +154,7 @@ public abstract class AbstractTab implements CustomTab {
                 int index = i % listOfVariations.get(j).size();
                 variation.append(listOfVariations.get(j).get(index)).append("\n");
             }
-            variations.add(variation.toString());
+            variations.add("§r"+ variation);
         }
 
         return variations;

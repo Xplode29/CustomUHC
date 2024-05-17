@@ -8,7 +8,7 @@ public interface Timer {
 
     String[] getDescription();
 
-    Material getMaterial();
+    Material getIcon();
 
     int getMaxTimer();
 

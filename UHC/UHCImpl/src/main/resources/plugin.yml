@@ -7,3 +7,6 @@ commands:
         description: Définit l'host d'une partie
         usage: /host <argument>
         aliases: h
+    rules:
+        description: Permet de voir les informations sur la partie
+        usage: /rules

@@ -34,22 +34,22 @@ public class EnchantImpl implements Enchant {
     }
 
     @Override
-    public int getIronLimit() {
+    public int getIronLevel() {
         return ironLimit;
     }
 
     @Override
-    public void setIronLimit(int ironLimit) {
+    public void setIronLevel(int ironLimit) {
         this.ironLimit = ironLimit;
     }
 
     @Override
-    public int getDiamondLimit() {
+    public int getDiamondLevel() {
         return diamondLimit;
     }
 
     @Override
-    public void setDiamondLimit(int diamondLimit) {
+    public void setDiamondLevel(int diamondLimit) {
         this.diamondLimit = diamondLimit;
     }
 

@@ -3,7 +3,7 @@ package me.butter.impl.scoreboard;
 import com.google.common.collect.Lists;
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.scoreboard.AbstractScoreboard;
+import me.butter.api.scoreboard.CustomScoreboard;
 import me.butter.api.scoreboard.ScoreboardHandler;
 import me.butter.impl.scoreboard.list.GameScoreboard;
 import me.butter.impl.scoreboard.list.LobbyScoreboard;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ScoreboardHandlerImpl implements ScoreboardHandler {
 
-    List<AbstractScoreboard> scoreboardList;
+    List<CustomScoreboard> scoreboardList;
     ScoreboardManager scoreboardManager;
 
     public ScoreboardHandlerImpl() {
@@ -28,7 +28,7 @@ public class ScoreboardHandlerImpl implements ScoreboardHandler {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for(AbstractScoreboard scoreboard : scoreboardList) {
+                for(CustomScoreboard scoreboard : scoreboardList) {
                     scoreboard.update();
                 }
             }
@@ -36,14 +36,14 @@ public class ScoreboardHandlerImpl implements ScoreboardHandler {
     }
 
     @Override
-    public void setPlayerScoreboard(Class<? extends AbstractScoreboard> scoreboardClass, UHCPlayer uhcPlayer) {
-        for(AbstractScoreboard scoreboard : scoreboardList) {
+    public void setPlayerScoreboard(Class<? extends CustomScoreboard> scoreboardClass, UHCPlayer uhcPlayer) {
+        for(CustomScoreboard scoreboard : scoreboardList) {
             if (scoreboard.getPlayers().contains(uhcPlayer.getUniqueId())) {
                 scoreboard.removePlayer(uhcPlayer);
             }
         }
 
-        for(AbstractScoreboard scoreboard : scoreboardList) {
+        for(CustomScoreboard scoreboard : scoreboardList) {
             if(scoreboard.getClass() == scoreboardClass) {
                 scoreboard.addPlayer(uhcPlayer);
                 scoreboard.updatePlayer(uhcPlayer);
@@ -54,7 +54,7 @@ public class ScoreboardHandlerImpl implements ScoreboardHandler {
 
     @Override
     public void removePlayerScoreboard(UHCPlayer uhcPlayer) {
-        for(AbstractScoreboard scoreboard : scoreboardList) {
+        for(CustomScoreboard scoreboard : scoreboardList) {
             if(scoreboard.getPlayers().contains(uhcPlayer.getUniqueId())) {
                 scoreboard.removePlayer(uhcPlayer);
                 return;
@@ -64,7 +64,7 @@ public class ScoreboardHandlerImpl implements ScoreboardHandler {
 
     @Override
     public void updatePlayerScoreboard(UHCPlayer uhcPlayer) {
-        for(AbstractScoreboard scoreboard : scoreboardList) {
+        for(CustomScoreboard scoreboard : scoreboardList) {
             if(scoreboard.getPlayers().contains(uhcPlayer.getUniqueId())) {
                 scoreboard.update();
             }
@@ -73,7 +73,7 @@ public class ScoreboardHandlerImpl implements ScoreboardHandler {
     }
 
     @Override
-    public List<AbstractScoreboard> getScoreboards() {
+    public List<CustomScoreboard> getScoreboards() {
         return scoreboardList;
     }
 }

@@ -5,6 +5,7 @@ import me.butter.api.utils.ChatUtils;
 import me.butter.api.world.OrePopulator;
 import me.butter.api.world.WorldHandler;
 import me.butter.impl.UHCImpl;
+import me.butter.impl.listeners.LobbyListener;
 import me.butter.impl.world.pregen.PregenTask;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
@@ -21,6 +22,7 @@ public class WorldHandlerImpl implements WorldHandler {
         this.worldName = "arena";
 
         BiomeSwapper.init();
+        Bukkit.getPluginManager().registerEvents(new WorldListener(), UHCAPI.get());
 
         this.orePopulator = new OrePopulator();
 
@@ -57,13 +59,13 @@ public class WorldHandlerImpl implements WorldHandler {
         Bukkit.getScheduler().runTaskLater(UHCImpl.get(), () -> {
             deleteWorld(worldName);
             WorldCreator creator = new WorldCreator(worldName);
+
             this.setWorld(creator.createWorld());
             this.getWorld().getPopulators().add(this.orePopulator);
+
             Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(
                     "Le monde arena a bien été créé avec succès !"
             ));
-            getWorld().getWorldBorder().setCenter(new Location(getWorld(), 0.0D, 0.0D, 0.0D));
-            getWorld().getWorldBorder().setSize(UHCAPI.get().getGameHandler().getWorldConfig().getStartingBorderSize());
         }, 10);
     }
 
@@ -81,10 +83,12 @@ public class WorldHandlerImpl implements WorldHandler {
     }
 
     @Override
-    public void loadWorld(String worldName) {
+    public void loadWorld() {
         getWorld().setGameRuleValue("naturalRegeneration", "false");
+        getWorld().setGameRuleValue("doFireTick", "false");
 
-        new PregenTask(Bukkit.getWorld(worldName), (UHCAPI.get().getGameHandler().getWorldConfig().getStartingBorderSize() + 100));
+        new PregenTask(getWorld(), (UHCAPI.get().getGameHandler().getWorldConfig().getStartingBorderSize() + 100))
+                .runTaskTimer(UHCImpl.get(), 0, 5);
     }
 
     @Override

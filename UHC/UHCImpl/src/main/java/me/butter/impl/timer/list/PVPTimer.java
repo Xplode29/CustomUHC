@@ -9,7 +9,7 @@ import org.bukkit.Material;
 
 public class PVPTimer extends AbstractTimer {
     public PVPTimer() {
-        super(20);
+        super(20 * 60);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class PVPTimer extends AbstractTimer {
     }
 
     @Override
-    public Material getMaterial() {
+    public Material getIcon() {
         return Material.DIAMOND_SWORD;
     }
 

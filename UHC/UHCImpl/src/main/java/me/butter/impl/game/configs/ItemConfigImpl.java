@@ -4,6 +4,7 @@ import me.butter.api.game.configs.ItemConfig;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ItemConfigImpl implements ItemConfig {
@@ -101,6 +102,7 @@ public class ItemConfigImpl implements ItemConfig {
 
     @Override
     public void setStartingArmor(List<ItemStack> startingArmor) {
+        Collections.reverse(startingArmor);
         this.startingArmor = startingArmor;
     }
 

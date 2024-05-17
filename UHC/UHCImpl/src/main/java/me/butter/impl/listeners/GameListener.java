@@ -7,6 +7,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ChatUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,6 +29,8 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class GameListener implements Listener {
@@ -83,13 +86,11 @@ public class GameListener implements Listener {
         }
 
         Player player = event.getPlayer();
-
         if (player == null) {
             return;
         }
 
         UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
-
         if (uhcPlayer.canPickItems()) {
             return;
         }
@@ -128,13 +129,34 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreakEvent(final BlockBreakEvent e) {
+    public void onBlockBreakEvent(BlockBreakEvent event) {
         if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
             return;
         }
 
-        final Block block = e.getBlock();
+        Player player = event.getPlayer();
+        if (player == null) {
+            return;
+        }
+
+        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+        if (uhcPlayer.canPickItems()) {
+            return;
+        }
+
+        final Block block = event.getBlock();
         final Location loc = new Location(block.getWorld(), (block.getLocation().getBlockX() + 0.0f), (block.getLocation().getBlockY() + 0.0f), (block.getLocation().getBlockZ() + 0.0f));
+
+        if(block.getType() == Material.DIAMOND_ORE) {
+            if(uhcPlayer.getDiamondMined() < UHCAPI.get().getGameHandler().getWorldConfig().getDiamondLimit()) {
+                uhcPlayer.setDiamondMined(uhcPlayer.getDiamondMined() + 1);
+                uhcPlayer.sendActionBar("§c§lDiamants minés : §7" + uhcPlayer.getDiamondMined() + " / " + UHCAPI.get().getGameHandler().getWorldConfig().getDiamondLimit());
+            }
+            else {
+                block.setType(Material.AIR);
+                block.getWorld().dropItemNaturally(loc, new ItemStack(Material.GOLD_INGOT));
+            }
+        }
 
         if ((new Random()).nextInt(100) <= UHCAPI.get().getGameHandler().getWorldConfig().getAppleDropRate() && block.getType() == Material.LEAVES) {
             block.setType(Material.AIR);
@@ -154,31 +176,36 @@ public class GameListener implements Listener {
 
         Player player = event.getEnchanter();
         ItemStack result = event.getItem();
+
         if (player == null || result == null) {
             return;
         }
 
         for (Enchant enchant : UHCAPI.get().getEnchantHandler().getEnchants()) {
-            if (!result.getEnchantments().containsKey(enchant.getEnchantment())) continue;
+            if (!event.getEnchantsToAdd().containsKey(enchant.getEnchantment())) continue;
+            int level = event.getEnchantsToAdd().get(enchant.getEnchantment());
 
             if(result.getType().name().contains("DIAMOND")) {
-                if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getDiamondLimit()) {
-                    result.removeEnchantment(enchant.getEnchantment());
-                    result.addEnchantment(enchant.getEnchantment(), enchant.getDiamondLimit());
-                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getDiamondLimit() + " sur les items en diamant."));
+                if(level > enchant.getDiamondLevel()) {
+                    event.getEnchantsToAdd().remove(enchant.getEnchantment());
+                    if(enchant.getDiamondLevel() > 0)
+                        event.getEnchantsToAdd().put(enchant.getEnchantment(), enchant.getDiamondLevel());
+                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getDiamondLevel() + " sur les items en diamant."));
                 }
             }
             else if (result.getType().name().contains("IRON")) {
-                if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getIronLimit()) {
-                    result.removeEnchantment(enchant.getEnchantment());
-                    result.addEnchantment(enchant.getEnchantment(), enchant.getIronLimit());
-                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getIronLimit() + " sur les items en fer."));
+                if(level > enchant.getIronLevel()) {
+                    event.getEnchantsToAdd().remove(enchant.getEnchantment());
+                    if(enchant.getIronLevel() > 0)
+                        event.getEnchantsToAdd().put(enchant.getEnchantment(), enchant.getIronLevel());
+                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getIronLevel() + " sur les items en fer."));
                 }
             }
             else {
-                if (result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getMaxLevel()) {
-                    result.removeEnchantment(enchant.getEnchantment());
-                    result.addEnchantment(enchant.getEnchantment(), enchant.getMaxLevel());
+                if(level > enchant.getMaxLevel()) {
+                    event.getEnchantsToAdd().remove(enchant.getEnchantment());
+                    if(enchant.getMaxLevel() > 0)
+                        event.getEnchantsToAdd().put(enchant.getEnchantment(), enchant.getMaxLevel());
                     player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getMaxLevel() + "."));
                 }
             }
@@ -211,7 +238,7 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onCombineAnvil(InventoryClickEvent event) {
         if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
             return;
         }
@@ -230,6 +257,7 @@ public class GameListener implements Listener {
         if (rawSlot != view.convertSlot(rawSlot) || rawSlot != 2) {
             return;
         }
+
         ItemStack result = anvil.getItem(2);
         if (result == null || result.getEnchantments().values().isEmpty()) {
             return;
@@ -239,23 +267,26 @@ public class GameListener implements Listener {
             if (!result.getEnchantments().containsKey(enchant.getEnchantment())) continue;
 
             if(result.getType().name().contains("DIAMOND")) {
-                if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getDiamondLimit()) {
+                if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getDiamondLevel()) {
                     result.removeEnchantment(enchant.getEnchantment());
-                    result.addEnchantment(enchant.getEnchantment(), enchant.getDiamondLimit());
-                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getDiamondLimit() + " sur les items en diamant."));
+                    if(enchant.getDiamondLevel() > 0)
+                        result.addEnchantment(enchant.getEnchantment(), enchant.getDiamondLevel());
+                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getDiamondLevel() + " sur les items en diamant."));
                 }
             }
             else if (result.getType().name().contains("IRON")) {
-                if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getIronLimit()) {
+                if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getIronLevel()) {
                     result.removeEnchantment(enchant.getEnchantment());
-                    result.addEnchantment(enchant.getEnchantment(), enchant.getIronLimit());
-                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getIronLimit() + " sur les items en fer."));
+                    if(enchant.getIronLevel() > 0)
+                        result.addEnchantment(enchant.getEnchantment(), enchant.getIronLevel());
+                    player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getIronLevel() + " sur les items en fer."));
                 }
             }
             else {
                 if (result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getMaxLevel()) {
                     result.removeEnchantment(enchant.getEnchantment());
-                    result.addEnchantment(enchant.getEnchantment(), enchant.getMaxLevel());
+                    if(enchant.getMaxLevel() > 0)
+                        result.addEnchantment(enchant.getEnchantment(), enchant.getMaxLevel());
                     player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getMaxLevel() + "."));
                 }
             }
@@ -302,6 +333,49 @@ public class GameListener implements Listener {
 
         float speedWhitePercent = (float) (0.2 + (0.2 * uhcPlayer.getSpeed() / 100));
         uhcPlayer.getPlayer().setWalkSpeed(speedWhitePercent);
+    }
+
+    @EventHandler
+    public void onPlayerUseItem(PlayerInteractEvent event) {
+        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.IN_GAME)) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        if(player == null || event.getItem() == null) return;
+
+        Material itemType = event.getItem().getType();
+
+        if(itemType == Material.ENDER_PEARL && !UHCAPI.get().getGameHandler().getItemConfig().isEnderPearl()) {
+            player.sendMessage(ChatUtils.ERROR.getMessage("Les pearls sont actuellement désactivées."));
+            event.setCancelled(true);
+            return;
+        }
+        if(itemType == Material.BOW && !UHCAPI.get().getGameHandler().getItemConfig().isBow()) {
+            player.sendMessage(ChatUtils.ERROR.getMessage("Les arcs sont actuellement désactivés."));
+            event.setCancelled(true);
+            return;
+        }
+        if((itemType == Material.EGG || itemType == Material.SNOW_BALL) && !UHCAPI.get().getGameHandler().getItemConfig().isProjectile()) {
+            player.sendMessage(ChatUtils.ERROR.getMessage("Les projectiles sont actuellement désactivées."));
+            event.setCancelled(true);
+            return;
+        }
+        if(itemType == Material.FISHING_ROD && !UHCAPI.get().getGameHandler().getItemConfig().isRod()) {
+            player.sendMessage(ChatUtils.ERROR.getMessage("Les cannes à pèches sont actuellement désactivées."));
+            event.setCancelled(true);
+            return;
+        }
+        if(itemType == Material.LAVA_BUCKET && !UHCAPI.get().getGameHandler().getItemConfig().isLavaBucket()) {
+            player.sendMessage(ChatUtils.ERROR.getMessage("Les seaux de lave sont actuellement désactivées."));
+            event.setCancelled(true);
+            return;
+        }
+        if(itemType == Material.FLINT_AND_STEEL && !UHCAPI.get().getGameHandler().getItemConfig().isFlintAndSteel()) {
+            player.sendMessage(ChatUtils.ERROR.getMessage("Les briquets sont actuellement désactivés."));
+            event.setCancelled(true);
+            return;
+        }
     }
 
     @EventHandler

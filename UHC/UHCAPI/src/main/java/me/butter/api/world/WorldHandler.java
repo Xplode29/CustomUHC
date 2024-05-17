@@ -12,7 +12,7 @@ public interface WorldHandler {
 
     void deleteWorld(String worldName);
 
-    void loadWorld(String worldName);
+    void loadWorld();
 
     OrePopulator getOrePopulator();
 }

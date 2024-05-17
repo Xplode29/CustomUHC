@@ -1,7 +1,7 @@
 package me.butter.impl.scoreboard.list;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.scoreboard.AbstractScoreboard;
+import me.butter.impl.scoreboard.AbstractScoreboard;
 import me.butter.impl.scoreboard.DuplicateString;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Scoreboard;

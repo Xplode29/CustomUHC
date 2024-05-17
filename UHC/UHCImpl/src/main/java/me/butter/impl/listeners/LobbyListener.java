@@ -56,11 +56,14 @@ public class LobbyListener implements Listener {
         player.setMaxHealth(20);
         player.setHealth(player.getMaxHealth());
         player.setFoodLevel(20);
-        player.getInventory().clear();
+        player.setLevel(0);
+        player.setExp(0);
         player.teleport(spawnLocation);
 
         UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
         if (uhcPlayer == null) return;
+
+        uhcPlayer.clearInventory();
 
         UHCAPI.get().getItemHandler().giveLobbyItems(uhcPlayer);
 

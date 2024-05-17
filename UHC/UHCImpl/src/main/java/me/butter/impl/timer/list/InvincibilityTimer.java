@@ -9,7 +9,7 @@ import org.bukkit.Material;
 
 public class InvincibilityTimer extends AbstractTimer {
     public InvincibilityTimer() {
-        super(10);
+        super(60);
     }
 
     @Override
@@ -18,7 +18,7 @@ public class InvincibilityTimer extends AbstractTimer {
     }
 
     @Override
-    public Material getMaterial() {
+    public Material getIcon() {
         return Material.IRON_CHESTPLATE;
     }
 

@@ -1,6 +1,7 @@
 package me.butter.api.player;
 
 import me.butter.api.item.CustomItem;
+import me.butter.api.menu.Menu;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,49 +15,41 @@ import java.util.UUID;
 public interface UHCPlayer {
 
     void sendMessage(String message); void sendMessage(BaseComponent component);
+    void sendActionBar(String text); void sendTitle(String text, ChatColor color);
 
-    void sendActionBar(String text);
-
-    void sendTitle(String text, ChatColor color);
-
-    UUID getUniqueId();
+    void openMenu(Menu menu, boolean isPrevMenu);
 
     boolean equals(Object obj);
 
+    UUID getUniqueId();
     Player getPlayer(); boolean isPlayer(Player player);
-
     String getName(); void setName(String newName);
 
     PlayerState getPlayerState(); void setPlayerState(PlayerState newState);
 
+    int getDiamondMined(); void setDiamondMined(int amount);
+
     boolean canPickItems(); void setCanPickItems(boolean canPickItems);
 
     List<UUID> getKilledPlayers(); void setKilledPlayers(List<UUID> killedPlayers);
-
     void addKilledPlayer(UHCPlayer player); void removeKilledPlayer(UHCPlayer player);
     void addKilledPlayer(Player player); void removeKilledPlayer(Player player);
 
     Location getSpawnLocation(); void setSpawnLocation(Location location);
-
     Location getDeathLocation(); void setDeathLocation(Location location);
-
     Location getLocation(); void setLocation(Location newLocation);
 
     List<ItemStack> getInventory(); void saveInventory(); void loadInventory();
-
+    void clearInventory();
     void giveItem(ItemStack item); void setItem(int slot, ItemStack item);
 
     List<Potion> getPotionEffects(); @Deprecated void setPotionEffects(List<Potion> potionEffects);
-
     void clearEffects();
     void addPotionEffect(PotionEffectType effect, int duration, int level);
     void removePotionEffect(PotionEffectType effect, int level);
-
     boolean hasPotionEffect(PotionEffectType effect); Potion getPotion(PotionEffectType effect);
 
     int getSpeed(); @Deprecated void setSpeed(int amount); void addSpeed(int amount); void removeSpeed(int amount);
-
     int getStrength(); @Deprecated void setStrength(int amount); void addStrength(int amount); void removeStrength(int amount);
-
     int getResi(); @Deprecated void setResi(int amount); void addResi(int amount); void removeResi(int amount);
 }

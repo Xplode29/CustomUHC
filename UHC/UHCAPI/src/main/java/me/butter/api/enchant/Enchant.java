@@ -8,9 +8,9 @@ public interface Enchant {
 
     String getName();
 
-    int getIronLimit(); void setIronLimit(int ironLimit);
+    int getIronLevel(); void setIronLevel(int ironLimit);
 
-    int getDiamondLimit(); void setDiamondLimit(int diamondLimit);
+    int getDiamondLevel(); void setDiamondLevel(int diamondLimit);
 
     int getMaxLevel();
 

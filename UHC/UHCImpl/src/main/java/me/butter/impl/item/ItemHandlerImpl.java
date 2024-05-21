@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ItemHandlerImpl implements ItemHandler, Listener {
 
@@ -28,10 +27,10 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
         customItems.add(new GrapplingItem());
 
         //Register
-        UHCAPI.get().getServer().getPluginManager().registerEvents(this, UHCAPI.get());
+        UHCAPI.getInstance().getServer().getPluginManager().registerEvents(this, UHCAPI.getInstance());
 
         for(CustomItem item : customItems) {
-            if(item instanceof Listener) UHCAPI.get().getServer().getPluginManager().registerEvents((Listener) item, UHCAPI.get());
+            if(item instanceof Listener) UHCAPI.getInstance().getServer().getPluginManager().registerEvents((Listener) item, UHCAPI.getInstance());
         }
     }
 
@@ -50,7 +49,7 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
     public void giveItemToPlayer(Class<? extends CustomItem> itemClass, UHCPlayer uhcPlayer) {
         CustomItem item = getCustomItem(itemClass);
         if(item == null) return;
-        uhcPlayer.giveItem(item.getItemStack());
+        uhcPlayer.giveItem(item.getItemStack(), true);
     }
 
     @Override
@@ -74,7 +73,7 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
 
     @Override
     public void giveLobbyItems(UHCPlayer uhcPlayer) {
-        if(UHCAPI.get().getGameHandler().getGameConfig().getHost() != null && UHCAPI.get().getGameHandler().getGameConfig().getHost().equals(uhcPlayer)) {
+        if(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() != null && UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().equals(uhcPlayer)) {
             giveItemToPlayer(MenuItem.class, uhcPlayer);
         }
         giveItemToPlayer(GrapplingItem.class, uhcPlayer);
@@ -82,7 +81,7 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
 
     @Override
     public void removeLobbyItems(UHCPlayer uhcPlayer) {
-        if(UHCAPI.get().getGameHandler().getGameConfig().getHost() != null && UHCAPI.get().getGameHandler().getGameConfig().getHost().equals(uhcPlayer)) {
+        if(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() != null && UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().equals(uhcPlayer)) {
             removeItemFromPlayer(MenuItem.class, uhcPlayer);
         }
         removeItemFromPlayer(GrapplingItem.class, uhcPlayer);
@@ -92,7 +91,7 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
     public void onClickItem(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if(player == null) return;
-        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
         if(uhcPlayer == null) return;
 
         customItems.stream()
@@ -104,7 +103,7 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
     public void onDropItem(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
         if(player == null) return;
-        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
         if(uhcPlayer == null) return;
 
         if(customItems.stream().filter(item -> item.getItemStack().isSimilar(event.getItemDrop().getItemStack())).count() > 0) {

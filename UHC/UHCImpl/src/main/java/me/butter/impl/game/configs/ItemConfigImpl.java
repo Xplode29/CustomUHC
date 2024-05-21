@@ -11,18 +11,13 @@ public class ItemConfigImpl implements ItemConfig {
 
     boolean rod, enderPearl, bow, projectile, lavaBucket, flintAndSteel;
 
-    List<ItemStack> startingInventory, startingArmor, deathInventory;
-
     public ItemConfigImpl() {
         this.rod = false;
         this.enderPearl = false;
-        this.bow = false;
+        this.bow = true;
         this.projectile = false;
-        this.lavaBucket = false;
+        this.lavaBucket = true;
         this.flintAndSteel = false;
-        this.startingInventory = new ArrayList<>();
-        this.startingArmor = new ArrayList<>();
-        this.deathInventory = new ArrayList<>();
     }
 
     @Override
@@ -83,36 +78,5 @@ public class ItemConfigImpl implements ItemConfig {
     @Override
     public void setFlintAndSteel(boolean flintAndSteel) {
         this.flintAndSteel = flintAndSteel;
-    }
-
-    @Override
-    public List<ItemStack> getStartingInventory() {
-        return startingInventory;
-    }
-
-    @Override
-    public void setStartingInventory(List<ItemStack> startingInventory) {
-        this.startingInventory = startingInventory;
-    }
-
-    @Override
-    public List<ItemStack> getStartingArmor() {
-        return startingArmor;
-    }
-
-    @Override
-    public void setStartingArmor(List<ItemStack> startingArmor) {
-        Collections.reverse(startingArmor);
-        this.startingArmor = startingArmor;
-    }
-
-    @Override
-    public List<ItemStack> getDeathInventory() {
-        return deathInventory;
-    }
-
-    @Override
-    public void setDeathInventory(List<ItemStack> deathInventory) {
-        this.deathInventory = deathInventory;
     }
 }

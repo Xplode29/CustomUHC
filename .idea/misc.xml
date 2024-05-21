@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/UHC/API/pom.xml" />
         <option value="$PROJECT_DIR$/UHC/Impl/pom.xml" />
         <option value="$PROJECT_DIR$/UHC/pom.xml" />
+        <option value="$PROJECT_DIR$/UHC/Modules/Ninjago/pom.xml" />
       </list>
     </option>
   </component>

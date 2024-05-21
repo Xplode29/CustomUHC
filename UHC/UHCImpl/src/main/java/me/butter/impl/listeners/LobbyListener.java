@@ -7,8 +7,6 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.BlockUtils;
 import me.butter.api.utils.ChatUtils;
 import me.butter.api.utils.ParticleUtils;
-import me.butter.impl.item.list.GrapplingItem;
-import me.butter.impl.item.list.MenuItem;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +18,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.potion.PotionEffect;
 
 public class LobbyListener implements Listener {
 
@@ -33,7 +32,7 @@ public class LobbyListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.LOBBY)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.LOBBY)) {
             return;
         }
 
@@ -58,47 +57,51 @@ public class LobbyListener implements Listener {
         player.setFoodLevel(20);
         player.setLevel(0);
         player.setExp(0);
+        for(PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
+
         player.teleport(spawnLocation);
 
-        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
         if (uhcPlayer == null) return;
 
         uhcPlayer.clearInventory();
 
-        UHCAPI.get().getItemHandler().giveLobbyItems(uhcPlayer);
+        UHCAPI.getInstance().getItemHandler().giveLobbyItems(uhcPlayer);
 
         ParticleUtils.tornadoEffect(uhcPlayer.getPlayer(), Color.fromRGB(255, 255, 255));
 
         uhcPlayer.setPlayerState(PlayerState.IN_LOBBY);
         Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage(
                  player.getDisplayName() + ChatColor.WHITE + " a rejoint le lobby [" +
-                         (UHCAPI.get().getPlayerHandler().getPlayers().size() > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
-                         UHCAPI.get().getPlayerHandler().getPlayers().size() + "/" + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
+                         (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
+                         UHCAPI.getInstance().getPlayerHandler().getPlayers().size() + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
         ));
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.LOBBY)) return;
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.LOBBY)) return;
 
         Player player = event.getPlayer();
         if (player == null) return;
 
-        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
         if (uhcPlayer == null) return;
 
-        UHCAPI.get().getItemHandler().removeLobbyItems(uhcPlayer);
+        UHCAPI.getInstance().getItemHandler().removeLobbyItems(uhcPlayer);
 
         Bukkit.broadcastMessage(ChatUtils.LEFT.getMessage(
                  player.getDisplayName() + ChatColor.WHITE + " a quitté le lobby [" +
-                         ((UHCAPI.get().getPlayerHandler().getPlayers().size() - 1) > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
-                         (UHCAPI.get().getPlayerHandler().getPlayers().size() - 1) + "/" + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
+                         ((UHCAPI.getInstance().getPlayerHandler().getPlayers().size() - 1) > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
+                         (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() - 1) + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
         ));
     }
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.LOBBY)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.LOBBY)) {
             return;
         }
 
@@ -111,7 +114,7 @@ public class LobbyListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.LOBBY)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.LOBBY)) {
             return;
         }
 
@@ -120,7 +123,7 @@ public class LobbyListener implements Listener {
 
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.LOBBY)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.LOBBY)) {
             return;
         }
 
@@ -129,7 +132,7 @@ public class LobbyListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.LOBBY)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.LOBBY)) {
             return;
         }
 
@@ -142,7 +145,7 @@ public class LobbyListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.LOBBY)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.LOBBY)) {
             return;
         }
 

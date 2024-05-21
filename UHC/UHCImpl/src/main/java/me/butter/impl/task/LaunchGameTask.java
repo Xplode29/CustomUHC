@@ -14,17 +14,17 @@ public class LaunchGameTask extends BukkitRunnable {
 
     public LaunchGameTask() {
         timer = 10;
-        this.runTaskTimer(UHCImpl.get(), 0, 20);
+        this.runTaskTimer(UHCImpl.getInstance(), 0, 20);
     }
 
     @Override
     public void run() {
-        if(!UHCAPI.get().getGameHandler().getGameConfig().isStarting()) {
+        if(!UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting()) {
             cancel();
             return;
         }
 
-        for(UHCPlayer uhcPlayer : UHCAPI.get().getPlayerHandler().getPlayersInLobby()) {
+        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby()) {
             if(timer == 0) {
                 uhcPlayer.sendTitle("Partie Lancée !", ChatColor.GREEN);
                 uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_BASS, 6.0F, 1.0F);
@@ -39,7 +39,7 @@ public class LaunchGameTask extends BukkitRunnable {
 
         if(timer < 0) {
             cancel();
-            Bukkit.getScheduler().runTaskLater(UHCImpl.get(), SpawnPointsTask::new, 20);
+            Bukkit.getScheduler().runTaskLater(UHCImpl.getInstance(), SpawnPointsTask::new, 20);
             return;
         }
     }

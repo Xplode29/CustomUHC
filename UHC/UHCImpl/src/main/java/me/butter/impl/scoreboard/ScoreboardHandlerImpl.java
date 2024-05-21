@@ -32,7 +32,7 @@ public class ScoreboardHandlerImpl implements ScoreboardHandler {
                     scoreboard.update();
                 }
             }
-        }.runTaskTimer(UHCAPI.get(), 0, 20);
+        }.runTaskTimer(UHCAPI.getInstance(), 0, 20);
     }
 
     @Override

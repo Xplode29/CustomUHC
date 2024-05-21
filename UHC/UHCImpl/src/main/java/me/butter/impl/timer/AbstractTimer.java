@@ -1,13 +1,28 @@
 package me.butter.impl.timer;
 
 import me.butter.api.timer.Timer;
+import org.bukkit.Material;
 
 public abstract class AbstractTimer implements Timer {
 
     private int maxTimer;
+    String name;
+    Material icon;
 
-    public AbstractTimer(int maxTimer) {
+    public AbstractTimer(String name, Material icon, int maxTimer) {
+        this.name = name;
+        this.icon = icon;
         this.maxTimer = maxTimer;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public Material getIcon() {
+        return icon;
     }
 
     @Override

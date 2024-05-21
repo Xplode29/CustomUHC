@@ -2,10 +2,7 @@ package me.butter.impl.scenario;
 
 import me.butter.api.scenario.Scenario;
 import me.butter.api.scenario.ScenarioHandler;
-import me.butter.impl.scenario.list.CutCleanScenario;
-import me.butter.impl.scenario.list.FireLessScenario;
-import me.butter.impl.scenario.list.HasteyBoysScenario;
-import me.butter.impl.scenario.list.TimberScenario;
+import me.butter.impl.scenario.list.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +19,7 @@ public class ScenarioHandlerImpl implements ScenarioHandler {
         scenarios.add(new FireLessScenario());
         scenarios.add(new HasteyBoysScenario());
         scenarios.add(new TimberScenario());
+        scenarios.add(new NoDropScenario());
     }
 
     @Override

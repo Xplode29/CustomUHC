@@ -50,8 +50,8 @@ public abstract class AbstractScoreboard implements CustomScoreboard {
 
     public void update() {
         for(UUID uuid : players) {
-            if(UHCAPI.get().getPlayerHandler().getUHCPlayer(uuid) != null) {
-                updatePlayer(UHCAPI.get().getPlayerHandler().getUHCPlayer(uuid));
+            if(UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(uuid) != null) {
+                updatePlayer(UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(uuid));
             }
         }
     }

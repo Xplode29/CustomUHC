@@ -1,0 +1,11 @@
+name: Ninjago
+version: '${project.version}'
+main: me.butter.ninjago.Ninjago
+
+depend:
+  - Impl
+
+commands:
+  ni:
+    description: Commande principale du mode de jeu
+    usage: /ni <argument>

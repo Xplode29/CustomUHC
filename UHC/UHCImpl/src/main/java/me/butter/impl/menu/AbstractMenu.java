@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +42,7 @@ public abstract class AbstractMenu implements Menu {
 
         if(hasGlass) {
             for (int i : new int[]{0, 1, 7, 8, 9, 17, size - 18, size - 10, size - 9, size - 8, size - 2, size - 1}) {
-                this.inventory.setItem(i, new ItemBuilder(Material.STAINED_GLASS_PANE).setName("").toItemStack());
+                this.inventory.setItem(i, new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").toItemStack());
             }
         }
 
@@ -93,7 +92,7 @@ public abstract class AbstractMenu implements Menu {
         }
 
         if(previousMenu != null && slot == size - 5) {
-            UHCAPI.get().getMenuHandler().openMenu(uhcPlayer, previousMenu, false);
+            UHCAPI.getInstance().getMenuHandler().openMenu(uhcPlayer, previousMenu, false);
         }
     }
 

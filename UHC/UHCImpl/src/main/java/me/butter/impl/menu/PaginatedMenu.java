@@ -3,7 +3,6 @@ package me.butter.impl.menu;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ItemBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;

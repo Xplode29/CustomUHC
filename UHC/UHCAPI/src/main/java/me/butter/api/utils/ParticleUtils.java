@@ -11,8 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.Random;
-
 public class ParticleUtils {
     public static void tornadoEffect(Player player, Color color) {
         new BukkitRunnable() {
@@ -44,7 +42,7 @@ public class ParticleUtils {
                     cancel();
                 }
             }
-        }.runTaskTimer(UHCAPI.get(), 0, 1);
+        }.runTaskTimer(UHCAPI.getInstance(), 0, 1);
     }
 
     public static void slicingEffect(Player player, int amount, Color color) {

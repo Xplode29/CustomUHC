@@ -1,7 +1,7 @@
 package me.butter.api.player;
 
-import me.butter.api.item.CustomItem;
 import me.butter.api.menu.Menu;
+import me.butter.api.module.roles.Role;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -27,6 +27,8 @@ public interface UHCPlayer {
 
     PlayerState getPlayerState(); void setPlayerState(PlayerState newState);
 
+    Role getRole(); void setRole(Role role);
+
     int getDiamondMined(); void setDiamondMined(int amount);
 
     boolean canPickItems(); void setCanPickItems(boolean canPickItems);
@@ -39,9 +41,12 @@ public interface UHCPlayer {
     Location getDeathLocation(); void setDeathLocation(Location location);
     Location getLocation(); void setLocation(Location newLocation);
 
-    List<ItemStack> getInventory(); void saveInventory(); void loadInventory();
-    void clearInventory();
-    void giveItem(ItemStack item); void setItem(int slot, ItemStack item);
+    List<ItemStack> getInventory(); void setInventory(List<ItemStack> inventory);
+    List<ItemStack> getArmor(); void setArmor(List<ItemStack> inventory);
+    void saveInventory(); void loadInventory(); void clearInventory();
+    void giveItem(ItemStack item, boolean canGoToStash); void setItem(int slot, ItemStack item);
+    List<ItemStack> getStash(); void setStash(List<ItemStack> stash); void clearStash();
+    void addItemToStash(ItemStack item); void removeItemFromStash(ItemStack item);
 
     List<Potion> getPotionEffects(); @Deprecated void setPotionEffects(List<Potion> potionEffects);
     void clearEffects();

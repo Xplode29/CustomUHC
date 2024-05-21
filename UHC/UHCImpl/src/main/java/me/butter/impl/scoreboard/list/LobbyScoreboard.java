@@ -13,11 +13,11 @@ public class LobbyScoreboard extends AbstractScoreboard {
         super(scoreboard, "Lobby", Arrays.asList(
                 new DuplicateString("§7§m---------------------", 0).getString(),
                 new DuplicateString("", 0).getString(),
-                "Host: " + (UHCAPI.get().getGameHandler().getGameConfig().getHost() == null ? "§cNon défini" : UHCAPI.get().getGameHandler().getGameConfig().getHost().getName()),
+                "Host: " + (UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() == null ? "§cNon défini" : UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().getName()),
                 new DuplicateString("", 1).getString(),
-                "Players: " + (UHCAPI.get().getPlayerHandler().getPlayers().size() > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
-                        UHCAPI.get().getPlayerHandler().getPlayers().size() + "/" + ChatColor.GREEN + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers(),
-                "Status: " + UHCAPI.get().getGameHandler().getGameState().getName(),
+                "Players: " + (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
+                        UHCAPI.getInstance().getPlayerHandler().getPlayers().size() + "/" + ChatColor.GREEN + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers(),
+                "Status: " + UHCAPI.getInstance().getGameHandler().getGameState().getName(),
                 new DuplicateString("", 2).getString(),
                 new DuplicateString("§7§m---------------------", 1).getString()
         ));
@@ -25,10 +25,10 @@ public class LobbyScoreboard extends AbstractScoreboard {
 
     @Override
     public void update() {
-        setLine(2, "Host: " + (UHCAPI.get().getGameHandler().getGameConfig().getHost() == null ? "§cNon défini" : UHCAPI.get().getGameHandler().getGameConfig().getHost().getName()));
-        setLine(4, "Players: " + (UHCAPI.get().getPlayerHandler().getPlayers().size() > UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
-                UHCAPI.get().getPlayerHandler().getPlayers().size() + "/" + UHCAPI.get().getGameHandler().getGameConfig().getMaxPlayers());
-        setLine(5, "Status: " + UHCAPI.get().getGameHandler().getGameState().getName());
+        setLine(2, "Host: " + (UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() == null ? "§cNon défini" : UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().getName()));
+        setLine(4, "Players: " + (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
+                UHCAPI.getInstance().getPlayerHandler().getPlayers().size() + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers());
+        setLine(5, "Status: " + UHCAPI.getInstance().getGameHandler().getGameState().getName());
         super.update();
     }
 }

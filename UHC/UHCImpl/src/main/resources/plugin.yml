@@ -10,3 +10,6 @@ commands:
     rules:
         description: Permet de voir les informations sur la partie
         usage: /rules
+    full:
+        description: Permet de recuperer vos items
+        usage: /full

@@ -2,6 +2,7 @@ package me.butter.impl.player;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.menu.Menu;
+import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
@@ -13,22 +14,20 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class UHCPlayerImpl implements UHCPlayer {
 
     UUID playerUUID;
     String playerName;
     PlayerState playerState;
+
+    Role role;
 
     boolean canPickItems;
 
@@ -38,7 +37,7 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     Location playerLocation, deathLocation, spawnLocation;
 
-    List<ItemStack> inventory;
+    List<ItemStack> inventory, armor, stash;
 
     List<Potion> playerPotionEffects;
     int speedEffect, strengthEffect, resiEffect;
@@ -59,8 +58,10 @@ public class UHCPlayerImpl implements UHCPlayer {
         this.spawnLocation = player.getLocation();
         this.deathLocation = player.getLocation();
 
+        this.armor = new ArrayList<>();
         this.inventory = new ArrayList<>();
         this.saveInventory();
+        this.stash = new ArrayList<>();
 
         this.playerPotionEffects = new ArrayList<>();
         this.speedEffect = 0; this.strengthEffect = 0; this.resiEffect = 0;
@@ -101,7 +102,7 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override
     public void openMenu(Menu menu, boolean isPrevMenu) {
         if(getPlayer() == null) return;
-        UHCAPI.get().getMenuHandler().openMenu(this, menu, isPrevMenu);
+        UHCAPI.getInstance().getMenuHandler().openMenu(this, menu, isPrevMenu);
     }
 
     @Override
@@ -150,6 +151,16 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override
     public void setPlayerState(PlayerState newState) {
         playerState = newState;
+    }
+
+    @Override
+    public Role getRole() {
+        return role;
+    }
+
+    @Override
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
@@ -216,43 +227,129 @@ public class UHCPlayerImpl implements UHCPlayer {
     }
 
     @Override
+    public void setInventory(List<ItemStack> inventory) {
+        if(getPlayer() == null) return;
+
+        if(inventory.isEmpty())  {
+            getPlayer().getInventory().clear();
+        }
+        else {
+            for(int i = 0; i < inventory.size(); i++) {
+                ItemStack itemStack = inventory.get(i);
+                if(itemStack == null || i >= 36) continue;
+                getPlayer().getInventory().setItem(i,itemStack);
+            }
+        }
+
+        this.inventory = inventory;
+    }
+
+    @Override
+    public List<ItemStack> getArmor() {
+        return armor;
+    }
+
+    @Override
+    public void setArmor(List<ItemStack> armor) {
+        if(getPlayer() == null) return;
+        if(armor.isEmpty())  {
+            getPlayer().getInventory().setArmorContents(null);
+        }
+        else {
+            for(int i = 0; i < armor.size(); i++) {
+                ItemStack itemStack = armor.get(i);
+                if (itemStack != null && i < 4) {
+                    switch (i) {
+                        case 0:
+                            getPlayer().getInventory().setHelmet(itemStack);
+                            break;
+                        case 1:
+                            getPlayer().getInventory().setChestplate(itemStack);
+                            break;
+                        case 2:
+                            getPlayer().getInventory().setLeggings(itemStack);
+                            break;
+                        case 3:
+                            getPlayer().getInventory().setBoots(itemStack);
+                            break;
+                    }
+                }
+            }
+        }
+
+        this.armor = armor;
+    }
+
+    @Override
     public void saveInventory() {
         if(getPlayer() == null) return;
-        inventory.clear();
-        for(int i = 0; i < 40; i++) {
-            ItemStack itemStack = getPlayer().getInventory().getItem(i);
-            if(itemStack == null) itemStack = new ItemStack(Material.AIR);
-            inventory.add(itemStack);
-        }
+        inventory = Arrays.asList(getPlayer().getInventory().getContents());
+        armor = Arrays.asList(getPlayer().getInventory().getArmorContents());
     }
 
     @Override
     public void loadInventory() {
         if(getPlayer() == null) return;
-        for(int i = 0; i < 40; i++) {
-            ItemStack itemStack = inventory.get(i);
-            if(itemStack == null) itemStack = new ItemStack(Material.AIR);
-            getPlayer().getInventory().setItem(i, itemStack);
-        }
+        setInventory(inventory);
+        setArmor(armor);
     }
 
     @Override
     public void clearInventory() {
-        if(getPlayer() == null) return;
+        if(getPlayer() == null || getPlayer().getInventory() == null) return;
         getPlayer().getInventory().clear();
         getPlayer().getInventory().setArmorContents(null);
+        saveInventory();
     }
 
     @Override
-    public void giveItem(ItemStack item) {
+    public void giveItem(ItemStack itemToGive, boolean canGoToStash) {
         if(getPlayer() == null) return;
-        getPlayer().getInventory().addItem(item);
+        if(getPlayer().getInventory().firstEmpty() > -1 || getPlayer().getInventory().contains(itemToGive)) {
+            getPlayer().getInventory().addItem(itemToGive);
+        }
+        else if(canGoToStash) {
+            addItemToStash(itemToGive);
+        }
+        else {
+            getPlayer().getLocation().getWorld().dropItem(getPlayer().getLocation(), itemToGive);
+        }
     }
 
     @Override
     public void setItem(int slot, ItemStack item) {
         if(getPlayer() == null) return;
         getPlayer().getInventory().setItem(slot, item);
+    }
+
+    @Override
+    public List<ItemStack> getStash() {
+        return stash;
+    }
+
+    @Override
+    public void setStash(List<ItemStack> stash) {
+        this.stash = stash;
+    }
+
+    @Override
+    public void clearStash() {
+        stash.clear();
+    }
+
+    @Override
+    public void addItemToStash(ItemStack item) {
+        if(!stash.contains(item))
+            stash.add(item);
+        else {
+            item.setAmount(item.getAmount() + stash.get(stash.indexOf(item)).getAmount());
+            stash.set(stash.indexOf(item), item);
+        }
+    }
+
+    @Override
+    public void removeItemFromStash(ItemStack item) {
+        stash.remove(item);
     }
 
     @Override

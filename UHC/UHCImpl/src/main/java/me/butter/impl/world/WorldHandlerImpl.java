@@ -5,10 +5,15 @@ import me.butter.api.utils.ChatUtils;
 import me.butter.api.world.OrePopulator;
 import me.butter.api.world.WorldHandler;
 import me.butter.impl.UHCImpl;
-import me.butter.impl.listeners.LobbyListener;
+import me.butter.impl.world.modify.BiomeSwapper;
+import me.butter.impl.world.modify.WorldGenCavesPatched;
+import me.butter.impl.world.modify.WorldListener;
 import me.butter.impl.world.pregen.PregenTask;
 import org.apache.commons.io.FileUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 
 import java.io.File;
 
@@ -22,7 +27,7 @@ public class WorldHandlerImpl implements WorldHandler {
         this.worldName = "arena";
 
         BiomeSwapper.init();
-        Bukkit.getPluginManager().registerEvents(new WorldListener(), UHCAPI.get());
+        Bukkit.getPluginManager().registerEvents(new WorldListener(), UHCAPI.getInstance());
 
         this.orePopulator = new OrePopulator();
 
@@ -56,7 +61,7 @@ public class WorldHandlerImpl implements WorldHandler {
         Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(
                 "Le monde arena est en cours de création..."
         ));
-        Bukkit.getScheduler().runTaskLater(UHCImpl.get(), () -> {
+        Bukkit.getScheduler().runTaskLater(UHCImpl.getInstance(), () -> {
             deleteWorld(worldName);
             WorldCreator creator = new WorldCreator(worldName);
 
@@ -66,6 +71,12 @@ public class WorldHandlerImpl implements WorldHandler {
             Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(
                     "Le monde arena a bien été créé avec succès !"
             ));
+
+            try {
+                WorldGenCavesPatched.load(this.getWorld(), 2);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }, 10);
     }
 
@@ -86,9 +97,10 @@ public class WorldHandlerImpl implements WorldHandler {
     public void loadWorld() {
         getWorld().setGameRuleValue("naturalRegeneration", "false");
         getWorld().setGameRuleValue("doFireTick", "false");
+        getWorld().setGameRuleValue("doDaylightCycle ", "false");
 
-        new PregenTask(getWorld(), (UHCAPI.get().getGameHandler().getWorldConfig().getStartingBorderSize() + 100))
-                .runTaskTimer(UHCImpl.get(), 0, 5);
+        new PregenTask(getWorld(), (UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() + 100))
+                .runTaskTimer(UHCImpl.getInstance(), 0, 5);
     }
 
     @Override

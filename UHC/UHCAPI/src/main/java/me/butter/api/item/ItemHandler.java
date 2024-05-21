@@ -1,7 +1,6 @@
 package me.butter.api.item;
 
 import me.butter.api.player.UHCPlayer;
-import org.bukkit.entity.Player;
 
 public interface ItemHandler {
 

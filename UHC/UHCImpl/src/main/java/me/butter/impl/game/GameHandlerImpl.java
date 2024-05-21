@@ -3,9 +3,11 @@ package me.butter.impl.game;
 import me.butter.api.game.GameHandler;
 import me.butter.api.game.GameState;
 import me.butter.api.game.configs.GameConfig;
+import me.butter.api.game.configs.InventoryConfig;
 import me.butter.api.game.configs.ItemConfig;
 import me.butter.api.game.configs.WorldConfig;
 import me.butter.impl.game.configs.GameConfigImpl;
+import me.butter.impl.game.configs.InventoryConfigImpl;
 import me.butter.impl.game.configs.ItemConfigImpl;
 import me.butter.impl.game.configs.WorldConfigImpl;
 
@@ -14,6 +16,7 @@ public class GameHandlerImpl implements GameHandler {
     private GameState gameState;
     private GameConfig gameConfig;
     private ItemConfig itemConfig;
+    private InventoryConfig inventoriesConfig;
     private WorldConfig worldConfig;
 
     public GameHandlerImpl() {
@@ -21,6 +24,7 @@ public class GameHandlerImpl implements GameHandler {
         gameConfig = new GameConfigImpl();
         itemConfig = new ItemConfigImpl();
         worldConfig = new WorldConfigImpl();
+        inventoriesConfig = new InventoryConfigImpl();
     }
 
     @Override
@@ -41,6 +45,16 @@ public class GameHandlerImpl implements GameHandler {
     @Override
     public void setGameConfig(GameConfig config) {
         gameConfig = config;
+    }
+
+    @Override
+    public InventoryConfig getInventoriesConfig() {
+        return inventoriesConfig;
+    }
+
+    @Override
+    public void setInventoriesConfig(InventoryConfig config) {
+        inventoriesConfig = config;
     }
 
     @Override

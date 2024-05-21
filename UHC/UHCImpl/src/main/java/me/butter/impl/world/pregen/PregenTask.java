@@ -43,23 +43,15 @@ public class PregenTask extends BukkitRunnable {
                     finished = true;
                     currentChunkLoad = totalChunkToLoad;
                     this.world.getWorldBorder().setCenter(new Location(this.world, 0.0D, 0.0D, 0.0D));
-                    this.world.getWorldBorder().setSize(UHCAPI.get().getGameHandler().getWorldConfig().getStartingBorderSize());
+                    this.world.getWorldBorder().setSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize());
                     cancel();
                 }
             }
         }
 
         if(currentChunkLoad < totalChunkToLoad)
-            UHCAPI.get().getPlayerHandler().getPlayers().forEach(p -> p.sendActionBar(
+            UHCAPI.getInstance().getPlayerHandler().getPlayers().forEach(p -> p.sendActionBar(
                     "§8[§6§lPregen§8] §7Chargement des chunks : " + (int) ((currentChunkLoad / totalChunkToLoad) * 100) + "%"
-                    //getProgressBar(currentChunkLoad, totalChunkToLoad, 15, '|', ChatColor.GREEN, ChatColor.RED)
             ));
-    }
-
-    public static String getProgressBar(double current, double max, int totalBars, char symbol, ChatColor completedColor, ChatColor notCompletedColor) {
-        int progressBars = (int) (totalBars * (current / max));
-
-        return com.google.common.base.Strings.repeat("" + completedColor + symbol, progressBars)
-                + com.google.common.base.Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
     }
 }

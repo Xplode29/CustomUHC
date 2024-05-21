@@ -3,7 +3,6 @@ package me.butter.impl.tab.list;
 import me.butter.api.player.UHCPlayer;
 import me.butter.impl.tab.AbstractTab;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
-import org.bukkit.Bukkit;
 
 import java.util.Arrays;
 

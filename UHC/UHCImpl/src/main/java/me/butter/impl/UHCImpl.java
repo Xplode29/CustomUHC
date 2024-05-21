@@ -5,14 +5,15 @@ import me.butter.api.enchant.EnchantHandler;
 import me.butter.api.game.GameHandler;
 import me.butter.api.item.ItemHandler;
 import me.butter.api.menu.MenuHandler;
+import me.butter.api.module.ModuleHandler;
 import me.butter.api.player.PlayerHandler;
 import me.butter.api.scenario.ScenarioHandler;
 import me.butter.api.scoreboard.ScoreboardHandler;
 import me.butter.api.tab.TabHandler;
 import me.butter.api.timer.TimerHandler;
 import me.butter.api.utils.ChatUtils;
-import me.butter.api.utils.SkullsGenerator;
 import me.butter.api.world.WorldHandler;
+import me.butter.impl.commands.CommandFull;
 import me.butter.impl.commands.CommandHost;
 import me.butter.impl.commands.CommandRules;
 import me.butter.impl.enchant.EnchantHandlerImpl;
@@ -20,6 +21,7 @@ import me.butter.impl.game.GameHandlerImpl;
 import me.butter.impl.item.ItemHandlerImpl;
 import me.butter.impl.listeners.*;
 import me.butter.impl.menu.MenuHandlerImpl;
+import me.butter.impl.module.ModuleHandlerImpl;
 import me.butter.impl.player.PlayerHandlerImpl;
 import me.butter.impl.scenario.ScenarioHandlerImpl;
 import me.butter.impl.scoreboard.ScoreboardHandlerImpl;
@@ -28,9 +30,6 @@ import me.butter.impl.timer.TimerHandlerImpl;
 import me.butter.impl.world.WorldHandlerImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Collections;
 
 public final class UHCImpl extends UHCAPI {
 
@@ -46,6 +45,7 @@ public final class UHCImpl extends UHCAPI {
     private TabHandler tabHandler;
     private ItemHandler itemHandler;
     private MenuHandler menuHandler;
+    private ModuleHandler moduleHandler;
 
     @Override
     public void onLoad() {
@@ -61,6 +61,8 @@ public final class UHCImpl extends UHCAPI {
         enchantHandler = new EnchantHandlerImpl();
         timerHandler = new TimerHandlerImpl();
         scenarioHandler = new ScenarioHandlerImpl();
+
+        moduleHandler = new ModuleHandlerImpl();
     }
 
     @Override
@@ -73,18 +75,18 @@ public final class UHCImpl extends UHCAPI {
 
         registerCommands();
         registerListeners();
-        Bukkit.getPluginManager().registerEvents(new testListener(), this);
 
         Bukkit.broadcastMessage(ChatUtils.SEPARATOR.getPrefix() + ChatUtils.SEPARATOR.getPrefix() + ChatUtils.SEPARATOR.getPrefix());
     }
 
-    public static UHCImpl get() {
+    public static UHCImpl getInstance() {
         return instance;
     }
 
     void registerCommands() {
         getCommand("host").setExecutor(new CommandHost());
         getCommand("rules").setExecutor(new CommandRules());
+        getCommand("full").setExecutor(new CommandFull());
     }
 
     void registerListeners() {
@@ -146,5 +148,10 @@ public final class UHCImpl extends UHCAPI {
     @Override
     public MenuHandler getMenuHandler() {
         return menuHandler;
+    }
+
+    @Override
+    public ModuleHandler getModuleHandler() {
+        return moduleHandler;
     }
 }

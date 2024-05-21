@@ -7,25 +7,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 public class MeetupTimer extends AbstractTimer {
-    public MeetupTimer() {
-        super(60 * 60);
-    }
 
-    @Override
-    public String getName() {
-        return "Meetup";
+    public MeetupTimer() {
+        super("Meetup", Material.GOLD_PICKAXE, 60 * 60);
     }
 
     @Override
     public void onTimerDone() {
-        UHCAPI.get().getGameHandler().getGameConfig().setMeetup(true);
+        UHCAPI.getInstance().getGameHandler().getGameConfig().setMeetup(true);
 
         Bukkit.broadcastMessage(ChatUtils.WARNING.getMessage("Le Meetup est maintenant actif."));
-    }
-
-    @Override
-    public Material getIcon() {
-        return Material.GOLD_PICKAXE;
     }
 
     @Override

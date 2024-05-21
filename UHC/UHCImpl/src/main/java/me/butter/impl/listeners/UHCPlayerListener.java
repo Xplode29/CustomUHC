@@ -27,23 +27,23 @@ public class UHCPlayerListener implements Listener {
             return;
         }
 
-        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player.getUniqueId());
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player.getUniqueId());
 
         if (uhcPlayer == null) {
-            UHCAPI.get().getPlayerHandler().addPlayer(player);
-            uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+            UHCAPI.getInstance().getPlayerHandler().addPlayer(player);
+            uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
         }
 
-        if(UHCAPI.get().getGameHandler().getGameState() == GameState.IN_GAME) {
-            UHCAPI.get().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
-            UHCAPI.get().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
+        if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
+            UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
+            UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
         }
-        else if (UHCAPI.get().getGameHandler().getGameState() == GameState.ENDING) {
+        else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.ENDING) {
 
         }
         else {
-            UHCAPI.get().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
-            UHCAPI.get().getTabHandler().setPlayerTab(LobbyTab.class, uhcPlayer);
+            UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
+            UHCAPI.getInstance().getTabHandler().setPlayerTab(LobbyTab.class, uhcPlayer);
         }
 
         uhcPlayer.setName(player.getName());
@@ -60,16 +60,16 @@ public class UHCPlayerListener implements Listener {
             return;
         }
 
-        UHCPlayer uhcPlayer = UHCImpl.get().getPlayerHandler().getUHCPlayer(player);
+        UHCPlayer uhcPlayer = UHCImpl.getInstance().getPlayerHandler().getUHCPlayer(player);
 
-        UHCAPI.get().getScoreboardHandler().removePlayerScoreboard(uhcPlayer);
-        UHCAPI.get().getTabHandler().removePlayerTab(uhcPlayer);
+        UHCAPI.getInstance().getScoreboardHandler().removePlayerScoreboard(uhcPlayer);
+        UHCAPI.getInstance().getTabHandler().removePlayerTab(uhcPlayer);
 
         if (uhcPlayer.getPlayerState().equals(PlayerState.DEAD) || uhcPlayer.getPlayerState().equals(PlayerState.IN_GAME)) {
             return;
         }
 
-        UHCAPI.get().getPlayerHandler().removePlayer(player);
+        UHCAPI.getInstance().getPlayerHandler().removePlayer(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -77,7 +77,7 @@ public class UHCPlayerListener implements Listener {
         Player player = event.getPlayer();
         if (player == null) return;
 
-        UHCPlayer uhcPlayer = UHCImpl.get().getPlayerHandler().getUHCPlayer(player);
+        UHCPlayer uhcPlayer = UHCImpl.getInstance().getPlayerHandler().getUHCPlayer(player);
 
         uhcPlayer.setLocation(player.getLocation());
     }

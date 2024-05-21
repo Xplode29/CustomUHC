@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class HasteyBoysScenario extends AbstractScenario {
     public HasteyBoysScenario() {
-        super("Hastey Boys", Material.IRON_PICKAXE);
+        super("Hastey Boys", Material.IRON_SPADE);
     }
 
     @EventHandler

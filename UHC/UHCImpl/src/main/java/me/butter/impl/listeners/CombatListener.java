@@ -27,7 +27,7 @@ public class CombatListener implements Listener {
             return;
         }
 
-        UHCPlayer uhcVictim = UHCAPI.get().getPlayerHandler().getUHCPlayer(victim);
+        UHCPlayer uhcVictim = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(victim);
 
         if (!uhcVictim.getPlayerState().equals(PlayerState.IN_GAME)) {
             return;
@@ -36,7 +36,7 @@ public class CombatListener implements Listener {
         UHCPlayer uhcKiller = null;
 
         if (killer != null) {
-            uhcKiller = UHCAPI.get().getPlayerHandler().getUHCPlayer(killer);
+            uhcKiller = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(killer);
         }
 
         if (uhcKiller != null) {
@@ -48,13 +48,13 @@ public class CombatListener implements Listener {
 
         UHCPlayerDeathEvent deathEvent = new UHCPlayerDeathEvent(event, uhcVictim, uhcKiller);
 
-        EventUtils.callEventInModule(deathEvent);
+        EventUtils.callEvent(deathEvent);
 
-        Bukkit.getScheduler().runTaskLater(UHCAPI.get(), () -> {
+        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
             victim.spigot().respawn();
             victim.teleport(uhcVictim.getDeathLocation());
 
-            if (!UHCAPI.get().getGameHandler().getGameConfig().isPvp()) {
+            if (!UHCAPI.getInstance().getGameHandler().getGameConfig().isPvp()) {
                 uhcVictim.loadInventory();
                 uhcVictim.setCanPickItems(false);
 
@@ -65,7 +65,7 @@ public class CombatListener implements Listener {
                     }
                     entity.remove();
                 }
-                Bukkit.getScheduler().runTaskLater(UHCAPI.get(), () -> {
+                Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
                     uhcVictim.setCanPickItems(true);
                 }, 10);
             } else {
@@ -84,4 +84,6 @@ public class CombatListener implements Listener {
         Bukkit.broadcastMessage("");
         Bukkit.broadcastMessage(ChatUtils.SEPARATOR.getPrefix());
     }
+
+
 }

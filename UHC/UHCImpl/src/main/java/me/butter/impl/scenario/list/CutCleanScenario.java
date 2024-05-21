@@ -1,15 +1,14 @@
 package me.butter.impl.scenario.list;
 
+import me.butter.impl.events.custom.CustomBlockBreakEvent;
 import me.butter.impl.scenario.AbstractScenario;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CutCleanScenario extends AbstractScenario {
     private final Map<Material, Material> cookedMats = new HashMap<>();
@@ -37,16 +36,34 @@ public class CutCleanScenario extends AbstractScenario {
     }
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-        if(event.getBlock() == null || event.getBlock().getDrops() == null) {
+    public void onBlockBreak(CustomBlockBreakEvent event) {
+        List<ItemStack> newDrops = new ArrayList<>();
+        boolean modified = false;
+        for(ItemStack item : event.getDrops()) {
+            if(cookedMats.containsKey(item.getType())) {
+                newDrops.add(new ItemStack(cookedMats.get(item.getType()), item.getAmount()));
+                modified = true;
+            } else {
+                newDrops.add(item);
+            }
+        }
+
+        if(modified) {
+            event.setDrops(newDrops);
+            event.setExpToDrop(event.getExpToDrop() + 5);
+        }
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        if(event.getEntity() == null || event.getDrops() == null) {
             return;
         }
-        Collection<ItemStack> drops = event.getBlock().getDrops(event.getPlayer().getItemInHand());
+        Collection<ItemStack> drops = event.getDrops();
         for(ItemStack item : drops) {
             if(cookedMats.containsKey(item.getType())) {
-                event.getBlock().setType(Material.AIR);
-                Location dropLocation = new Location(event.getBlock().getWorld(), event.getBlock().getX() + 0.5, event.getBlock().getY() + 0.5, event.getBlock().getZ() + 0.5);
-                event.getBlock().getWorld().dropItem(dropLocation, new ItemStack(cookedMats.get(item.getType()), 1));
+                Location dropLocation = event.getEntity().getLocation();
+                dropLocation.getWorld().dropItem(dropLocation, new ItemStack(cookedMats.get(item.getType()), item.getAmount()));
             }
         }
     }

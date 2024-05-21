@@ -23,7 +23,7 @@ public class StartingListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.STARTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 
@@ -33,7 +33,7 @@ public class StartingListener implements Listener {
             return;
         }
 
-        Location teleport = new Location(UHCAPI.get().getWorldHandler().getWorld(), 0.0D, 100, 0.0D);
+        Location teleport = new Location(UHCAPI.getInstance().getWorldHandler().getWorld(), 0.0D, 100, 0.0D);
 
         player.teleport(teleport);
         player.setGameMode(GameMode.SPECTATOR);
@@ -41,7 +41,7 @@ public class StartingListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.STARTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 
@@ -51,7 +51,7 @@ public class StartingListener implements Listener {
             return;
         }
 
-        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
 
         if (!uhcPlayer.getPlayerState().equals(PlayerState.IN_LOBBY)) {
             return;
@@ -64,7 +64,7 @@ public class StartingListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.STARTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 
@@ -73,7 +73,7 @@ public class StartingListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.STARTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 
@@ -82,7 +82,7 @@ public class StartingListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.STARTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 
@@ -92,7 +92,7 @@ public class StartingListener implements Listener {
             return;
         }
 
-        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(player);
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
 
         if (!uhcPlayer.getPlayerState().equals(PlayerState.IN_LOBBY)) {
             return;
@@ -107,7 +107,7 @@ public class StartingListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if (!UHCAPI.get().getGameHandler().getGameState().equals(GameState.STARTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 

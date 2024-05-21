@@ -1,9 +1,7 @@
 package me.butter.impl.menu;
 
-import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 

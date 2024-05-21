@@ -5,14 +5,12 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.tab.CustomTab;
 import net.minecraft.server.v1_8_R3.ChatComponentText;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerListHeaderFooter;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class AbstractTab implements CustomTab {
 
@@ -42,7 +40,7 @@ public abstract class AbstractTab implements CustomTab {
         if(headerVariations.isEmpty() && footerVariations.isEmpty()) return;
 
         for(UUID uuid : playersToSend) {
-            UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(uuid);
+            UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(uuid);
             if(uhcPlayer == null) continue;
             Player player = uhcPlayer.getPlayer();
             if(player == null) continue;

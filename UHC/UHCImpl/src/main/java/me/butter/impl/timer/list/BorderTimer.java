@@ -9,13 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.WorldBorder;
 
 public class BorderTimer extends AbstractTimer {
-    public BorderTimer() {
-        super(80 * 60);
-    }
 
-    @Override
-    public String getName() {
-        return "Bordure";
+    public BorderTimer() {
+        super("Bordure", Material.BARRIER, 80 * 60);
     }
 
     @Override
@@ -25,7 +21,7 @@ public class BorderTimer extends AbstractTimer {
 
     @Override
     public void onTimerDone() {
-        UHCAPI.get().getGameHandler().getWorldConfig().setBorderMoving(true);
+        UHCAPI.getInstance().getGameHandler().getWorldConfig().setBorderMoving(true);
         Bukkit.broadcastMessage(ChatUtils.WARNING.getMessage("La bordure commence à se réduire."));
         moveBorder();
     }
@@ -38,14 +34,9 @@ public class BorderTimer extends AbstractTimer {
         }
     }
 
-    @Override
-    public Material getIcon() {
-        return Material.BARRIER;
-    }
-
     public void moveBorder() {
-        WorldBorder worldBorder = UHCAPI.get().getWorldHandler().getWorld().getWorldBorder();
-        int finalSize = UHCAPI.get().getGameHandler().getWorldConfig().getFinalBorderSize();
+        WorldBorder worldBorder = UHCAPI.getInstance().getWorldHandler().getWorld().getWorldBorder();
+        int finalSize = UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize();
         int blocksSecond = 1;
         double size = worldBorder.getSize();
         double dif = Math.abs(size - finalSize);

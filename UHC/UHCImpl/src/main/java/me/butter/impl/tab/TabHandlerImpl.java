@@ -26,7 +26,7 @@ public class TabHandlerImpl implements TabHandler {
             public void run() {
                 updateAllTabs();
             }
-        }.runTaskTimer(UHCAPI.get(), 0, 20);
+        }.runTaskTimer(UHCAPI.getInstance(), 0, 20);
     }
 
     @Override

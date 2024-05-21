@@ -10,12 +10,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class PotionUpdaterTask extends BukkitRunnable {
 
     public PotionUpdaterTask() {
-        this.runTaskTimer(UHCImpl.get(), 0, 20);
+        this.runTaskTimer(UHCImpl.getInstance(), 0, 20);
     }
 
     @Override
     public void run() {
-        for (UHCPlayer uhcPlayer : UHCAPI.get().getPlayerHandler().getPlayersInGame()) {
+        for (UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
             if (uhcPlayer.getPlayer() == null) {
                 continue;
             }

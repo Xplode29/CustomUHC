@@ -15,6 +15,7 @@
     <modules>
         <module>UHCAPI</module>
         <module>UHCImpl</module>
+        <module>Modules</module>
     </modules>
 
     <properties>

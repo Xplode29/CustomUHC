@@ -4,18 +4,17 @@ import me.butter.api.UHCAPI;
 import me.butter.api.menu.Menu;
 import me.butter.api.menu.MenuHandler;
 import me.butter.api.player.UHCPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class MenuHandlerImpl implements MenuHandler, Listener {
 
@@ -25,7 +24,7 @@ public class MenuHandlerImpl implements MenuHandler, Listener {
         this.openedMenus = new HashMap<>();
 
         //Register
-        UHCAPI.get().getServer().getPluginManager().registerEvents(this, UHCAPI.get());
+        UHCAPI.getInstance().getServer().getPluginManager().registerEvents(this, UHCAPI.getInstance());
     }
 
     @Override
@@ -59,7 +58,7 @@ public class MenuHandlerImpl implements MenuHandler, Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(event.getPlayer().getUniqueId());
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer().getUniqueId());
         if(uhcPlayer == null) return;
 
         if(getOpenedMenu(uhcPlayer) != null && getOpenedMenu(uhcPlayer).equals(event.getInventory())) {
@@ -76,7 +75,7 @@ public class MenuHandlerImpl implements MenuHandler, Listener {
         if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
         if(event.getCursor() != null && event.getCursor().getType() != Material.AIR) return;
 
-        UHCPlayer uhcPlayer = UHCAPI.get().getPlayerHandler().getUHCPlayer(event.getWhoClicked().getUniqueId());
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getWhoClicked().getUniqueId());
         if(uhcPlayer == null) {
             event.setCancelled(true);
             return;

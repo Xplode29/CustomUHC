@@ -7,15 +7,22 @@ public class GameConfigImpl implements GameConfig {
 
     UHCPlayer host;
 
-    int maxPlayers, timer, groupSize;
+    int maxPlayers, timer, groupSize, dayDuration, episode, episodeDuration;
 
-    boolean day, starting, invincibility, pvp, meetup, chatEnabled;
+    boolean starting, day, doesDayCycle, invincibility, pvp, meetup, chatEnabled;
 
     public GameConfigImpl() {
         this.maxPlayers = 39;
         this.groupSize = 6;
+        this.starting = false;
+
         this.timer = 0;
         this.day = true;
+        this.doesDayCycle = true;
+        this.dayDuration = 10 * 60;
+        this.episode = 0;
+        this.episodeDuration = 20 * 60;
+
         this.invincibility = true;
         this.pvp = false;
         this.meetup = false;
@@ -73,6 +80,16 @@ public class GameConfigImpl implements GameConfig {
     }
 
     @Override
+    public boolean isDayCycleActivated() {
+        return doesDayCycle;
+    }
+
+    @Override
+    public void setDayCycleActivated(boolean doesDayCycle) {
+        this.doesDayCycle = doesDayCycle;
+    }
+
+    @Override
     public boolean isDay() {
         return day;
     }
@@ -80,6 +97,36 @@ public class GameConfigImpl implements GameConfig {
     @Override
     public void setDay(boolean day) {
         this.day = day;
+    }
+
+    @Override
+    public int getDayDuration() {
+        return dayDuration;
+    }
+
+    @Override
+    public void setDayDuration(int duration) {
+        this.dayDuration = duration;
+    }
+
+    @Override
+    public int getEpisode() {
+        return episode;
+    }
+
+    @Override
+    public void setEpisode(int episode) {
+        this.episode = episode;
+    }
+
+    @Override
+    public int getEpisodeDuration() {
+        return episodeDuration;
+    }
+
+    @Override
+    public void setEpisodeDuration(int duration) {
+        this.episodeDuration = duration;
     }
 
     @Override

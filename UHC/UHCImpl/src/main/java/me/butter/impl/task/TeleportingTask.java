@@ -18,16 +18,16 @@ public class TeleportingTask extends BukkitRunnable {
     private int playerTeleported;
 
     public TeleportingTask() {
-        this.players = Lists.newArrayList(UHCAPI.get().getPlayerHandler().getPlayersInLobby());
+        this.players = Lists.newArrayList(UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby());
         this.playerTeleported = 0;
-        this.runTaskTimer(UHCAPI.get(), 0, 5);
+        this.runTaskTimer(UHCAPI.getInstance(), 0, 5);
     }
 
     @Override
     public void run() {
         if (this.players.isEmpty()) {
             this.cancel();
-            Bukkit.getScheduler().runTaskLater(UHCImpl.get(), StartTask::new,20 * 5);
+            Bukkit.getScheduler().runTaskLater(UHCImpl.getInstance(), StartTask::new,20 * 5);
             return;
         }
 
@@ -44,12 +44,12 @@ public class TeleportingTask extends BukkitRunnable {
                 public void run() {
                     uhcPlayer.getPlayer().teleport(teleport);
                 }
-            }.runTaskLater(UHCAPI.get(), 1);
+            }.runTaskLater(UHCAPI.getInstance(), 1);
         }
 
         playerTeleported += 1;
-        UHCAPI.get().getPlayerHandler().getPlayersInLobby().forEach(uhcPlayer1 -> uhcPlayer1.sendActionBar(
-                "Téléportation de " + uhcPlayer.getName() + " (" + playerTeleported + "/" + UHCAPI.get().getPlayerHandler().getPlayersInLobby().size() + ")"
+        UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby().forEach(uhcPlayer1 -> uhcPlayer1.sendActionBar(
+                "Téléportation de " + uhcPlayer.getName() + " (" + playerTeleported + "/" + UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby().size() + ")"
         ));
 
         uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_STICKS, 6.0F, 1.0F);

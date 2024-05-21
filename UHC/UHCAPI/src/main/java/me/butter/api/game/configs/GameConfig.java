@@ -14,7 +14,15 @@ public interface GameConfig {
 
     int getTimer(); void setTimer(int timer);
 
+    boolean isDayCycleActivated(); void setDayCycleActivated(boolean doesDayCycle);
+
     boolean isDay(); void setDay(boolean day);
+
+    int getDayDuration(); void setDayDuration(int duration);
+
+    int getEpisode(); void setEpisode(int episode);
+
+    int getEpisodeDuration(); void setEpisodeDuration(int duration);
 
     boolean isInvincibility(); void setInvincibility(boolean invincibility);
 

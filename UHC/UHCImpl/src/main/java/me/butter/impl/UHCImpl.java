@@ -11,7 +11,6 @@ import me.butter.api.scenario.ScenarioHandler;
 import me.butter.api.scoreboard.ScoreboardHandler;
 import me.butter.api.tab.TabHandler;
 import me.butter.api.timer.TimerHandler;
-import me.butter.api.utils.ChatUtils;
 import me.butter.api.world.WorldHandler;
 import me.butter.impl.commands.CommandFull;
 import me.butter.impl.commands.CommandHost;
@@ -20,9 +19,11 @@ import me.butter.impl.enchant.EnchantHandlerImpl;
 import me.butter.impl.game.GameHandlerImpl;
 import me.butter.impl.item.ItemHandlerImpl;
 import me.butter.impl.listeners.*;
+import me.butter.impl.listeners.old.*;
 import me.butter.impl.menu.MenuHandlerImpl;
 import me.butter.impl.module.ModuleHandlerImpl;
 import me.butter.impl.player.PlayerHandlerImpl;
+import me.butter.impl.player.PotionUpdaterTask;
 import me.butter.impl.scenario.ScenarioHandlerImpl;
 import me.butter.impl.scoreboard.ScoreboardHandlerImpl;
 import me.butter.impl.tab.TabHandlerImpl;
@@ -67,16 +68,17 @@ public final class UHCImpl extends UHCAPI {
 
     @Override
     public void onEnable() {
-        worldHandler = new WorldHandlerImpl();
         scoreboardHandler = new ScoreboardHandlerImpl();
         tabHandler = new TabHandlerImpl();
         itemHandler = new ItemHandlerImpl();
         menuHandler = new MenuHandlerImpl();
 
+        worldHandler = new WorldHandlerImpl();
+
         registerCommands();
         registerListeners();
 
-        Bukkit.broadcastMessage(ChatUtils.SEPARATOR.getPrefix() + ChatUtils.SEPARATOR.getPrefix() + ChatUtils.SEPARATOR.getPrefix());
+        new PotionUpdaterTask();
     }
 
     public static UHCImpl getInstance() {
@@ -90,14 +92,18 @@ public final class UHCImpl extends UHCAPI {
     }
 
     void registerListeners() {
-        Bukkit.getPluginManager().registerEvents(new UHCPlayerListener(), this);
-
-        Bukkit.getPluginManager().registerEvents(new LobbyListener(), this);
-        Bukkit.getPluginManager().registerEvents(new TeleportListener(), this);
-        Bukkit.getPluginManager().registerEvents(new StartingListener(), this);
-        Bukkit.getPluginManager().registerEvents(new GameListener(), this);
-
-        Bukkit.getPluginManager().registerEvents(new CombatListener(), this);
+        //Bukkit.getPluginManager().registerEvents(new UHCPlayerListener(), this);
+        //Bukkit.getPluginManager().registerEvents(new LobbyListener(), this);
+        //Bukkit.getPluginManager().registerEvents(new TeleportListener(), this);
+        //Bukkit.getPluginManager().registerEvents(new StartingListener(), this);
+        //Bukkit.getPluginManager().registerEvents(new GameListener(), this);
+        //Bukkit.getPluginManager().registerEvents(new CombatListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new DamageHealthEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoriesEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new ItemEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new JoinEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new OtherEvents(), this);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package me.butter.impl.listeners;
+package me.butter.impl.listeners.old;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
@@ -23,11 +23,10 @@ import org.bukkit.potion.PotionEffect;
 public class LobbyListener implements Listener {
 
     private boolean generate;
-    private final Location spawnLocation;
+    private Location spawnLocation;
 
     public LobbyListener() {
         this.generate = false;
-        this.spawnLocation = new Location(Bukkit.getWorld("world"), 0.0D, 201, 0.0D);
     }
 
     @EventHandler
@@ -37,16 +36,14 @@ public class LobbyListener implements Listener {
         }
 
         Player player = event.getPlayer();
-
-        if (player == null) {
-            return;
-        }
+        if (player == null) return;
 
         if (!generate) {
+            spawnLocation = new Location(UHCAPI.getInstance().getWorldHandler().getWorld(), 0.0D, 201, 0.0D);
             //Build the spawn
             int spawnSize = 40, spawnHeight = 10;
-            BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2, spawnLocation.getBlockY() - 1, spawnLocation.getBlockZ() - spawnSize/2, spawnSize, spawnHeight, spawnSize, Material.GLASS);
-            BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2 + 1, spawnLocation.getBlockY(), spawnLocation.getBlockZ() - spawnSize/2 + 1, spawnSize - 2, spawnHeight - 2, spawnSize - 2, Material.AIR);
+            BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2, spawnLocation.getBlockY() - 1, spawnLocation.getBlockZ() - spawnSize/2, spawnSize, spawnHeight, spawnSize, Material.BARRIER);
+            BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2 + 1, spawnLocation.getBlockY(), spawnLocation.getBlockZ() - spawnSize/2 + 1, spawnSize - 2, spawnHeight - 1, spawnSize - 2, Material.AIR);
 
             generate = true;
         }
@@ -61,7 +58,7 @@ public class LobbyListener implements Listener {
             player.removePotionEffect(effect.getType());
         }
 
-        player.teleport(spawnLocation);
+        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(spawnLocation), 1);
 
         UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
         if (uhcPlayer == null) return;
@@ -78,7 +75,7 @@ public class LobbyListener implements Listener {
                          (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
                          UHCAPI.getInstance().getPlayerHandler().getPlayers().size() + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
         ));
-    }
+    } //Done
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
@@ -97,7 +94,7 @@ public class LobbyListener implements Listener {
                          ((UHCAPI.getInstance().getPlayerHandler().getPlayers().size() - 1) > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
                          (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() - 1) + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
         ));
-    }
+    } //Done
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -110,7 +107,7 @@ public class LobbyListener implements Listener {
         }
 
         event.setCancelled(true);
-    }
+    } //Done
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
@@ -119,7 +116,7 @@ public class LobbyListener implements Listener {
         }
 
         event.setCancelled(true);
-    }
+    } //Done
 
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
@@ -128,7 +125,7 @@ public class LobbyListener implements Listener {
         }
 
         event.setCancelled(true);
-    }
+    } //Done
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
@@ -141,7 +138,7 @@ public class LobbyListener implements Listener {
         }
 
         event.setCancelled(true);
-    }
+    } //Done
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
@@ -154,5 +151,5 @@ public class LobbyListener implements Listener {
         }
 
         event.setCancelled(true);
-    }
+    } //Done
 }

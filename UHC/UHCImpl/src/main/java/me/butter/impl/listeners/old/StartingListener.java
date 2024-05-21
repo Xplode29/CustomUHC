@@ -1,4 +1,4 @@
-package me.butter.impl.listeners;
+package me.butter.impl.listeners.old;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
@@ -19,11 +19,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class TeleportListener implements Listener {
+public class StartingListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.TELEPORTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 
@@ -37,11 +37,11 @@ public class TeleportListener implements Listener {
 
         player.teleport(teleport);
         player.setGameMode(GameMode.SPECTATOR);
-    }
+    } //Done
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.TELEPORTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 
@@ -58,31 +58,31 @@ public class TeleportListener implements Listener {
         }
 
         Bukkit.broadcastMessage(ChatUtils.LEFT.getMessage(
-                player.getDisplayName() + ChatColor.WHITE + " s'est déconnecté pendant le lancement de la partie."
+                 player.getDisplayName() + ChatColor.WHITE + " s'est déconnecté pendant le lancement de la partie."
         ));
-    }
+    } //Done
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.TELEPORTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 
         event.setCancelled(true);
-    }
+    } //Done
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.TELEPORTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 
         event.setCancelled(true);
-    }
+    } //Done
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.TELEPORTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 
@@ -103,14 +103,14 @@ public class TeleportListener implements Listener {
         }
 
         player.teleport(uhcPlayer.getSpawnLocation());
-    }
+    }  //Done
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.TELEPORTING)) {
+        if (!UHCAPI.getInstance().getGameHandler().getGameState().equals(GameState.STARTING)) {
             return;
         }
 
         event.setCancelled(true);
-    }
+    } //Done
 }

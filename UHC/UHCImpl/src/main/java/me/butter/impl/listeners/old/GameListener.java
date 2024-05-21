@@ -1,4 +1,4 @@
-package me.butter.impl.listeners;
+package me.butter.impl.listeners.old;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.enchant.Enchant;
@@ -12,7 +12,6 @@ import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.CustomBlockBreakEvent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,7 +47,7 @@ public class GameListener implements Listener {
         Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage(
                 player.getDisplayName() + ChatColor.WHITE + " s'est connecté à la partie. [" + UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "] "
         ));
-    }
+    } //Done
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
@@ -61,7 +60,7 @@ public class GameListener implements Listener {
         Bukkit.broadcastMessage(ChatUtils.LEFT.getMessage(
                 player.getDisplayName() + ChatColor.WHITE + " s'est déconnecté de la partie. [" + (UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() - 1) + ChatColor.WHITE + "/" + ChatColor.GREEN + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.WHITE + "]"
         ));
-    }
+    } //Done
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
@@ -74,7 +73,7 @@ public class GameListener implements Listener {
 
         float speedWhitePercent = (float) (0.2 + (0.2 * uhcPlayer.getSpeed() / 100));
         uhcPlayer.getPlayer().setWalkSpeed(speedWhitePercent);
-    }
+    } //Done
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
@@ -92,7 +91,7 @@ public class GameListener implements Listener {
                 }
             }
         }
-    }
+    } //Done
 
     @EventHandler
     public void onItemPickup(PlayerPickupItemEvent event) {
@@ -105,7 +104,7 @@ public class GameListener implements Listener {
         if (!uhcPlayer.canPickItems()) {
             event.setCancelled(true);
         }
-    }
+    } //Done
 
     @EventHandler
     public void onPlayerUseItem(PlayerInteractEvent event) {
@@ -166,7 +165,7 @@ public class GameListener implements Listener {
             event.setCancelled(true);
             return;
         }
-    }
+    } //Done
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void overrideBlockBreak(BlockBreakEvent event) {
@@ -197,7 +196,7 @@ public class GameListener implements Listener {
                 event.getBlock().getWorld().dropItem(dropLocation, item);
             }
         }
-    }
+    } //Done
 
     @EventHandler
     public void onBlockBreak(CustomBlockBreakEvent event) {
@@ -222,7 +221,7 @@ public class GameListener implements Listener {
         }
 
         event.setExpToDrop((int) (event.getExpToDrop() * (1 + (UHCAPI.getInstance().getGameHandler().getWorldConfig().getExpBoost() / 100f))));
-    }
+    } //Done
 
     @EventHandler
     public void onLeavesDecay(LeavesDecayEvent event) {
@@ -235,7 +234,7 @@ public class GameListener implements Listener {
             b.setType(Material.AIR);
             b.getWorld().dropItemNaturally(loc, new ItemStack(Material.APPLE, 1));
         }
-    }
+    } //Done
 
     @EventHandler
     public void onClickInventory(InventoryClickEvent event) {
@@ -373,7 +372,7 @@ public class GameListener implements Listener {
         if (uhcVictim.getPotion(PotionEffectType.DAMAGE_RESISTANCE) != null || uhcVictim.getResi() != 0) {
             event.setDamage(event.getDamage() / 0.800000011920929D * (1 - (double) uhcVictim.getResi() / 100));
         }
-    }
+    } //Done
 
     @EventHandler
     public void onPlayerDamaged(EntityDamageEvent event) {
@@ -390,7 +389,7 @@ public class GameListener implements Listener {
         }
 
         event.setCancelled(true);
-    }
+    } //Done
 
     @EventHandler
     public void onRegainHeal(EntityRegainHealthEvent event) {
@@ -401,7 +400,7 @@ public class GameListener implements Listener {
         if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED || event.getRegainReason() == EntityRegainHealthEvent.RegainReason.EATING) {
             event.setCancelled(true);
         }
-    }
+    } //Done
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
@@ -419,7 +418,7 @@ public class GameListener implements Listener {
         if ((new Random()).nextInt(100) <= UHCAPI.getInstance().getGameHandler().getWorldConfig().getEnderPearlDropRate()) {
             b.getWorld().dropItemNaturally(loc, new ItemStack(Material.ENDER_PEARL, 1));
         }
-    }
+    } //Done
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
@@ -436,21 +435,21 @@ public class GameListener implements Listener {
 
         player.sendMessage(ChatUtils.ERROR.getMessage("Le chat est actuellement désactivé."));
         event.setCancelled(true);
-    }
+    } //Done
 
     @EventHandler
     private void onWeatherChange(WeatherChangeEvent event) {
         if (event.toWeatherState()) {
             event.setCancelled(true);
         }
-    }
+    } //Done
 
     @EventHandler
     private void onWeatherChange(ThunderChangeEvent event) {
         if (event.toThunderState()) {
             event.setCancelled(true);
         }
-    }
+    } //Done
 
     public static boolean isOutsideOfBorder(Location location) {
         Location loc = location;
@@ -459,5 +458,5 @@ public class GameListener implements Listener {
         double z = loc.getZ();
         double size = border.getSize() / 2;
         return ((x > size || (-x) > size) || (z > size || (-z) > size));
-    }
+    } //Done
 }

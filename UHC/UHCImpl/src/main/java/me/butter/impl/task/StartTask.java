@@ -22,8 +22,6 @@ public class StartTask extends BukkitRunnable {
         this.timer = 10;
         UHCAPI.getInstance().getGameHandler().setGameState(GameState.STARTING);
 
-        UHCAPI.getInstance().getPlayerHandler().getPlayers().forEach(this::setPlayerInGame);
-
         this.runTaskTimer(UHCImpl.getInstance(), 0, 20);
     }
 
@@ -33,6 +31,8 @@ public class StartTask extends BukkitRunnable {
 
         for (UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
             if(timer == 0) {
+                uhcPlayer.clearEffects();
+
                 uhcPlayer.sendTitle("Bonne Chance !", ChatColor.GREEN);
                 uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_BASS, 6.0F, 1.0F);
             }
@@ -43,31 +43,10 @@ public class StartTask extends BukkitRunnable {
         }
 
         if (timer == 0) {
-            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby()) {
-                uhcPlayer.setPlayerState(PlayerState.IN_GAME);
-                int platformSize = 5;
-                BlockUtils.fillBlocks(uhcPlayer.getSpawnLocation().getWorld(), uhcPlayer.getSpawnLocation().getBlockX() - platformSize/2, uhcPlayer.getSpawnLocation().getBlockY() - 1, uhcPlayer.getSpawnLocation().getBlockZ() - platformSize/2, platformSize, 1, platformSize, Material.AIR);
-
-                UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
-                UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
-            }
-
             UHCAPI.getInstance().getGameHandler().setGameState(GameState.IN_GAME);
             this.cancel();
 
             new GameTask();
-            new PotionUpdaterTask();
-        }
-    }
-
-    private void setPlayerInGame(UHCPlayer uhcPlayer) {
-        if (uhcPlayer.getPlayerState().equals(PlayerState.IN_LOBBY)) {
-            uhcPlayer.clearInventory();
-
-            uhcPlayer.setArmor(UHCAPI.getInstance().getGameHandler().getInventoriesConfig().getStartingArmor());
-            uhcPlayer.setInventory(UHCAPI.getInstance().getGameHandler().getInventoriesConfig().getStartingInventory());
-
-            uhcPlayer.saveInventory();
         }
     }
 }

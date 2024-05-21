@@ -1,4 +1,4 @@
-package me.butter.impl.listeners;
+package me.butter.impl.listeners.old;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.player.PlayerState;
@@ -83,7 +83,5 @@ public class CombatListener implements Listener {
         Bukkit.broadcastMessage(uhcVictim.getName() + " est mort !");
         Bukkit.broadcastMessage("");
         Bukkit.broadcastMessage(ChatUtils.SEPARATOR.getPrefix());
-    }
-
-
+    } //Done
 }

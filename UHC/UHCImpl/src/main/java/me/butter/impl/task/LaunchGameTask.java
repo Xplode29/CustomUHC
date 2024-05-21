@@ -14,7 +14,7 @@ public class LaunchGameTask extends BukkitRunnable {
 
     public LaunchGameTask() {
         timer = 10;
-        this.runTaskTimer(UHCImpl.getInstance(), 0, 20);
+        this.runTaskTimer(UHCImpl.getInstance(), 20, 20);
     }
 
     @Override

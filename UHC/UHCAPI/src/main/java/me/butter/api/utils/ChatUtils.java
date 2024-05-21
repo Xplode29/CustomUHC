@@ -1,12 +1,14 @@
 package me.butter.api.utils;
 
+import org.bukkit.ChatColor;
+
 public enum ChatUtils {
     //https://www.digminecraft.com/lists/color_list_pc.php
     //https://gist.github.com/Arcensoth/7be59706aab15429ded8d7586a79f466
 
     NORMAL(" "),
-    JOINED("» "),
-    LEFT("« "),
+    JOINED(ChatColor.DARK_GRAY + "» "),
+    LEFT(ChatColor.DARK_GRAY + "« "),
     GLOBAL_INFO("§e│ "),
     PLAYER_INFO("§e│ "),
     ERROR("§c│ "),

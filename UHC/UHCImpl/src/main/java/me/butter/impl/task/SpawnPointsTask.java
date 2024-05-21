@@ -38,17 +38,17 @@ public class SpawnPointsTask extends BukkitRunnable {
 
         UHCPlayer uhcPlayer = this.players.get(0);
 
+        int randomX = new Random().nextInt(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() - 20) - UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() / 2 + 20;
+        int randomZ = new Random().nextInt(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() - 20) - UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() / 2 + 20;
+
         Location randomLoc = new Location(
                 UHCAPI.getInstance().getWorldHandler().getWorld(),
-                new Random().nextInt(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() - 20) - UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() / 2 + 20,
-                200,
-                new Random().nextInt(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() - 20) - UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() / 2 + 20
+                randomX,
+                UHCAPI.getInstance().getWorldHandler().getWorld().getHighestBlockYAt(randomX, randomZ) + 1,
+                randomZ
         );
 
-        UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(uhcPlayer.getUniqueId()).setSpawnLocation(randomLoc);
-
-        int platformSize = 5;
-        BlockUtils.fillBlocks(uhcPlayer.getSpawnLocation().getWorld(), uhcPlayer.getSpawnLocation().getBlockX() - platformSize/2, uhcPlayer.getSpawnLocation().getBlockY() - 1, uhcPlayer.getSpawnLocation().getBlockZ() - platformSize/2, platformSize, 1, platformSize, Material.GLASS);
+        uhcPlayer.setSpawnLocation(randomLoc);
 
         if(!uhcPlayer.getSpawnLocation().getChunk().isLoaded()) uhcPlayer.getSpawnLocation().getChunk().load();
 

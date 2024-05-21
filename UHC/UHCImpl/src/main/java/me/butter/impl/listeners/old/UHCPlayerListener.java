@@ -1,4 +1,4 @@
-package me.butter.impl.listeners;
+package me.butter.impl.listeners.old;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
@@ -14,7 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class UHCPlayerListener implements Listener {
@@ -28,7 +27,6 @@ public class UHCPlayerListener implements Listener {
         }
 
         UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player.getUniqueId());
-
         if (uhcPlayer == null) {
             UHCAPI.getInstance().getPlayerHandler().addPlayer(player);
             uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
@@ -49,7 +47,7 @@ public class UHCPlayerListener implements Listener {
         uhcPlayer.setName(player.getName());
 
         event.setJoinMessage(null);
-    }
+    } //Done
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -70,15 +68,5 @@ public class UHCPlayerListener implements Listener {
         }
 
         UHCAPI.getInstance().getPlayerHandler().removePlayer(player);
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        if (player == null) return;
-
-        UHCPlayer uhcPlayer = UHCImpl.getInstance().getPlayerHandler().getUHCPlayer(player);
-
-        uhcPlayer.setLocation(player.getLocation());
-    }
+    } //Done
 }

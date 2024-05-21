@@ -59,6 +59,6 @@ public class PotionImpl implements Potion {
 
     @Override
     public boolean isValid() {
-        return (effect != null) && (duration > 0) && (level > 0);
+        return (effect != null) && (level > 0);
     }
 }

@@ -56,6 +56,11 @@ public class CommandHost implements TabExecutor {
                 return true;
             }
 
+            UHCPlayer target = null;
+            if(strings.length > 1) {
+                target = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(strings[1]);
+            }
+
             switch (strings[0]) {
                 case "stop":
                     if (UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting()) {
@@ -92,8 +97,6 @@ public class CommandHost implements TabExecutor {
                         return true;
                     }
 
-                    UHCPlayer target = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(strings[1]);
-
                     if(target == null) {
                         player.sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + strings[1] + " n'existe pas !"));
                         return true;
@@ -114,6 +117,51 @@ public class CommandHost implements TabExecutor {
                     Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(target.getName() + " est maintenant le host de la partie."));
 
                     return true;
+                case "effect":
+                    if(strings.length < 5) {
+                        player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h effect <joueur> <add|remove> <speed|force|resistance> <amount>"));
+                        return true;
+                    }
+
+                    if(target == null) {
+                        player.sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + strings[1] + " n'existe pas !"));
+                        return true;
+                    }
+
+                    int amount = Integer.parseInt(strings[4]);
+
+                    if(strings[2].equalsIgnoreCase("add")) {
+                        if(strings[3].equalsIgnoreCase("speed")) {
+                            target.addSpeed(amount);
+                            return true;
+                        }
+                        else if(strings[3].equalsIgnoreCase("force")) {
+                            target.addStrength(amount);
+                            return true;
+                        }
+                        else if(strings[3].equalsIgnoreCase("resistance")) {
+                            target.addResi(amount);
+                            return true;
+                        }
+                    }
+                    else if(strings[2].equalsIgnoreCase("remove")) {
+                        if(strings[3].equalsIgnoreCase("speed")) {
+                            target.removeSpeed(amount);
+                            return true;
+                        }
+                        else if(strings[3].equalsIgnoreCase("force")) {
+                            target.removeStrength(amount);
+                            return true;
+                        }
+                        else if(strings[3].equalsIgnoreCase("resistance")) {
+                            target.removeResi(amount);
+                            return true;
+                        }
+                    }
+
+                    player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h effect <joueur> <add|remove> <speed|force|resistance>"));
+                    return true;
+
                 default:
                     player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h <start|stop|sethost|save>"));
                     return true;
@@ -134,10 +182,10 @@ public class CommandHost implements TabExecutor {
         }
 
         if(strings.length == 1) {
-            return Lists.newArrayList("start", "stop", "sethost", "save");
+            return Lists.newArrayList("effect", "start", "save", "sethost", "stop");
         }
 
-        if(strings.length == 2) {
+        if(strings.length > 1) {
             switch (strings[0]) {
                 case "start":
                     return new ArrayList<>();
@@ -145,6 +193,17 @@ public class CommandHost implements TabExecutor {
                     return new ArrayList<>();
                 case "sethost":
                     return UHCAPI.getInstance().getPlayerHandler().getPlayers().stream().map(UHCPlayer::getName).collect(Collectors.toList());
+                case "effect":
+                    if(strings.length == 2) {
+                        return UHCAPI.getInstance().getPlayerHandler().getPlayers().stream().map(UHCPlayer::getName).collect(Collectors.toList());
+                    }
+                    if(strings.length == 3) {
+                        return Lists.newArrayList("add", "remove");
+                    }
+                    if(strings.length == 4) {
+                        return Lists.newArrayList("speed", "force", "resistance");
+                    }
+                    return new ArrayList<>();
                 default:
                     return new ArrayList<>();
             }

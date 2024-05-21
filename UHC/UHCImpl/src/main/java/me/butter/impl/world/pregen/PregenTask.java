@@ -42,8 +42,6 @@ public class PregenTask extends BukkitRunnable {
                 if (z > -startZ) {
                     finished = true;
                     currentChunkLoad = totalChunkToLoad;
-                    this.world.getWorldBorder().setCenter(new Location(this.world, 0.0D, 0.0D, 0.0D));
-                    this.world.getWorldBorder().setSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize());
                     cancel();
                 }
             }

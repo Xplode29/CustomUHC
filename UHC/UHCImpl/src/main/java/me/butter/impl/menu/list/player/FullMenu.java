@@ -36,6 +36,7 @@ public class FullMenu extends PaginatedMenu {
                 public void onClick(UHCPlayer player, ClickType clickType) {
                     if(player.getPlayer().getInventory().firstEmpty() > -1 || player.getPlayer().getInventory().contains(itemStack)) {
                         player.giveItem(itemStack, false);
+                        player.removeItemFromStash(itemStack);
                     }
                     else {
                         player.sendMessage(ChatUtils.ERROR.getMessage("Votre inventaire est plein !"));

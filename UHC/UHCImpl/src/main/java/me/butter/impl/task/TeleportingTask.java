@@ -2,11 +2,15 @@ package me.butter.impl.task;
 
 import com.google.common.collect.Lists;
 import me.butter.api.UHCAPI;
+import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.impl.UHCImpl;
+import me.butter.impl.scoreboard.list.GameScoreboard;
+import me.butter.impl.tab.list.GameTab;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -33,8 +37,6 @@ public class TeleportingTask extends BukkitRunnable {
 
         UHCPlayer uhcPlayer = this.players.get(0);
 
-        Location teleport = uhcPlayer.getSpawnLocation().clone().add(0.5, 3, 0.5);
-
         if (uhcPlayer.getPlayer() != null) {
             if(!uhcPlayer.getSpawnLocation().getChunk().isLoaded()) uhcPlayer.getSpawnLocation().getChunk().load();
 
@@ -42,9 +44,9 @@ public class TeleportingTask extends BukkitRunnable {
 
                 @Override
                 public void run() {
-                    uhcPlayer.getPlayer().teleport(teleport);
+                    setPlayerInGame(uhcPlayer);
                 }
-            }.runTaskLater(UHCAPI.getInstance(), 1);
+            }.runTaskLater(UHCAPI.getInstance(), 5);
         }
 
         playerTeleported += 1;
@@ -55,5 +57,26 @@ public class TeleportingTask extends BukkitRunnable {
         uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_STICKS, 6.0F, 1.0F);
 
         this.players.remove(0);
+    }
+
+    private void setPlayerInGame(UHCPlayer uhcPlayer) {
+        UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
+        UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
+
+        uhcPlayer.setPlayerState(PlayerState.IN_GAME);
+
+        if (uhcPlayer.getPlayer() == null) return;
+
+        uhcPlayer.clearEffects();
+        uhcPlayer.addPotionEffect(PotionEffectType.BLINDNESS, -1, 10);
+        uhcPlayer.addPotionEffect(PotionEffectType.SLOW, -1, 10);
+
+        uhcPlayer.clearInventory();
+        uhcPlayer.clearStash();
+        uhcPlayer.setArmor(UHCAPI.getInstance().getGameHandler().getInventoriesConfig().getStartingArmor());
+        uhcPlayer.setInventory(UHCAPI.getInstance().getGameHandler().getInventoriesConfig().getStartingInventory());
+        uhcPlayer.saveInventory();
+
+        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> uhcPlayer.getPlayer().teleport(uhcPlayer.getSpawnLocation()), 10);
     }
 }

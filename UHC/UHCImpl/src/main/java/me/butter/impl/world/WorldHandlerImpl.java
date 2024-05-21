@@ -10,10 +10,7 @@ import me.butter.impl.world.modify.WorldGenCavesPatched;
 import me.butter.impl.world.modify.WorldListener;
 import me.butter.impl.world.pregen.PregenTask;
 import org.apache.commons.io.FileUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 
 import java.io.File;
 
@@ -59,7 +56,7 @@ public class WorldHandlerImpl implements WorldHandler {
     @Override
     public void createWorld(String worldName) {
         Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(
-                "Le monde arena est en cours de création..."
+                "Le monde est en cours de création..."
         ));
         Bukkit.getScheduler().runTaskLater(UHCImpl.getInstance(), () -> {
             deleteWorld(worldName);
@@ -69,7 +66,7 @@ public class WorldHandlerImpl implements WorldHandler {
             this.getWorld().getPopulators().add(this.orePopulator);
 
             Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(
-                    "Le monde arena a bien été créé avec succès !"
+                    "Le monde a bien été créé avec succès !"
             ));
 
             try {
@@ -99,8 +96,11 @@ public class WorldHandlerImpl implements WorldHandler {
         getWorld().setGameRuleValue("doFireTick", "false");
         getWorld().setGameRuleValue("doDaylightCycle ", "false");
 
+        getWorld().getWorldBorder().setCenter(new Location(this.world, 0.0D, 0.0D, 0.0D));
+        getWorld().getWorldBorder().setSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize());
+
         new PregenTask(getWorld(), (UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() + 100))
-                .runTaskTimer(UHCImpl.getInstance(), 0, 5);
+                .runTaskTimer(UHCImpl.getInstance(), 0, 20);
     }
 
     @Override

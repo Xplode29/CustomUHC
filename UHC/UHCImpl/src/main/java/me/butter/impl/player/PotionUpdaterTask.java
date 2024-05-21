@@ -10,12 +10,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class PotionUpdaterTask extends BukkitRunnable {
 
     public PotionUpdaterTask() {
-        this.runTaskTimer(UHCImpl.getInstance(), 0, 20);
+        this.runTaskTimer(UHCImpl.getInstance(), 0, 10);
     }
 
     @Override
     public void run() {
-        for (UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+        for (UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
             if (uhcPlayer.getPlayer() == null) {
                 continue;
             }
@@ -25,15 +25,21 @@ public class PotionUpdaterTask extends BukkitRunnable {
                     continue;
                 }
 
-                uhcPlayer.getPlayer().removePotionEffect(potion.getEffect());
-
                 if(potion.getDuration() == -1) {
-                    uhcPlayer.getPlayer().addPotionEffect(new PotionEffect(potion.getEffect(), 20 * 2, potion.getLevel() + 1, false, false));
+                    uhcPlayer.getPlayer().removePotionEffect(potion.getEffect());
+                    uhcPlayer.getPlayer().addPotionEffect(new PotionEffect(potion.getEffect(), Integer.MAX_VALUE, potion.getLevel() - 1, false, false));
+                    continue;
                 }
 
+                if(!uhcPlayer.getPlayer().hasPotionEffect(potion.getEffect())) {
+                    uhcPlayer.getPlayer().addPotionEffect(new PotionEffect(potion.getEffect(), potion.getDuration(), potion.getLevel() - 1, false, false));
+                }
                 else {
                     potion.setDuration(potion.getDuration() - 1);
-                    uhcPlayer.getPlayer().addPotionEffect(new PotionEffect(potion.getEffect(), potion.getDuration(), potion.getLevel() + 1, false, false));
+
+                    if(potion.getDuration() <= 0) {
+                        uhcPlayer.removePotionEffect(potion.getEffect());
+                    }
                 }
             }
         }

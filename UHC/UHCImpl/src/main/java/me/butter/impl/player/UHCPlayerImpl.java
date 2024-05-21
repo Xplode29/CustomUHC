@@ -13,10 +13,12 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
@@ -35,7 +37,7 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     List<UUID> killedPlayers;
 
-    Location playerLocation, deathLocation, spawnLocation;
+    Location deathLocation, spawnLocation;
 
     List<ItemStack> inventory, armor, stash;
 
@@ -54,7 +56,6 @@ public class UHCPlayerImpl implements UHCPlayer {
 
         this.killedPlayers = new ArrayList<>();
 
-        this.playerLocation = player.getLocation();
         this.spawnLocation = player.getLocation();
         this.deathLocation = player.getLocation();
 
@@ -184,6 +185,22 @@ public class UHCPlayerImpl implements UHCPlayer {
     }
 
     @Override
+    public void clearPlayer() {
+        clearEffects(); clearInventory(); clearStash();
+        killedPlayers.clear();
+        playerPotionEffects.clear();
+
+        if(getPlayer() == null) return;
+        Player player = getPlayer();
+        player.setGameMode(GameMode.SURVIVAL);
+        player.setMaxHealth(20);
+        player.setHealth(20);
+        player.setFoodLevel(20);
+        player.setLevel(0);
+        player.setExp(0);
+    }
+
+    @Override
     public List<UUID> getKilledPlayers() {
         return killedPlayers;
     }
@@ -213,17 +230,14 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     @Override
     public Location getLocation() {
-        return playerLocation;
-    }
-
-    @Override
-    public void setLocation(Location newLocation) {
-        playerLocation = newLocation.clone();
+        if(getPlayer() == null) return spawnLocation;
+        return getPlayer().getLocation();
     }
 
     @Override
     public List<ItemStack> getInventory() {
-        return inventory;
+        if(getPlayer() == null) return inventory;
+        return Arrays.asList(getPlayer().getInventory().getContents());
     }
 
     @Override
@@ -246,7 +260,8 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     @Override
     public List<ItemStack> getArmor() {
-        return armor;
+        if(getPlayer() == null) return armor;
+        return Arrays.asList(getPlayer().getInventory().getArmorContents());
     }
 
     @Override
@@ -334,7 +349,7 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     @Override
     public void clearStash() {
-        stash.clear();
+        stash = new ArrayList<>();
     }
 
     @Override
@@ -394,8 +409,10 @@ public class UHCPlayerImpl implements UHCPlayer {
     }
 
     @Override
-    public void removePotionEffect(PotionEffectType effect, int level) {
-        playerPotionEffects.removeIf(potion -> potion.getEffect() == effect && potion.getLevel() == level);
+    public void removePotionEffect(PotionEffectType effect) {
+        playerPotionEffects.removeIf(potion -> potion.getEffect() == effect);
+        if (getPlayer() != null && getPlayer().hasPotionEffect(effect))
+            getPlayer().removePotionEffect(effect);
     }
 
     @Override
@@ -418,6 +435,11 @@ public class UHCPlayerImpl implements UHCPlayer {
     public void clearEffects() {
         playerPotionEffects = new ArrayList<>();
         speedEffect = 0; strengthEffect = 0; resiEffect = 0;
+
+        for(PotionEffect effect : getPlayer().getActivePotionEffects()) {
+            getPlayer().removePotionEffect(effect.getType());
+        }
+        getPlayer().setWalkSpeed(0.2f);
     }
 
     @Override
@@ -428,16 +450,19 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override @Deprecated
     public void setSpeed(int amount) {
         speedEffect = amount;
+        updateEffects();
     }
 
     @Override
     public void addSpeed(int amount) {
         speedEffect += amount;
+        updateEffects();
     }
 
     @Override
     public void removeSpeed(int amount) {
         speedEffect -= amount;
+        updateEffects();
     }
 
     @Override
@@ -448,16 +473,19 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override @Deprecated
     public void setStrength(int amount) {
         strengthEffect = amount;
+        updateEffects();
     }
 
     @Override
     public void addStrength(int amount) {
         strengthEffect += amount;
+        updateEffects();
     }
 
     @Override
     public void removeStrength(int amount) {
         strengthEffect -= amount;
+        updateEffects();
     }
 
     @Override
@@ -468,15 +496,49 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override
     public void setResi(int amount) {
         resiEffect = amount;
+        updateEffects();
     }
 
     @Override
     public void addResi(int amount) {
         resiEffect += amount;
+        updateEffects();
     }
 
     @Override
     public void removeResi(int amount) {
         resiEffect -= amount;
+        updateEffects();
+    }
+
+    @Override
+    public void updateEffects() {
+        if(getPlayer() == null) return;
+
+        int speedLevel = speedEffect / 20, speedRest = speedEffect % 20;
+        getPlayer().setWalkSpeed(0.2f * (1 + speedRest / 100f));
+
+        removePotionEffect(PotionEffectType.SPEED);
+        removePotionEffect(PotionEffectType.SLOW);
+        if(speedLevel > 0) {
+            addPotionEffect(PotionEffectType.SPEED, -1, speedLevel);
+        }
+        else if (speedLevel < 0) {
+            addPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
+        }
+
+        if((strengthEffect / 20) > 0 && !hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
+            addPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, 1);
+        }
+        else if((strengthEffect / 20) <= 0 && hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
+            removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+        }
+
+        if((resiEffect / 20) > 0 && !hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
+            addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, 1);
+        }
+        else if((resiEffect / 20) <= 0 && hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
+            removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+        }
     }
 }

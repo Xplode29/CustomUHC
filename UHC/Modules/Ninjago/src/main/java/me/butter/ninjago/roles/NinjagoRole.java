@@ -8,7 +8,6 @@ import me.butter.api.player.UHCPlayer;
 import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class NinjagoRole implements Role, Listener {

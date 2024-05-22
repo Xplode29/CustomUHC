@@ -19,7 +19,6 @@ import me.butter.impl.enchant.EnchantHandlerImpl;
 import me.butter.impl.game.GameHandlerImpl;
 import me.butter.impl.item.ItemHandlerImpl;
 import me.butter.impl.listeners.*;
-import me.butter.impl.listeners.old.*;
 import me.butter.impl.menu.MenuHandlerImpl;
 import me.butter.impl.module.ModuleHandlerImpl;
 import me.butter.impl.player.PlayerHandlerImpl;
@@ -68,12 +67,12 @@ public final class UHCImpl extends UHCAPI {
 
     @Override
     public void onEnable() {
+        worldHandler = new WorldHandlerImpl();
+
         scoreboardHandler = new ScoreboardHandlerImpl();
         tabHandler = new TabHandlerImpl();
         itemHandler = new ItemHandlerImpl();
         menuHandler = new MenuHandlerImpl();
-
-        worldHandler = new WorldHandlerImpl();
 
         registerCommands();
         registerListeners();
@@ -92,12 +91,6 @@ public final class UHCImpl extends UHCAPI {
     }
 
     void registerListeners() {
-        //Bukkit.getPluginManager().registerEvents(new UHCPlayerListener(), this);
-        //Bukkit.getPluginManager().registerEvents(new LobbyListener(), this);
-        //Bukkit.getPluginManager().registerEvents(new TeleportListener(), this);
-        //Bukkit.getPluginManager().registerEvents(new StartingListener(), this);
-        //Bukkit.getPluginManager().registerEvents(new GameListener(), this);
-        //Bukkit.getPluginManager().registerEvents(new CombatListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockEvents(), this);
         Bukkit.getPluginManager().registerEvents(new DamageHealthEvents(), this);
         Bukkit.getPluginManager().registerEvents(new InventoriesEvents(), this);

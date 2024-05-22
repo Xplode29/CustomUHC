@@ -76,7 +76,6 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
         if(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() != null && UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().equals(uhcPlayer)) {
             giveItemToPlayer(MenuItem.class, uhcPlayer);
         }
-        giveItemToPlayer(GrapplingItem.class, uhcPlayer);
     }
 
     @Override
@@ -84,7 +83,6 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
         if(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() != null && UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().equals(uhcPlayer)) {
             removeItemFromPlayer(MenuItem.class, uhcPlayer);
         }
-        removeItemFromPlayer(GrapplingItem.class, uhcPlayer);
     }
 
     @EventHandler

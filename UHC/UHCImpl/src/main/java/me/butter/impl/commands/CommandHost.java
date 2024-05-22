@@ -9,14 +9,20 @@ import me.butter.impl.item.list.MenuItem;
 import me.butter.impl.task.LaunchGameTask;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CommandHost implements TabExecutor {
 
@@ -69,13 +75,15 @@ public class CommandHost implements TabExecutor {
                     if(UHCAPI.getInstance().getGameHandler().getGameState() != GameState.LOBBY) {
                         UHCAPI.getInstance().getServer().reload();
                     }
-                    return true;
+                    break;
+
                 case "start":
                     if (!UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting()) {
                         UHCAPI.getInstance().getGameHandler().getGameConfig().setStarting(true);
                         new LaunchGameTask();
                     }
-                    return true;
+                    break;
+
                 case "save":
                     List<ItemStack> armor = Arrays.asList(uhcPlayer.getPlayer().getInventory().getArmorContents());
                     Collections.reverse(armor);
@@ -90,21 +98,22 @@ public class CommandHost implements TabExecutor {
                     uhcPlayer.getPlayer().setGameMode(GameMode.SURVIVAL);
 
                     UHCAPI.getInstance().getItemHandler().giveLobbyItems(uhcPlayer);
-                    return true;
+                    break;
+
                 case "sethost":
                     if(strings.length < 2) {
                         player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h sethost <joueur>"));
-                        return true;
+                        break;
                     }
 
                     if(target == null) {
                         player.sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + strings[1] + " n'existe pas !"));
-                        return true;
+                        break;
                     }
 
                     if(target.equals(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost())) {
                         player.sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + strings[1] + " est déja le host de la partie !"));
-                        return true;
+                        break;
                     }
 
                     if(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() != null) {
@@ -115,8 +124,8 @@ public class CommandHost implements TabExecutor {
                     UHCAPI.getInstance().getGameHandler().getGameConfig().setHost(target);
 
                     Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(target.getName() + " est maintenant le host de la partie."));
+                    break;
 
-                    return true;
                 case "effect":
                     if(strings.length < 5) {
                         player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h effect <joueur> <add|remove> <speed|force|resistance> <amount>"));
@@ -160,14 +169,48 @@ public class CommandHost implements TabExecutor {
                     }
 
                     player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h effect <joueur> <add|remove> <speed|force|resistance>"));
-                    return true;
+                    break;
+
+                case "teleport":
+                case "tp":
+                    if(strings.length < 2) {
+                        player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h teleport <joueur> [joueur|monde]"));
+                        return true;
+                    }
+                    if(target == null) {
+                        player.sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + strings[1] + " n'existe pas !"));
+                        return true;
+                    }
+
+                    if(strings.length == 2) {
+                        player.teleport(target.getPlayer());
+                        player.sendMessage(ChatUtils.GLOBAL_INFO.getMessage("Vous avez ete teleporte vers " + target.getPlayer().getName()));
+                        break;
+                    }
+                    else {
+                        for (World world : Bukkit.getWorlds()) {
+                            if(world.getName().equalsIgnoreCase(strings[2])) {
+                                target.getPlayer().teleport(new Location(world, 0, 100, 0));
+                                target.sendMessage(ChatUtils.GLOBAL_INFO.getMessage("Vous avez ete teleporte vers le monde " + world.getName()));
+                                break;
+                            }
+                        }
+                        for(UHCPlayer uhcPlayer1 : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                            if(uhcPlayer1.getPlayer().getName().equalsIgnoreCase(strings[2])) {
+                                target.getPlayer().teleport(uhcPlayer1.getPlayer());
+                                target.sendMessage(ChatUtils.GLOBAL_INFO.getMessage("Vous avez ete teleporte vers " + uhcPlayer1.getPlayer().getName()));
+                                break;
+                            }
+                        }
+                    }
+                    break;
 
                 default:
                     player.sendMessage(ChatUtils.ERROR.getMessage("Usage : /h <start|stop|sethost|save>"));
-                    return true;
+                    break;
             }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -182,15 +225,11 @@ public class CommandHost implements TabExecutor {
         }
 
         if(strings.length == 1) {
-            return Lists.newArrayList("effect", "start", "save", "sethost", "stop");
+            return Lists.newArrayList("effect", "start", "save", "sethost", "stop", "teleport");
         }
 
         if(strings.length > 1) {
             switch (strings[0]) {
-                case "start":
-                    return new ArrayList<>();
-                case "stop":
-                    return new ArrayList<>();
                 case "sethost":
                     return UHCAPI.getInstance().getPlayerHandler().getPlayers().stream().map(UHCPlayer::getName).collect(Collectors.toList());
                 case "effect":
@@ -204,6 +243,16 @@ public class CommandHost implements TabExecutor {
                         return Lists.newArrayList("speed", "force", "resistance");
                     }
                     return new ArrayList<>();
+                case "teleport":
+                case "tp":
+                    if(strings.length == 2) {
+                        return UHCAPI.getInstance().getPlayerHandler().getPlayers().stream().map(UHCPlayer::getName).collect(Collectors.toList());
+                    }
+                    if(strings.length == 3) {
+                        return Stream.concat(Bukkit.getWorlds().stream().map(World::getName),
+                                        UHCAPI.getInstance().getPlayerHandler().getPlayers().stream().map(UHCPlayer::getName)
+                                ).collect(Collectors.toList());
+                    }
                 default:
                     return new ArrayList<>();
             }

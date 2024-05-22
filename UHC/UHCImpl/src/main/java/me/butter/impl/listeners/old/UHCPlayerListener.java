@@ -8,7 +8,6 @@ import me.butter.impl.UHCImpl;
 import me.butter.impl.scoreboard.list.GameScoreboard;
 import me.butter.impl.scoreboard.list.LobbyScoreboard;
 import me.butter.impl.tab.list.GameTab;
-import me.butter.impl.tab.list.LobbyTab;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -41,7 +40,7 @@ public class UHCPlayerListener implements Listener {
         }
         else {
             UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
-            UHCAPI.getInstance().getTabHandler().setPlayerTab(LobbyTab.class, uhcPlayer);
+            UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
         }
 
         uhcPlayer.setName(player.getName());

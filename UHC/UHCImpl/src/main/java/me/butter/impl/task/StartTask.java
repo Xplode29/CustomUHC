@@ -2,15 +2,9 @@ package me.butter.impl.task;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
-import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.BlockUtils;
 import me.butter.impl.UHCImpl;
-import me.butter.impl.player.PotionUpdaterTask;
-import me.butter.impl.scoreboard.list.GameScoreboard;
-import me.butter.impl.tab.list.GameTab;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 

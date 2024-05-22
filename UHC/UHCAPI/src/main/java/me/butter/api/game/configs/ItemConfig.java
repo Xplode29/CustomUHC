@@ -1,9 +1,5 @@
 package me.butter.api.game.configs;
 
-import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
-
 public interface ItemConfig {
 
     boolean isRod(); void setRod(boolean rod);

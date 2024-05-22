@@ -55,30 +55,38 @@ public class WorldHandlerImpl implements WorldHandler {
 
     @Override
     public void createWorld(String worldName) {
-        Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(
-                "Le monde est en cours de création..."
-        ));
+        UHCAPI.getInstance().getGameHandler().getWorldConfig().setWorldGenerated(false);
+
+        deleteWorld(worldName);
+
+        Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Le monde est en cours de création..."));
         Bukkit.getScheduler().runTaskLater(UHCImpl.getInstance(), () -> {
-            deleteWorld(worldName);
             WorldCreator creator = new WorldCreator(worldName);
 
             this.setWorld(creator.createWorld());
             this.getWorld().getPopulators().add(this.orePopulator);
 
-            Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(
-                    "Le monde a bien été créé avec succès !"
-            ));
+            Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Le monde a bien été créé avec succès !"));
 
             try {
                 WorldGenCavesPatched.load(this.getWorld(), 2);
             }catch (Exception e){
                 e.printStackTrace();
             }
-        }, 10);
+
+            this.world.getWorldBorder().setCenter(new Location(this.world, 0.0D, 0.0D, 0.0D));
+            this.world.getWorldBorder().setSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize());
+
+            UHCAPI.getInstance().getGameHandler().getWorldConfig().setWorldGenerated(true);
+        }, 20);
     }
 
     @Override
     public void deleteWorld(String worldName) {
+        if(Bukkit.getWorlds().contains(Bukkit.getWorld(worldName))) {
+            Bukkit.getWorld(worldName).getPlayers().forEach(player -> player.teleport(new Location(Bukkit.getWorld("world"), 0, 205, 0)));
+        }
+
         Bukkit.unloadWorld(worldName, false);
         File worldContainer = new File(Bukkit.getWorldContainer() + "/" + worldName + "/");
         if (worldContainer.exists()) {
@@ -96,9 +104,10 @@ public class WorldHandlerImpl implements WorldHandler {
         getWorld().setGameRuleValue("doFireTick", "false");
         getWorld().setGameRuleValue("doDaylightCycle ", "false");
 
-        getWorld().getWorldBorder().setCenter(new Location(this.world, 0.0D, 0.0D, 0.0D));
-        getWorld().getWorldBorder().setSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize());
+        getWorld().getPlayers().forEach(player -> player.teleport(new Location(Bukkit.getWorld("world"), 0, 205, 0)));
 
+        Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Le monde est en cours de prégénération..."));
+        UHCAPI.getInstance().getGameHandler().getWorldConfig().setPregenDone(false);
         new PregenTask(getWorld(), (UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() + 100))
                 .runTaskTimer(UHCImpl.getInstance(), 0, 20);
     }

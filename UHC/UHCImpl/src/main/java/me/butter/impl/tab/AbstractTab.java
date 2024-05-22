@@ -131,7 +131,7 @@ public abstract class AbstractTab implements CustomTab {
 
         if(listOfVariations.size() <= line) {
             for(int i = listOfVariations.size(); i <= line; i++) {
-                listOfVariations.add(Arrays.asList("\n"));
+                listOfVariations.add(Collections.singletonList("\n"));
             }
         }
 

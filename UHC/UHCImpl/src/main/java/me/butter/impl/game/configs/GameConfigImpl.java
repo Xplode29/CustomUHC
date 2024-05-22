@@ -140,7 +140,7 @@ public class GameConfigImpl implements GameConfig {
     }
 
     @Override
-    public boolean isPvp() {
+    public boolean isPVP() {
         return pvp;
     }
 

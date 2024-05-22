@@ -7,7 +7,6 @@ import me.butter.impl.game.presets.MiningPreset;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class InventoryConfigImpl implements InventoryConfig {

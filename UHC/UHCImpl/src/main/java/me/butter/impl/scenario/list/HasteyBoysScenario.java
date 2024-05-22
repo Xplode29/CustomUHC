@@ -1,5 +1,7 @@
 package me.butter.impl.scenario.list;
 
+import me.butter.api.UHCAPI;
+import me.butter.api.game.GameState;
 import me.butter.impl.scenario.AbstractScenario;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -18,13 +20,15 @@ public class HasteyBoysScenario extends AbstractScenario {
         if(item == null) {
             return;
         }
-        if((
-                item.toString().toLowerCase().contains("pickaxe") ||
-                item.toString().toLowerCase().contains("axe") ||
-                item.toString().toLowerCase().contains("spade")
-        )) {
-            if(item.getEnchantmentLevel(Enchantment.DIG_SPEED) < 3) {
-                item.addEnchantment(Enchantment.DIG_SPEED, 3);
+        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
+            if((
+                    item.toString().toLowerCase().contains("pickaxe") ||
+                            item.toString().toLowerCase().contains("axe") ||
+                            item.toString().toLowerCase().contains("spade")
+            )) {
+                if(item.getEnchantmentLevel(Enchantment.DIG_SPEED) < 3) {
+                    item.addEnchantment(Enchantment.DIG_SPEED, 3);
+                }
             }
         }
     }

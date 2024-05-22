@@ -1,7 +1,8 @@
 package me.butter.impl.world.pregen;
 
 import me.butter.api.UHCAPI;
-import org.bukkit.ChatColor;
+import me.butter.api.utils.ChatUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -19,10 +20,10 @@ public class PregenTask extends BukkitRunnable {
 
     public PregenTask(World world, int radius) {
         finished = false;
+        radius += 150;
         this.totalChunkToLoad = Math.pow(radius, 2.0D) / 64.0D;
         this.currentChunkLoad = 0.0D;
         this.world = world;
-        radius += 150;
 
         this.startX = -radius; this.startZ = -radius;
         this.x = this.startX; this.z = this.startZ;
@@ -30,7 +31,7 @@ public class PregenTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < 30 && !finished; i++) {
+        for (int i = 0; i < 40 && !finished; i++) {
             Location loc = new Location(world, x, 0, z);
             if (!loc.getChunk().isLoaded())
                 loc.getWorld().loadChunk(loc.getChunk().getX(), loc.getChunk().getZ(), true);
@@ -40,9 +41,12 @@ public class PregenTask extends BukkitRunnable {
                 x = startX;
                 z += 16;
                 if (z > -startZ) {
+                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setPregenDone(true);
+                    Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Le monde a été pregen avec succès !"));
+                    this.world.getWorldBorder().setSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() * 2);
                     finished = true;
-                    currentChunkLoad = totalChunkToLoad;
                     cancel();
+                    return;
                 }
             }
         }

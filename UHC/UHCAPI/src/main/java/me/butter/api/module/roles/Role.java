@@ -2,7 +2,6 @@ package me.butter.api.module.roles;
 
 import me.butter.api.module.power.Power;
 import me.butter.api.player.UHCPlayer;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 

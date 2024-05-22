@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -23,7 +22,6 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class Lloyd extends NinjagoRole {
 

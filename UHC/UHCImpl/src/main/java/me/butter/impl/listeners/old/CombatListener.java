@@ -54,7 +54,7 @@ public class CombatListener implements Listener {
             victim.spigot().respawn();
             victim.teleport(uhcVictim.getDeathLocation());
 
-            if (!UHCAPI.getInstance().getGameHandler().getGameConfig().isPvp()) {
+            if (!UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) {
                 uhcVictim.loadInventory();
                 uhcVictim.setCanPickItems(false);
 
@@ -78,10 +78,10 @@ public class CombatListener implements Listener {
             return;
         }
 
-        Bukkit.broadcastMessage(ChatUtils.SEPARATOR.getPrefix());
+        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
         Bukkit.broadcastMessage("");
         Bukkit.broadcastMessage(uhcVictim.getName() + " est mort !");
         Bukkit.broadcastMessage("");
-        Bukkit.broadcastMessage(ChatUtils.SEPARATOR.getPrefix());
+        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
     } //Done
 }

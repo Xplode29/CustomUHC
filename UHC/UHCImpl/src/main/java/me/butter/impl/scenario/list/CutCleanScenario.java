@@ -1,8 +1,9 @@
 package me.butter.impl.scenario.list;
 
+import me.butter.api.UHCAPI;
+import me.butter.api.game.GameState;
 import me.butter.impl.events.custom.CustomBlockBreakEvent;
 import me.butter.impl.scenario.AbstractScenario;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -39,31 +40,38 @@ public class CutCleanScenario extends AbstractScenario {
     public void onBlockBreak(CustomBlockBreakEvent event) {
         List<ItemStack> newDrops = new ArrayList<>();
         boolean modified = false;
-        for(ItemStack item : event.getDrops()) {
-            if(cookedMats.containsKey(item.getType())) {
-                newDrops.add(new ItemStack(cookedMats.get(item.getType()), item.getAmount()));
-                modified = true;
-            } else {
-                newDrops.add(item);
+        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
+            for(ItemStack item : event.getDrops()) {
+                if(cookedMats.containsKey(item.getType())) {
+                    newDrops.add(new ItemStack(cookedMats.get(item.getType()), item.getAmount()));
+                    modified = true;
+                } else {
+                    newDrops.add(item);
+                }
             }
-        }
 
-        if(modified) {
-            event.setDrops(newDrops);
-            event.setExpToDrop(event.getExpToDrop() + 5);
+            if(modified) {
+                event.setDrops(newDrops);
+                event.setExpToDrop(event.getExpToDrop() + 5);
+            }
         }
     }
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if(event.getEntity() == null || event.getDrops() == null) {
-            return;
-        }
-        Collection<ItemStack> drops = event.getDrops();
-        for(ItemStack item : drops) {
-            if(cookedMats.containsKey(item.getType())) {
-                Location dropLocation = event.getEntity().getLocation();
-                dropLocation.getWorld().dropItem(dropLocation, new ItemStack(cookedMats.get(item.getType()), item.getAmount()));
+        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
+            if(event.getEntity() == null || event.getDrops() == null) {
+                return;
+            }
+            Collection<ItemStack> drops = event.getDrops();
+            event.getDrops().clear();
+            for(ItemStack item : drops) {
+                if(cookedMats.containsKey(item.getType())) {
+                    event.getDrops().add(new ItemStack(cookedMats.get(item.getType()), item.getAmount()));
+                }
+                else {
+                    event.getDrops().add(item);
+                }
             }
         }
     }

@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class LobbyScoreboard extends AbstractScoreboard {
     public LobbyScoreboard(Scoreboard scoreboard) {
-        super(scoreboard, "Lobby", Arrays.asList(
+        super(scoreboard, UHCAPI.getInstance().getModuleHandler().hasModule() ? "§7" + UHCAPI.getInstance().getModuleHandler().getModule().getName() : "§7UHC", Arrays.asList(
                 new DuplicateString("§7§m---------------------", 0).getString(),
                 new DuplicateString("", 0).getString(),
                 "Host: " + (UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() == null ? "§cNon défini" : UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().getName()),

@@ -6,7 +6,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
-import me.butter.impl.menu.list.host.settings.DayCycleMenu;
+import me.butter.impl.menu.list.host.settings.DropsMenu;
 import me.butter.impl.menu.list.host.settings.EnchantMenu;
 import me.butter.impl.menu.list.host.settings.TimerMenu;
 import org.bukkit.Material;
@@ -52,12 +52,12 @@ public class SettingsMenu extends AbstractMenu {
         buttons.put(24, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.DAYLIGHT_DETECTOR).setName("§rCycle Jour-Nuit").toItemStack();
+                return new ItemBuilder(Material.APPLE).setName("§rDrops").toItemStack();
             }
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                UHCAPI.getInstance().getMenuHandler().openMenu(player, new DayCycleMenu(), true);
+                UHCAPI.getInstance().getMenuHandler().openMenu(player, new DropsMenu(), true);
             }
         });
 

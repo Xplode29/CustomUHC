@@ -3,12 +3,14 @@ package me.butter.impl.menu.list.host;
 import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.ChatUtils;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
-import me.butter.impl.menu.list.host.worldconfig.DropsMenu;
+import me.butter.impl.menu.list.host.worldconfig.DayCycleMenu;
 import me.butter.impl.menu.list.host.worldconfig.FinalBorderMenu;
 import me.butter.impl.menu.list.host.worldconfig.StartBorderMenu;
+import me.butter.impl.menu.list.host.worldconfig.WorldSelectMenu;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -23,6 +25,18 @@ public class WorldConfigMenu extends AbstractMenu {
     @Override
     public Map<Integer, Button> getButtons() {
         Map<Integer, Button> buttonMap = super.getButtons();
+
+        buttonMap.put(4, new ButtonImpl() {
+            @Override
+            public ItemStack getIcon() {
+                return new ItemBuilder(Material.IRON_DOOR).setName("§rSe Téléporter à un monde").toItemStack();
+            }
+
+            @Override
+            public void onClick(UHCPlayer player, ClickType clickType) {
+                player.openMenu(new WorldSelectMenu(), true);
+            }
+        });
 
         buttonMap.put(19, new ButtonImpl() {
             @Override
@@ -51,12 +65,12 @@ public class WorldConfigMenu extends AbstractMenu {
         buttonMap.put(22, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.APPLE).setName("§rDrops").toItemStack();
+                return new ItemBuilder(Material.DAYLIGHT_DETECTOR).setName("§rCycle Jour-Nuit").toItemStack();
             }
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                UHCAPI.getInstance().getMenuHandler().openMenu(player, new DropsMenu(), true);
+                UHCAPI.getInstance().getMenuHandler().openMenu(player, new DayCycleMenu(), true);
             }
         });
 
@@ -98,6 +112,35 @@ public class WorldConfigMenu extends AbstractMenu {
                     UHCAPI.getInstance().getGameHandler().getWorldConfig().setExpBoost(UHCAPI.getInstance().getGameHandler().getWorldConfig().getExpBoost() + 5);
                 } else if(clickType == ClickType.RIGHT && UHCAPI.getInstance().getGameHandler().getWorldConfig().getExpBoost() >= 5) {
                     UHCAPI.getInstance().getGameHandler().getWorldConfig().setExpBoost(UHCAPI.getInstance().getGameHandler().getWorldConfig().getExpBoost() - 5);
+                }
+            }
+        });
+
+        buttonMap.put(39, new ButtonImpl() {
+            @Override
+            public ItemStack getIcon() {
+                return new ItemBuilder(Material.DIRT).setName("§rGénération").toItemStack();
+            }
+
+            @Override
+            public void onClick(UHCPlayer player, ClickType clickType) {
+                UHCAPI.getInstance().getWorldHandler().createWorld("arena");
+            }
+        });
+
+        buttonMap.put(41, new ButtonImpl() {
+            @Override
+            public ItemStack getIcon() {
+                return new ItemBuilder(Material.LEAVES).setName("§rPrégénération").toItemStack();
+            }
+
+            @Override
+            public void onClick(UHCPlayer player, ClickType clickType) {
+                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().isWorldGenerated()) {
+                    UHCAPI.getInstance().getWorldHandler().loadWorld();
+                }
+                else {
+                    player.sendMessage(ChatUtils.ERROR.getMessage("Le monde n'est pas créé."));
                 }
             }
         });

@@ -26,7 +26,7 @@ public interface GameConfig {
 
     boolean isInvincibility(); void setInvincibility(boolean invincibility);
 
-    boolean isPvp(); void setPvp(boolean pvp);
+    boolean isPVP(); void setPvp(boolean pvp);
 
     boolean isMeetup(); void setMeetup(boolean meetup);
 

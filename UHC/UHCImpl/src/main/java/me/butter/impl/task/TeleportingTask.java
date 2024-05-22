@@ -8,7 +8,6 @@ import me.butter.impl.UHCImpl;
 import me.butter.impl.scoreboard.list.GameScoreboard;
 import me.butter.impl.tab.list.GameTab;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;

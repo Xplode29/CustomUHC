@@ -1,11 +1,6 @@
 package me.butter.impl.game.configs;
 
 import me.butter.api.game.configs.ItemConfig;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class ItemConfigImpl implements ItemConfig {
 

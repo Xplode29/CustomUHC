@@ -14,21 +14,19 @@ public class LobbyTab extends AbstractTab {
                 "§8- §7Lobby §8-", "§8- §rLobby §8-"
         ));
         setHeaderLine(2, Arrays.asList(
-                "Tps: " + MinecraftServer.getServer().recentTps[0]
+                "Tps: " + (int) (MinecraftServer.getServer().recentTps[0] * 10) / 10
+        ));
+        setFooterLine(1, Arrays.asList(
+                "§6@ButterOnPancakes (avec l'aide de @Hyro)", "§e@ButterOnPancakes (avec l'aide de @Hyro)"
         ));
     }
 
     @Override
     public void updatePlayerTab(UHCPlayer uhcPlayer) {
         if(uhcPlayer == null) return;
-        //Modify Footers
-        setHeaderLine(1, Arrays.asList(
-                "§8- §7Lobby §8-", "§8- §rLobby §8-"
-        ));
         setHeaderLine(2, Arrays.asList(
-                "Tps: " + MinecraftServer.getServer().recentTps[0]
+                "Tps: " + (int) (MinecraftServer.getServer().recentTps[0] * 10) / 10
         ));
-
         super.updatePlayerTab(uhcPlayer);
     }
 }

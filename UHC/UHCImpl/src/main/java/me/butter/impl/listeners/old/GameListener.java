@@ -29,7 +29,10 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.AnvilInventory;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collections;
@@ -424,7 +427,7 @@ public class GameListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if (UHCAPI.getInstance().getGameHandler().getGameConfig().isPvp()) {
+        if (UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) {
             event.setCancelled(true);
             return;
         }

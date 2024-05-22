@@ -2,7 +2,6 @@ package me.butter.impl.listeners;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
-import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ChatUtils;
 import org.bukkit.Location;
 import org.bukkit.WorldBorder;
@@ -10,9 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerAchievementAwardedEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.weather.ThunderChangeEvent;
-import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class OtherEvents implements Listener {
 
@@ -35,7 +33,7 @@ public class OtherEvents implements Listener {
 
         if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
             if (!UHCAPI.getInstance().getGameHandler().getGameConfig().isChatEnabled() ||
-                    UHCAPI.getInstance().getGameHandler().getGameConfig().isPvp()) {
+                    UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) {
                 player.sendMessage(ChatUtils.ERROR.getMessage("Le chat est actuellement désactivé."));
                 event.setCancelled(true);
                 return;
@@ -44,13 +42,8 @@ public class OtherEvents implements Listener {
     }
 
     @EventHandler
-    public void onWeatherChange(WeatherChangeEvent event) {
-        if (event.toWeatherState()) event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onThunderChange(ThunderChangeEvent event) {
-        if (event.toThunderState()) event.setCancelled(true);
+    public void onAcquireAchievement(PlayerAchievementAwardedEvent event) {
+        event.setCancelled(true);
     }
 
     public static boolean isOutsideOfBorder(Location location) {

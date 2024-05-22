@@ -9,22 +9,20 @@ import me.butter.api.utils.GraphicUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 public class ChatModule {
 
     public static void joinMessage(org.bukkit.entity.Player player) {
-        player.sendMessage(ChatUtils.SEPARATOR.getPrefix());
+        player.sendMessage(ChatUtils.SEPARATOR + "");
         player.sendMessage("");
         player.sendMessage(ChatUtils.JOINED.getMessage("Bienvenue sur l'UHC !"));
         player.sendMessage("");
-        player.sendMessage(ChatUtils.SEPARATOR.getPrefix());
+        player.sendMessage(ChatUtils.SEPARATOR + "");
     }
 
     public static void rolePresentation(UHCPlayer uhcPlayer) {
         org.bukkit.entity.Player player = uhcPlayer.getPlayer();
 
-        player.sendMessage(ChatUtils.SEPARATOR.getPrefix());
+        player.sendMessage(ChatUtils.SEPARATOR + "");
         player.sendMessage("");
         player.sendMessage(ChatUtils.JOINED.getMessage("Vous êtes " + uhcPlayer.getRole().getName()));
 
@@ -69,7 +67,7 @@ public class ChatModule {
             player.sendMessage("");
         }
 
-        player.sendMessage(ChatUtils.SEPARATOR.getPrefix());
+        player.sendMessage(ChatUtils.SEPARATOR + "");
 
         //After the role presentation
         for(String line : uhcPlayer.getRole().additionalDescription()) {
@@ -79,29 +77,29 @@ public class ChatModule {
 
     public static void listEffects(UHCPlayer uhcPlayer) {
         Player player = uhcPlayer.getPlayer();
-        player.sendMessage(ChatUtils.SEPARATOR.getPrefix());
+        player.sendMessage(ChatUtils.SEPARATOR + "");
         player.sendMessage("");
         player.sendMessage(ChatUtils.JOINED.getMessage("Strength: " + uhcPlayer.getStrength() + "%"));
         player.sendMessage(ChatUtils.JOINED.getMessage("Resistance: " + uhcPlayer.getResi() + "%"));
         player.sendMessage(ChatUtils.JOINED.getMessage("Speed: " + uhcPlayer.getSpeed() + "%"));
         player.sendMessage("");
-        player.sendMessage(ChatUtils.SEPARATOR.getPrefix());
+        player.sendMessage(ChatUtils.SEPARATOR + "");
     }
 
     public static void playerDeath(UHCPlayer uhcPlayer) {
-        Bukkit.broadcastMessage(ChatUtils.SEPARATOR.getPrefix());
+        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
         Bukkit.broadcastMessage("");
         Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage(
                 "Le joueur " + uhcPlayer.getPlayer().getName() + " est mort. Il était " + ((uhcPlayer.getRole() == null) ?
                         "Pas de role" : uhcPlayer.getRole().getName())
         ));
         Bukkit.broadcastMessage("");
-        Bukkit.broadcastMessage(ChatUtils.SEPARATOR.getPrefix());
+        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
     }
 
     public static void listGameCommands(UHCPlayer uhcPlayer) {
         Player player = uhcPlayer.getPlayer();
-        player.sendMessage(ChatUtils.SEPARATOR.getPrefix());
+        player.sendMessage(ChatUtils.SEPARATOR + "");
         player.sendMessage("");
         player.sendMessage(ChatUtils.JOINED.getMessage("/ni me: Description de votre role"));
         player.sendMessage("");
@@ -109,12 +107,12 @@ public class ChatModule {
         player.sendMessage("");
         player.sendMessage(ChatUtils.JOINED.getMessage("/ni effects: Vos pourcentages d'effets"));
         player.sendMessage("");
-        player.sendMessage(ChatUtils.SEPARATOR.getPrefix());
+        player.sendMessage(ChatUtils.SEPARATOR + "");
     } // TO DO
 
     public static void listHostCommands(UHCPlayer uhcPlayer) {
         Player player = uhcPlayer.getPlayer();
-        player.sendMessage(ChatUtils.SEPARATOR.getPrefix());
+        player.sendMessage(ChatUtils.SEPARATOR + "");
         player.sendMessage("");
         player.sendMessage(ChatUtils.JOINED.getMessage("/host start: Lancer la partie"));
         player.sendMessage("");
@@ -122,6 +120,6 @@ public class ChatModule {
         player.sendMessage("");
         player.sendMessage(ChatUtils.JOINED.getMessage("/host save: Sauvegarder l'inventaire de départ"));
         player.sendMessage("");
-        player.sendMessage(ChatUtils.SEPARATOR.getPrefix());
+        player.sendMessage(ChatUtils.SEPARATOR + "");
     } // TO DO
 }

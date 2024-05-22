@@ -1,10 +1,10 @@
-package me.butter.impl.menu.list.host.settings;
+package me.butter.impl.menu.list.host.worldconfig;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ItemBuilder;
 import me.butter.api.utils.GraphicUtils;
+import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
 import org.bukkit.Material;

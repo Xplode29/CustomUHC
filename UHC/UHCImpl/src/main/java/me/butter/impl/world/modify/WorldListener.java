@@ -7,7 +7,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerAchievementAwardedEvent;
+import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
@@ -15,29 +15,35 @@ import org.bukkit.event.world.ChunkPopulateEvent;
 public class WorldListener implements Listener {
 
     @EventHandler
+    public void onThunderChange(ThunderChangeEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
     public void onWeather(WeatherChangeEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void onAcquireAchievement(PlayerAchievementAwardedEvent event) {
-        event.setCancelled(true);
-    }
-
-    @EventHandler
     public void onChunkPopulate(ChunkPopulateEvent event) {
-        setBiomeCenter(event.getChunk());
+        if(event.getWorld().getName() == "arena") {
+            setBiomeCenter(event.getChunk());
+        }
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        setBiomeCenter(event.getChunk());
+        if(event.getWorld().getName() == "arena") {
+            setBiomeCenter(event.getChunk());
+        }
     }
 
-//    @EventHandler
-//    public void onChunkUnLoad(ChunkUnloadEvent event) {
-//        event.setCancelled(true);
-//    }
+    @EventHandler
+    public void onChunkUnload(ChunkLoadEvent event) {
+        if(event.getWorld().getName() == "world" && Math.abs(event.getChunk().getX()) <= 60 && Math.abs(event.getChunk().getZ()) <= 60) {
+            event.getChunk().load();
+        }
+    }
 
     private void setBiomeCenter(Chunk chunk) {
         Location center = new Location(chunk.getWorld(), 0.0D, 60.0D, 0.0D);

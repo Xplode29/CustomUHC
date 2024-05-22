@@ -18,25 +18,24 @@ public enum ChatUtils {
     SUBLIST_ELEMENT("    - "),
     SEPARATOR("§m                                                    ");
 
-    private final String prefix;
+    public final String prefix;
 
     ChatUtils(String prefix) {
         this.prefix = prefix;
     }
 
-    public String getPrefix() {
+    public String toString() {
         return prefix;
-    }
-
-    public String getColoredPrefix(String colorCode) {
-        return colorCode + prefix;
     }
 
     public String getMessage(String message) {
         return prefix + message;
     }
 
-    public String getColoredMessage(String colorCode, String message) {
-        return colorCode + prefix + message;
+    public static String formatScoreboard(String name, String value) {
+        return ChatUtils.JOINED.prefix + "§c" + name + " : §r" + value;
+    }
+    public static String formatScoreboard(String name, boolean condition) {
+        return ChatUtils.JOINED.prefix + "§c" + name + " : §r" + (condition ? "§a✔" : "§c✘");
     }
 }

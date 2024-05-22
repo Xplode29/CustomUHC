@@ -10,7 +10,6 @@ import me.butter.api.utils.ParticleUtils;
 import me.butter.impl.scoreboard.list.GameScoreboard;
 import me.butter.impl.scoreboard.list.LobbyScoreboard;
 import me.butter.impl.tab.list.GameTab;
-import me.butter.impl.tab.list.LobbyTab;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +17,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.potion.PotionEffect;
 
 public class JoinEvents implements Listener {
 
@@ -27,12 +25,12 @@ public class JoinEvents implements Listener {
 
     public JoinEvents() {
         this.generate = false;
+        spawnLocation = new Location(Bukkit.getWorld("world"), 0.0D, 201, 0.0D);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         if (!generate) {
-            spawnLocation = new Location(UHCAPI.getInstance().getWorldHandler().getWorld(), 0.0D, 201, 0.0D);
             //Build the spawn
             int spawnSize = 40, spawnHeight = 10;
             BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2, spawnLocation.getBlockY() - 1, spawnLocation.getBlockZ() - spawnSize/2, spawnSize, spawnHeight, spawnSize, Material.BARRIER);
@@ -55,12 +53,14 @@ public class JoinEvents implements Listener {
             uhcPlayer.clearPlayer();
             uhcPlayer.setPlayerState(PlayerState.IN_LOBBY);
 
-            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(spawnLocation), 2);
+            if(!player.getWorld().equals(spawnLocation.getWorld())) {
+                Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(spawnLocation), 2);
+            }
 
             UHCAPI.getInstance().getItemHandler().giveLobbyItems(uhcPlayer);
 
             UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
-            UHCAPI.getInstance().getTabHandler().setPlayerTab(LobbyTab.class, uhcPlayer);
+            UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
 
             ParticleUtils.tornadoEffect(uhcPlayer.getPlayer(), Color.fromRGB(255, 255, 255));
         }

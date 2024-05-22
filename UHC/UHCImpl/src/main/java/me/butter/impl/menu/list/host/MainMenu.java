@@ -4,6 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.module.Module;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.ChatUtils;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
@@ -99,24 +100,12 @@ public class MainMenu extends AbstractMenu {
         buttons.put(38, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.COAL_ORE).setName("§rConfiguration du monde").toItemStack();
+                return new ItemBuilder(Material.DIRT).setName("§rConfiguration du monde").toItemStack();
             }
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
                 player.openMenu(new WorldConfigMenu(), true);
-            }
-        });
-
-        buttons.put(42, new ButtonImpl() {
-            @Override
-            public ItemStack getIcon() {
-                return new ItemBuilder(Material.LEAVES).setName("§rPrégénération").toItemStack();
-            }
-
-            @Override
-            public void onClick(UHCPlayer player, ClickType clickType) {
-                UHCAPI.getInstance().getWorldHandler().loadWorld();
             }
         });
 
@@ -135,6 +124,12 @@ public class MainMenu extends AbstractMenu {
             public void onClick(UHCPlayer player, ClickType clickType) {
                 if (UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting()) {
                     UHCAPI.getInstance().getGameHandler().getGameConfig().setStarting(false);
+                }
+                else if(!UHCAPI.getInstance().getGameHandler().getWorldConfig().isWorldGenerated()) {
+                    player.sendMessage(ChatUtils.ERROR.getMessage("Le monde arena n'est pas généré."));
+                }
+                else if(!UHCAPI.getInstance().getGameHandler().getWorldConfig().isPregenDone()) {
+                    player.sendMessage(ChatUtils.ERROR.getMessage("Le monde arena n'est pas encore totalement prégené."));
                 }
                 else {
                     UHCAPI.getInstance().getGameHandler().getGameConfig().setStarting(true);

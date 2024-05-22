@@ -4,11 +4,9 @@ import com.google.common.collect.Lists;
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.BlockUtils;
 import me.butter.impl.UHCImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -38,8 +36,8 @@ public class SpawnPointsTask extends BukkitRunnable {
 
         UHCPlayer uhcPlayer = this.players.get(0);
 
-        int randomX = new Random().nextInt(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() - 20) - UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() / 2 + 20;
-        int randomZ = new Random().nextInt(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() - 20) - UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() / 2 + 20;
+        int randomX = new Random().nextInt(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() * 2 - 20) - UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() + 20;
+        int randomZ = new Random().nextInt(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() * 2 - 20) - UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() + 20;
 
         Location randomLoc = new Location(
                 UHCAPI.getInstance().getWorldHandler().getWorld(),

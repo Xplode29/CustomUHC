@@ -2,7 +2,7 @@ package me.butter.impl.listeners;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import org.bukkit.Location;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;

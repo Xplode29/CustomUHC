@@ -4,7 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.scenario.Scenario;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.impl.menu.PaginatedMenu;
@@ -31,13 +31,13 @@ public class ScenarioMenu extends PaginatedMenu {
                 public ItemStack getIcon() {
                     if(scenario.isEnabled()) {
                         return new ItemBuilder(scenario.getIcon())
-                                .setName("§r" + scenario.getName())
+                                .setName("§r" + scenario.getName() + " - §aActivé")
                                 .addEnchant(Enchantment.DIG_SPEED, 1)
                                 .hideEnchants()
                                 .toItemStack();
                     }
                     return new ItemBuilder(scenario.getIcon())
-                            .setName("§r" + scenario.getName())
+                            .setName("§r" + scenario.getName() + " - §cDésactivé")
                             .toItemStack();
                 }
 

@@ -6,7 +6,7 @@ import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

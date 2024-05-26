@@ -4,6 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.roles.Role;
 import me.butter.ninjago.commands.CommandNinjago;
 import me.butter.ninjago.listener.CycleEvents;
+import me.butter.ninjago.roles.RoleEnum;
 import me.butter.ninjago.roles.list.ninjas.Lloyd;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,15 +17,12 @@ import java.util.Map;
 public final class Ninjago extends JavaPlugin {
 
     private static Ninjago instance;
-
-    private Map<Class<? extends Role>, Integer> rolesComposition;
     private List<Role> rolesList;
 
     @Override
     public void onLoad() {
         instance = this;
 
-        rolesComposition = new HashMap<>();
         rolesList = new ArrayList<>();
     }
 
@@ -34,8 +32,6 @@ public final class Ninjago extends JavaPlugin {
 
         registerCommands();
         registerListeners();
-
-        rolesComposition.put(Lloyd.class, 1);
     }
 
     public static Ninjago getInstance() {
@@ -51,11 +47,13 @@ public final class Ninjago extends JavaPlugin {
     }
 
     public Map<Class<? extends Role>, Integer> getRolesComposition() {
-        return rolesComposition;
-    }
+        Map<Class<? extends Role>, Integer> rolesComposition = new HashMap<>();
 
-    public void setRolesComposition(Map<Class<? extends Role>, Integer> rolesActivated) {
-        this.rolesComposition = rolesActivated;
+        for(RoleEnum role : RoleEnum.values()) {
+            rolesComposition.put(role.getRoleClass(), role.getAmount());
+        }
+
+        return rolesComposition;
     }
 
     public List<Role> getRolesList() {

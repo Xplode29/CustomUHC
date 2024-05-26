@@ -2,82 +2,78 @@ package me.butter.impl.listeners;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
+import me.butter.api.module.power.ItemPower;
+import me.butter.api.module.power.Power;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatSnippets;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class DamageHealthEvents implements Listener {
 
     @EventHandler
     public void onEntityDamaged(EntityDamageEvent event) {
+        if(!(event.getEntity() instanceof Player)) return;
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY ||
-                UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
-                UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING) {
-            if (event.getEntity() instanceof Player) {
-                event.setCancelled(true);
-                return;
-            }
+            UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
+            UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING) {
+            event.setCancelled(true);
         }
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
-            if (event.getEntity() instanceof Player) {
-                if (UHCAPI.getInstance().getGameHandler().getGameConfig().isInvincibility()) {
-                    event.setCancelled(true);
-                    return;
-                }
+            if (UHCAPI.getInstance().getGameHandler().getGameConfig().isInvincibility()) {
+                event.setCancelled(true);
             }
         }
     }
 
     @EventHandler
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY ||
-            UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
-            UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING) {
-            if (event.getEntity() instanceof Player) {
-                event.setCancelled(true);
-            }
-        }
-        else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
-            if (event.getEntity() instanceof Player) {
-                if (UHCAPI.getInstance().getGameHandler().getGameConfig().isInvincibility()) {
+    public void onPlayerDamaged(EntityDamageByEntityEvent event) {
+        if(!(event.getEntity() instanceof Player)) return;
+
+        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
+            if(!UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) {
+                if (event.getDamager() instanceof Player) {
                     event.setCancelled(true);
-                    return;
                 }
-                else {
-                    if (event.getDamager() instanceof Player) {
-                        Player victim = (Player) event.getEntity();
-                        Player damager = (Player) event.getDamager();
-
-                        UHCPlayer uhcVictim = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(victim);
-                        UHCPlayer uhcDamager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(damager);
-
-                        if (uhcDamager.getPotion(PotionEffectType.INCREASE_DAMAGE) != null) {
-                            event.setDamage(event.getDamage() / 2.299999952316284D * (1 + (double) uhcDamager.getStrength() / 100));
-                        }
-
-                        if (uhcVictim.getPotion(PotionEffectType.DAMAGE_RESISTANCE) != null) {
-                            event.setDamage(event.getDamage() / 0.800000011920929D * (1 - (double) uhcVictim.getResi() / 100));
-                        }
+                else if(event.getDamager() instanceof Projectile) {
+                    Projectile projectile = (Projectile) event.getDamager();
+                    if(projectile.getShooter() instanceof Player) {
+                        event.setCancelled(true);
                     }
                 }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
+    public void patchDamage(EntityDamageByEntityEvent event) {
+        if(event.getDamager() instanceof Player) {
+            UHCPlayer uhcDamager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
+            if (uhcDamager != null && uhcDamager.getPotion(PotionEffectType.INCREASE_DAMAGE) != null) {
+                event.setDamage(event.getDamage() / 2.299999952316284D * (1 + (double) uhcDamager.getStrength() / 100));
+            }
+        }
+
+        if(event.getEntity() instanceof Player) {
+            UHCPlayer uhcVictim = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
+
+            if (uhcVictim != null && uhcVictim.getPotion(PotionEffectType.DAMAGE_RESISTANCE) != null) {
+                event.setDamage(event.getDamage() / 0.800000011920929D * (1 - (double) uhcVictim.getResi() / 100));
             }
         }
     }
@@ -99,56 +95,90 @@ public class DamageHealthEvents implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDie(PlayerDeathEvent event) {
+    public void overrideDeathEvent(PlayerDeathEvent event) {
         event.setDeathMessage(null);
 
         Player victim = event.getEntity();
         if (victim == null) return;
         UHCPlayer uhcVictim = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(victim);
 
-        if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
-            if (!uhcVictim.getPlayerState().equals(PlayerState.IN_GAME)) return;
-
-            UHCPlayer uhcKiller = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getEntity().getKiller());
+        UHCPlayer uhcKiller = null;
+        if(event.getEntity().getKiller() != null) {
+            uhcKiller = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getEntity().getKiller());
             if (uhcKiller != null) uhcKiller.addKilledPlayer(uhcVictim);
+        }
 
-            uhcVictim.setDeathLocation(victim.getLocation());
-            uhcVictim.saveInventory();
+        uhcVictim.setDeathLocation(victim.getLocation());
+        uhcVictim.saveInventory();
 
-            UHCPlayerDeathEvent deathEvent = new UHCPlayerDeathEvent(event, uhcVictim, uhcKiller);
-            EventUtils.callEvent(deathEvent);
+        UHCPlayerDeathEvent deathEvent = new UHCPlayerDeathEvent(event, uhcVictim, uhcKiller);
+        EventUtils.callEvent(deathEvent);
 
-            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
-                victim.spigot().respawn();
-                victim.teleport(uhcVictim.getDeathLocation());
-
-                if (!UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) {
-                    uhcVictim.loadInventory();
-                    uhcVictim.setCanPickItems(false);
-
-                    Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(uhcVictim.getName() + " a été réanimé !"));
-                    for (Entity entity : uhcVictim.getDeathLocation().getWorld().getNearbyEntities(uhcVictim.getDeathLocation(), 5, 100, 5)) {
-                        if (!(entity instanceof Item)) {
-                            continue;
-                        }
-                        entity.remove();
-                    }
-                    Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
-                        uhcVictim.setCanPickItems(true);
-                    }, 10);
-                } else {
-                    victim.setGameMode(GameMode.SPECTATOR);
-                    uhcVictim.setPlayerState(PlayerState.DEAD);
+        List<ItemStack> drops = new ArrayList<>(event.getDrops());
+        if(uhcVictim.getRole() != null) {
+            for(Power power : uhcVictim.getRole().getPowers()) {
+                if(power instanceof ItemPower) {
+                    drops.remove(((ItemPower) power).getItem());
                 }
-            }, 1L);
+            }
+        }
+        event.getDrops().clear();
 
-            if (deathEvent.isCancelled()) return;
+        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
+            victim.spigot().respawn();
+            victim.teleport(uhcVictim.getDeathLocation());
 
-            Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
-            Bukkit.broadcastMessage("");
-            Bukkit.broadcastMessage(uhcVictim.getName() + " est mort !");
-            Bukkit.broadcastMessage("");
-            Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+            victim.setGameMode(GameMode.SPECTATOR);
+            uhcVictim.setPlayerState(PlayerState.DEAD);
+        }, 1L);
+
+        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
+            if (deathEvent.isCancelled()) {
+                revivePlayer(uhcVictim);
+            }
+            else if(uhcVictim.getPlayerState() == PlayerState.DEAD) {
+                for (ItemStack item : drops) {
+                    uhcVictim.getDeathLocation().getWorld().dropItemNaturally(uhcVictim.getDeathLocation(), item);
+                }
+
+                for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                    uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.WITHER_DEATH, 4.0F, 1.0F);
+                }
+                ChatSnippets.playerDeath(uhcVictim);
+            }
+        }, 5 * 20);
+    }
+
+    public static void revivePlayer(UHCPlayer uhcPlayer) {
+        uhcPlayer.setCanPickItems(false);
+        uhcPlayer.getPlayer().teleport(uhcPlayer.getDeathLocation());
+        uhcPlayer.getPlayer().setGameMode(GameMode.SURVIVAL);
+        uhcPlayer.setPlayerState(PlayerState.IN_GAME);
+        uhcPlayer.loadInventory();
+
+        Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(uhcPlayer.getName() + " a été réanimé !"));
+        for (Entity entity : uhcPlayer.getDeathLocation().getWorld().getNearbyEntities(uhcPlayer.getDeathLocation(), 5, 100, 5)) {
+            if (entity instanceof Item) {
+                entity.remove();
+            }
+        }
+
+        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
+            uhcPlayer.setCanPickItems(true);
+        }, 10);
+    }
+
+    @EventHandler
+    public void onPlayerDie(UHCPlayerDeathEvent event) {
+        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY ||
+                UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
+                UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING) {
+            event.setCancelled(true);
+        }
+        else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
+            if (!UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) {
+                event.setCancelled(true);
+            }
         }
     }
 

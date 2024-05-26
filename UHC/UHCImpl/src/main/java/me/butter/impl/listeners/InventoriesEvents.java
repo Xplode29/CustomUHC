@@ -3,11 +3,12 @@ package me.butter.impl.listeners;
 import me.butter.api.UHCAPI;
 import me.butter.api.enchant.Enchant;
 import me.butter.api.game.GameState;
+import me.butter.api.module.power.EnchantBookPower;
 import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,7 +36,7 @@ public class InventoriesEvents implements Listener {
             if(role != null && (uhcPlayer.getPlayer().getOpenInventory().getTopInventory().getType() != InventoryType.CRAFTING)) {
                 for(Power power : role.getPowers()) {
                     if(power instanceof ItemPower) {
-                        if(((ItemPower) power).getItem().isSimilar(event.getCurrentItem())) {
+                        if(((ItemPower) power).getItem().isSimilar(event.getCurrentItem()) && !((ItemPower) power).canMoveItem()) {
                             event.setCancelled(true);
                             return;
                         }
@@ -51,9 +52,20 @@ public class InventoriesEvents implements Listener {
                     return;
                 }
 
+                ItemStack book = anvil.getItem(1);
                 ItemStack result = anvil.getItem(2);
                 if (result == null || result.getEnchantments().values().isEmpty()) {
                     return;
+                }
+
+                if(uhcPlayer.getRole() != null) {
+                    for(Power power : uhcPlayer.getRole().getPowers()) {
+                        if(power instanceof EnchantBookPower) {
+                            if(((EnchantBookPower) power).getItem().isSimilar(book)) {
+                                return;
+                            }
+                        }
+                    }
                 }
 
                 for (Enchant enchant : UHCAPI.getInstance().getEnchantHandler().getEnchants()) {

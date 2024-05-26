@@ -1,7 +1,7 @@
 package me.butter.impl.world.pregen;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -20,7 +20,7 @@ public class PregenTask extends BukkitRunnable {
 
     public PregenTask(World world, int radius) {
         finished = false;
-        radius += 150;
+        radius += 64;
         this.totalChunkToLoad = Math.pow(radius, 2.0D) / 64.0D;
         this.currentChunkLoad = 0.0D;
         this.world = world;

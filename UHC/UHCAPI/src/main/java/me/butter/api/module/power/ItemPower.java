@@ -2,7 +2,7 @@ package me.butter.api.module.power;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.api.utils.GraphicUtils;
 import me.butter.api.utils.ItemBuilder;
 import org.bukkit.Material;
@@ -45,6 +45,10 @@ public abstract class ItemPower extends Power {
     }
 
     public boolean onEnable(UHCPlayer player, Action clickAction) {
+        return false;
+    }
+
+    public boolean canMoveItem() {
         return false;
     }
 }

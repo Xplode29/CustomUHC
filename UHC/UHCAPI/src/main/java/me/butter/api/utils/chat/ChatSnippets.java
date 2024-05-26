@@ -1,15 +1,14 @@
-package me.butter.ninjago.chat;
+package me.butter.api.utils.chat;
 
 import me.butter.api.module.power.CommandPower;
 import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.Power;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
 import me.butter.api.utils.GraphicUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class ChatModule {
+public class ChatSnippets {
 
     public static void joinMessage(org.bukkit.entity.Player player) {
         player.sendMessage(ChatUtils.SEPARATOR + "");
@@ -24,7 +23,7 @@ public class ChatModule {
 
         player.sendMessage(ChatUtils.SEPARATOR + "");
         player.sendMessage("");
-        player.sendMessage(ChatUtils.JOINED.getMessage("Vous êtes " + uhcPlayer.getRole().getName()));
+        player.sendMessage(ChatUtils.JOINED.getMessage("Vous êtes §r" + "§r" + uhcPlayer.getRole().getName()));
 
         //player.sendMessage(ChatUtils.JOINED.getMessage("Vous devez gagner aves les " + uhcPlayer.getRoleEnum().getCamp().getColor() + uhcPlayer.getRoleEnum().getCamp().getName()));
         player.sendMessage("");
@@ -40,11 +39,13 @@ public class ChatModule {
         if(uhcPlayer.getRole().hasItems()) {
             player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Items"));
             for(Power power : uhcPlayer.getRole().getPowers()) {
-                if(power instanceof ItemPower) {
+                if(power instanceof ItemPower && !power.hidePower()) {
                     player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage(
-                            power.getName() + ": " + String.join(" ", power.getDescription()) +
-                                    " (" + ((power.getMaxUses() > 0) ? (power.getMaxUses() + " Utilisation(s)") : "Utilisation infinie") +
-                                    " / " + ((power.getCooldown() > 0) ? (GraphicUtils.convertToAccurateTime(power.getCooldown())) : "Pas de cooldown") + ")"
+                            power.getName() + "§r: " + String.join(" ", power.getDescription()) +
+                                    (power.hideCooldowns() ? "" : (
+                                        " (" + ((power.getMaxUses() > 0) ? (power.getMaxUses() + " Utilisation(s)") : "Utilisation infinie") +
+                                        " / " + ((power.getCooldown() > 0) ? (GraphicUtils.convertToAccurateTime(power.getCooldown())) : "Pas de cooldown") + ")"
+                                    ))
                     ));
                 }
             }
@@ -55,12 +56,14 @@ public class ChatModule {
         if(uhcPlayer.getRole().hasCommands()) {
             player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Commandes"));
             for(Power power : uhcPlayer.getRole().getPowers()) {
-                if(power instanceof CommandPower) {
+                if(power instanceof CommandPower && !power.hidePower()) {
                     CommandPower commandPower = (CommandPower) power;
                     player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage(
-                            power.getName() + " (/ni " + commandPower.getArgument() + "): " + String.join(" ", power.getDescription()) +
-                                    " (" + ((power.getMaxUses() > 0) ? (power.getMaxUses() + " Utilisation(s)") : "Utilisation infinie") +
-                                    " / " + ((power.getCooldown() > 0) ? (GraphicUtils.convertToAccurateTime(power.getCooldown())) : "Pas de cooldown") + ")"
+                            power.getName() + "§r (/ni " + commandPower.getArgument() + "): " + String.join(" ", power.getDescription()) +
+                                    (power.hideCooldowns() ? "" : (
+                                        " (" + ((power.getMaxUses() > 0) ? (power.getMaxUses() + " Utilisation(s)") : "Utilisation infinie") +
+                                        " / " + ((power.getCooldown() > 0) ? (GraphicUtils.convertToAccurateTime(power.getCooldown())) : "Pas de cooldown") + ")"
+                                    ))
                     ));
                 }
             }
@@ -89,10 +92,10 @@ public class ChatModule {
     public static void playerDeath(UHCPlayer uhcPlayer) {
         Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
         Bukkit.broadcastMessage("");
-        Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage(
-                "Le joueur " + uhcPlayer.getPlayer().getName() + " est mort. Il était " + ((uhcPlayer.getRole() == null) ?
-                        "Pas de role" : uhcPlayer.getRole().getName())
-        ));
+        Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage("Le joueur " + uhcPlayer.getPlayer().getName() + " est mort."));
+        if(uhcPlayer.getRole() != null) {
+            Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage("Il était " + uhcPlayer.getRole().getName()));
+        }
         Bukkit.broadcastMessage("");
         Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
     }

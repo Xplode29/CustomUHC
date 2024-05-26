@@ -20,8 +20,8 @@ public class MeetupPreset extends AbstractPreset {
         addToStartingInventory(7, new ItemStack(Material.WOOD, 64));
         addToStartingInventory(8, new ItemStack(Material.WOOD, 64));
 
-        addToStartingInventory(27, new ItemBuilder(Material.DIAMOND_PICKAXE).addEnchant(Enchantment.DIG_SPEED, 3).setInfinityDurability().toItemStack());
-        addToStartingInventory(28, new ItemBuilder(Material.DIAMOND_AXE).addEnchant(Enchantment.DIG_SPEED, 3).setInfinityDurability().toItemStack());
+        addToStartingInventory(27, new ItemBuilder(Material.DIAMOND_PICKAXE).addEnchant(Enchantment.DIG_SPEED, 3).setUnbreakable().toItemStack());
+        addToStartingInventory(28, new ItemBuilder(Material.DIAMOND_AXE).addEnchant(Enchantment.DIG_SPEED, 3).setUnbreakable().toItemStack());
         addToStartingInventory(29, new ItemStack(Material.ARROW, 64));
         addToStartingInventory(30, new ItemStack(Material.LAVA_BUCKET));
         addToStartingInventory(31, new ItemStack(Material.WATER_BUCKET));

@@ -23,7 +23,7 @@ public class TeleportingTask extends BukkitRunnable {
     public TeleportingTask() {
         this.players = Lists.newArrayList(UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby());
         this.playerTeleported = 0;
-        this.runTaskTimer(UHCAPI.getInstance(), 0, 5);
+        this.runTaskTimer(UHCAPI.getInstance(), 0, 20);
     }
 
     @Override
@@ -49,11 +49,10 @@ public class TeleportingTask extends BukkitRunnable {
         }
 
         playerTeleported += 1;
-        UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby().forEach(uhcPlayer1 -> uhcPlayer1.sendActionBar(
-                "Téléportation de " + uhcPlayer.getName() + " (" + playerTeleported + "/" + UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby().size() + ")"
+        UHCAPI.getInstance().getPlayerHandler().getPlayers().forEach(uhcPlayer1 -> uhcPlayer1.sendActionBar(
+                "Téléportation de " + uhcPlayer.getName() + " (" + playerTeleported + "/" + UHCAPI.getInstance().getPlayerHandler().getPlayers().size() + ")"
         ));
-
-        uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_STICKS, 6.0F, 1.0F);
+        UHCAPI.getInstance().getPlayerHandler().getPlayers().forEach(uhcPlayer1 -> uhcPlayer1.getPlayer().playSound(uhcPlayer1.getLocation(), Sound.NOTE_STICKS, 6.0F, 1.0F));
 
         this.players.remove(0);
     }

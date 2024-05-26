@@ -20,7 +20,7 @@ public interface Module {
     JavaPlugin getPlugin();
 
     boolean hasRoles();
-    Map<Class<? extends Role>, Integer> getRoleComposition(); void setRolesComposition(Map<Class<? extends Role>, Integer> rolesActivated);
+    Map<Class<? extends Role>, Integer> getRoleComposition();
     List<Role> getRolesList(); void setRolesList(List<Role> roles);
 
     boolean hasTeams(); boolean hasCustomDeath();

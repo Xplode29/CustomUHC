@@ -2,7 +2,7 @@ package me.butter.api.module.power;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.api.utils.GraphicUtils;
 
 public abstract class Power {
@@ -57,5 +57,13 @@ public abstract class Power {
 
     public int getCooldown() {
         return cooldown;
+    }
+
+    public boolean hideCooldowns() {
+        return false;
+    }
+
+    public boolean hidePower() {
+        return false;
     }
 }

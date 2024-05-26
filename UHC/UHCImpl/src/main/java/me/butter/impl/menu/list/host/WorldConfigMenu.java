@@ -3,7 +3,7 @@ package me.butter.impl.menu.list.host;
 import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
@@ -41,7 +41,7 @@ public class WorldConfigMenu extends AbstractMenu {
         buttonMap.put(19, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.BARRIER).setName("§rBorder Initiale").toItemStack();
+                return new ItemBuilder(Material.BARRIER).setName("§rBorder Initiale: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize()).toItemStack();
             }
 
             @Override
@@ -53,7 +53,7 @@ public class WorldConfigMenu extends AbstractMenu {
         buttonMap.put(20, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.BARRIER).setName("§rBorder Finale").toItemStack();
+                return new ItemBuilder(Material.BARRIER).setName("§rBorder Finale: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize()).toItemStack();
             }
 
             @Override

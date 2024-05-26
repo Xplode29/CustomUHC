@@ -5,7 +5,8 @@ import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatSnippets;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.UHCImpl;
 import me.butter.impl.timer.AbstractTimer;
 import org.bukkit.Bukkit;
@@ -25,11 +26,14 @@ public class RoleTimer extends AbstractTimer {
     @Override
     public void onTimerDone() {
         List<Role> roleList = new ArrayList<>();
+
+        int index = 0;
         for(Map.Entry<Class<? extends Role>, Integer> role : UHCAPI.getInstance().getModuleHandler().getModule().getRoleComposition().entrySet()) {
-            if(role.getValue() == 0) continue;
-            for(int i = 0; i < role.getValue(); i++) {
+            if(role.getValue() == 0 || index >= UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size()) continue;
+            for(int j = 0; j < role.getValue(); j++) {
                 try {
                     roleList.add(role.getKey().newInstance());
+                    index++;
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -39,6 +43,7 @@ public class RoleTimer extends AbstractTimer {
 
         if(roleList.size() < UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size()) {
             Bukkit.broadcastMessage(ChatUtils.ERROR.getMessage("Il n'y a pas assez de roles actifs !"));
+            Bukkit.broadcastMessage(roleList + "/" + UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().toString());
             return;
         }
 
@@ -51,7 +56,7 @@ public class RoleTimer extends AbstractTimer {
             role.setUHCPlayer(player);
             player.setRole(role);
 
-            player.sendMessage(ChatUtils.GLOBAL_INFO.getMessage("Vous avez obtenu le role " + role.getName() + " !"));
+            ChatSnippets.rolePresentation(player);
 
             role.onGiveRole();
 
@@ -66,11 +71,11 @@ public class RoleTimer extends AbstractTimer {
             }
         }
 
+        UHCAPI.getInstance().getModuleHandler().getModule().setRolesList(roleList);
+
         for(Role role : roleList) {
             role.onDistributionFinished();
         }
-
-        UHCAPI.getInstance().getModuleHandler().getModule().setRolesList(roleList);
     }
 
     @Override

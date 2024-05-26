@@ -1,7 +1,7 @@
 package me.butter.impl.timer.list;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.timer.AbstractTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -9,7 +9,7 @@ import org.bukkit.Material;
 public class PVPTimer extends AbstractTimer {
 
     public PVPTimer() {
-        super("PVP", Material.DIAMOND_SWORD, 20 * 60);
+        super("PVP", Material.DIAMOND_SWORD, 20);
     }
 
     @Override

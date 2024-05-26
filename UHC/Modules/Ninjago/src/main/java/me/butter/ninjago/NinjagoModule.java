@@ -59,11 +59,6 @@ public class NinjagoModule implements Module {
     }
 
     @Override
-    public void setRolesComposition(Map<Class<? extends Role>, Integer> rolesActivated) {
-        Ninjago.getInstance().setRolesComposition(rolesActivated);
-    }
-
-    @Override
     public List<Role> getRolesList() {
         return Ninjago.getInstance().getRolesList();
     }

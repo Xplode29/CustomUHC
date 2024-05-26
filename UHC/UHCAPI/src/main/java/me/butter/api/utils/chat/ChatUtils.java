@@ -1,4 +1,4 @@
-package me.butter.api.utils;
+package me.butter.api.utils.chat;
 
 import org.bukkit.ChatColor;
 

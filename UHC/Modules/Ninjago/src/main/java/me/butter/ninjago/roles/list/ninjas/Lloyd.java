@@ -1,9 +1,13 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.enchant.Enchant;
+import me.butter.api.module.power.EnchantBookPower;
 import me.butter.api.module.power.ItemPower;
+import me.butter.api.module.power.Power;
+import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.api.utils.GraphicUtils;
 import me.butter.api.utils.ParticleUtils;
 import me.butter.ninjago.roles.NinjagoRole;
@@ -25,15 +29,22 @@ import java.util.List;
 
 public class Lloyd extends NinjagoRole {
 
-    private final GoldenSwordPower goldenSwordPower;
+    private GoldenSwordPower goldenSwordPower;
 
     public Lloyd() {
         super("Lloyd", "soon", Arrays.asList(
                 new GoldenSwordPower(),
+                new ProtectionBook(),
                 new SpinjitzuPower()
         ));
 
-        goldenSwordPower = (GoldenSwordPower) getPowers().get(0);
+        goldenSwordPower = null;
+        for(Power power : getPowers()) {
+            if(power instanceof GoldenSwordPower) {
+                goldenSwordPower = (GoldenSwordPower) power;
+                return;
+            }
+        }
     }
 
     @Override
@@ -41,6 +52,11 @@ public class Lloyd extends NinjagoRole {
         return new String[]{
                 "Vous possédez Force 1 (20%) ainsi que 13 coeurs permanents"
         };
+    }
+
+    @Override
+    public boolean isNinja() {
+        return true;
     }
 
     @Override
@@ -65,7 +81,18 @@ public class Lloyd extends NinjagoRole {
         }
     }
 
-    private static class GoldenSwordPower extends ItemPower {
+    private static class ProtectionBook extends EnchantBookPower {
+        public ProtectionBook() {
+            super("§rLivre Protection 3", Enchantment.PROTECTION_ENVIRONMENTAL, 3);
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[]{"Un livre enchanté protection 3. Il est possible de le fusionner avec une piece en diamant."};
+        }
+    }
+
+    private static class GoldenSwordPower extends RightClickItemPower {
 
         public boolean explosionNextHit = false;
 
@@ -128,13 +155,14 @@ public class Lloyd extends NinjagoRole {
                 if(timer < 3 * 20) {
                     if(!uhcPlayer.getPlayer().isBlocking()) {
                         uhcPlayer.sendMessage(ChatUtils.ERROR.getMessage("Vous avez relaché trop tot !"));
+                        isCharging = false;
                         cancel();
                         return;
                     }
                     timer++;
                     float progress = (timer / (20f * 3));
                     uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_STICKS, 3.0F, (float)Math.pow(2.0, ((double)(progress) * 12 - 12.0) / 12.0));
-                    GraphicUtils.getProgressBar((int) (progress * 100), 100, 20, '|', ChatColor.GREEN, ChatColor.GRAY);
+                    uhcPlayer.sendActionBar(GraphicUtils.getProgressBar((int) (progress * 100), 100, 20, '|', ChatColor.GREEN, ChatColor.GRAY));
                 }
                 else {
                     uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_PLING, 3.0F, 6.0f);
@@ -147,7 +175,7 @@ public class Lloyd extends NinjagoRole {
         }
     }
 
-    private static class SpinjitzuPower extends ItemPower {
+    private static class SpinjitzuPower extends RightClickItemPower {
 
         public SpinjitzuPower() {
             super(ChatColor.GREEN + "Spinjitzu", Material.NETHER_STAR, 5 * 60, -1);
@@ -172,7 +200,7 @@ public class Lloyd extends NinjagoRole {
                 entity.setVelocity(newVelocity);
             }
 
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.fromRGB(120, 214, 28));
+            ParticleUtils.tornadoEffect(player.getPlayer(), Color.GREEN);
 
             return true;
         }

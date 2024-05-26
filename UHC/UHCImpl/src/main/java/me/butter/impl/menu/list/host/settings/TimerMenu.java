@@ -4,6 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.timer.Timer;
+import me.butter.api.utils.GraphicUtils;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.impl.menu.PaginatedMenu;
@@ -25,7 +26,7 @@ public class TimerMenu extends PaginatedMenu {
             buttons.add(new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
-                    return new ItemBuilder(timer.getIcon()).setName("§r" + timer.getName()).toItemStack();
+                    return new ItemBuilder(timer.getIcon()).setName("§r" + timer.getName() + ": " + GraphicUtils.convertToAccurateTime(timer.getMaxTimer())).toItemStack();
                 }
 
                 @Override

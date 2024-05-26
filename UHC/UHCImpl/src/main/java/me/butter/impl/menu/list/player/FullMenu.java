@@ -2,7 +2,7 @@ package me.butter.impl.menu.list.player;
 
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.impl.menu.PaginatedMenu;
 import org.bukkit.event.inventory.ClickType;

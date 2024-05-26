@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class NoDropScenario extends AbstractScenario {
     public NoDropScenario() {
-        super("NoDrop", Material.DIAMOND_PICKAXE);
+        super("SafeOres", Material.DIAMOND_PICKAXE);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

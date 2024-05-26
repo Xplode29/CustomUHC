@@ -44,12 +44,6 @@ public class BlockEvents implements Listener {
             event.setCancelled(true);
             return;
         }
-        else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
-            if (!event.getPlayer().isOp()) {
-                event.setCancelled(true);
-                return;
-            }
-        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

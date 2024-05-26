@@ -33,6 +33,8 @@ public interface UHCPlayer {
 
     boolean canPickItems(); void setCanPickItems(boolean canPickItems);
 
+    boolean hasNoFall(); void setNoFall(boolean hasNoFall);
+
     void clearPlayer();
 
     List<UUID> getKilledPlayers(); void setKilledPlayers(List<UUID> killedPlayers);

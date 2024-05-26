@@ -33,7 +33,7 @@ public class TimberScenario extends AbstractScenario {
 
         public breakRunnable(Block block) {
             this.block = block;
-            this.runTaskLater(UHCAPI.getInstance(), 1);
+            this.runTaskLater(UHCAPI.getInstance(), 3);
         }
 
         @Override

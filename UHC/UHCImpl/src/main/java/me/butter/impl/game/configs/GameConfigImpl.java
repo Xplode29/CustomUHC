@@ -19,9 +19,9 @@ public class GameConfigImpl implements GameConfig {
         this.timer = 0;
         this.day = true;
         this.doesDayCycle = true;
-        this.dayDuration = 10 * 60;
+        this.dayDuration = 30;
         this.episode = 0;
-        this.episodeDuration = 20 * 60;
+        this.episodeDuration = 60;
 
         this.invincibility = true;
         this.pvp = false;

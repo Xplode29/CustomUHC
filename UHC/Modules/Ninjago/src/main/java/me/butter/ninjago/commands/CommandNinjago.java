@@ -3,14 +3,20 @@ package me.butter.ninjago.commands;
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;
 import me.butter.api.module.power.Power;
+import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
-import me.butter.ninjago.chat.ChatModule;
+import me.butter.api.utils.chat.ChatUtils;
+import me.butter.api.utils.chat.ChatSnippets;
+import me.butter.impl.timer.list.RoleTimer;
+import me.butter.ninjago.Ninjago;
+import me.butter.ninjago.roles.CampEnum;
+import me.butter.ninjago.roles.RoleEnum;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,11 +41,37 @@ public class CommandNinjago implements TabExecutor {
                     return true;
                 }
 
-                ChatModule.rolePresentation(sender);
-
+                ChatSnippets.rolePresentation(sender);
                 break;
+
             case "effects":
-                ChatModule.listEffects(sender);
+                ChatSnippets.listEffects(sender);
+                break;
+
+            case "roles":
+                sender.sendMessage(ChatUtils.SEPARATOR.prefix);
+                sender.sendMessage("");
+                for(CampEnum campEnum : CampEnum.values()) {
+                    int rolesAmount = 0;
+                    List<String> roles = new ArrayList<>();
+
+                    for (RoleEnum roleEnum : RoleEnum.values()) {
+                        if (roleEnum.getCampEnum() == campEnum) {
+                            int amount = Ninjago.getInstance().getRolesComposition().get(roleEnum.getRoleClass());
+                            if (amount > 0) {
+                                rolesAmount += amount;
+                                roles.add(ChatUtils.LIST_ELEMENT.getMessage(roleEnum.getName() + " (" + amount + ")"));
+                            }
+                        }
+                    }
+
+                    sender.sendMessage(ChatUtils.LIST_HEADER.getMessage(campEnum.getCamp().getName() + "§r (" + rolesAmount + ")"));
+                    for(String role : roles) {
+                        sender.sendMessage(role);
+                    }
+                    sender.sendMessage("");
+                }
+                sender.sendMessage(ChatUtils.SEPARATOR.prefix);
                 break;
 
             default:

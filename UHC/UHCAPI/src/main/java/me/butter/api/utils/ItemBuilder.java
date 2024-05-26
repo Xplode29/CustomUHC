@@ -160,7 +160,7 @@ public class ItemBuilder {
     }
 
 
-    public ItemBuilder setInfinityDurability() {
+    public ItemBuilder setUnbreakable() {
         ItemMeta meta = this.is.getItemMeta();
         meta.spigot().setUnbreakable(true);
         this.is.setItemMeta(meta);

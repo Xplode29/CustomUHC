@@ -31,7 +31,7 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     Role role;
 
-    boolean canPickItems;
+    boolean canPickItems, noFall;
 
     int diamondMined;
 
@@ -51,6 +51,7 @@ public class UHCPlayerImpl implements UHCPlayer {
         this.playerState = PlayerState.IN_SPEC;
 
         this.canPickItems = true;
+        this.noFall = false;
 
         this.diamondMined = 0;
 
@@ -185,6 +186,16 @@ public class UHCPlayerImpl implements UHCPlayer {
     }
 
     @Override
+    public boolean hasNoFall() {
+        return noFall;
+    }
+
+    @Override
+    public void setNoFall(boolean hasNoFall) {
+        this.noFall = hasNoFall;
+    }
+
+    @Override
     public void clearPlayer() {
         clearEffects(); clearInventory(); clearStash();
         killedPlayers.clear();
@@ -300,6 +311,7 @@ public class UHCPlayerImpl implements UHCPlayer {
         if(getPlayer() == null) return;
         inventory = Arrays.asList(getPlayer().getInventory().getContents());
         armor = Arrays.asList(getPlayer().getInventory().getArmorContents());
+        Collections.reverse(armor);
     }
 
     @Override

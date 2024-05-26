@@ -1,5 +1,6 @@
 package me.butter.ninjago.roles;
 
+import me.butter.api.module.camp.Camp;
 import me.butter.api.module.power.CommandPower;
 import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.Power;
@@ -17,6 +18,8 @@ public class NinjagoRole implements Role, Listener {
 
     List<Power> powers;
     UHCPlayer uhcPlayer;
+
+    Camp camp;
 
     public NinjagoRole(String name, String doc, List<Power> powers) {
         this.name = name;
@@ -37,6 +40,16 @@ public class NinjagoRole implements Role, Listener {
     @Override
     public String getDoc() {
         return doc;
+    }
+
+    @Override
+    public Camp getCamp() {
+        return camp;
+    }
+
+    @Override
+    public void setCamp(Camp camp) {
+        this.camp = camp;
     }
 
     @Override
@@ -65,6 +78,7 @@ public class NinjagoRole implements Role, Listener {
         powers.removeIf(power -> power.getClass().equals(powerClass));
     }
 
+    @Override
     public boolean hasItems() {
         for(Power power : getPowers()) {
             if(power instanceof ItemPower) {
@@ -74,6 +88,7 @@ public class NinjagoRole implements Role, Listener {
         return false;
     }
 
+    @Override
     public boolean hasCommands() {
         for(Power power : getPowers()) {
             if(power instanceof CommandPower) {
@@ -113,8 +128,11 @@ public class NinjagoRole implements Role, Listener {
 
     }
 
-    @Override
-    public void onDie(UHCPlayer killer) {
+    public boolean isNinja() {
+        return false;
+    }
 
+    public boolean isInList() {
+        return false;
     }
 }

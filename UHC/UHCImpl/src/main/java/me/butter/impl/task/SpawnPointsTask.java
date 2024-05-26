@@ -23,7 +23,7 @@ public class SpawnPointsTask extends BukkitRunnable {
         this.players = Lists.newArrayList(UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby());
         this.spawnPoints = 0;
         UHCAPI.getInstance().getGameHandler().setGameState(GameState.TELEPORTING);
-        this.runTaskTimer(UHCImpl.getInstance(), 0, 5);
+        this.runTaskTimer(UHCImpl.getInstance(), 0, 20);
     }
 
     @Override

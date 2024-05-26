@@ -4,7 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.module.Module;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
@@ -61,30 +61,6 @@ public class MainMenu extends AbstractMenu {
             }
         });
 
-        if(UHCAPI.getInstance().getModuleHandler().hasModule()) {
-            Module module = UHCAPI.getInstance().getModuleHandler().getModule();
-            if(module.hasModuleMenu()) {
-                buttons.put(22, new ButtonImpl() {
-                    @Override
-                    public ItemStack getIcon() {
-                        return new ItemBuilder(module.getIcon())
-                                .setName(module.getMainColor() + module.getName())
-                                .toItemStack();
-                    }
-
-                    @Override
-                    public void onClick(UHCPlayer uhcPlayer, ClickType clickType) {
-                        try {
-                            uhcPlayer.openMenu(module.getMainMenuClass().newInstance(), true);
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        }
-
         buttons.put(25, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
@@ -108,6 +84,30 @@ public class MainMenu extends AbstractMenu {
                 player.openMenu(new WorldConfigMenu(), true);
             }
         });
+
+        if(UHCAPI.getInstance().getModuleHandler().hasModule()) {
+            Module module = UHCAPI.getInstance().getModuleHandler().getModule();
+            if(module.hasModuleMenu()) {
+                buttons.put(42, new ButtonImpl() {
+                    @Override
+                    public ItemStack getIcon() {
+                        return new ItemBuilder(module.getIcon())
+                                .setName(module.getMainColor() + module.getName())
+                                .toItemStack();
+                    }
+
+                    @Override
+                    public void onClick(UHCPlayer uhcPlayer, ClickType clickType) {
+                        try {
+                            uhcPlayer.openMenu(module.getMainMenuClass().newInstance(), true);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }
 
         buttons.put(49, new ButtonImpl() {
             @Override

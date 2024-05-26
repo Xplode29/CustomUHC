@@ -24,12 +24,12 @@ public class MainNinjagoMenu extends AbstractMenu {
         buttons.put(11, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.CHEST).setName("§rTest").toItemStack();
+                return new ItemBuilder(Material.DIAMOND).setName("§rRoles").toItemStack();
             }
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                player.sendMessage("Test");
+                player.openMenu(new RoleMenu(), true);
             }
         });
 

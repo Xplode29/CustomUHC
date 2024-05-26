@@ -1,7 +1,7 @@
 package me.butter.impl.world;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.api.world.OrePopulator;
 import me.butter.api.world.WorldHandler;
 import me.butter.impl.UHCImpl;

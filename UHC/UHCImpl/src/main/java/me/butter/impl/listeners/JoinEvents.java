@@ -5,7 +5,7 @@ import me.butter.api.game.GameState;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.BlockUtils;
-import me.butter.api.utils.ChatUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.api.utils.ParticleUtils;
 import me.butter.impl.scoreboard.list.GameScoreboard;
 import me.butter.impl.scoreboard.list.LobbyScoreboard;
@@ -53,9 +53,7 @@ public class JoinEvents implements Listener {
             uhcPlayer.clearPlayer();
             uhcPlayer.setPlayerState(PlayerState.IN_LOBBY);
 
-            if(!player.getWorld().equals(spawnLocation.getWorld())) {
-                Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(spawnLocation), 2);
-            }
+            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(spawnLocation), 2);
 
             UHCAPI.getInstance().getItemHandler().giveLobbyItems(uhcPlayer);
 

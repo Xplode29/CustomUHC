@@ -1,6 +1,7 @@
 package me.butter.impl.events.custom;
 
 import me.butter.api.player.UHCPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -24,7 +25,7 @@ public class UHCPlayerDeathEvent extends Event implements Cancellable {
     private PlayerDeathEvent originalEvent;
     private boolean cancelled;
 
-    public UHCPlayerDeathEvent(PlayerDeathEvent originalEvent, UHCPlayer killer, UHCPlayer victim) {
+    public UHCPlayerDeathEvent(PlayerDeathEvent originalEvent, UHCPlayer victim, UHCPlayer killer) {
         this.originalEvent = originalEvent;
         this.killer = killer;
         this.victim = victim;

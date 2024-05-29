@@ -4,9 +4,9 @@ import me.butter.api.game.configs.WorldConfig;
 
 public class WorldConfigImpl implements WorldConfig {
 
-    boolean worldGenerated, pregenDone, borderMoving;
+    private boolean worldGenerated, pregenDone, borderMoving;
 
-    int appleDropRate, flintDropRate, enderPearlDropRate, diamondLimit, expBoost, startingBorderSize, finalBorderSize;
+    private int appleDropRate, flintDropRate, enderPearlDropRate, diamondLimit, expBoost, startingBorderSize, finalBorderSize;
 
     public WorldConfigImpl() {
         this.worldGenerated = false;

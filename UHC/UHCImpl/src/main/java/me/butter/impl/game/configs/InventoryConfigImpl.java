@@ -11,9 +11,9 @@ import java.util.List;
 
 public class InventoryConfigImpl implements InventoryConfig {
 
-    List<Preset> presets = new ArrayList<>();
+    private List<Preset> presets = new ArrayList<>();
 
-    List<ItemStack> startingInventory, startingArmor, deathInventory;
+    private List<ItemStack> startingInventory, startingArmor, deathInventory;
 
     public InventoryConfigImpl() {
         this.startingInventory = new ArrayList<>();

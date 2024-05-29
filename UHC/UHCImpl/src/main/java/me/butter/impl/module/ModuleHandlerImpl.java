@@ -7,7 +7,7 @@ import me.butter.impl.timer.list.RoleTimer;
 
 public class ModuleHandlerImpl implements ModuleHandler {
 
-    Module module;
+    private Module module;
 
     @Override
     public Module getModule() {

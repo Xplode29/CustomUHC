@@ -4,7 +4,7 @@ import me.butter.api.game.configs.ItemConfig;
 
 public class ItemConfigImpl implements ItemConfig {
 
-    boolean rod, enderPearl, bow, projectile, lavaBucket, flintAndSteel;
+    private boolean rod, enderPearl, bow, projectile, lavaBucket, flintAndSteel;
 
     public ItemConfigImpl() {
         this.rod = false;

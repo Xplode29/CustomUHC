@@ -13,7 +13,8 @@ import me.butter.api.tab.TabHandler;
 import me.butter.api.timer.TimerHandler;
 import me.butter.api.world.WorldHandler;
 import me.butter.impl.commands.CommandFull;
-import me.butter.impl.commands.CommandHost;
+import me.butter.impl.commands.HostCommands;
+import me.butter.impl.commands.old.CommandHost;
 import me.butter.impl.commands.CommandRules;
 import me.butter.impl.enchant.EnchantHandlerImpl;
 import me.butter.impl.game.GameHandlerImpl;
@@ -85,7 +86,7 @@ public final class UHCImpl extends UHCAPI {
     }
 
     void registerCommands() {
-        getCommand("host").setExecutor(new CommandHost());
+        getCommand("host").setExecutor(new HostCommands());
         getCommand("rules").setExecutor(new CommandRules());
         getCommand("full").setExecutor(new CommandFull());
     }

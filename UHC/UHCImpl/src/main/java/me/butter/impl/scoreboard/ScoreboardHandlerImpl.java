@@ -15,8 +15,8 @@ import java.util.List;
 
 public class ScoreboardHandlerImpl implements ScoreboardHandler {
 
-    List<CustomScoreboard> scoreboardList;
-    ScoreboardManager scoreboardManager;
+    private List<CustomScoreboard> scoreboardList;
+    private ScoreboardManager scoreboardManager;
 
     public ScoreboardHandlerImpl() {
         scoreboardList = Lists.newArrayList();

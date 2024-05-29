@@ -101,18 +101,18 @@ public class DamageHealthEvents implements Listener {
         Player victim = event.getEntity();
         if (victim == null) return;
         UHCPlayer uhcVictim = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(victim);
+        if (uhcVictim == null) return;
 
-        UHCPlayer uhcKiller = null;
+        UHCPlayer uhcKiller;
         if(event.getEntity().getKiller() != null) {
             uhcKiller = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getEntity().getKiller());
             if (uhcKiller != null) uhcKiller.addKilledPlayer(uhcVictim);
+        } else {
+            uhcKiller = null;
         }
 
         uhcVictim.setDeathLocation(victim.getLocation());
         uhcVictim.saveInventory();
-
-        UHCPlayerDeathEvent deathEvent = new UHCPlayerDeathEvent(event, uhcVictim, uhcKiller);
-        EventUtils.callEvent(deathEvent);
 
         List<ItemStack> drops = new ArrayList<>(event.getDrops());
         if(uhcVictim.getRole() != null) {
@@ -124,6 +124,9 @@ public class DamageHealthEvents implements Listener {
         }
         event.getDrops().clear();
 
+        UHCPlayerDeathEvent deathEvent = new UHCPlayerDeathEvent(event, uhcVictim, uhcKiller);
+        EventUtils.callEvent(deathEvent);
+
         Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
             victim.spigot().respawn();
             victim.teleport(uhcVictim.getDeathLocation());
@@ -133,39 +136,24 @@ public class DamageHealthEvents implements Listener {
         }, 1L);
 
         Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
-            if (deathEvent.isCancelled()) {
-                revivePlayer(uhcVictim);
-            }
-            else if(uhcVictim.getPlayerState() == PlayerState.DEAD) {
+            if(uhcVictim.getPlayerState() != PlayerState.DEAD) return;
+            if(!deathEvent.isCancelled()) {
                 for (ItemStack item : drops) {
                     uhcVictim.getDeathLocation().getWorld().dropItemNaturally(uhcVictim.getDeathLocation(), item);
                 }
 
-                for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
-                    uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.WITHER_DEATH, 4.0F, 1.0F);
+                if(!UHCAPI.getInstance().getModuleHandler().hasModule() || !UHCAPI.getInstance().getModuleHandler().getModule().hasCustomDeath()) {
+                    ChatSnippets.playerDeath(uhcVictim);
+
+                    for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                        uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.WITHER_DEATH, 6.0F, 1.0F);
+                    }
                 }
-                ChatSnippets.playerDeath(uhcVictim);
             }
-        }, 5 * 20);
-    }
-
-    public static void revivePlayer(UHCPlayer uhcPlayer) {
-        uhcPlayer.setCanPickItems(false);
-        uhcPlayer.getPlayer().teleport(uhcPlayer.getDeathLocation());
-        uhcPlayer.getPlayer().setGameMode(GameMode.SURVIVAL);
-        uhcPlayer.setPlayerState(PlayerState.IN_GAME);
-        uhcPlayer.loadInventory();
-
-        Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(uhcPlayer.getName() + " a été réanimé !"));
-        for (Entity entity : uhcPlayer.getDeathLocation().getWorld().getNearbyEntities(uhcPlayer.getDeathLocation(), 5, 100, 5)) {
-            if (entity instanceof Item) {
-                entity.remove();
+            else {
+                uhcVictim.revive();
             }
-        }
-
-        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
-            uhcPlayer.setCanPickItems(true);
-        }, 10);
+        }, 5 * 20L);
     }
 
     @EventHandler
@@ -179,6 +167,16 @@ public class DamageHealthEvents implements Listener {
             if (!UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) {
                 event.setCancelled(true);
             }
+        }
+
+        if(event.getKiller() != null) {
+            UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().sendMessage(ChatUtils.GLOBAL_INFO.getMessage(event.getKiller().getName() + " a tue " + event.getVictim().getName() + "."));
+        }
+        else if(event.getVictim().getPlayer() != null) {
+            UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().sendMessage(ChatUtils.GLOBAL_INFO.getMessage(event.getVictim().getPlayer().getName() + " est mort par " + event.getVictim().getPlayer().getLastDamageCause().getCause().name() + "."));
+        }
+        else {
+            UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().sendMessage(ChatUtils.GLOBAL_INFO.getMessage(event.getVictim().getPlayer().getName() + " est mort."));
         }
     }
 

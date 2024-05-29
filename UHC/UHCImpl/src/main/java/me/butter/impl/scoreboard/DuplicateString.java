@@ -2,8 +2,8 @@ package me.butter.impl.scoreboard;
 
 public class DuplicateString {
 
-    String string;
-    int number;
+    private String string;
+    private int number;
 
     public DuplicateString(String string, int number) {
         this.string = string;

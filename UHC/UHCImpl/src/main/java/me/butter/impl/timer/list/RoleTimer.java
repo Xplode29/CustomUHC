@@ -4,6 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
+import me.butter.api.module.roles.RoleType;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatSnippets;
 import me.butter.api.utils.chat.ChatUtils;
@@ -13,9 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RoleTimer extends AbstractTimer {
 
@@ -27,12 +26,22 @@ public class RoleTimer extends AbstractTimer {
     public void onTimerDone() {
         List<Role> roleList = new ArrayList<>();
 
+        List<RoleType> roleComposition = UHCAPI.getInstance().getModuleHandler().getModule().getRoleComposition();
+        Collections.reverse(roleComposition);
+
+        List<UHCPlayer> players = new ArrayList<>(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame());
+        for(int i = 0; i < new Random().nextInt(4); i++) {
+            Collections.shuffle(players);
+        }
+
         int index = 0;
-        for(Map.Entry<Class<? extends Role>, Integer> role : UHCAPI.getInstance().getModuleHandler().getModule().getRoleComposition().entrySet()) {
-            if(role.getValue() == 0 || index >= UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size()) continue;
-            for(int j = 0; j < role.getValue(); j++) {
+        for(RoleType roleType : roleComposition) {
+            if(roleType.getAmount() == 0 || index >= UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size()) continue;
+            for(int j = 0; j < roleType.getAmount(); j++) {
                 try {
-                    roleList.add(role.getKey().newInstance());
+                    Role role = roleType.getRoleClass().newInstance();
+                    role.setCamp(roleType.getCamp());
+                    roleList.add(role);
                     index++;
                 }
                 catch (Exception e) {
@@ -41,14 +50,13 @@ public class RoleTimer extends AbstractTimer {
             }
         }
 
-        if(roleList.size() < UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size()) {
+        if(roleList.size() < players.size()) {
             Bukkit.broadcastMessage(ChatUtils.ERROR.getMessage("Il n'y a pas assez de roles actifs !"));
-            Bukkit.broadcastMessage(roleList + "/" + UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().toString());
             return;
         }
 
-        for(int i = 0; i < UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size(); i++) {
-            UHCPlayer player = UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().get(i);
+        for(int i = 0; i < players.size(); i++) {
+            UHCPlayer player = players.get(i);
             Role role = roleList.get(i);
             if(player == null || role == null) continue;
             if(player.getRole() != null) continue;

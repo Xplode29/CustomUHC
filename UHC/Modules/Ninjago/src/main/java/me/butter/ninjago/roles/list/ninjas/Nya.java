@@ -1,8 +1,8 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.module.power.EnchantBookPower;
 import me.butter.api.module.power.ItemPower;
-import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.GraphicUtils;
@@ -14,7 +14,6 @@ import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
@@ -30,7 +29,9 @@ public class Nya extends NinjagoRole {
 
     static boolean samuraiActive = false;
     static int samuraiTimer = 0;
-    static int maxTimer = 2 * 60;
+    static int maxSamuraiTimer = 2 * 60;
+
+    static int maxBookTimer = 5 * 60;
 
     public Nya() {
         super("Nya", "doc", Arrays.asList(
@@ -56,7 +57,6 @@ public class Nya extends NinjagoRole {
         }
         UHCPlayer finalKay = kay;
         Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), new Runnable() {
-
             boolean nextToKay = false;
             int bookTimer = 0;
 
@@ -67,7 +67,7 @@ public class Nya extends NinjagoRole {
                 }
 
                 samuraiTimer++;
-                if(samuraiActive && samuraiTimer > maxTimer) {
+                if(samuraiActive && samuraiTimer > maxSamuraiTimer) {
                     samuraiActive = false;
                     getUHCPlayer().sendMessage(ChatUtils.ERROR.getMessage("Vous n'avez plus assez de temps, votre samurai X s'est désactivé"));
                 }
@@ -83,14 +83,10 @@ public class Nya extends NinjagoRole {
 
                 if(nextToKay) {
                     bookTimer++;
-                    if(bookTimer >= 10 * 60) {
-                        ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
-                        ItemMeta itemMeta = book.getItemMeta();
-                        itemMeta.setDisplayName(getName());
-                        ((EnchantmentStorageMeta) itemMeta).addStoredEnchant(Enchantment.DEPTH_STRIDER, 3, true);
-                        book.setItemMeta(itemMeta);
-
-                        getUHCPlayer().giveItem(book, true);
+                    if(bookTimer >= maxBookTimer) {
+                        DepthStriderBook book = new DepthStriderBook();
+                        addPower(book);
+                        getUHCPlayer().giveItem(book.getItem(), true);
                     }
                 }
             }
@@ -124,7 +120,18 @@ public class Nya extends NinjagoRole {
     public void onPlayerDeath(UHCPlayerDeathEvent event) {
         if(event.getKiller() != getUHCPlayer()) return;
 
-        maxTimer += 30;
+        maxSamuraiTimer += 30;
+    }
+
+    private static class DepthStriderBook extends EnchantBookPower {
+        public DepthStriderBook() {
+            super("§rLivre Depth Strider 3", Enchantment.DEPTH_STRIDER, 3);
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[]{"Un livre enchanté Depth Strider 3. Il est possible de le fusionner avec une piece en diamant."};
+        }
     }
 
     private static class SamuraiPower extends ItemPower {
@@ -145,7 +152,7 @@ public class Nya extends NinjagoRole {
         @Override
         public boolean onEnable(UHCPlayer player, Action clickAction) {
             if(clickAction == Action.RIGHT_CLICK_AIR || clickAction == Action.RIGHT_CLICK_BLOCK) {
-                if(samuraiTimer > maxTimer) {
+                if(samuraiTimer > maxSamuraiTimer) {
                     player.sendMessage(ChatUtils.ERROR.getMessage("Vous n'avez plus assez de temps !"));
                 }
                 else {
@@ -163,11 +170,11 @@ public class Nya extends NinjagoRole {
                 }
             }
             else {
-                if(samuraiTimer > maxTimer) {
+                if(samuraiTimer > maxSamuraiTimer) {
                     player.sendMessage(ChatUtils.ERROR.getMessage("Vous n'avez plus assez de temps !"));
                 }
                 else {
-                    player.sendMessage(ChatUtils.ERROR.getMessage("Il vous reste " + GraphicUtils.convertToAccurateTime(maxTimer - samuraiTimer) + " d'utilisation"));
+                    player.sendMessage(ChatUtils.ERROR.getMessage("Il vous reste " + GraphicUtils.convertToAccurateTime(maxSamuraiTimer - samuraiTimer) + " d'utilisation"));
                 }
             }
             return false;

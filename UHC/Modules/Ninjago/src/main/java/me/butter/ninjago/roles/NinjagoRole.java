@@ -13,13 +13,12 @@ import java.util.List;
 
 public class NinjagoRole implements Role, Listener {
 
-    String name;
-    String doc;
+    private String name, doc;
 
-    List<Power> powers;
-    UHCPlayer uhcPlayer;
+    private List<Power> powers;
+    private UHCPlayer uhcPlayer;
 
-    Camp camp;
+    private Camp camp;
 
     public NinjagoRole(String name, String doc, List<Power> powers) {
         this.name = name;

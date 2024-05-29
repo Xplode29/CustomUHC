@@ -13,7 +13,7 @@ import java.util.List;
 
 public class TabHandlerImpl implements TabHandler {
 
-    List<CustomTab> customTabList;
+    private List<CustomTab> customTabList;
 
     public TabHandlerImpl() {
         customTabList = new ArrayList<>();

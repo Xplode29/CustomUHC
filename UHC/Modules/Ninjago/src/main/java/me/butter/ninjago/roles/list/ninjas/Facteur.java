@@ -8,6 +8,7 @@ import me.butter.api.module.power.Power;
 import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,7 +24,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Facteur extends NinjagoRole {
-    static int messageCount = 0;
+    static int messageCount = 0, timeToSend = 2 * 60;
+
+    boolean invisible = false;
+    static boolean canSendMessage = true;
 
     public Facteur() {
         super("Facteur", "soon", Arrays.asList(
@@ -42,41 +46,38 @@ public class Facteur extends NinjagoRole {
     @Override
     public void onGiveRole() {
         getUHCPlayer().addSpeed(20);
-    }
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        if(!(event.getWhoClicked() instanceof Player)) return;
-        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getWhoClicked());
-
-        if(!uhcPlayer.equals(getUHCPlayer())) return;
-
-        if (event.getClickedInventory().getType() == InventoryType.PLAYER)
-        {
-            if (event.getSlotType() == InventoryType.SlotType.ARMOR)
-            {
+        Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {
+            if (invisible) {
                 for(ItemStack item : getUHCPlayer().getPlayer().getInventory().getArmorContents()) {
                     if(item.getType() != Material.AIR) {
                         getUHCPlayer().setNoFall(false);
+                        getUHCPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
+                        invisible = false;
                         return;
                     }
                 }
-
-                getUHCPlayer().setNoFall(true);
-                getUHCPlayer().getPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
-                getUHCPlayer().getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 2 * 20, 0, false, false));
             }
-        }
+            else if(!getUHCPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+                getUHCPlayer().setNoFall(true);
+                getUHCPlayer().addPotionEffect(PotionEffectType.INVISIBILITY, -1, 0);
+                invisible = true;
+            }
+        }, 0, 20);
     }
 
     @Override
     public void onDay() {
         messageCount = 0;
+        canSendMessage = true;
+    }
+
+    @Override
+    public void onNight() {
+        canSendMessage = false;
     }
 
     private static class LetterCommand extends TargetCommandPower {
-
-        boolean canSendMessage = false;
 
         public LetterCommand() {
             super("Lettre", "lettre", 0, -1);
@@ -89,8 +90,7 @@ public class Facteur extends NinjagoRole {
 
         @Override
         public boolean onEnable(UHCPlayer player, UHCPlayer target, String[] args) {
-            canSendMessage = UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer() % UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration() <= 5 * 60;
-            if(canSendMessage && messageCount < 2) {
+            if(canSendMessage && messageCount < 2 && UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer() % UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration() <= timeToSend) {
                 if(args.length < 3) {
                     player.sendMessage(ChatUtils.ERROR.getMessage("Usage: /ni lettre <joueur> [message]"));
                     return false;

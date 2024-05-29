@@ -29,7 +29,7 @@ public class MainNinjagoMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                player.openMenu(new RoleMenu(), true);
+                player.openMenu(new CampMenu(), true);
             }
         });
 

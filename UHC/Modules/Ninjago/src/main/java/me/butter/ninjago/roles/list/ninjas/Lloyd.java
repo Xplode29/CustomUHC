@@ -75,9 +75,10 @@ public class Lloyd extends NinjagoRole {
             targetPlayer.getWorld().playSound(targetPlayer.getLocation(), Sound.EXPLODE, 3.0f, 1.0f);
             targetPlayer.getWorld().playEffect(targetPlayer.getLocation().add(0, 1, 0), Effect.EXPLOSION_LARGE, 1);
 
-            targetPlayer.setHealth(Math.max(0, targetPlayer.getHealth() - 2.0));
+            targetPlayer.setHealth(Math.max(0, targetPlayer.getHealth() - 4.0));
             goldenSwordPower.explosionNextHit = false;
             goldenSwordPower.forceCooldown();
+            event.setDamage(0);
         }
     }
 
@@ -183,12 +184,12 @@ public class Lloyd extends NinjagoRole {
 
         @Override
         public String[] getDescription() {
-            return new String[] {"À l'activation, repousse de 5 blocks tous les joueurs dans un rayon de 4 blocks"};
+            return new String[] {"À l'activation, repousse de 5 blocks tous les joueurs dans un rayon de 5 blocks"};
         }
 
         @Override
         public boolean onEnable(UHCPlayer player, Action clickAction) {
-            List<Entity> nearbyEntities = player.getPlayer().getNearbyEntities(4, 2, 4);
+            List<Entity> nearbyEntities = player.getPlayer().getNearbyEntities(5, 5, 5);
             Location center = player.getPlayer().getLocation();
             for(Entity entity : nearbyEntities) {
                 double angle = Math.atan2(entity.getLocation().getZ() - center.getZ(), entity.getLocation().getX() - center.getX());

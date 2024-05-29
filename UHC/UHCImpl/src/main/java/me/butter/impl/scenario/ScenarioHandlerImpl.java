@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class ScenarioHandlerImpl implements ScenarioHandler {
 
-    List<Scenario> scenarios;
+    private List<Scenario> scenarios;
 
     public ScenarioHandlerImpl() {
         scenarios = new ArrayList<>();

@@ -5,9 +5,9 @@ import org.bukkit.Material;
 
 public abstract class AbstractTimer implements Timer {
 
+    private String name;
+    private Material icon;
     private int maxTimer;
-    String name;
-    Material icon;
 
     public AbstractTimer(String name, Material icon, int maxTimer) {
         this.name = name;

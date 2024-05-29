@@ -65,8 +65,6 @@ public class Kai extends NinjagoRole {
             }
         }
 
-        getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage(Ninjago.getInstance().getRolesList().toString()));
-
         if (nya != null) {
             UHCPlayer finalNya = nya;
             Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {

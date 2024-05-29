@@ -9,12 +9,12 @@ import java.util.List;
 
 public abstract class AbstractPreset implements Preset {
 
-    List<ItemStack> startingInventory;
-    List<ItemStack> startingArmor;
+    private List<ItemStack> startingInventory;
+    private List<ItemStack> startingArmor;
 
-    String name;
-    String[] description;
-    Material icon;
+    private String name;
+    private String[] description;
+    private Material icon;
 
     public AbstractPreset(String name, Material icon, String[] description) {
         this.name = name;

@@ -4,6 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;
 import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
+import me.butter.api.module.roles.RoleType;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.api.utils.chat.ChatSnippets;
@@ -55,12 +56,12 @@ public class CommandNinjago implements TabExecutor {
                     int rolesAmount = 0;
                     List<String> roles = new ArrayList<>();
 
-                    for (RoleEnum roleEnum : RoleEnum.values()) {
-                        if (roleEnum.getCampEnum() == campEnum) {
-                            int amount = Ninjago.getInstance().getRolesComposition().get(roleEnum.getRoleClass());
+                    for (RoleType roleType : Ninjago.getInstance().getRolesComposition()) {
+                        if (roleType.getCamp() == campEnum.getCamp()) {
+                            int amount = roleType.getAmount();
                             if (amount > 0) {
                                 rolesAmount += amount;
-                                roles.add(ChatUtils.LIST_ELEMENT.getMessage(roleEnum.getName() + " (" + amount + ")"));
+                                roles.add(ChatUtils.LIST_ELEMENT.getMessage(roleType.getName() + " (" + amount + ")"));
                             }
                         }
                     }

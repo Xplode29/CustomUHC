@@ -3,6 +3,7 @@ package me.butter.ninjago;
 import me.butter.api.menu.Menu;
 import me.butter.api.module.Module;
 import me.butter.api.module.roles.Role;
+import me.butter.api.module.roles.RoleType;
 import me.butter.ninjago.menu.MainNinjagoMenu;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -54,7 +55,7 @@ public class NinjagoModule implements Module {
     }
 
     @Override
-    public Map<Class<? extends Role>, Integer> getRoleComposition() {
+    public List<RoleType> getRoleComposition() {
         return Ninjago.getInstance().getRolesComposition();
     }
 

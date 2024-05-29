@@ -6,6 +6,7 @@ import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.chat.ChatUtils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.server.v1_8_R3.ChatComponentText;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
@@ -16,6 +17,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -25,24 +28,23 @@ import java.util.*;
 
 public class UHCPlayerImpl implements UHCPlayer {
 
-    UUID playerUUID;
-    String playerName;
-    PlayerState playerState;
+    private UUID playerUUID;
+    private String playerName;
+    private PlayerState playerState;
 
-    Role role;
+    private Role role;
 
-    boolean canPickItems, noFall;
+    private boolean canPickItems, noFall;
+    private int diamondMined;
 
-    int diamondMined;
+    private List<UUID> killedPlayers;
 
-    List<UUID> killedPlayers;
+    private Location deathLocation, spawnLocation;
 
-    Location deathLocation, spawnLocation;
+    private List<ItemStack> inventory, armor, stash;
 
-    List<ItemStack> inventory, armor, stash;
-
-    List<Potion> playerPotionEffects;
-    int speedEffect, strengthEffect, resiEffect;
+    private List<Potion> playerPotionEffects;
+    private int speedEffect, strengthEffect, resiEffect;
 
 
     public UHCPlayerImpl(Player player) {
@@ -193,6 +195,23 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override
     public void setNoFall(boolean hasNoFall) {
         this.noFall = hasNoFall;
+    }
+
+    @Override
+    public void revive() {
+        setCanPickItems(false);
+        getPlayer().teleport(getDeathLocation());
+        getPlayer().setGameMode(GameMode.SURVIVAL);
+        setPlayerState(PlayerState.IN_GAME);
+        loadInventory();
+
+        for (Entity entity : getDeathLocation().getWorld().getNearbyEntities(getDeathLocation(), 5, 100, 5)) {
+            if (entity instanceof Item) {
+                entity.remove();
+            }
+        }
+
+        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> setCanPickItems(true), 10);
     }
 
     @Override

@@ -5,11 +5,11 @@ import me.butter.api.player.UHCPlayer;
 
 public class GameConfigImpl implements GameConfig {
 
-    UHCPlayer host;
+    private UHCPlayer host;
 
-    int maxPlayers, timer, groupSize, dayDuration, episode, episodeDuration;
+    private int maxPlayers, timer, groupSize, dayDuration, episode, episodeDuration;
 
-    boolean starting, day, doesDayCycle, invincibility, pvp, meetup, chatEnabled;
+    private boolean starting, day, doesDayCycle, invincibility, pvp, meetup, chatEnabled;
 
     public GameConfigImpl() {
         this.maxPlayers = 39;

@@ -8,9 +8,9 @@ import org.bukkit.event.Listener;
 
 public abstract class AbstractScenario implements Scenario, Listener {
 
-    boolean enabled;
-    String name;
-    Material icon;
+    private String name;
+    private Material icon;
+    private boolean enabled;
 
     public AbstractScenario(String name, Material icon) {
         this.name = name;

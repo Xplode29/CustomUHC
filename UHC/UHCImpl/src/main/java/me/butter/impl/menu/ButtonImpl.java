@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class ButtonImpl implements Button {
 
-    ItemStack icon;
+    private ItemStack icon;
 
     public ButtonImpl() {}
 

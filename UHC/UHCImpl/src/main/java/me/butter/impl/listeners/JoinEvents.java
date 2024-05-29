@@ -63,15 +63,15 @@ public class JoinEvents implements Listener {
             ParticleUtils.tornadoEffect(uhcPlayer.getPlayer(), Color.fromRGB(255, 255, 255));
         }
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING) {
-            if(uhcPlayer.getPlayerState().equals(PlayerState.IN_SPEC)) {
+            if(uhcPlayer.getPlayerState() == PlayerState.IN_GAME) {
+                player.teleport(uhcPlayer.getSpawnLocation());
+                player.setGameMode(GameMode.SURVIVAL);
+            }
+            else {
                 Location teleport = new Location(UHCAPI.getInstance().getWorldHandler().getWorld(), 0.0D, 100, 0.0D);
 
                 player.teleport(teleport);
                 player.setGameMode(GameMode.SPECTATOR);
-            }
-            else {
-                player.teleport(uhcPlayer.getSpawnLocation());
-                player.setGameMode(GameMode.SURVIVAL);
             }
 
             UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
@@ -80,12 +80,14 @@ public class JoinEvents implements Listener {
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING ||
                 UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME
         ) {
-            if(uhcPlayer.getPlayerState().equals(PlayerState.IN_SPEC)) {
+            if(uhcPlayer.getPlayerState() != PlayerState.IN_GAME) {
                 Location teleport = new Location(UHCAPI.getInstance().getWorldHandler().getWorld(), 0.0D, 100, 0.0D);
 
                 player.teleport(teleport);
                 player.setGameMode(GameMode.SPECTATOR);
             }
+            UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
+            UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
         }
 
         event.setJoinMessage(null);
@@ -118,6 +120,6 @@ public class JoinEvents implements Listener {
                         (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() - 1) + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.DARK_GRAY + "] "
         ));
 
-        UHCAPI.getInstance().getPlayerHandler().removePlayer(player);
+        if(uhcPlayer.getPlayerState() == PlayerState.IN_LOBBY || uhcPlayer.getPlayerState() == PlayerState.IN_SPEC) UHCAPI.getInstance().getPlayerHandler().removePlayer(player);
     }
 }

@@ -27,7 +27,7 @@ public class Wu extends NinjagoRole {
     public String[] getDescription() {
         return new String[]{
                 "Lorsqu'un ninja meurt, vous obtenez 7% de speed",
-                "À la mort du premier ninja, vous obtenez le pseudo de l'un des 5 autres ninjas ( Zane, Lloyd, Cole, Kai, Jay )"
+                "À la mort du premier ninja, vous obtenez le pseudo de l'un des 5 autres ninjas (Lloyd, Kai, Cole, Jay, Zane)"
         };
     }
 

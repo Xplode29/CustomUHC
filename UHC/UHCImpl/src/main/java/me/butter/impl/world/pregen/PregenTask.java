@@ -9,7 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PregenTask extends BukkitRunnable {
 
-    public static boolean finished;
+    private static boolean finished;
 
     private final int startX, startZ;
     private int x, z;

@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class MenuHandlerImpl implements MenuHandler, Listener {
 
-    Map<UUID, Menu> openedMenus;
+    private Map<UUID, Menu> openedMenus;
 
     public MenuHandlerImpl() {
         this.openedMenus = new HashMap<>();

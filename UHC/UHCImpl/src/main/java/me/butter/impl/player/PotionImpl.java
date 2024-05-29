@@ -5,10 +5,10 @@ import org.bukkit.potion.PotionEffectType;
 
 public class PotionImpl implements Potion {
 
-    PotionEffectType effect;
-    int duration;
-    int level;
-    boolean active;
+    private PotionEffectType effect;
+    private int duration;
+    private int level;
+    private boolean active;
 
     public PotionImpl(PotionEffectType effect, int duration, int level) {
         this.effect = effect;

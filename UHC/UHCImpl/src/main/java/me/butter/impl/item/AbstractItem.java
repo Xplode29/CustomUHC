@@ -8,8 +8,8 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class AbstractItem implements CustomItem {
 
-    Material material;
-    String name;
+    private Material material;
+    private String name;
 
     public AbstractItem(Material material, String name) {
         this.material = material;

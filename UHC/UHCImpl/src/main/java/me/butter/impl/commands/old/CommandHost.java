@@ -1,4 +1,4 @@
-package me.butter.impl.commands;
+package me.butter.impl.commands.old;
 
 import com.google.common.collect.Lists;
 import me.butter.api.UHCAPI;
@@ -7,7 +7,6 @@ import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.item.list.MenuItem;
-import me.butter.impl.listeners.DamageHealthEvents;
 import me.butter.impl.task.LaunchGameTask;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -217,7 +216,7 @@ public class CommandHost implements TabExecutor {
                         player.sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + target.getName() + " n'est pas mort !"));
                         return true;
                     }
-                    DamageHealthEvents.revivePlayer(target);
+                    target.revive();
                     player.sendMessage(ChatUtils.GLOBAL_INFO.getMessage("Vous avez reanime " + target.getName()));
                     break;
                 default:

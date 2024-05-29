@@ -7,7 +7,7 @@ import me.butter.api.world.WorldHandler;
 import me.butter.impl.UHCImpl;
 import me.butter.impl.world.modify.BiomeSwapper;
 import me.butter.impl.world.modify.WorldGenCavesPatched;
-import me.butter.impl.world.modify.WorldListener;
+import me.butter.impl.listeners.WorldListener;
 import me.butter.impl.world.pregen.PregenTask;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
@@ -19,6 +19,8 @@ public class WorldHandlerImpl implements WorldHandler {
     private final String worldName;
     private World world;
     private OrePopulator orePopulator;
+
+    private PregenTask pregenTask;
 
     public WorldHandlerImpl() {
         this.worldName = "arena";
@@ -108,8 +110,14 @@ public class WorldHandlerImpl implements WorldHandler {
 
         Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Le monde est en cours de prégénération..."));
         UHCAPI.getInstance().getGameHandler().getWorldConfig().setPregenDone(false);
-        new PregenTask(getWorld(), (UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() + 100))
-                .runTaskTimer(UHCImpl.getInstance(), 0, 20);
+
+        if(pregenTask != null) {
+            pregenTask.cancel();
+            pregenTask = null;
+        }
+
+        pregenTask = new PregenTask(getWorld(), (UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() + 100));
+        pregenTask.runTaskTimer(UHCImpl.getInstance(), 0, 20);
     }
 
     @Override

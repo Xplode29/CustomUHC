@@ -9,7 +9,7 @@ import java.util.List;
 
 public class EnchantHandlerImpl implements EnchantHandler {
 
-    List<Enchant> enchants;
+    private List<Enchant> enchants;
 
     public EnchantHandlerImpl() {
         this.enchants = new ArrayList<>();

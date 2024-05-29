@@ -2,6 +2,7 @@ package me.butter.api.module;
 
 import me.butter.api.menu.Menu;
 import me.butter.api.module.roles.Role;
+import me.butter.api.module.roles.RoleType;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,7 +21,7 @@ public interface Module {
     JavaPlugin getPlugin();
 
     boolean hasRoles();
-    Map<Class<? extends Role>, Integer> getRoleComposition();
+    List<RoleType> getRoleComposition();
     List<Role> getRolesList(); void setRolesList(List<Role> roles);
 
     boolean hasTeams(); boolean hasCustomDeath();

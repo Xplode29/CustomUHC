@@ -14,12 +14,12 @@ import java.util.*;
 
 public abstract class AbstractTab implements CustomTab {
 
-    List<String> headerVariations;
-    List<String> footerVariations;
+    private List<String> headerVariations;
+    private List<String> footerVariations;
 
-    PacketPlayOutPlayerListHeaderFooter packet;
-    int headerCount = 0;
-    int footerCount = 0;
+    private PacketPlayOutPlayerListHeaderFooter packet;
+    private int headerCount = 0;
+    private int footerCount = 0;
 
     List<UUID> playersToSend;
 

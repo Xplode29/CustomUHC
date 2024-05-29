@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class PaginatedMenu extends AbstractMenu {
-    int page = 0;
-    int buttonsPerPage;
+    private int page = 0;
+    private int buttonsPerPage;
 
     public PaginatedMenu(String title, int size) {
         super(title, size, true);

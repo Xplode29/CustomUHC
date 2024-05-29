@@ -5,13 +5,10 @@ import org.bukkit.enchantments.Enchantment;
 
 public class EnchantImpl implements Enchant {
 
-    Enchantment enchantment;
-
-    String name;
-
-    boolean enabled;
-
-    int ironLimit, diamondLimit, maxLevel;
+    private Enchantment enchantment;
+    private String name;
+    private boolean enabled;
+    private int ironLimit, diamondLimit, maxLevel;
 
     public EnchantImpl(Enchantment enchantment, String name, int maxLevel) {
         this.enchantment = enchantment;

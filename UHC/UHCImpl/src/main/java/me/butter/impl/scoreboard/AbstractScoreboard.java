@@ -19,7 +19,7 @@ public abstract class AbstractScoreboard implements CustomScoreboard {
     private String title;
     private List<String> lines;
 
-    List<UUID> players;
+    private List<UUID> players;
 
     public AbstractScoreboard(Scoreboard scoreboard, String title, List<String> lines) {
         this.scoreboard = scoreboard;

@@ -23,9 +23,9 @@ public class ChatSnippets {
 
         player.sendMessage(ChatUtils.SEPARATOR + "");
         player.sendMessage("");
-        player.sendMessage(ChatUtils.JOINED.getMessage("Vous êtes §r" + "§r" + uhcPlayer.getRole().getName()));
+        player.sendMessage(ChatUtils.JOINED.getMessage("Vous êtes §r" + uhcPlayer.getRole().getName()));
 
-        //player.sendMessage(ChatUtils.JOINED.getMessage("Vous devez gagner aves les " + uhcPlayer.getRoleEnum().getCamp().getColor() + uhcPlayer.getRoleEnum().getCamp().getName()));
+        player.sendMessage(ChatUtils.JOINED.getMessage("Vous devez gagner aves les §r" + uhcPlayer.getRole().getCamp().getName()));
         player.sendMessage("");
 
         player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Description:"));
@@ -92,10 +92,8 @@ public class ChatSnippets {
     public static void playerDeath(UHCPlayer uhcPlayer) {
         Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
         Bukkit.broadcastMessage("");
-        Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage("Le joueur " + uhcPlayer.getPlayer().getName() + " est mort."));
-        if(uhcPlayer.getRole() != null) {
-            Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage("Il était " + uhcPlayer.getRole().getName()));
-        }
+        Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage("§rLe joueur " + uhcPlayer.getName() + "§r est mort."));
+        if(uhcPlayer.getRole() != null) Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage("§rIl était " + uhcPlayer.getRole().getName()));
         Bukkit.broadcastMessage("");
         Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
     }

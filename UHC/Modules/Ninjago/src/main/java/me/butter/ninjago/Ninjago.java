@@ -1,18 +1,19 @@
 package me.butter.ninjago;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.module.camp.Camp;
 import me.butter.api.module.roles.Role;
+import me.butter.api.module.roles.RoleType;
 import me.butter.ninjago.commands.CommandNinjago;
 import me.butter.ninjago.listener.CycleEvents;
 import me.butter.ninjago.roles.RoleEnum;
-import me.butter.ninjago.roles.list.ninjas.Lloyd;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class Ninjago extends JavaPlugin {
 
@@ -46,14 +47,37 @@ public final class Ninjago extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CycleEvents(), this);
     }
 
-    public Map<Class<? extends Role>, Integer> getRolesComposition() {
-        Map<Class<? extends Role>, Integer> rolesComposition = new HashMap<>();
-
+    public List<RoleType> getRolesComposition() {
+        List<RoleType> roleList = new ArrayList<>();
         for(RoleEnum role : RoleEnum.values()) {
-            rolesComposition.put(role.getRoleClass(), role.getAmount());
-        }
+            roleList.add(new RoleType() {
+                @Override
+                public Class<? extends Role> getRoleClass() {
+                    return role.getRoleClass();
+                }
 
-        return rolesComposition;
+                @Override
+                public Camp getCamp() {
+                    return role.getCampEnum().getCamp();
+                }
+
+                @Override
+                public String getName() {
+                    return role.getName();
+                }
+
+                @Override
+                public Material getIcon() {
+                    return role.getIcon();
+                }
+
+                @Override
+                public int getAmount() {
+                    return role.getAmount();
+                }
+            });
+        }
+        return roleList;
     }
 
     public List<Role> getRolesList() {

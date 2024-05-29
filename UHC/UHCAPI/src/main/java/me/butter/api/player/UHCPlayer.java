@@ -30,11 +30,9 @@ public interface UHCPlayer {
     Role getRole(); void setRole(Role role);
 
     int getDiamondMined(); void setDiamondMined(int amount);
-
     boolean canPickItems(); void setCanPickItems(boolean canPickItems);
-
     boolean hasNoFall(); void setNoFall(boolean hasNoFall);
-
+    void revive();
     void clearPlayer();
 
     List<UUID> getKilledPlayers(); void setKilledPlayers(List<UUID> killedPlayers);

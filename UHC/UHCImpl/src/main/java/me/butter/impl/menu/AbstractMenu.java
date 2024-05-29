@@ -15,15 +15,15 @@ import java.util.Map;
 
 public abstract class AbstractMenu implements Menu {
 
-    Map<Integer, Button> buttons;
-    Inventory inventory;
-    String title;
-    int size;
+    private Map<Integer, Button> buttons;
+    private Inventory inventory;
+    private String title;
+    protected int size;
 
-    boolean updateOnClick, hasGlass;
-    UHCPlayer opener;
+    private boolean updateOnClick, hasGlass;
+    private UHCPlayer opener;
 
-    Menu previousMenu;
+    private Menu previousMenu;
 
     public AbstractMenu(String title, int size, boolean hasGlass) {
         this.title = title;

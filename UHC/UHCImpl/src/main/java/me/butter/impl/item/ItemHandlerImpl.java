@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ItemHandlerImpl implements ItemHandler, Listener {
 
-    List<CustomItem> customItems;
+    private List<CustomItem> customItems;
 
     public ItemHandlerImpl() {
         customItems = new ArrayList<>();

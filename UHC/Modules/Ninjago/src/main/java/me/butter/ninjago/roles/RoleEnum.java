@@ -16,6 +16,7 @@ public enum RoleEnum {
     DARETH(Dareth.class, CampEnum.NINJA, Material.BOW, "Dareth"),
     ED(Ed.class, CampEnum.NINJA, Material.CLAY, "Ed"),
     FACTEUR(Facteur.class, CampEnum.NINJA, Material.WOOD_DOOR, "Facteur"),
+    APPRENTI(Apprenti.class, CampEnum.NINJA, Material.LEATHER_HELMET, "Apprenti"),
     MISAKO(Misako.class, CampEnum.NINJA, Material.FEATHER, "Misako");
 
     //PYTHOR(Pythor.class, CampEnum.SERPENT, Material.WATER_LILY),

@@ -10,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
-import java.util.Map;
 
 public class NinjagoModule implements Module {
 
@@ -41,7 +40,7 @@ public class NinjagoModule implements Module {
 
     @Override
     public String getDoc() {
-        return "soon";
+        return "https://uhc-17.gitbook.io/ninjago-uhc";
     }
 
     @Override

@@ -6,7 +6,6 @@ import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.chat.ChatUtils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.server.v1_8_R3.ChatComponentText;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
@@ -44,7 +43,7 @@ public class UHCPlayerImpl implements UHCPlayer {
     private List<ItemStack> inventory, armor, stash;
 
     private List<Potion> playerPotionEffects;
-    private int speedEffect, strengthEffect, resiEffect;
+    private int maxHealth, speedEffect, strengthEffect, resiEffect;
 
 
     public UHCPlayerImpl(Player player) {
@@ -68,6 +67,7 @@ public class UHCPlayerImpl implements UHCPlayer {
         this.stash = new ArrayList<>();
 
         this.playerPotionEffects = new ArrayList<>();
+        this.maxHealth = (int) player.getMaxHealth();
         this.speedEffect = 0; this.strengthEffect = 0; this.resiEffect = 0;
     }
 
@@ -228,6 +228,12 @@ public class UHCPlayerImpl implements UHCPlayer {
         player.setFoodLevel(20);
         player.setLevel(0);
         player.setExp(0);
+    }
+
+    @Override
+    public boolean isNextTo(UHCPlayer player, int radius) {
+        if(getPlayer() == null || player.getPlayer() == null) return false;
+        return (getPlayerState() == PlayerState.IN_GAME && player.getPlayerState() == PlayerState.IN_GAME && getPlayer().getLocation().distance(player.getPlayer().getLocation()) <= radius);
     }
 
     @Override
@@ -463,6 +469,31 @@ public class UHCPlayerImpl implements UHCPlayer {
     }
 
     @Override
+    public int getMaxHealth() {
+        if(getPlayer() == null) return maxHealth;
+        return (int) getPlayer().getMaxHealth();
+    }
+
+    @Override
+    public void setMaxHealth(int amount) {
+        maxHealth = amount;
+        if(getPlayer() != null) getPlayer().setMaxHealth(maxHealth);
+    }
+
+    @Override
+    public void addMaxHealth(int amount) {
+        maxHealth += amount;
+        if(getPlayer() != null) getPlayer().setMaxHealth(maxHealth);
+    }
+
+    @Override
+    public void removeMaxHealth(int amount) {
+        maxHealth -= amount;
+        if(maxHealth < 1) maxHealth = 1;
+        if(getPlayer() != null) getPlayer().setMaxHealth(maxHealth);
+    }
+
+    @Override
     public void clearEffects() {
         playerPotionEffects = new ArrayList<>();
         speedEffect = 0; strengthEffect = 0; resiEffect = 0;
@@ -558,17 +589,17 @@ public class UHCPlayerImpl implements UHCPlayer {
             addPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
         }
 
-        if((strengthEffect / 20) > 0 && !hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
+        if(strengthEffect > 0 && !hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
             addPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, 1);
         }
-        else if((strengthEffect / 20) <= 0 && hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
+        else if(strengthEffect <= 0 && hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
             removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
         }
 
-        if((resiEffect / 20) > 0 && !hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
+        if(resiEffect > 0 && !hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
             addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, 1);
         }
-        else if((resiEffect / 20) <= 0 && hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
+        else if(resiEffect <= 0 && hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
             removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
         }
     }

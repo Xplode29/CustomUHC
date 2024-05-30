@@ -1,8 +1,6 @@
 package me.butter.impl.commands;
 
 import me.butter.api.player.UHCPlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;

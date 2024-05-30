@@ -2,42 +2,41 @@ package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.ItemPower;
-import me.butter.api.module.power.RightClickItemPower;
+import me.butter.api.module.power.Power;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.roles.NinjagoRole;
-import org.bukkit.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import me.butter.ninjago.roles.items.SpinjitzuPower;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class Cole extends NinjagoRole {
-    private static boolean rockActive = false;
-    private static int coups = 25;
+
+    RockPower rockPower;
 
     public Cole() {
-        super("Cole", "soon", Arrays.asList(
+        super("Cole", "/roles/ninjas/cole", Arrays.asList(
                 new RockPower(),
-                new SpinjitzuPower()
+                new SpinjitzuPower(ChatColor.GRAY)
         ));
+        for(Power power : getPowers()) {
+            if(power instanceof RockPower) {
+                rockPower = (RockPower) power;
+                break;
+            }
+        }
     }
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Vous possédez Force 1 (20%) permanent"
-        };
+        return new String[]{"Vous possédez Force 1 (20%) permanent"};
     }
 
     @Override
@@ -54,14 +53,14 @@ public class Cole extends NinjagoRole {
     public void onPlayerAttack(EntityDamageByEntityEvent event) {
         if(!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
 
-        UHCPlayer damager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
-        if(damager.equals(getUHCPlayer())) {
-            if(rockActive && coups > 0) {
-                coups--;
-            } else if (rockActive) {
+        UHCPlayer damaged = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
+        if(damaged.equals(getUHCPlayer())) {
+            if(rockPower.rockActive && rockPower.coups > 0) {
+                rockPower.coups--;
+            } else if (rockPower.rockActive) {
                 getUHCPlayer().removeResi(20);
-                getUHCPlayer().sendMessage(ChatUtils.ERROR.getMessage("Vous avez infligé trop de coups"));
-                rockActive = false;
+                getUHCPlayer().sendMessage(ChatUtils.ERROR.getMessage("Vous avez recu trop de coups"));
+                rockPower.rockActive = false;
             }
         }
     }
@@ -69,14 +68,17 @@ public class Cole extends NinjagoRole {
     @EventHandler
     public void onPlayerKill(UHCPlayerDeathEvent event) {
         if(event.getKiller().equals(getUHCPlayer())) {
-            coups += 15;
-            if(coups > 60) {
-                coups = 60;
+            rockPower.coups += 15;
+            if(rockPower.coups > 60) {
+                rockPower.coups = 60;
             }
         }
     }
 
     private static class RockPower extends ItemPower {
+        boolean rockActive = false;
+        int coups = 25;
+
         public RockPower() {
             super(ChatColor.GRAY + "Rock", Material.NETHER_STAR, 0, -1);
         }
@@ -84,7 +86,7 @@ public class Cole extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[] {"Lorsque cet item est activé, vous obtenez 20% de résistance. ",
-                    "Cet item se désactive après avoir infligé 25 coups. ",
+                    "Cet item se désactive après avoir recu 25 coups. ",
                     "Lorsque vous faites un kill, vous obtenez 15 coups supplémentaires, avec un maximum de 60 coups. ",
                     "Vous pouvez vérifier les coups qu'il vous reste avec un clic gauche."
             };
@@ -111,37 +113,6 @@ public class Cole extends NinjagoRole {
                 player.sendMessage(ChatUtils.ERROR.getMessage("Il vous reste: " + coups + " coups"));
             }
             return false;
-        }
-    }
-
-    private static class SpinjitzuPower extends RightClickItemPower {
-
-        public SpinjitzuPower() {
-            super(ChatColor.BLACK + "Spinjitzu", Material.NETHER_STAR, 5 * 60, -1);
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[] {"À l'activation, repousse de 5 blocks tous les joueurs dans un rayon de 4 blocks"};
-        }
-
-        @Override
-        public boolean onEnable(UHCPlayer player, Action clickAction) {
-            List<Entity> nearbyEntities = player.getPlayer().getNearbyEntities(4, 2, 4);
-            Location center = player.getPlayer().getLocation();
-            for(Entity entity : nearbyEntities) {
-                double angle = Math.atan2(entity.getLocation().getZ() - center.getZ(), entity.getLocation().getX() - center.getX());
-                Vector newVelocity = new Vector(
-                        1.5 * Math.cos(angle),
-                        0.5, //* Math.signum(entity.getLocation().getY() - center.getY()),
-                        1.5 * Math.sin(angle)
-                );
-                entity.setVelocity(newVelocity);
-            }
-
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.fromRGB(28, 28, 28));
-
-            return true;
         }
     }
 }

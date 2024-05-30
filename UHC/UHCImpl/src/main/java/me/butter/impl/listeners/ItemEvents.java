@@ -5,7 +5,6 @@ import me.butter.api.game.GameState;
 import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
-import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import org.bukkit.Material;
@@ -20,7 +19,6 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionType;
 
 public class ItemEvents implements Listener {
 

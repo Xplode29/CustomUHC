@@ -13,3 +13,6 @@ commands:
     full:
         description: Permet de recuperer vos items
         usage: /full
+    doc:
+        description: Permet d'accéder au document explicatif du mode de jeu
+        usage: /doc

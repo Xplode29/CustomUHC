@@ -1,23 +1,24 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.impl.events.custom.EpisodeEvent;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
-import org.bukkit.potion.PotionEffect;
+import org.bukkit.event.EventHandler;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class PIXAL extends NinjagoRole {
+
+    boolean canUseCommand = true;
+
     public PIXAL() {
-        super("PIXAL", "doc", Collections.singletonList(new EffectsCommand()));
+        super("PIXAL", "/roles/ninjas/pixal", Collections.singletonList(new EffectsCommand()));
     }
 
     @Override
@@ -38,8 +39,12 @@ public class PIXAL extends NinjagoRole {
         getUHCPlayer().sendMessage(ChatUtils.ERROR.getMessage("Il n'y a pas de zane dans cette partie"));
     }
 
-    private static class EffectsCommand extends TargetCommandPower {
+    @EventHandler
+    public void onNewEpisode(EpisodeEvent event) {
+        canUseCommand = true;
+    }
 
+    private static class EffectsCommand extends TargetCommandPower {
         public EffectsCommand() {
             super("Analyse", "analyse", UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration(), -1);
         }

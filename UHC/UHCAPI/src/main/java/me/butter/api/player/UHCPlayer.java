@@ -14,16 +14,21 @@ import java.util.UUID;
 
 public interface UHCPlayer {
 
+    UUID getUniqueId();
+    Player getPlayer(); boolean isPlayer(Player player);
+    String getName(); void setName(String newName);
+
+    boolean equals(Object obj);
+
     void sendMessage(String message); void sendMessage(BaseComponent component);
     void sendActionBar(String text); void sendTitle(String text, ChatColor color);
 
     void openMenu(Menu menu, boolean isPrevMenu);
 
-    boolean equals(Object obj);
+    void revive();
+    void clearPlayer();
 
-    UUID getUniqueId();
-    Player getPlayer(); boolean isPlayer(Player player);
-    String getName(); void setName(String newName);
+    boolean isNextTo(UHCPlayer player, int radius);
 
     PlayerState getPlayerState(); void setPlayerState(PlayerState newState);
 
@@ -32,8 +37,6 @@ public interface UHCPlayer {
     int getDiamondMined(); void setDiamondMined(int amount);
     boolean canPickItems(); void setCanPickItems(boolean canPickItems);
     boolean hasNoFall(); void setNoFall(boolean hasNoFall);
-    void revive();
-    void clearPlayer();
 
     List<UUID> getKilledPlayers(); void setKilledPlayers(List<UUID> killedPlayers);
     void addKilledPlayer(UHCPlayer player); void removeKilledPlayer(UHCPlayer player);
@@ -56,6 +59,7 @@ public interface UHCPlayer {
     void removePotionEffect(PotionEffectType effect);
     boolean hasPotionEffect(PotionEffectType effect); Potion getPotion(PotionEffectType effect);
 
+    int getMaxHealth(); @Deprecated void setMaxHealth(int amount); void addMaxHealth(int amount); void removeMaxHealth(int amount);
     int getSpeed(); @Deprecated void setSpeed(int amount); void addSpeed(int amount); void removeSpeed(int amount);
     int getStrength(); @Deprecated void setStrength(int amount); void addStrength(int amount); void removeStrength(int amount);
     int getResi(); @Deprecated void setResi(int amount); void addResi(int amount); void removeResi(int amount);

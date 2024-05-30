@@ -14,7 +14,7 @@ public class Ed extends NinjagoRole {
     boolean nextToJay;
 
     public Ed() {
-        super("Ed", "doc", Collections.emptyList());
+        super("Ed", "/roles/ninjas/ed", Collections.emptyList());
     }
 
     @Override
@@ -50,11 +50,11 @@ public class Ed extends NinjagoRole {
                     return;
                 }
 
-                if(finalJay.getLocation().distance(getUHCPlayer().getLocation()) <= 15 && !nextToJay) {
+                if(getUHCPlayer().isNextTo(finalJay, 15) && !nextToJay) {
                     getUHCPlayer().addStrength(10);
                     nextToJay = true;
                 }
-                else if(finalJay.getLocation().distance(getUHCPlayer().getLocation()) > 15 && nextToJay) {
+                else if(!getUHCPlayer().isNextTo(finalJay, 15) && nextToJay) {
                     getUHCPlayer().removeStrength(10);
                     nextToJay = false;
                 }

@@ -1,13 +1,10 @@
 package me.butter.ninjago.menu;
 
 import me.butter.api.menu.Button;
-import me.butter.api.module.camp.Camp;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ItemBuilder;
-import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.impl.menu.PaginatedMenu;
-import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.CampEnum;
 import me.butter.ninjago.roles.RoleEnum;
 import org.bukkit.enchantments.Enchantment;

@@ -3,7 +3,6 @@ package me.butter.ninjago.roles.list.ninjas;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.CommandPower;
 import me.butter.api.module.power.Power;
 import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.player.UHCPlayer;
@@ -12,27 +11,26 @@ import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Facteur extends NinjagoRole {
-    static int messageCount = 0, timeToSend = 2 * 60;
+
+    LetterCommand letterCommand;
 
     boolean invisible = false;
-    static boolean canSendMessage = true;
 
     public Facteur() {
-        super("Facteur", "soon", Arrays.asList(
-                new LetterCommand()
-        ));
+        super("Facteur", "/roles/ninjas/facteur", Collections.singletonList(new LetterCommand()));
+        for(Power power : getPowers()) {
+            if(power instanceof LetterCommand) {
+                letterCommand = (LetterCommand) power;
+                break;
+            }
+        }
     }
 
     @Override
@@ -68,16 +66,19 @@ public class Facteur extends NinjagoRole {
 
     @Override
     public void onDay() {
-        messageCount = 0;
-        canSendMessage = true;
+        letterCommand.messageCount = 0;
+        letterCommand.canSendMessage = true;
     }
 
     @Override
     public void onNight() {
-        canSendMessage = false;
+        letterCommand.canSendMessage = false;
     }
 
     private static class LetterCommand extends TargetCommandPower {
+
+        int messageCount = 0, timeToSend = 2 * 60;
+        boolean canSendMessage = true;
 
         public LetterCommand() {
             super("Lettre", "lettre", 0, -1);

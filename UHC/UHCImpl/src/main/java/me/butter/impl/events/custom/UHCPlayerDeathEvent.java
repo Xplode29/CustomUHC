@@ -1,7 +1,6 @@
 package me.butter.impl.events.custom;
 
 import me.butter.api.player.UHCPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

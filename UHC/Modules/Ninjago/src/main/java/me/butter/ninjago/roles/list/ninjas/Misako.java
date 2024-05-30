@@ -1,24 +1,15 @@
 package me.butter.ninjago.roles.list.ninjas;
 
-import me.butter.api.UHCAPI;
-import me.butter.api.module.power.CommandPower;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.menu.MisakoMenu;
 import me.butter.ninjago.roles.NinjagoRole;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 public class Misako extends NinjagoRole {
     public Misako() {
-        super("Misako", "doc", Arrays.asList(
-            new InventoryCommand()
-        ));
+        super("Misako", "/roles/ninjas/misako", Collections.singletonList(new InventoryCommand()));
     }
 
     @Override

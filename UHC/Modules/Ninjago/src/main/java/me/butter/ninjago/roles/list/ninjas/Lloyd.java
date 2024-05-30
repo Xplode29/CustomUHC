@@ -1,19 +1,19 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.enchant.Enchant;
 import me.butter.api.module.power.EnchantBookPower;
-import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.Power;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.chat.ChatUtils;
 import me.butter.api.utils.GraphicUtils;
-import me.butter.api.utils.ParticleUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.roles.NinjagoRole;
-import org.bukkit.*;
+import me.butter.ninjago.roles.items.SpinjitzuPower;
+import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,20 +22,18 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class Lloyd extends NinjagoRole {
 
     private GoldenSwordPower goldenSwordPower;
 
     public Lloyd() {
-        super("Lloyd", "soon", Arrays.asList(
+        super("Lloyd", "/roles/ninjas/lloyd", Arrays.asList(
                 new GoldenSwordPower(),
                 new ProtectionBook(),
-                new SpinjitzuPower()
+                new SpinjitzuPower(ChatColor.GREEN)
         ));
 
         goldenSwordPower = null;
@@ -50,7 +48,7 @@ public class Lloyd extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez Force 1 (20%) ainsi que 13 coeurs permanents"
+                "Vous possédez 3 coeurs permanents supplémentaires"
         };
     }
 
@@ -62,7 +60,7 @@ public class Lloyd extends NinjagoRole {
     @Override
     public void onGiveRole() {
         getUHCPlayer().addStrength(20);
-        getUHCPlayer().getPlayer().setMaxHealth(26);
+        getUHCPlayer().addMaxHealth(4);
     }
 
     @EventHandler
@@ -173,37 +171,6 @@ public class Lloyd extends NinjagoRole {
                     cancel();
                 }
             }
-        }
-    }
-
-    private static class SpinjitzuPower extends RightClickItemPower {
-
-        public SpinjitzuPower() {
-            super(ChatColor.GREEN + "Spinjitzu", Material.NETHER_STAR, 5 * 60, -1);
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[] {"À l'activation, repousse de 5 blocks tous les joueurs dans un rayon de 5 blocks"};
-        }
-
-        @Override
-        public boolean onEnable(UHCPlayer player, Action clickAction) {
-            List<Entity> nearbyEntities = player.getPlayer().getNearbyEntities(5, 5, 5);
-            Location center = player.getPlayer().getLocation();
-            for(Entity entity : nearbyEntities) {
-                double angle = Math.atan2(entity.getLocation().getZ() - center.getZ(), entity.getLocation().getX() - center.getX());
-                Vector newVelocity = new Vector(
-                        1.5 * Math.cos(angle),
-                        0.5, //* Math.signum(entity.getLocation().getY() - center.getY()),
-                        1.5 * Math.sin(angle)
-                );
-                entity.setVelocity(newVelocity);
-            }
-
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.GREEN);
-
-            return true;
         }
     }
 }

@@ -1,11 +1,6 @@
 package me.butter.api.module.power;
 
-import me.butter.api.UHCAPI;
-import me.butter.api.enchant.Enchant;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.GraphicUtils;
-import me.butter.api.utils.ItemBuilder;
-import me.butter.api.utils.chat.ChatUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.block.Action;

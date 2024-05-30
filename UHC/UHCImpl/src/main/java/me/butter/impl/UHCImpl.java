@@ -12,10 +12,10 @@ import me.butter.api.scoreboard.ScoreboardHandler;
 import me.butter.api.tab.TabHandler;
 import me.butter.api.timer.TimerHandler;
 import me.butter.api.world.WorldHandler;
+import me.butter.impl.commands.CommandDoc;
 import me.butter.impl.commands.CommandFull;
-import me.butter.impl.commands.HostCommands;
-import me.butter.impl.commands.old.CommandHost;
 import me.butter.impl.commands.CommandRules;
+import me.butter.impl.commands.HostCommands;
 import me.butter.impl.enchant.EnchantHandlerImpl;
 import me.butter.impl.game.GameHandlerImpl;
 import me.butter.impl.item.ItemHandlerImpl;
@@ -89,6 +89,7 @@ public final class UHCImpl extends UHCAPI {
         getCommand("host").setExecutor(new HostCommands());
         getCommand("rules").setExecutor(new CommandRules());
         getCommand("full").setExecutor(new CommandFull());
+        getCommand("doc").setExecutor(new CommandDoc());
     }
 
     void registerListeners() {

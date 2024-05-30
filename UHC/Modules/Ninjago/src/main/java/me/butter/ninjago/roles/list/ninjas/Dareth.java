@@ -1,7 +1,5 @@
 package me.butter.ninjago.roles.list.ninjas;
 
-import me.butter.api.module.power.ItemPower;
-import me.butter.api.module.power.Power;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -9,13 +7,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class Dareth extends NinjagoRole {
     public Dareth() {
-        super("Dareth", "soon", Collections.emptyList());
+        super("Dareth", "/roles/ninjas/dareth", Collections.emptyList());
     }
 
     @Override

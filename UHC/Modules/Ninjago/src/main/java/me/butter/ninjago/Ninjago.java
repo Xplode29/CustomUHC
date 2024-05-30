@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public final class Ninjago extends JavaPlugin {

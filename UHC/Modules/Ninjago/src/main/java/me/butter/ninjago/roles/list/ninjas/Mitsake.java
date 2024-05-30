@@ -1,18 +1,17 @@
 package me.butter.ninjago.roles.list.ninjas;
 
-import me.butter.api.module.power.Power;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 public class Mitsake extends NinjagoRole {
 
     public Mitsake() {
-        super("Mitsake", "doc", new ArrayList<>());
+        super("Mitsake", "/roles/ninjas/mitsake", Collections.emptyList());
     }
 
     @Override

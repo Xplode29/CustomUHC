@@ -1,8 +1,8 @@
 package me.butter.impl.timer.list;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.utils.chat.ChatUtils;
 import me.butter.api.utils.GraphicUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.timer.AbstractTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -6,7 +6,6 @@ import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.ninjago.roles.CampEnum;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 

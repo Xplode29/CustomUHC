@@ -1,25 +1,23 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.module.power.Power;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
+import me.butter.ninjago.roles.items.SpinjitzuPower;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,17 +25,22 @@ import java.util.List;
 
 public class Zane extends NinjagoRole {
 
-    static boolean gelZonePlaced;
-    static Location gelZoneCoords;
+    FreezePower freezePower;
 
     boolean inZone;
 
     public Zane() {
-        super("Zane", "doc", Arrays.asList(
+        super("Zane", "/roles/ninjas/zane", Arrays.asList(
                 new FalconCommand(),
                 new FreezePower(),
-                new SpinjitzuPower()
+                new SpinjitzuPower(ChatColor.WHITE)
         ));
+        for(Power power : getPowers()) {
+            if(power instanceof FreezePower) {
+                freezePower = (FreezePower) power;
+                break;
+            }
+        }
     }
 
     @Override
@@ -55,14 +58,14 @@ public class Zane extends NinjagoRole {
         UHCPlayer player = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer());
         if(!player.equals(getUHCPlayer())) return;
 
-        if(gelZonePlaced && gelZoneCoords != null) {
+        if(freezePower.gelZonePlaced && freezePower.gelZoneCoords != null) {
             Location playerLoc = event.getPlayer().getLocation();
 
-            if (Math.abs(playerLoc.getX() - gelZoneCoords.getX()) <= 15 && Math.abs(playerLoc.getZ() - gelZoneCoords.getZ()) <= 15 && !inZone) {
+            if (Math.abs(playerLoc.getX() - freezePower.gelZoneCoords.getX()) <= 15 && Math.abs(playerLoc.getZ() - freezePower.gelZoneCoords.getZ()) <= 15 && !inZone) {
                 getUHCPlayer().addStrength(20);
                 inZone = true;
             }
-            if (Math.abs(playerLoc.getX() - gelZoneCoords.getX()) > 15 && Math.abs(playerLoc.getZ() - gelZoneCoords.getZ()) > 15 && inZone) {
+            if (Math.abs(playerLoc.getX() - freezePower.gelZoneCoords.getX()) > 15 && Math.abs(playerLoc.getZ() - freezePower.gelZoneCoords.getZ()) > 15 && inZone) {
                 getUHCPlayer().removeStrength(20);
                 inZone = false;
             }
@@ -102,6 +105,9 @@ public class Zane extends NinjagoRole {
         final int zoneTimer = 2 * 60;
         FreezeZoneCooldown freezeZoneRunnable;
         List<Block> icedBlocks;
+
+        boolean gelZonePlaced;
+        Location gelZoneCoords;
 
         public FreezePower() {
             super(ChatColor.BLUE + "Déluge", Material.PACKED_ICE, 20 * 60, -1);
@@ -159,37 +165,6 @@ public class Zane extends NinjagoRole {
                 }
                 gelZonePlaced = false;
             }
-        }
-    }
-
-    private static class SpinjitzuPower extends RightClickItemPower {
-
-        public SpinjitzuPower() {
-            super(ChatColor.WHITE + "Spinjitzu", Material.NETHER_STAR, 5 * 60, -1);
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[] {"À l'activation, repousse de 5 blocks tous les joueurs dans un rayon de 4 blocks"};
-        }
-
-        @Override
-        public boolean onEnable(UHCPlayer player, Action clickAction) {
-            List<Entity> nearbyEntities = player.getPlayer().getNearbyEntities(4, 2, 4);
-            Location center = player.getPlayer().getLocation();
-            for(Entity entity : nearbyEntities) {
-                double angle = Math.atan2(entity.getLocation().getZ() - center.getZ(), entity.getLocation().getX() - center.getX());
-                Vector newVelocity = new Vector(
-                        1.5 * Math.cos(angle),
-                        0.5, //* Math.signum(entity.getLocation().getY() - center.getY()),
-                        1.5 * Math.sin(angle)
-                );
-                entity.setVelocity(newVelocity);
-            }
-
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.WHITE);
-
-            return true;
         }
     }
 }

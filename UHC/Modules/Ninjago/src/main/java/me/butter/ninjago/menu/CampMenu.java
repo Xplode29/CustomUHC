@@ -21,7 +21,7 @@ public class CampMenu extends AbstractMenu {
     public Map<Integer, Button> getButtons() {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(20, new ButtonImpl() {
+        buttons.put(19, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
                 return new ItemBuilder(CampEnum.NINJA.getIcon()).setName("§rNinja").toItemStack();
@@ -33,7 +33,7 @@ public class CampMenu extends AbstractMenu {
             }
         });
 
-        buttons.put(22, new ButtonImpl() {
+        buttons.put(21, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
                 return new ItemBuilder(CampEnum.SNAKE.getIcon()).setName("§rSerpents").toItemStack();
@@ -45,7 +45,7 @@ public class CampMenu extends AbstractMenu {
             }
         });
 
-        buttons.put(24, new ButtonImpl() {
+        buttons.put(23, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
                 return new ItemBuilder(CampEnum.MASTER.getIcon()).setName("§rMaitres").toItemStack();
@@ -54,6 +54,18 @@ public class CampMenu extends AbstractMenu {
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
                 player.openMenu(new RoleMenu(CampEnum.MASTER), true);
+            }
+        });
+
+        buttons.put(25, new ButtonImpl() {
+            @Override
+            public ItemStack getIcon() {
+                return new ItemBuilder(CampEnum.SOLO.getIcon()).setName("§rSolitaires").toItemStack();
+            }
+
+            @Override
+            public void onClick(UHCPlayer player, ClickType clickType) {
+                player.openMenu(new RoleMenu(CampEnum.SOLO), true);
             }
         });
 

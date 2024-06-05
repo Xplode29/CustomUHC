@@ -22,6 +22,7 @@ public class UHCPlayerDeathEvent extends Event implements Cancellable {
     private UHCPlayer killer;
     private UHCPlayer victim;
     private PlayerDeathEvent originalEvent;
+    public boolean showDeath;
     private boolean cancelled;
 
     public UHCPlayerDeathEvent(PlayerDeathEvent originalEvent, UHCPlayer victim, UHCPlayer killer) {
@@ -29,6 +30,7 @@ public class UHCPlayerDeathEvent extends Event implements Cancellable {
         this.killer = killer;
         this.victim = victim;
 
+        this.showDeath = true;
         this.cancelled = false;
     }
 

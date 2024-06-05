@@ -4,12 +4,14 @@ import me.butter.api.module.camp.Camp;
 import me.butter.ninjago.roles.camps.MaitreCamp;
 import me.butter.ninjago.roles.camps.NinjaCamp;
 import me.butter.ninjago.roles.camps.SnakeCamp;
+import me.butter.ninjago.roles.camps.SoloCamp;
 import org.bukkit.Material;
 
 public enum CampEnum {
-    NINJA(new NinjaCamp(), Material.DIAMOND),
+    NINJA(new NinjaCamp(), Material.IRON_INGOT),
     SNAKE(new SnakeCamp(), Material.GOLD_INGOT),
-    MASTER(new MaitreCamp(), Material.EMERALD);
+    MASTER(new MaitreCamp(), Material.EMERALD),
+    SOLO(new SoloCamp(), Material.DIAMOND);
 
     private Camp camp;
     private Material icon;

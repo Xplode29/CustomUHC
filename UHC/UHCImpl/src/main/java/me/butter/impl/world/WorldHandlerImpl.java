@@ -116,6 +116,8 @@ public class WorldHandlerImpl implements WorldHandler {
             pregenTask = null;
         }
 
+        UHCAPI.getInstance().getStructureHandler().loadStructures();
+
         pregenTask = new PregenTask(getWorld(), (UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() + 100));
         pregenTask.runTaskTimer(UHCImpl.getInstance(), 0, 20);
     }

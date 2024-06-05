@@ -2,6 +2,9 @@ package me.butter.impl.world.pregen;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.impl.UHCImpl;
+import me.butter.impl.structures.StructureBuilderTask;
+import me.butter.impl.task.SpawnPointsTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -41,11 +44,11 @@ public class PregenTask extends BukkitRunnable {
                 x = startX;
                 z += 16;
                 if (z > -startZ) {
-                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setPregenDone(true);
                     Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Le monde a été pregen avec succès !"));
                     this.world.getWorldBorder().setSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() * 2);
                     finished = true;
                     cancel();
+                    Bukkit.getScheduler().runTaskLater(UHCImpl.getInstance(), StructureBuilderTask::new, 20);
                     return;
                 }
             }

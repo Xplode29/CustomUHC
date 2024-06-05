@@ -24,7 +24,7 @@ public class RulesMenu extends PaginatedMenu {
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.BOW).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isBow() ? "§a" : "§c") + "Arc").toItemStack();
+                return new ItemBuilder(Material.BOW).setName("Arc" + (UHCAPI.getInstance().getGameHandler().getItemConfig().isBow() ? " - §aActivé" : " - §cDésactivé")).toItemStack();
             }
 
             @Override
@@ -41,7 +41,7 @@ public class RulesMenu extends PaginatedMenu {
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.ENDER_PEARL).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isEnderPearl() ? "§a" : "§c") + "Ender Pearl").toItemStack();
+                return new ItemBuilder(Material.ENDER_PEARL).setName("Ender Pearl" + (UHCAPI.getInstance().getGameHandler().getItemConfig().isEnderPearl() ? " - §aActivé" : " - §cDésactivé")).toItemStack();
             }
 
             @Override
@@ -58,7 +58,7 @@ public class RulesMenu extends PaginatedMenu {
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.FISHING_ROD).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isRod() ? "§a" : "§c") + "Canne à pèche").toItemStack();
+                return new ItemBuilder(Material.FISHING_ROD).setName("Canne à pèche" + (UHCAPI.getInstance().getGameHandler().getItemConfig().isRod() ? " - §aActivé" : " - §cDésactivé")).toItemStack();
             }
 
             @Override
@@ -75,7 +75,7 @@ public class RulesMenu extends PaginatedMenu {
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.SNOW_BALL).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isProjectile() ? "§a" : "§c") + "Projectiles").toItemStack();
+                return new ItemBuilder(Material.SNOW_BALL).setName("Projectiles" + (UHCAPI.getInstance().getGameHandler().getItemConfig().isProjectile() ? " - §aActivé" : " - §cDésactivé")).toItemStack();
             }
 
             @Override
@@ -92,7 +92,7 @@ public class RulesMenu extends PaginatedMenu {
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.LAVA_BUCKET).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isLavaBucket() ? "§a" : "§c") + "Seau de lave").toItemStack();
+                return new ItemBuilder(Material.LAVA_BUCKET).setName("Seau de lave" + (UHCAPI.getInstance().getGameHandler().getItemConfig().isLavaBucket() ? " - §aActivé" : " - §cDésactivé")).toItemStack();
             }
 
             @Override
@@ -109,7 +109,7 @@ public class RulesMenu extends PaginatedMenu {
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.FLINT_AND_STEEL).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isFlintAndSteel() ? "§a" : "§c") + "Briquet").toItemStack();
+                return new ItemBuilder(Material.FLINT_AND_STEEL).setName("Briquet" + (UHCAPI.getInstance().getGameHandler().getItemConfig().isFlintAndSteel() ? " - §aActivé" : " - §cDésactivé")).toItemStack();
             }
 
             @Override

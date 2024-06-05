@@ -33,9 +33,7 @@ public class RoleTimer extends AbstractTimer {
         Collections.reverse(roleComposition);
 
         List<UHCPlayer> players = new ArrayList<>(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame());
-        for(int i = 0; i < new Random().nextInt(4); i++) {
-            Collections.shuffle(players);
-        }
+        Collections.shuffle(players, new Random());
 
         int index = 0;
         for(RoleType roleType : roleComposition) {
@@ -52,6 +50,7 @@ public class RoleTimer extends AbstractTimer {
                 }
             }
         }
+        Collections.shuffle(roleList, new Random());
 
         if(roleList.size() < players.size()) {
             Bukkit.broadcastMessage(ChatUtils.ERROR.getMessage("Il n'y a pas assez de roles actifs !"));
@@ -66,8 +65,6 @@ public class RoleTimer extends AbstractTimer {
 
             role.setUHCPlayer(player);
             player.setRole(role);
-
-            ChatSnippets.rolePresentation(player);
 
             role.onGiveRole();
 
@@ -86,6 +83,8 @@ public class RoleTimer extends AbstractTimer {
 
         for(Role role : roleList) {
             role.onDistributionFinished();
+
+            ChatSnippets.rolePresentation(role.getUHCPlayer());
         }
     }
 

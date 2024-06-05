@@ -8,6 +8,7 @@ import me.butter.api.module.ModuleHandler;
 import me.butter.api.player.PlayerHandler;
 import me.butter.api.scenario.ScenarioHandler;
 import me.butter.api.scoreboard.ScoreboardHandler;
+import me.butter.api.structures.StructureHandler;
 import me.butter.api.tab.TabHandler;
 import me.butter.api.timer.TimerHandler;
 import me.butter.api.world.WorldHandler;
@@ -48,4 +49,6 @@ public abstract class UHCAPI extends JavaPlugin {
     public abstract MenuHandler getMenuHandler();
 
     public abstract ModuleHandler getModuleHandler();
+
+    public abstract StructureHandler getStructureHandler();
 }

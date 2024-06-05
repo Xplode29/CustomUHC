@@ -95,7 +95,7 @@ public class Nya extends NinjagoRole {
     public void onNewEpisode(EpisodeEvent event) {
         if(event.getEpisode() == 3 && finalKay != null) {
             List<UHCPlayer> alivePlayers = new ArrayList<>(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame());
-            alivePlayers.removeIf(u -> u.getRole() instanceof Kai);
+            alivePlayers.removeIf(u -> u.getRole() instanceof Kai || u.equals(getUHCPlayer()));
 
             Collections.shuffle(alivePlayers);
             List<UHCPlayer> playersList = alivePlayers.subList(0, 2);

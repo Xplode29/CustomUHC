@@ -7,4 +7,9 @@ public class SnakeCamp implements Camp {
     public String getName() {
         return "Serpents";
     }
+
+    @Override
+    public boolean isSolo() {
+        return false;
+    }
 }

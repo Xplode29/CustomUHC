@@ -46,22 +46,22 @@ public class Facteur extends NinjagoRole {
         getUHCPlayer().addSpeed(20);
 
         Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {
-            if (invisible) {
-                for(ItemStack item : getUHCPlayer().getPlayer().getInventory().getArmorContents()) {
-                    if(item.getType() != Material.AIR) {
+            for(ItemStack item : getUHCPlayer().getPlayer().getInventory().getArmorContents()) {
+                if(item.getType() != Material.AIR) {
+                    if(invisible) {
                         getUHCPlayer().setNoFall(false);
                         getUHCPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
                         invisible = false;
-                        return;
                     }
+                    return;
                 }
             }
-            else if(!getUHCPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+            if(!invisible) {
                 getUHCPlayer().setNoFall(true);
-                getUHCPlayer().addPotionEffect(PotionEffectType.INVISIBILITY, -1, 0);
+                getUHCPlayer().addPotionEffect(PotionEffectType.INVISIBILITY, -1, 1);
                 invisible = true;
             }
-        }, 0, 20);
+        }, 0, 10);
     }
 
     @Override
@@ -82,6 +82,11 @@ public class Facteur extends NinjagoRole {
 
         public LetterCommand() {
             super("Lettre", "lettre", 0, -1);
+        }
+
+        @Override
+        public boolean hideCooldowns() {
+            return true;
         }
 
         @Override

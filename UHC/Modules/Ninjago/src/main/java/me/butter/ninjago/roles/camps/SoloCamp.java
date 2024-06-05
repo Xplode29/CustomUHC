@@ -2,14 +2,14 @@ package me.butter.ninjago.roles.camps;
 
 import me.butter.api.module.camp.Camp;
 
-public class MaitreCamp implements Camp {
+public class SoloCamp implements Camp {
     @Override
     public String getName() {
-        return "Maitres";
+        return "Solitaires";
     }
 
     @Override
     public boolean isSolo() {
-        return false;
+        return true;
     }
 }

@@ -48,7 +48,7 @@ public class Lloyd extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez 3 coeurs permanents supplémentaires"
+                "Vous possédez 2 coeurs permanents supplémentaires"
         };
     }
 

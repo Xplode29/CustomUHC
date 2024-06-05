@@ -68,7 +68,9 @@ public class UHCPlayerImpl implements UHCPlayer {
 
         this.playerPotionEffects = new ArrayList<>();
         this.maxHealth = (int) player.getMaxHealth();
+        setMaxHealth(20);
         this.speedEffect = 0; this.strengthEffect = 0; this.resiEffect = 0;
+        updateEffects();
     }
 
     @Override

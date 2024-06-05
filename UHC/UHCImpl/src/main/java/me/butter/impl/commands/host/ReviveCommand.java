@@ -23,7 +23,7 @@ public class ReviveCommand extends AbstractCommand {
 
         UHCPlayer target = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(args[1]);
 
-        if(target == null) {
+        if(target == null || target.getPlayer() == null) {
             sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + args[1] + " n'existe pas !"));
             return;
         }

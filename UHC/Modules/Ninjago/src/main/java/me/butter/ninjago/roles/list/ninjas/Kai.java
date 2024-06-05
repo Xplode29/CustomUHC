@@ -1,6 +1,7 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.module.power.EnchantBookPower;
+import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ItemBuilder;
@@ -11,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
@@ -21,6 +23,7 @@ public class Kai extends NinjagoRole {
 
     public Kai() {
         super("Kai", "/roles/ninjas/kai", Arrays.asList(
+                new FlameBow(),
                 new FireAspectBook(),
                 new SpinjitzuPower(ChatColor.RED)
         ));
@@ -42,12 +45,6 @@ public class Kai extends NinjagoRole {
     @Override
     public void onGiveRole() {
         getUHCPlayer().addPotionEffect(PotionEffectType.FIRE_RESISTANCE, -1, 1);
-
-        getUHCPlayer().giveItem(new ItemBuilder(Material.BOW)
-                .addEnchant(Enchantment.ARROW_DAMAGE, 3)
-                .addEnchant(Enchantment.ARROW_FIRE, 1)
-                .setUnbreakable()
-                .toItemStack(), true);
     }
 
     @Override
@@ -75,6 +72,28 @@ public class Kai extends NinjagoRole {
                     nextToNya = false;
                 }
             }, 20, 20);
+        }
+    }
+
+    private static class FlameBow extends RightClickItemPower {
+
+        public FlameBow() {
+            super("Arc de flamme", Material.BOW, 0, -1);
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[]{"Un arc enchanté Power 3 Flame 1."};
+        }
+
+        @Override
+        public ItemStack getItem() {
+            return new ItemBuilder(Material.BOW)
+                    .setName(getName())
+                    .addEnchant(Enchantment.ARROW_DAMAGE, 3)
+                    .addEnchant(Enchantment.ARROW_FIRE, 1)
+                    .setUnbreakable()
+                    .toItemStack();
         }
     }
 

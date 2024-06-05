@@ -7,4 +7,9 @@ public class NinjaCamp implements Camp {
     public String getName() {
         return "Ninjas";
     }
+
+    @Override
+    public boolean isSolo() {
+        return false;
+    }
 }

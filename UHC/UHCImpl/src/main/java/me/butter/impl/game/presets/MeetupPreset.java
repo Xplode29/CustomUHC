@@ -35,6 +35,9 @@ public class MeetupPreset extends AbstractPreset {
         addToStartingInventory(25, new ItemStack(Material.WOOD, 64));
         addToStartingInventory(26, new ItemStack(Material.WOOD, 64));
 
+        addToStartingInventory(9, new ItemStack(Material.ANVIL, 64));
+        addToStartingInventory(10, new ItemStack(Material.EXP_BOTTLE, 64));
+
         addToStartingInventory(15, new ItemStack(Material.LOG, 64));
         addToStartingInventory(16, new ItemStack(Material.LOG, 64));
         addToStartingInventory(17, new ItemStack(Material.LOG, 64));

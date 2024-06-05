@@ -2,6 +2,7 @@ package me.butter.impl.listeners;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
+import me.butter.api.module.camp.Camp;
 import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.Power;
 import me.butter.api.player.PlayerState;
@@ -10,8 +11,10 @@ import me.butter.api.utils.chat.ChatSnippets;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
+import net.minecraft.server.v1_8_R3.EntityLiving;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -31,6 +34,9 @@ public class DamageHealthEvents implements Listener {
     @EventHandler
     public void onEntityDamaged(EntityDamageEvent event) {
         if(!(event.getEntity() instanceof Player)) return;
+
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
+
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY ||
             UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
             UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING) {
@@ -38,6 +44,8 @@ public class DamageHealthEvents implements Listener {
         }
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
             if (UHCAPI.getInstance().getGameHandler().getGameConfig().isInvincibility()) {
+                event.setCancelled(true);
+            } else if (event.getCause() == EntityDamageEvent.DamageCause.FALL && uhcPlayer != null && uhcPlayer.hasNoFall()) {
                 event.setCancelled(true);
             }
         }
@@ -64,19 +72,49 @@ public class DamageHealthEvents implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void patchDamage(EntityDamageByEntityEvent event) {
-        if(event.getDamager() instanceof Player) {
-            UHCPlayer uhcDamager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
-            if (uhcDamager != null && uhcDamager.getPotion(PotionEffectType.INCREASE_DAMAGE) != null) {
-                event.setDamage(event.getDamage() / 2.299999952316284D * (1 + (double) uhcDamager.getStrength() / 100));
-            }
-        }
-
+        //After Reduction
         if(event.getEntity() instanceof Player) {
             UHCPlayer uhcVictim = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
 
-            if (uhcVictim != null && uhcVictim.getPotion(PotionEffectType.DAMAGE_RESISTANCE) != null) {
+            if (uhcVictim != null && uhcVictim.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
                 event.setDamage(event.getDamage() / 0.800000011920929D * (1 - (double) uhcVictim.getResi() / 100));
             }
+        }
+
+        //Before Reduction
+        if(event.getDamager() instanceof Player) {
+            UHCPlayer uhcDamager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
+            if(uhcDamager == null) return;
+
+            //Remove damages from others
+            double damageBeforeReduction = event.getDamage();
+            ItemStack itemStack = uhcDamager.getPlayer().getInventory().getItemInHand();
+            if(itemStack != null && itemStack.containsEnchantment(Enchantment.DAMAGE_ALL)) {
+                damageBeforeReduction -= (0.5 + itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 0.5);
+            }
+
+            boolean isCrit = uhcDamager.getPlayer().getFallDistance() > 0.0F && !uhcDamager.getPlayer().isOnGround() && uhcDamager.getPlayer() instanceof EntityLiving && !uhcDamager.getPlayer().hasPotionEffect(PotionEffectType.BLINDNESS) && uhcDamager.getPlayer().getVehicle() == null;
+            if(isCrit) damageBeforeReduction /= 1.5;
+
+            //Modify Damages with potions
+            //Remove Strength
+            if (uhcDamager.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
+                damageBeforeReduction /= (1 + 1.3 * uhcDamager.getPotion(PotionEffectType.INCREASE_DAMAGE).getLevel());
+            }
+
+            //Remove Weakness
+            if (uhcDamager.hasPotionEffect(PotionEffectType.WEAKNESS)) {
+                damageBeforeReduction += (0.5 * uhcDamager.getPotion(PotionEffectType.WEAKNESS).getLevel());
+            }
+
+            //Add damages from others
+            if(isCrit) damageBeforeReduction *= 1.5;
+
+            if(itemStack != null && itemStack.containsEnchantment(Enchantment.DAMAGE_ALL)) {
+                damageBeforeReduction += (0.5 + itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 0.5);
+            }
+
+            event.setDamage(damageBeforeReduction);
         }
     }
 
@@ -127,7 +165,6 @@ public class DamageHealthEvents implements Listener {
         event.getDrops().clear();
 
         UHCPlayerDeathEvent deathEvent = new UHCPlayerDeathEvent(event, uhcVictim, uhcKiller);
-        EventUtils.callEvent(deathEvent);
 
         Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
             victim.spigot().respawn();
@@ -135,6 +172,8 @@ public class DamageHealthEvents implements Listener {
 
             victim.setGameMode(GameMode.SPECTATOR);
             uhcVictim.setPlayerState(PlayerState.DEAD);
+
+            EventUtils.callEvent(deathEvent);
         }, 1L);
 
         Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
@@ -144,12 +183,79 @@ public class DamageHealthEvents implements Listener {
                     uhcVictim.getDeathLocation().getWorld().dropItemNaturally(uhcVictim.getDeathLocation(), item);
                 }
 
-                if(!UHCAPI.getInstance().getModuleHandler().hasModule() || !UHCAPI.getInstance().getModuleHandler().getModule().hasCustomDeath()) {
-                    ChatSnippets.playerDeath(uhcVictim);
+                if(deathEvent.showDeath) {
+                    if(!UHCAPI.getInstance().getModuleHandler().hasModule() || !UHCAPI.getInstance().getModuleHandler().getModule().hasCustomDeath()) {
+                        ChatSnippets.playerDeath(uhcVictim);
 
-                    for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
-                        uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.WITHER_DEATH, 6.0F, 1.0F);
+                        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                            if(uhcPlayer.getPlayer() == null) continue;
+                            uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.WITHER_DEATH, 6.0F, 1.0F);
+                        }
                     }
+                }
+
+                if(UHCAPI.getInstance().getModuleHandler().hasModule()) {
+                    if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME && !UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().isEmpty()) {
+                        List<Camp> camps = new ArrayList<>();
+
+                        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                            if(uhcPlayer.getPlayer() == null || uhcPlayer.getRole() == null) continue;
+                            Camp camp = uhcPlayer.getRole().getCamp();
+                            if(!camps.contains(camp)) {
+                                camps.add(camp);
+                            }
+                        }
+
+                        if(camps.size() > 1) return;
+
+                        Camp camp = camps.get(0);
+
+                        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+                        Bukkit.broadcastMessage("");
+                        if(camp.isSolo()) {
+                            if(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() == 1) {
+                                UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().get(0);
+                                Bukkit.broadcastMessage("Le joueur " + uhcPlayer.getName() + " a gagne !");
+                                UHCAPI.getInstance().getGameHandler().setGameState(GameState.ENDING);
+                                return;
+                            }
+                        }
+                        else {
+                            Bukkit.broadcastMessage("Les " + camp.getName() + " ont gagnes !");
+                        }
+                        Bukkit.broadcastMessage("");
+                        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                            if(uhcPlayer.getRole() != null && (
+                                    uhcPlayer.getPlayerState() == PlayerState.IN_GAME ||
+                                            uhcPlayer.getPlayerState() == PlayerState.DEAD
+                            )) {
+                                Bukkit.broadcastMessage(uhcPlayer.getName() + " (" + uhcPlayer.getRole().getName() + ") : " + uhcPlayer.getKilledPlayers().size() + " kill(s)");
+                            }
+                        }
+                        Bukkit.broadcastMessage("");
+                        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+
+                        UHCAPI.getInstance().getGameHandler().setGameState(GameState.ENDING);
+                    }
+                }
+                else if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME && UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() < 2) {
+                    UHCAPI.getInstance().getGameHandler().setGameState(GameState.ENDING);
+                    UHCPlayer winner = UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().get(0);
+
+                    Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+                    Bukkit.broadcastMessage("");
+                    Bukkit.broadcastMessage("Le joueur " + winner.getName() + " a gagne !");
+                    Bukkit.broadcastMessage("");
+                    for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                        if(uhcPlayer.getRole() != null && (
+                                uhcPlayer.getPlayerState() == PlayerState.IN_GAME ||
+                                        uhcPlayer.getPlayerState() == PlayerState.DEAD
+                        )) {
+                            Bukkit.broadcastMessage(uhcPlayer.getName() + " : " + uhcPlayer.getKilledPlayers().size() + " kill(s)");
+                        }
+                    }
+                    Bukkit.broadcastMessage("");
+                    Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
                 }
             }
             else {

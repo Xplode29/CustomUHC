@@ -56,10 +56,16 @@ public class DayCycleMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                if(clickType == ClickType.LEFT && UHCAPI.getInstance().getGameHandler().getGameConfig().getDayDuration() < 20 * 60) {
+                if(clickType == ClickType.LEFT) {
                     UHCAPI.getInstance().getGameHandler().getGameConfig().setDayDuration(UHCAPI.getInstance().getGameHandler().getGameConfig().getDayDuration() + 60);
-                } else if(clickType == ClickType.RIGHT && UHCAPI.getInstance().getGameHandler().getGameConfig().getDayDuration() > 2 * 60) {
+                    if(UHCAPI.getInstance().getGameHandler().getGameConfig().getDayDuration() > 20 * 60) {
+                        UHCAPI.getInstance().getGameHandler().getGameConfig().setDayDuration(20 * 60);
+                    }
+                } else if(clickType == ClickType.RIGHT) {
                     UHCAPI.getInstance().getGameHandler().getGameConfig().setDayDuration(UHCAPI.getInstance().getGameHandler().getGameConfig().getDayDuration() - 60);
+                    if(UHCAPI.getInstance().getGameHandler().getGameConfig().getDayDuration() < 2 * 60) {
+                        UHCAPI.getInstance().getGameHandler().getGameConfig().setDayDuration(2 * 60);
+                    }
                 }
             }
         });
@@ -80,10 +86,16 @@ public class DayCycleMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                if(clickType == ClickType.LEFT && UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration() < 40 * 60) {
-                    UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration() + 5 * 60);
-                } else if(clickType == ClickType.RIGHT && UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration() > 5 * 60) {
-                    UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration() - 5 * 60);
+                if(clickType == ClickType.LEFT) {
+                    UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration() + 2 * 60);
+                    if(UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration() > 40 * 60) {
+                        UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(40 * 60);
+                    }
+                } else if(clickType == ClickType.RIGHT) {
+                    UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration() - 2 * 60);
+                    if(UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration() < 4 * 60) {
+                        UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(4 * 60);
+                    }
                 }
             }
         });

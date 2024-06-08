@@ -50,6 +50,8 @@ public class Arcturus extends NinjagoRole {
     @Override
     public void onGiveRole() {
         Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {
+            if(getUHCPlayer().getPlayer() == null) return;
+
             for(ItemStack item : getUHCPlayer().getPlayer().getInventory().getArmorContents()) {
                 if(item.getType() != Material.AIR) {
                     if(invisible) {

@@ -30,18 +30,14 @@ public class Morro extends NinjagoRole {
 
     UHCPlayer wu = null;
     Map<UHCPlayer, Integer> ninjasTimers;
-    FreezePower freezePower; GhostPower ghostPower;
+    GhostPower ghostPower;
+    FreezePower freezePower;
 
     public Morro() {
         super("Morro", "/roles/solitaires/morro", Arrays.asList(new FreezePower(), new GhostPower()));
 
         for(Power power : getPowers()) {
-            if(power instanceof FreezePower) {
-                freezePower = (FreezePower) power;
-            }
-            if(power instanceof GhostPower) {
-                ghostPower = (GhostPower) power;
-            }
+            if(power instanceof GhostPower) ghostPower = (GhostPower) power;
         }
         ninjasTimers = new HashMap<>();
     }
@@ -108,14 +104,17 @@ public class Morro extends NinjagoRole {
         UHCPlayer damaged = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
 
         if(damager.equals(getUHCPlayer()) && damaged != null) {
-            if(freezePower.freezeActivated) {
+            if(freezePower != null && freezePower.freezeActivated) {
                 if(new Random().nextInt(100) <= 5) {
                     damaged.removeSpeed(20);
                     Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> damaged.addSpeed(20), 5 * 20);
+                    getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez ralenti " + damaged.getName() + " !"));
                 }
             }
 
-            if(!ghostPower.visible) ghostPower.onUsePower(damager, Action.RIGHT_CLICK_AIR);
+            if(!ghostPower.visible) {
+                ghostPower.onUsePower(damager, Action.RIGHT_CLICK_AIR);
+            }
         }
     }
 
@@ -127,6 +126,7 @@ public class Morro extends NinjagoRole {
         Role role = event.getVictim().getRole();
         if(role instanceof Jay) {
             getUHCPlayer().addSpeed(40);
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu 40% de speed"));
         }
         if(role instanceof Kai) {
             FlameBow bow = new FlameBow();
@@ -136,12 +136,18 @@ public class Morro extends NinjagoRole {
             FireAspectBook book = new FireAspectBook();
             addPower(book);
             getUHCPlayer().giveItem(book.getItem(), true);
+
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Kai ! /ni role pour plus d'informations."));
         }
         if(role instanceof Cole) {
             getUHCPlayer().addResi(20);
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu 20% de resistance"));
         }
         if(role instanceof Zane) {
-            freezePower.hasZanePower = true;
+            freezePower = new FreezePower();
+            addPower(freezePower);
+
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Zane ! /ni role pour plus d'informations."));
         }
     }
 
@@ -193,6 +199,11 @@ public class Morro extends NinjagoRole {
                     "Active / désactive votre passif (uniquement après avoir tué Zane). ",
                     "Lorqu'il est activé, vous avez 5% de chance d'infliger slowness 1 pendant 5 secondes lorsque vous tapez un joueur"
             };
+        }
+
+        @Override
+        public boolean hidePower() {
+            return !hasZanePower;
         }
 
         @Override

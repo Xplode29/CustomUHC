@@ -9,6 +9,11 @@ public class NinjaCamp implements Camp {
     }
 
     @Override
+    public String getPrefix() {
+        return "§a";
+    }
+
+    @Override
     public boolean isSolo() {
         return false;
     }

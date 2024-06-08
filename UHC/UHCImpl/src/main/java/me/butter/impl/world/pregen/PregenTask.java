@@ -44,7 +44,6 @@ public class PregenTask extends BukkitRunnable {
                 x = startX;
                 z += 16;
                 if (z > -startZ) {
-                    Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Le monde a été pregen avec succès !"));
                     this.world.getWorldBorder().setSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() * 2);
                     finished = true;
                     cancel();

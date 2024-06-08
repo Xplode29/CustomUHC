@@ -1,6 +1,7 @@
 package me.butter.ninjago.roles.list.solos;
 
 import me.butter.api.module.power.EnchantBookPower;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.roles.NinjagoRole;
 import me.butter.ninjago.roles.items.SpinjitzuPower;
@@ -38,6 +39,8 @@ public class Garmadon extends NinjagoRole {
         if(event.getKiller() != getUHCPlayer() || event.getVictim().getRole() == null) return;
         if(event.getVictim().getRole() instanceof Wu) {
             getUHCPlayer().addStrength(20);
+
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu Force 1 permanent."));
         }
         if(event.getVictim().getRole() instanceof Lloyd) {
             ProtectionBook book = new ProtectionBook();
@@ -47,6 +50,8 @@ public class Garmadon extends NinjagoRole {
             SpinjitzuPower spinjitzuPower = new SpinjitzuPower(ChatColor.DARK_PURPLE);
             addPower(spinjitzuPower);
             getUHCPlayer().giveItem(spinjitzuPower.getItem(), true);
+
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu l'accès au Spinjitzu ainsi qu'un livre Protection 3."));
         }
     }
 

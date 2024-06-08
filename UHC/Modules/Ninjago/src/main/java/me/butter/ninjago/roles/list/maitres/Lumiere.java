@@ -44,7 +44,11 @@ public class Lumiere extends NinjagoRole {
 
     @Override
     public void onGiveRole() {
+        getUHCPlayer().addMaxHealth(4);
+
         Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {
+            if(getUHCPlayer().getPlayer() == null) return;
+
             for(ItemStack item : getUHCPlayer().getPlayer().getInventory().getArmorContents()) {
                 if(item.getType() != Material.AIR) {
                     if(invisible) {

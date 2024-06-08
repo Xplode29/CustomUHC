@@ -35,12 +35,8 @@ public class PotionUpdaterTask extends BukkitRunnable {
                         uhcPlayer.getPlayer().addPotionEffect(new PotionEffect(potion.getEffect(), potion.getDuration(), potion.getLevel() - 1, false, false));
                     }
                     else {
-                        if(potion.getDuration() <= 0) {
-                            uhcPlayer.removePotionEffect(potion.getEffect());
-                        }
-                        else {
-                            potion.setDuration(potion.getDuration() - 1);
-                        }
+                        if(potion.getDuration() <= 0) uhcPlayer.removePotionEffect(potion.getEffect());
+                        else potion.setDuration(potion.getDuration() - 1);
                     }
                 }
             }

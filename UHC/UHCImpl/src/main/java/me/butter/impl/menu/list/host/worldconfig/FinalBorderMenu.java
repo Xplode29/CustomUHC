@@ -32,8 +32,8 @@ public class FinalBorderMenu extends AbstractMenu {
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() - 500);
-                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() < 100) {
-                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(100);
+                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() < 0) {
+                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(0);
                 }
             }
 
@@ -52,8 +52,8 @@ public class FinalBorderMenu extends AbstractMenu {
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() - 100);
-                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() < 100) {
-                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(100);
+                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() < 0) {
+                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(0);
                 }
             }
 
@@ -72,8 +72,8 @@ public class FinalBorderMenu extends AbstractMenu {
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() - 50);
-                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() < 100) {
-                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(100);
+                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() < 0) {
+                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(0);
                 }
             }
 

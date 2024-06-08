@@ -68,7 +68,7 @@ public class Fumee extends NinjagoRole {
         if(getUHCPlayer().equals(event.getKiller())) {
             if(power.hideKills) {
                 for(UHCPlayer uhcPlayer : maitres) {
-                    uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Mort de " + event.getVictim().getName() + " par " + event.getKiller().getName()));
+                    uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("(Visible seulement par les maitres) Mort de " + event.getVictim().getName() + " par " + event.getKiller().getName()));
                     if(event.getVictim().getRole() != null) {
                         uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Son role était: " + event.getVictim().getRole().getName()));
                     }
@@ -121,7 +121,7 @@ public class Fumee extends NinjagoRole {
 
         @Override
         public String[] getDescription() {
-            return new String[]{"À l'activation, vous recouvrez de fumée une zone de 25 blocks de rayon. Dans cette zone, les joueurs ne peuvent pas voir les maitres à plus de 5 blocks"};
+            return new String[]{"À l'activation, vous recouvrez de fumée une zone de 25 blocks de rayon. Dans cette zone, les joueurs ne peuvent pas voir les maitres à plus de 7 blocks"};
         }
 
         @Override
@@ -132,7 +132,7 @@ public class Fumee extends NinjagoRole {
             }
 
             if(smokeZoneCooldown == null) {
-                smokeZoneCooldown = new SmokeZoneCooldown();
+                smokeZoneCooldown = new SmokeZoneCooldown(player);
             }
             else {
                 smokeZoneCooldown.reset();
@@ -140,7 +140,7 @@ public class Fumee extends NinjagoRole {
 
             smokeCoords = player.getLocation();
             smokePlaced = true;
-            player.getPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez placé votre zone !"));
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez placé votre zone !"));
 
             return true;
         }
@@ -149,9 +149,14 @@ public class Fumee extends NinjagoRole {
             int timer;
             boolean isRunning;
 
-            public SmokeZoneCooldown() {
+            UHCPlayer player;
+
+            public SmokeZoneCooldown(UHCPlayer player) {
                 timer = 0;
                 isRunning = true;
+
+                this.player = player;
+
                 this.runTaskTimer(Ninjago.getInstance(), 0, 20);
             }
 
@@ -171,6 +176,7 @@ public class Fumee extends NinjagoRole {
                                 p.showPlayer(master.getPlayer());
                             }
                         }
+                        player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Votre zone s'est effacée..."));
                     }
                     else {
                         for (Role role : Ninjago.getInstance().getRolesList()) {
@@ -186,7 +192,7 @@ public class Fumee extends NinjagoRole {
                                     if(uhcPlayer.getPlayer() == null) continue;
                                     if(uhcPlayer.getRole().getCamp() == CampEnum.MASTER.getCamp()) continue;
 
-                                    if(uhcPlayer.isNextTo(master, 5)) {
+                                    if(uhcPlayer.isNextTo(master, 7)) {
                                         uhcPlayer.getPlayer().showPlayer(master.getPlayer());
                                     }
                                     else {

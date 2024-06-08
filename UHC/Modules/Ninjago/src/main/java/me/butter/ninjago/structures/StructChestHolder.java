@@ -1,7 +1,6 @@
-package me.butter.ninjago.structures.list;
+package me.butter.ninjago.structures;
 
 import me.butter.impl.structures.AbstractStructure;
-import org.bukkit.World;
 
 public class StructChestHolder extends AbstractStructure {
     public StructChestHolder(int x, int y, int z) {

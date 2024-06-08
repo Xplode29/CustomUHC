@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.craftbukkit.libs.joptsimple.internal.Strings;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class HostCommands implements TabExecutor {
         commands.add(new StartCommand());
         commands.add(new StopCommand());
         commands.add(new TeleportCommand());
+        commands.add(new ConfigCommand());
     }
 
     @Override
@@ -57,7 +59,10 @@ public class HostCommands implements TabExecutor {
             }
         }
         else {
-            if(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() == null || !sender.equals(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost())) {
+            if(!player.isOp() && (
+                UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() == null ||
+                !sender.equals(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost()))
+            ) {
                 player.sendMessage(ChatUtils.ERROR.getMessage("Tu n'es pas le host de la partie !"));
                 return true;
             }
@@ -68,7 +73,8 @@ public class HostCommands implements TabExecutor {
                 }
             }
         }
-        return false;
+        sender.sendMessage(ChatUtils.ERROR.getMessage("Usage: /host <" + Strings.join(commands.stream().map(AbstractCommand::getArgument).collect(Collectors.toList()), " | ") + ">"));
+        return true;
     }
 
     @Override

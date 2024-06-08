@@ -65,11 +65,11 @@ public class Fangdam extends NinjagoRole {
                 }
 
                 if(getUHCPlayer().isNextTo(fangtom, 20) && !nextToDuo) {
-                    getUHCPlayer().addStrength(10);
+                    getUHCPlayer().addStrength(20);
                     nextToDuo = true;
                 }
                 else if(!getUHCPlayer().isNextTo(fangtom, 20) && nextToDuo) {
-                    getUHCPlayer().removeStrength(10);
+                    getUHCPlayer().removeStrength(20);
                     nextToDuo = false;
                 }
             }, 20, 20);
@@ -97,11 +97,6 @@ public class Fangdam extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[]{"Vous permet de communiquer avec Fangtom"};
-        }
-
-        @Override
-        public String getArgument() {
-            return "chat";
         }
 
         @Override

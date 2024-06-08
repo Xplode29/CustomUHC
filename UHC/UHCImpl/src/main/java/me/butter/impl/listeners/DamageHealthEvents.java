@@ -23,6 +23,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
@@ -72,49 +73,58 @@ public class DamageHealthEvents implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void patchDamage(EntityDamageByEntityEvent event) {
-        //After Reduction
+        //After Reduction (Resistance)
         if(event.getEntity() instanceof Player) {
             UHCPlayer uhcVictim = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
+            if(uhcVictim != null) {
+                PotionEffect potionEffect = uhcVictim.getPlayer().getActivePotionEffects().stream().filter(
+                        e -> e.getType().equals(PotionEffectType.DAMAGE_RESISTANCE)
+                ).findFirst().orElse(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 0, -1));
 
-            if (uhcVictim != null && uhcVictim.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
-                event.setDamage(event.getDamage() / 0.800000011920929D * (1 - (double) uhcVictim.getResi() / 100));
+                event.setDamage(event.getDamage() / (1 - (potionEffect.getAmplifier() + 1.0) * (1 / 5.0)));
+
+                event.setDamage(event.getDamage() * (1 - uhcVictim.getResi() / 100f));
             }
         }
 
-        //Before Reduction
+        //Before Reduction (Strength / Weakness)
         if(event.getDamager() instanceof Player) {
             UHCPlayer uhcDamager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
-            if(uhcDamager == null) return;
+            if(uhcDamager != null) {
+                //Remove damages from others
+                double damageBeforeReduction = event.getDamage();
+                ItemStack itemStack = uhcDamager.getPlayer().getInventory().getItemInHand();
+                if(itemStack != null && itemStack.containsEnchantment(Enchantment.DAMAGE_ALL)) {
+                    damageBeforeReduction -= itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 1.25;
+                }
 
-            //Remove damages from others
-            double damageBeforeReduction = event.getDamage();
-            ItemStack itemStack = uhcDamager.getPlayer().getInventory().getItemInHand();
-            if(itemStack != null && itemStack.containsEnchantment(Enchantment.DAMAGE_ALL)) {
-                damageBeforeReduction -= (0.5 + itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 0.5);
+                boolean isCrit = uhcDamager.getPlayer().getFallDistance() > 0.0F && !uhcDamager.getPlayer().isOnGround() && uhcDamager.getPlayer() instanceof EntityLiving && !uhcDamager.getPlayer().hasPotionEffect(PotionEffectType.BLINDNESS) && uhcDamager.getPlayer().getVehicle() == null;
+                if(isCrit) damageBeforeReduction /= 1.5;
+
+                //Modify Damages with potions
+                //Remove Strength
+                PotionEffect potionEffect = uhcDamager.getPlayer().getActivePotionEffects().stream().filter(
+                        e -> e.getType().equals(PotionEffectType.INCREASE_DAMAGE)
+                ).findFirst().orElse(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 0, -1));
+                damageBeforeReduction /= (1 + 1.3 * (potionEffect.getAmplifier() + 1.0));
+
+                //Remove Weakness
+                potionEffect = uhcDamager.getPlayer().getActivePotionEffects().stream().filter(
+                        e -> e.getType().equals(PotionEffectType.WEAKNESS)
+                ).findFirst().orElse(new PotionEffect(PotionEffectType.WEAKNESS, 0, -1));
+                damageBeforeReduction += (0.5 * (potionEffect.getAmplifier() + 1.0));
+
+                damageBeforeReduction *= (1 + uhcDamager.getStrength() / 100f);
+
+                //Add damages from others
+                if(isCrit) damageBeforeReduction *= 1.5;
+
+                if(itemStack != null && itemStack.containsEnchantment(Enchantment.DAMAGE_ALL)) {
+                    damageBeforeReduction += itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 1.25;
+                }
+
+                event.setDamage(damageBeforeReduction);
             }
-
-            boolean isCrit = uhcDamager.getPlayer().getFallDistance() > 0.0F && !uhcDamager.getPlayer().isOnGround() && uhcDamager.getPlayer() instanceof EntityLiving && !uhcDamager.getPlayer().hasPotionEffect(PotionEffectType.BLINDNESS) && uhcDamager.getPlayer().getVehicle() == null;
-            if(isCrit) damageBeforeReduction /= 1.5;
-
-            //Modify Damages with potions
-            //Remove Strength
-            if (uhcDamager.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
-                damageBeforeReduction /= (1 + 1.3 * uhcDamager.getPotion(PotionEffectType.INCREASE_DAMAGE).getLevel());
-            }
-
-            //Remove Weakness
-            if (uhcDamager.hasPotionEffect(PotionEffectType.WEAKNESS)) {
-                damageBeforeReduction += (0.5 * uhcDamager.getPotion(PotionEffectType.WEAKNESS).getLevel());
-            }
-
-            //Add damages from others
-            if(isCrit) damageBeforeReduction *= 1.5;
-
-            if(itemStack != null && itemStack.containsEnchantment(Enchantment.DAMAGE_ALL)) {
-                damageBeforeReduction += (0.5 + itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 0.5);
-            }
-
-            event.setDamage(damageBeforeReduction);
         }
     }
 
@@ -215,13 +225,11 @@ public class DamageHealthEvents implements Listener {
                         if(camp.isSolo()) {
                             if(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() == 1) {
                                 UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().get(0);
-                                Bukkit.broadcastMessage("Le joueur " + uhcPlayer.getName() + " a gagne !");
-                                UHCAPI.getInstance().getGameHandler().setGameState(GameState.ENDING);
-                                return;
+                                Bukkit.broadcastMessage("Le joueur " + camp.getPrefix() + uhcPlayer.getName() + " a gagne !");
                             }
                         }
                         else {
-                            Bukkit.broadcastMessage("Les " + camp.getName() + " ont gagnes !");
+                            Bukkit.broadcastMessage("Les " + camp.getPrefix() + camp.getName() + "§r ont gagnes !");
                         }
                         Bukkit.broadcastMessage("");
                         for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
@@ -229,7 +237,7 @@ public class DamageHealthEvents implements Listener {
                                     uhcPlayer.getPlayerState() == PlayerState.IN_GAME ||
                                             uhcPlayer.getPlayerState() == PlayerState.DEAD
                             )) {
-                                Bukkit.broadcastMessage(uhcPlayer.getName() + " (" + uhcPlayer.getRole().getName() + ") : " + uhcPlayer.getKilledPlayers().size() + " kill(s)");
+                                Bukkit.broadcastMessage(uhcPlayer.getName() + " (" + uhcPlayer.getRole().getCamp().getPrefix() + uhcPlayer.getRole().getName() + "§r) : " + uhcPlayer.getKilledPlayers().size() + " kill(s)");
                             }
                         }
                         Bukkit.broadcastMessage("");

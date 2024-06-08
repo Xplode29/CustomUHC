@@ -23,9 +23,9 @@ public class ChatSnippets {
 
         player.sendMessage(ChatUtils.SEPARATOR + "");
         player.sendMessage("");
-        player.sendMessage(ChatUtils.JOINED.getMessage("Vous êtes §r" + uhcPlayer.getRole().getName()));
+        player.sendMessage(ChatUtils.JOINED.getMessage("Vous êtes §r" + uhcPlayer.getRole().getCamp().getPrefix() + uhcPlayer.getRole().getName()));
 
-        player.sendMessage(ChatUtils.JOINED.getMessage("Vous devez gagner aves les §r" + uhcPlayer.getRole().getCamp().getName()));
+        player.sendMessage(ChatUtils.JOINED.getMessage("Vous devez gagner aves les §r" + uhcPlayer.getRole().getCamp().getPrefix() + uhcPlayer.getRole().getCamp().getName()));
         player.sendMessage("");
 
         player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Description:"));

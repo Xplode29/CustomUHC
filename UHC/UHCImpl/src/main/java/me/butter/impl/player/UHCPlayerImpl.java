@@ -6,7 +6,12 @@ import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.chat.ChatUtils;
+import me.butter.impl.clickablechat.ClickableChatHandlerImpl;
+import me.butter.impl.clickablechat.list.ChatEffectChooser;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_8_R3.ChatComponentText;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
@@ -44,7 +49,6 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     private List<Potion> playerPotionEffects;
     private int maxHealth, speedEffect, strengthEffect, resiEffect;
-
 
     public UHCPlayerImpl(Player player) {
         this.playerUUID = player.getUniqueId();
@@ -579,30 +583,21 @@ public class UHCPlayerImpl implements UHCPlayer {
     public void updateEffects() {
         if(getPlayer() == null) return;
 
-        int speedLevel = speedEffect / 20, speedRest = speedEffect % 20;
-        getPlayer().setWalkSpeed(0.2f * (1 + speedRest / 100f));
-
-        removePotionEffect(PotionEffectType.SPEED);
-        removePotionEffect(PotionEffectType.SLOW);
-        if(speedLevel > 0) {
-            addPotionEffect(PotionEffectType.SPEED, -1, speedLevel);
+        try {
+            getPlayer().setWalkSpeed(0.2f * (1 + speedEffect / 100f));
         }
-        else if (speedLevel < 0) {
-            addPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
+        catch(Exception e) {
+            e.printStackTrace();
         }
 
-        if(strengthEffect > 0 && !hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
-            addPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, 1);
-        }
-        else if(strengthEffect <= 0 && hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
-            removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-        }
+        int strengthLevel = strengthEffect / 20;
+        removePotionEffect(PotionEffectType.INCREASE_DAMAGE); removePotionEffect(PotionEffectType.WEAKNESS);
+        if(strengthEffect > 0) addPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, strengthLevel);
+        else if (strengthEffect < 0) addPotionEffect(PotionEffectType.WEAKNESS, -1, -strengthLevel);
 
-        if(resiEffect > 0 && !hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
-            addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, 1);
-        }
-        else if(resiEffect <= 0 && hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
-            removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-        }
+        int resiLevel = resiEffect / 20;
+        removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+        if(resiEffect > 0) addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, resiLevel);
     }
+
 }

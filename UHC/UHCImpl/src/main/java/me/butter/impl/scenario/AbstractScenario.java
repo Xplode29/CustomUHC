@@ -24,13 +24,13 @@ public abstract class AbstractScenario implements Scenario, Listener {
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[0];
+    public Material getIcon() {
+        return icon;
     }
 
     @Override
-    public Material getIcon() {
-        return icon;
+    public String[] getDescription() {
+        return new String[0];
     }
 
     @Override

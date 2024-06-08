@@ -25,6 +25,18 @@ public class MainMenu extends AbstractMenu {
     public Map<Integer, Button> getButtons() {
         Map<Integer, Button> buttons = new HashMap<>();
 
+        buttons.put(4, new ButtonImpl() {
+            @Override
+            public ItemStack getIcon() {
+                return new ItemBuilder(Material.REDSTONE_TORCH_ON).setName("§rPresets").toItemStack();
+            }
+
+            @Override
+            public void onClick(UHCPlayer player, ClickType clickType) {
+                UHCAPI.getInstance().getMenuHandler().openMenu(player, new PresetsMenu(), true);
+            }
+        });
+
         buttons.put(11, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {

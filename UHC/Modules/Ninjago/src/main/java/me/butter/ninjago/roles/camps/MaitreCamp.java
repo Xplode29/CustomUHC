@@ -9,6 +9,11 @@ public class MaitreCamp implements Camp {
     }
 
     @Override
+    public String getPrefix() {
+        return "§b";
+    }
+
+    @Override
     public boolean isSolo() {
         return false;
     }

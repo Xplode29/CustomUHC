@@ -5,7 +5,8 @@ import me.butter.api.module.camp.Camp;
 import me.butter.api.module.roles.Role;
 import me.butter.api.module.roles.RoleType;
 import me.butter.api.structures.Structure;
-import me.butter.ninjago.structures.list.StructChestHolder;
+import me.butter.ninjago.scenarios.GoldenNinjaScenario;
+import me.butter.ninjago.structures.StructChestHolder;
 import me.butter.ninjago.commands.CommandNinjago;
 import me.butter.ninjago.listener.CycleEvents;
 import me.butter.ninjago.roles.RoleEnum;
@@ -15,7 +16,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public final class Ninjago extends JavaPlugin {
 
@@ -37,6 +37,8 @@ public final class Ninjago extends JavaPlugin {
             Structure struct = new StructChestHolder(0, 100, 0);
             UHCAPI.getInstance().getStructureHandler().addStructure(struct);
         }
+
+        UHCAPI.getInstance().getScenarioHandler().addScenario(new GoldenNinjaScenario());
 
         registerCommands();
         registerListeners();

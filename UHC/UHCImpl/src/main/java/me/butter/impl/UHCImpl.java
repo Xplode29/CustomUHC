@@ -1,6 +1,7 @@
 package me.butter.impl;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.clickablechat.ClickableChatHandler;
 import me.butter.api.enchant.EnchantHandler;
 import me.butter.api.game.GameHandler;
 import me.butter.api.item.ItemHandler;
@@ -13,6 +14,8 @@ import me.butter.api.structures.StructureHandler;
 import me.butter.api.tab.TabHandler;
 import me.butter.api.timer.TimerHandler;
 import me.butter.api.world.WorldHandler;
+import me.butter.impl.clickablechat.ClickChatCommand;
+import me.butter.impl.clickablechat.ClickableChatHandlerImpl;
 import me.butter.impl.commands.CommandDoc;
 import me.butter.impl.commands.CommandFull;
 import me.butter.impl.commands.CommandRules;
@@ -34,8 +37,6 @@ import me.butter.impl.world.WorldHandlerImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-
 public final class UHCImpl extends UHCAPI {
 
     private static UHCImpl instance;
@@ -52,6 +53,7 @@ public final class UHCImpl extends UHCAPI {
     private MenuHandler menuHandler;
     private ModuleHandler moduleHandler;
     private StructureHandler structureHandler;
+    private ClickableChatHandler clickableChatHandler;
 
     @Override
     public void onLoad() {
@@ -69,6 +71,8 @@ public final class UHCImpl extends UHCAPI {
         scenarioHandler = new ScenarioHandlerImpl();
 
         moduleHandler = new ModuleHandlerImpl();
+
+        clickableChatHandler = new ClickableChatHandlerImpl();
     }
 
     @Override
@@ -105,6 +109,8 @@ public final class UHCImpl extends UHCAPI {
         Bukkit.getPluginManager().registerEvents(new ItemEvents(), this);
         Bukkit.getPluginManager().registerEvents(new JoinEvents(), this);
         Bukkit.getPluginManager().registerEvents(new OtherEvents(), this);
+
+        Bukkit.getPluginManager().registerEvents(new ClickChatCommand(), this);
     }
 
     @Override
@@ -165,5 +171,10 @@ public final class UHCImpl extends UHCAPI {
     @Override
     public StructureHandler getStructureHandler() {
         return structureHandler;
+    }
+
+    @Override
+    public ClickableChatHandler getClickableChatHandler() {
+        return clickableChatHandler;
     }
 }

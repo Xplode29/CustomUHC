@@ -40,7 +40,7 @@ public class NinjagoModule implements Module {
 
     @Override
     public String getDoc() {
-        return "https://uhc-17.gitbook.io/ninjago-uhc";
+        return "https://butteronpancakes.gitbook.io/ninjago-uhc";
     }
 
     @Override

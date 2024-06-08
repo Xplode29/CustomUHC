@@ -65,7 +65,7 @@ public class CommandNinjago implements TabExecutor {
                         }
                     }
 
-                    sender.sendMessage(ChatUtils.LIST_HEADER.getMessage(campEnum.getCamp().getName() + "§r (" + rolesAmount + ")"));
+                    sender.sendMessage(ChatUtils.LIST_HEADER.getMessage(campEnum.getCamp().getPrefix() + campEnum.getCamp().getName() + "§r (" + rolesAmount + ")"));
                     for(String role : roles) {
                         sender.sendMessage(role);
                     }

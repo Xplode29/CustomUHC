@@ -4,7 +4,7 @@ import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import me.butter.api.structures.Structure;
 import org.bukkit.World;
 
-public class AbstractStructure implements Structure {
+public abstract class AbstractStructure implements Structure {
 
     String schematicName;
     Clipboard clipboard;

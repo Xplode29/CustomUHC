@@ -35,11 +35,11 @@ public class Mitsake extends NinjagoRole {
 
     @Override
     public void onDay() {
-        getUHCPlayer().removePotionEffect(PotionEffectType.WEAKNESS);
+        getUHCPlayer().addStrength(20);
     }
 
     @Override
     public void onNight() {
-        getUHCPlayer().addPotionEffect(PotionEffectType.WEAKNESS, -1, 1);
+        getUHCPlayer().removeStrength(20);
     }
 }

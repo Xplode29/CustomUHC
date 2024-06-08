@@ -30,15 +30,17 @@ public class Dareth extends NinjagoRole {
         itemMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, 1, true);
         bow.setItemMeta(itemMeta);
         getUHCPlayer().giveItem(bow, true);
+
+        getUHCPlayer().removeStrength(20);
     }
 
     @Override
     public void onDay() {
-        getUHCPlayer().addPotionEffect(PotionEffectType.WEAKNESS, -1, 1);
+        getUHCPlayer().removeStrength(20);
     }
 
     @Override
     public void onNight() {
-        getUHCPlayer().removePotionEffect(PotionEffectType.WEAKNESS);
+        getUHCPlayer().addStrength(20);
     }
 }

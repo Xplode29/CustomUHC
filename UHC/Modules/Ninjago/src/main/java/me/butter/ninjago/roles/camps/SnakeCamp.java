@@ -9,6 +9,11 @@ public class SnakeCamp implements Camp {
     }
 
     @Override
+    public String getPrefix() {
+        return "§1";
+    }
+
+    @Override
     public boolean isSolo() {
         return false;
     }

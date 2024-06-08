@@ -6,6 +6,7 @@ import me.butter.api.module.power.Power;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.impl.clickablechat.list.ChatEffectChooser;
 import me.butter.impl.events.custom.EpisodeEvent;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.roles.NinjagoRole;
@@ -23,16 +24,8 @@ import java.util.List;
 
 public class Skylor extends NinjagoRole {
 
-    AddEffectCommand command;
-
     public Skylor() {
-        super("Skylor", "/roles/solitaires/skylor", Arrays.asList(new AddEffectCommand()));
-
-        for(Power power : getPowers()) {
-            if(power instanceof AddEffectCommand) {
-                command = (AddEffectCommand) power;
-            }
-        }
+        super("Skylor", "/roles/solitaires/skylor", Collections.emptyList());
     }
 
     @Override
@@ -80,71 +73,6 @@ public class Skylor extends NinjagoRole {
     @EventHandler
     public void onKillPlayer(UHCPlayerDeathEvent event) {
         if(!event.getKiller().equals(getUHCPlayer())) return;
-
-        command.clicks += 1;
-        TextComponent speedMessage = new TextComponent(ChatUtils.LIST_ELEMENT.getMessage("5% de speed"));
-        speedMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ni azxdgfr 0 5"));
-        getUHCPlayer().sendMessage(speedMessage);
-
-        TextComponent strengthMessage = new TextComponent(ChatUtils.LIST_ELEMENT.getMessage("5% de force"));
-        strengthMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ni azxdgfr 1 5"));
-        getUHCPlayer().sendMessage(strengthMessage);
-
-        TextComponent resiMessage = new TextComponent(ChatUtils.LIST_ELEMENT.getMessage("5% de résistance"));
-        resiMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ni azxdgfr 2 5"));
-        getUHCPlayer().sendMessage(resiMessage);
-    }
-
-    private static class AddEffectCommand extends CommandPower {
-
-        private int clicks = 0;
-
-        public AddEffectCommand() {
-            super("Vous ne devez pas voir ca", "azxdgfr", 0, -1);
-        }
-
-        @Override
-        public boolean hidePower() {
-            return true;
-        }
-
-        @Override
-        public boolean onEnable(UHCPlayer player, String[] args) {
-            if(args.length != 3) {
-                player.sendMessage(ChatUtils.ERROR.getMessage("Vous ne pouvez pas utiliser cette commande !"));
-                return false;
-            }
-
-            if(clicks < 1) {
-                player.sendMessage(ChatUtils.ERROR.getMessage("Vous avez déjà choisi un pouvoir !"));
-                return false;
-            }
-
-            int effect = Integer.parseInt(args[1]);
-            int amount = Integer.parseInt(args[2]);
-
-            switch (effect) {
-                case 0:
-                    if(player.getSpeed() >= 40) {
-                        player.sendMessage(ChatUtils.ERROR.getMessage("Vous avez 40% de vitesse !"));
-                        return false;
-                    }
-                    player.addSpeed(amount);
-                case 1:
-                    if(player.getStrength() >= 40) {
-                        player.sendMessage(ChatUtils.ERROR.getMessage("Vous avez 40% de force !"));
-                        return false;
-                    }
-                    player.addStrength(amount);
-                case 2:
-                    if(player.getResi() >= 40) {
-                        player.sendMessage(ChatUtils.ERROR.getMessage("Vous avez 40% de resistance !"));
-                        return false;
-                    }
-                    player.addResi(amount);
-            }
-            clicks -= 1;
-            return false;
-        }
+        UHCAPI.getInstance().getClickableChatHandler().sendToPlayer(new ChatEffectChooser(getUHCPlayer(), 5, 40));
     }
 }

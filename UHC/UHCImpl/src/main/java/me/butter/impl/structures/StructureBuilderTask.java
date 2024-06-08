@@ -2,6 +2,7 @@ package me.butter.impl.structures;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.structures.Structure;
+import me.butter.api.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -29,6 +30,7 @@ public class StructureBuilderTask extends BukkitRunnable {
     public void run() {
         if(structures.isEmpty()) {
             UHCAPI.getInstance().getGameHandler().getWorldConfig().setPregenDone(true);
+            Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Le monde a été pregen avec succès !"));
             cancel();
             return;
         }

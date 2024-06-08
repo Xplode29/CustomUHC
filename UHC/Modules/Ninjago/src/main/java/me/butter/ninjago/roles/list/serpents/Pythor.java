@@ -96,6 +96,11 @@ public class Pythor extends NinjagoRole {
         }
 
         @Override
+        public boolean hideCooldowns() {
+            return true;
+        }
+
+        @Override
         public boolean onEnable(UHCPlayer player, Action clickAction) {
             if(canUsePower) {
                 player.addResi(20);

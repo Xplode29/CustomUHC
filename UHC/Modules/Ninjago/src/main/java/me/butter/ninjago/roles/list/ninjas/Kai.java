@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
@@ -94,6 +95,11 @@ public class Kai extends NinjagoRole {
                     .addEnchant(Enchantment.ARROW_FIRE, 1)
                     .setUnbreakable()
                     .toItemStack();
+        }
+
+        @Override
+        public boolean doesCancelEvent() {
+            return false;
         }
     }
 

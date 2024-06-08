@@ -13,8 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PresetsMenu extends PaginatedMenu {
-    public PresetsMenu() {
+public class InvPresetsMenu extends PaginatedMenu {
+    public InvPresetsMenu() {
         super("§6Presets", 5 * 9);
     }
 

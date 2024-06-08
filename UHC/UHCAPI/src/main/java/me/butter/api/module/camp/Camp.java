@@ -4,5 +4,7 @@ public interface Camp {
 
     String getName();
 
+    String getPrefix();
+
     boolean isSolo();
 }

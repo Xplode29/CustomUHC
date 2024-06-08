@@ -9,6 +9,11 @@ public class SoloCamp implements Camp {
     }
 
     @Override
+    public String getPrefix() {
+        return "§e";
+    }
+
+    @Override
     public boolean isSolo() {
         return true;
     }

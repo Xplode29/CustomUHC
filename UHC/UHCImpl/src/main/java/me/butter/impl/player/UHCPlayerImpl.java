@@ -38,8 +38,8 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     private Role role;
 
-    private boolean canPickItems, noFall;
-    private int diamondMined;
+    private boolean canPickItems, noFall, disconnected;
+    private int diamondMined, disconnectionTime;
 
     private List<UUID> killedPlayers;
 
@@ -57,8 +57,9 @@ public class UHCPlayerImpl implements UHCPlayer {
 
         this.canPickItems = true;
         this.noFall = false;
-
         this.diamondMined = 0;
+        this.disconnected = false;
+        this.disconnectionTime = 0;
 
         this.killedPlayers = new ArrayList<>();
 
@@ -161,6 +162,26 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override
     public void setPlayerState(PlayerState newState) {
         playerState = newState;
+    }
+
+    @Override
+    public boolean isDisconnected() {
+        return disconnected;
+    }
+
+    @Override
+    public void setDisconnected(boolean isDisconnected) {
+        disconnected = isDisconnected;
+    }
+
+    @Override
+    public int getDisconnectionTime() {
+        return disconnectionTime;
+    }
+
+    @Override
+    public void setDisconnectionTime(int time) {
+        disconnectionTime = time;
     }
 
     @Override

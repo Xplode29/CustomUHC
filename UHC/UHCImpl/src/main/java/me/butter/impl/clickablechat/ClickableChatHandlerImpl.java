@@ -1,13 +1,21 @@
 package me.butter.impl.clickablechat;
 
+import me.butter.api.UHCAPI;
 import me.butter.api.clickablechat.ClickableChatCommand;
 import me.butter.api.clickablechat.ClickableChatHandler;
 import me.butter.api.player.UHCPlayer;
+import me.butter.impl.UHCImpl;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class ClickableChatHandlerImpl implements ClickableChatHandler {
+public class ClickableChatHandlerImpl implements ClickableChatHandler, Listener {
 
     List<ClickableChatCommand> remainingClickableMessages;
 
@@ -15,6 +23,8 @@ public class ClickableChatHandlerImpl implements ClickableChatHandler {
 
     public ClickableChatHandlerImpl() {
         remainingClickableMessages = new ArrayList<>();
+
+        UHCAPI.getInstance().getServer().getPluginManager().registerEvents(this, UHCAPI.getInstance());
     }
 
     @Override
@@ -35,6 +45,20 @@ public class ClickableChatHandlerImpl implements ClickableChatHandler {
                 remainingClickableMessages.remove(chatCommand);
                 return;
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        UHCPlayer sender = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer());
+        if(sender == null) return;
+
+        String[] message = event.getMessage().split(" ");
+
+        if(message.length > 1 && message[0].equals(ClickableChatHandlerImpl.commandPrefix)) {
+            List<String> args = Arrays.asList(message).subList(2, message.length);
+            Bukkit.getScheduler().runTaskLater(UHCImpl.getInstance(), () -> UHCAPI.getInstance().getClickableChatHandler().onClickChatMessage(sender, message[1], args), 5);
+            event.setCancelled(true);
         }
     }
 }

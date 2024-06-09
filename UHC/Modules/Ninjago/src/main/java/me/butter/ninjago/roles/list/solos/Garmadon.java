@@ -4,7 +4,7 @@ import me.butter.api.module.power.EnchantBookPower;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.roles.NinjagoRole;
-import me.butter.ninjago.roles.items.SpinjitzuPower;
+import me.butter.ninjago.items.SpinjitzuPower;
 import me.butter.ninjago.roles.list.ninjas.Lloyd;
 import me.butter.ninjago.roles.list.ninjas.Wu;
 import org.bukkit.ChatColor;

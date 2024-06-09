@@ -81,9 +81,10 @@ public class DamageHealthEvents implements Listener {
                         e -> e.getType().equals(PotionEffectType.DAMAGE_RESISTANCE)
                 ).findFirst().orElse(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 0, -1));
 
-                event.setDamage(event.getDamage() / (1 - (potionEffect.getAmplifier() + 1.0) * (1 / 5.0)));
-
-                event.setDamage(event.getDamage() * (1 - uhcVictim.getResi() / 100f));
+                event.setDamage(
+                        EntityDamageEvent.DamageModifier.RESISTANCE,
+                        event.getDamage() * (1 - uhcVictim.getResi() / 100f) / (1 - (potionEffect.getAmplifier() + 1.0) * (1 / 5.0))
+                );
             }
         }
 
@@ -204,66 +205,68 @@ public class DamageHealthEvents implements Listener {
                     }
                 }
 
-                if(UHCAPI.getInstance().getModuleHandler().hasModule()) {
-                    if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME && !UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().isEmpty()) {
-                        List<Camp> camps = new ArrayList<>();
+                if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
+                    if(UHCAPI.getInstance().getModuleHandler().hasModule()) {
+                        if(!UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().isEmpty()) {
+                            List<Camp> camps = new ArrayList<>();
 
-                        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
-                            if(uhcPlayer.getPlayer() == null || uhcPlayer.getRole() == null) continue;
-                            Camp camp = uhcPlayer.getRole().getCamp();
-                            if(!camps.contains(camp)) {
-                                camps.add(camp);
+                            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                                if(uhcPlayer.getPlayer() == null || uhcPlayer.getRole() == null) continue;
+                                Camp camp = uhcPlayer.getRole().getCamp();
+                                if(!camps.contains(camp)) {
+                                    camps.add(camp);
+                                }
                             }
-                        }
 
-                        if(camps.size() > 1) return;
+                            if(camps.size() > 1) return;
 
-                        Camp camp = camps.get(0);
+                            Camp camp = camps.get(0);
 
-                        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
-                        Bukkit.broadcastMessage("");
-                        if(camp.isSolo()) {
-                            if(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() == 1) {
+                            if(camp.isSolo() && UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() > 1) return;
+
+                            Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+                            Bukkit.broadcastMessage("");
+                            if(camp.isSolo()) {
                                 UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().get(0);
                                 Bukkit.broadcastMessage("Le joueur " + camp.getPrefix() + uhcPlayer.getName() + " a gagne !");
                             }
+                            else {
+                                Bukkit.broadcastMessage("Les " + camp.getPrefix() + camp.getName() + "§r ont gagnes !");
+                            }
+                            Bukkit.broadcastMessage("");
+                            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                                if(uhcPlayer.getRole() != null && (
+                                        uhcPlayer.getPlayerState() == PlayerState.IN_GAME ||
+                                                uhcPlayer.getPlayerState() == PlayerState.DEAD
+                                )) {
+                                    Bukkit.broadcastMessage(uhcPlayer.getName() + " (" + uhcPlayer.getRole().getCamp().getPrefix() + uhcPlayer.getRole().getName() + "§r) : " + uhcPlayer.getKilledPlayers().size() + " kill(s)");
+                                }
+                            }
+                            Bukkit.broadcastMessage("");
+                            Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+
+                            UHCAPI.getInstance().getGameHandler().setGameState(GameState.ENDING);
                         }
-                        else {
-                            Bukkit.broadcastMessage("Les " + camp.getPrefix() + camp.getName() + "§r ont gagnes !");
-                        }
+                    }
+                    else if(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() < 2) {
+                        UHCAPI.getInstance().getGameHandler().setGameState(GameState.ENDING);
+                        UHCPlayer winner = UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().get(0);
+
+                        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+                        Bukkit.broadcastMessage("");
+                        Bukkit.broadcastMessage("Le joueur " + winner.getName() + " a gagne !");
                         Bukkit.broadcastMessage("");
                         for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
                             if(uhcPlayer.getRole() != null && (
                                     uhcPlayer.getPlayerState() == PlayerState.IN_GAME ||
                                             uhcPlayer.getPlayerState() == PlayerState.DEAD
                             )) {
-                                Bukkit.broadcastMessage(uhcPlayer.getName() + " (" + uhcPlayer.getRole().getCamp().getPrefix() + uhcPlayer.getRole().getName() + "§r) : " + uhcPlayer.getKilledPlayers().size() + " kill(s)");
+                                Bukkit.broadcastMessage(uhcPlayer.getName() + " : " + uhcPlayer.getKilledPlayers().size() + " kill(s)");
                             }
                         }
                         Bukkit.broadcastMessage("");
                         Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
-
-                        UHCAPI.getInstance().getGameHandler().setGameState(GameState.ENDING);
                     }
-                }
-                else if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME && UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() < 2) {
-                    UHCAPI.getInstance().getGameHandler().setGameState(GameState.ENDING);
-                    UHCPlayer winner = UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().get(0);
-
-                    Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
-                    Bukkit.broadcastMessage("");
-                    Bukkit.broadcastMessage("Le joueur " + winner.getName() + " a gagne !");
-                    Bukkit.broadcastMessage("");
-                    for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
-                        if(uhcPlayer.getRole() != null && (
-                                uhcPlayer.getPlayerState() == PlayerState.IN_GAME ||
-                                        uhcPlayer.getPlayerState() == PlayerState.DEAD
-                        )) {
-                            Bukkit.broadcastMessage(uhcPlayer.getName() + " : " + uhcPlayer.getKilledPlayers().size() + " kill(s)");
-                        }
-                    }
-                    Bukkit.broadcastMessage("");
-                    Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
                 }
             }
             else {

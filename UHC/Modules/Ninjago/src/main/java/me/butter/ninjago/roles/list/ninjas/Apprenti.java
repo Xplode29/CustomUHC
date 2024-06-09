@@ -10,7 +10,7 @@ import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
-import me.butter.ninjago.roles.items.SpinjitzuPower;
+import me.butter.ninjago.items.SpinjitzuPower;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

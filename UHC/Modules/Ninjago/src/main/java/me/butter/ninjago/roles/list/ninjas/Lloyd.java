@@ -8,7 +8,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.GraphicUtils;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.roles.NinjagoRole;
-import me.butter.ninjago.roles.items.SpinjitzuPower;
+import me.butter.ninjago.items.SpinjitzuPower;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;

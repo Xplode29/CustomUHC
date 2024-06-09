@@ -2,13 +2,21 @@ package me.butter.impl.task;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.module.Module;
+import me.butter.api.module.power.ItemPower;
+import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
+import me.butter.api.player.PlayerState;
+import me.butter.api.player.UHCPlayer;
 import me.butter.api.timer.Timer;
 import me.butter.impl.UHCImpl;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.DayNightChangeEvent;
 import me.butter.impl.events.custom.EpisodeEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameTask extends BukkitRunnable {
 
@@ -19,6 +27,16 @@ public class GameTask extends BukkitRunnable {
     @Override
     public void run() {
         UHCAPI.getInstance().getGameHandler().getGameConfig().setTimer(UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer() + 1);
+
+        for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+            if(player.isDisconnected()) {
+                player.setDisconnectionTime(player.getDisconnectionTime() + 1);
+                if(player.getDisconnectionTime() >= 20 * 60) {
+                    player.clearPlayer();
+                    player.setPlayerState(PlayerState.DEAD);
+                }
+            }
+        }
 
         for (Timer timer : UHCAPI.getInstance().getTimerHandler().getTimers()) {
             if(timer.getMaxTimer() > UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer()) {

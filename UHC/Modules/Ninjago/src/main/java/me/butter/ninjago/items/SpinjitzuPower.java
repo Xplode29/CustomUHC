@@ -1,4 +1,4 @@
-package me.butter.ninjago.roles.items;
+package me.butter.ninjago.items;
 
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.UHCPlayer;

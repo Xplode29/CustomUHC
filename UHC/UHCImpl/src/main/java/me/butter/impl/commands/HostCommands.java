@@ -81,7 +81,6 @@ public class HostCommands implements TabExecutor {
     public List<String> onTabComplete(CommandSender commandSender, Command cmd, String s, String[] strings) {
         if(!(commandSender instanceof Player)) return Collections.emptyList();
         UHCPlayer sender = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(((Player) commandSender).getUniqueId());
-        Player player = (Player) commandSender;
         if(sender == null) return Collections.emptyList();
 
         if(strings.length < 2) {

@@ -49,6 +49,9 @@ public class JoinEvents implements Listener {
         }
         uhcPlayer.setName(player.getName());
 
+        uhcPlayer.setDisconnected(false);
+        uhcPlayer.setDisconnectionTime(0);
+
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY) {
             uhcPlayer.clearPlayer();
             uhcPlayer.setPlayerState(PlayerState.IN_LOBBY);
@@ -78,8 +81,7 @@ public class JoinEvents implements Listener {
             UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
         }
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING ||
-                UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME
-        ) {
+                UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
             if(uhcPlayer.getPlayerState() != PlayerState.IN_GAME) {
                 Location teleport = new Location(UHCAPI.getInstance().getWorldHandler().getWorld(), 0.0D, 100, 0.0D);
 
@@ -93,8 +95,8 @@ public class JoinEvents implements Listener {
         event.setJoinMessage(null);
         Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage(
                 player.getDisplayName() + " [" +
-                        (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
-                        UHCAPI.getInstance().getPlayerHandler().getPlayers().size() + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.DARK_GRAY + "] "
+                (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
+                UHCAPI.getInstance().getPlayerHandler().getPlayers().size() + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.DARK_GRAY + "] "
         ));
     }
 
@@ -112,6 +114,9 @@ public class JoinEvents implements Listener {
 
         UHCAPI.getInstance().getScoreboardHandler().removePlayerScoreboard(uhcPlayer);
         UHCAPI.getInstance().getTabHandler().removePlayerTab(uhcPlayer);
+
+        uhcPlayer.setDisconnected(true);
+        uhcPlayer.setDeathLocation(player.getLocation());
 
         event.setQuitMessage(null);
         Bukkit.broadcastMessage(ChatUtils.LEFT.getMessage(

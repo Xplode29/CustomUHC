@@ -6,11 +6,15 @@ import me.butter.api.item.ItemHandler;
 import me.butter.api.player.UHCPlayer;
 import me.butter.impl.item.list.GrapplingItem;
 import me.butter.impl.item.list.MenuItem;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -99,13 +103,12 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
 
     @EventHandler
     public void onDropItem(PlayerDropItemEvent event) {
-        Player player = event.getPlayer();
-        if(player == null) return;
-        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer());
         if(uhcPlayer == null) return;
 
-        if(customItems.stream().filter(item -> item.getItemStack().isSimilar(event.getItemDrop().getItemStack())).count() > 0) {
-            event.setCancelled(true);
-        }
+        CustomItem customItem = customItems.stream().filter(item -> item.getItemStack().isSimilar(event.getItemDrop().getItemStack())).findFirst().orElse(null);
+        if(customItem == null) return;
+
+        if(!customItem.isDroppable()) event.setCancelled(true);
     }
 }

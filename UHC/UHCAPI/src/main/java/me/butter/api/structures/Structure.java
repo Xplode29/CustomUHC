@@ -14,9 +14,13 @@ public interface Structure {
 
     boolean isLoaded(); void setLoaded(boolean loaded);
 
+    boolean isSpawnedAtStart();
+
     int getX(); int getY(); int getZ();
     void setY(int y);
     World getWorld();
     void setWorld(World world);
     boolean isSpawned(); void setSpawned(boolean spawned);
+
+    void onSpawn();
 }

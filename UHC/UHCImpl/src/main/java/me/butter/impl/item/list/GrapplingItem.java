@@ -18,7 +18,7 @@ public class GrapplingItem extends AbstractItem implements Listener {
     public void onFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if(event.getState().equals(PlayerFishEvent.State.FAILED_ATTEMPT) && isItemStack(player.getItemInHand())) {
+        if(event.getState().equals(PlayerFishEvent.State.FAILED_ATTEMPT) && getItemStack().isSimilar(player.getItemInHand())) {
             Location playerLocation = player.getLocation().clone();
             Location fishingLocation = event.getHook().getLocation().clone();
             Vector change = fishingLocation.toVector().subtract(playerLocation.toVector());

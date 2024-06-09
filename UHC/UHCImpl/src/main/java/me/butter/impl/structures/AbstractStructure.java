@@ -26,6 +26,22 @@ public abstract class AbstractStructure implements Structure {
         spawned = false;
     }
 
+    public AbstractStructure(String fileName, int x, int y, int z, World world) {
+        this.schematicName = fileName;
+        loaded = false;
+
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.world = world;
+        spawned = false;
+    }
+
+    @Override
+    public boolean isSpawnedAtStart() {
+        return false;
+    }
+
     @Override
     public String getSchematicName() {
         return schematicName;
@@ -89,5 +105,10 @@ public abstract class AbstractStructure implements Structure {
     @Override
     public void setSpawned(boolean spawned) {
         this.spawned = spawned;
+    }
+
+    @Override
+    public void onSpawn() {
+
     }
 }

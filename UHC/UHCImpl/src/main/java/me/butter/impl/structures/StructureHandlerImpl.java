@@ -79,8 +79,26 @@ public class StructureHandlerImpl implements StructureHandler {
     @Override
     public void spawnStructure(Structure structure) {
         if(structure == null || !structures.contains(structure)) return;
-        if(!structure.isLoaded()) return;
         if(structure.isSpawned()) return;
+
+        if(!structure.isLoaded()) {
+            EditSession session = worldEdit.getEditSessionFactory().getEditSession(new BukkitWorld(structure.getWorld()), -1);
+
+            File file = new File(this.schematicFolder, structure.getSchematicName());
+            if(!file.exists()) return;
+
+            try {
+                ClipboardFormat format = ClipboardFormat.findByFile(file);
+                ClipboardReader reader = format.getReader(Files.newInputStream(file.toPath()));
+                Clipboard clipboard = reader.read(session.getWorld().getWorldData());
+                structure.setClipboard(clipboard);
+
+                structure.setLoaded(true);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         try
         {
             EditSession session = worldEdit.getEditSessionFactory().getEditSession(new BukkitWorld(structure.getWorld()), -1);
@@ -92,6 +110,7 @@ public class StructureHandlerImpl implements StructureHandler {
             Operations.complete(operation);
 
             structure.setSpawned(true);
+            structure.onSpawn();
         }
         catch (WorldEditException e)
         {

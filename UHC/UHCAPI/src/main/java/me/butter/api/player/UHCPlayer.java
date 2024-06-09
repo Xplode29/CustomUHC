@@ -32,6 +32,9 @@ public interface UHCPlayer {
 
     PlayerState getPlayerState(); void setPlayerState(PlayerState newState);
 
+    boolean isDisconnected(); void setDisconnected(boolean isDisconnected);
+    int getDisconnectionTime(); void setDisconnectionTime(int time);
+
     Role getRole(); void setRole(Role role);
 
     int getDiamondMined(); void setDiamondMined(int amount);

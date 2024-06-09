@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class ConfigCommand extends AbstractCommand {
     public ConfigCommand() {
-        super("sethost");
+        super("config");
     }
 
     @Override

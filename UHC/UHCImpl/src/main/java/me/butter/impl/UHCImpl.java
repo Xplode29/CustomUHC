@@ -14,7 +14,6 @@ import me.butter.api.structures.StructureHandler;
 import me.butter.api.tab.TabHandler;
 import me.butter.api.timer.TimerHandler;
 import me.butter.api.world.WorldHandler;
-import me.butter.impl.clickablechat.ClickChatCommand;
 import me.butter.impl.clickablechat.ClickableChatHandlerImpl;
 import me.butter.impl.commands.CommandDoc;
 import me.butter.impl.commands.CommandFull;
@@ -71,8 +70,6 @@ public final class UHCImpl extends UHCAPI {
         scenarioHandler = new ScenarioHandlerImpl();
 
         moduleHandler = new ModuleHandlerImpl();
-
-        clickableChatHandler = new ClickableChatHandlerImpl();
     }
 
     @Override
@@ -84,6 +81,8 @@ public final class UHCImpl extends UHCAPI {
         itemHandler = new ItemHandlerImpl();
         menuHandler = new MenuHandlerImpl();
         structureHandler = new StructureHandlerImpl();
+
+        clickableChatHandler = new ClickableChatHandlerImpl();
 
         registerCommands();
         registerListeners();
@@ -109,8 +108,6 @@ public final class UHCImpl extends UHCAPI {
         Bukkit.getPluginManager().registerEvents(new ItemEvents(), this);
         Bukkit.getPluginManager().registerEvents(new JoinEvents(), this);
         Bukkit.getPluginManager().registerEvents(new OtherEvents(), this);
-
-        Bukkit.getPluginManager().registerEvents(new ClickChatCommand(), this);
     }
 
     @Override

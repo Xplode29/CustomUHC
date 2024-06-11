@@ -7,6 +7,7 @@ import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class ItemEvents implements Listener {
 
@@ -66,6 +68,7 @@ public class ItemEvents implements Listener {
                     if(power instanceof ItemPower) {
                         if(((ItemPower) power).getItem().isSimilar(event.getItem())) {
                             ((ItemPower) power).onUsePower(uhcPlayer, event.getAction());
+
                             if(((ItemPower) power).doesCancelEvent()) {
                                 event.setCancelled(true);
                             }
@@ -106,37 +109,6 @@ public class ItemEvents implements Listener {
                 event.setCancelled(true);
                 return;
             }
-        }
-    }
-
-    @EventHandler
-    public void onPotionSplashed(PotionSplashEvent event) {
-        for(LivingEntity entity : event.getAffectedEntities()) {
-            if(!(entity instanceof Player)) continue;
-            Player player = (Player) entity;
-
-            UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
-            if(uhcPlayer == null) continue;
-
-            for(PotionEffect potionEffect : event.getPotion().getEffects()) {
-                uhcPlayer.addPotionEffect(potionEffect.getType(), potionEffect.getDuration(), potionEffect.getAmplifier() + 1);
-            }
-        }
-        event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onPotionConsumed(PlayerItemConsumeEvent event) {
-        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer());
-        if(uhcPlayer == null) return;
-
-        if(event.getItem().getType() == Material.POTION && event.getItem().getItemMeta() instanceof PotionMeta) {
-            PotionMeta potionMeta = (PotionMeta) event.getItem().getItemMeta();
-
-            potionMeta.getCustomEffects().forEach(potionEffect -> uhcPlayer.addPotionEffect(potionEffect.getType(), potionEffect.getDuration(), potionEffect.getAmplifier() + 1));
-            potionMeta.setMainEffect(null);
-
-            event.getItem().setItemMeta(potionMeta);
         }
     }
 }

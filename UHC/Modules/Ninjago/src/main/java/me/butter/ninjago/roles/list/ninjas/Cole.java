@@ -67,7 +67,7 @@ public class Cole extends NinjagoRole {
 
     @EventHandler
     public void onPlayerKill(UHCPlayerDeathEvent event) {
-        if(event.getKiller().equals(getUHCPlayer())) {
+        if(event.getKiller() != null && event.getKiller().equals(getUHCPlayer())) {
             rockPower.coups += 15;
             if(rockPower.coups > 60) {
                 rockPower.coups = 60;

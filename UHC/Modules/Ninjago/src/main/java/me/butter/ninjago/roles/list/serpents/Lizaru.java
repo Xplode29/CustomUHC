@@ -49,7 +49,7 @@ public class Lizaru extends NinjagoRole {
 
     @EventHandler
     public void onKillPlayer(UHCPlayerDeathEvent event) {
-        if(event.getKiller().equals(getUHCPlayer())) {
+        if(event.getKiller() != null && event.getKiller().equals(getUHCPlayer())) {
             getUHCPlayer().addStrength(3);
         }
     }
@@ -57,7 +57,7 @@ public class Lizaru extends NinjagoRole {
     private static class Bite extends TargetItemPower {
 
         public Bite() {
-            super("Morsure", Material.NETHER_STAR, 20, 10 * 60, -1);
+            super("Morsure", Material.NETHER_STAR, 20, 10, -1);
         }
 
         public String[] getDescription() {
@@ -67,6 +67,7 @@ public class Lizaru extends NinjagoRole {
         @Override
         public boolean onEnable(UHCPlayer player, UHCPlayer target, Action clickAction) {
             target.addPotionEffect(PotionEffectType.POISON, 10, 1);
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez empoisonne " + target.getName()));
             return true;
         }
     }

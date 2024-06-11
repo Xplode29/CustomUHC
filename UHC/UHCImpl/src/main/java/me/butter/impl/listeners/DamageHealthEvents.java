@@ -83,7 +83,7 @@ public class DamageHealthEvents implements Listener {
 
                 event.setDamage(
                         EntityDamageEvent.DamageModifier.RESISTANCE,
-                        event.getDamage() * (1 - uhcVictim.getResi() / 100f) / (1 - (potionEffect.getAmplifier() + 1.0) * (1 / 5.0))
+                        event.getDamage(EntityDamageEvent.DamageModifier.RESISTANCE) / (1 - (potionEffect.getAmplifier() + 1.0) * (1 / 5.0))
                 );
             }
         }
@@ -114,8 +114,6 @@ public class DamageHealthEvents implements Listener {
                         e -> e.getType().equals(PotionEffectType.WEAKNESS)
                 ).findFirst().orElse(new PotionEffect(PotionEffectType.WEAKNESS, 0, -1));
                 damageBeforeReduction += (0.5 * (potionEffect.getAmplifier() + 1.0));
-
-                damageBeforeReduction *= (1 + uhcDamager.getStrength() / 100f);
 
                 //Add damages from others
                 if(isCrit) damageBeforeReduction *= 1.5;

@@ -107,6 +107,9 @@ public class Fangdam extends NinjagoRole {
                 fangtom.sendMessage(ChatUtils.PLAYER_INFO.getMessage(
                         "Fangdam: " + Joiner.on(" ").join(message)
                 ));
+                player.sendMessage(ChatUtils.PLAYER_INFO.getMessage(
+                        "Fangdam: " + Joiner.on(" ").join(message)
+                ));
             }
             else {
                 player.sendMessage(ChatUtils.ERROR.getMessage("Il n'y a pas de Fangtom dans cette partie !"));

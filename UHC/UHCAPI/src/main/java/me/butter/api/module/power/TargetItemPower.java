@@ -6,15 +6,9 @@ import me.butter.api.utils.GraphicUtils;
 import me.butter.api.utils.chat.ChatUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
-import org.bukkit.util.BlockIterator;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.bukkit.util.Vector;
 
 public abstract class TargetItemPower extends ItemPower {
 
@@ -25,48 +19,18 @@ public abstract class TargetItemPower extends ItemPower {
 
         this.range = range;
     }
+    private boolean getLookingAt(Player player, Player player1) {
+        Location eye = player.getEyeLocation().clone().add(0, -1.0, 0);
+        Vector toEntity = player1.getEyeLocation().toVector().subtract(eye.toVector());
+        double dot = toEntity.normalize().dot(eye.getDirection());
 
-    public UHCPlayer getTargetPlayer(Player player, int range) {
-        List<Entity> nearbyE = player.getNearbyEntities(range, range, range);
-        ArrayList<LivingEntity> livingE = new ArrayList<>();
-
-        for (Entity e : nearbyE) {
-            if (e instanceof LivingEntity) {
-                livingE.add((LivingEntity) e);
-            }
-        }
-
-        BlockIterator bItr = new BlockIterator(player, range);
-        Block block;
-        Location loc;
-        int bx, by, bz;
-        double ex, ey, ez;
-        // loop through player's line of sight
-        while (bItr.hasNext()) {
-            block = bItr.next();
-            bx = block.getX();
-            by = block.getY();
-            bz = block.getZ();
-            // check for entities near this block in the line of sight
-            for (LivingEntity entity : livingE) {
-                loc = entity.getLocation();
-                ex = loc.getX();
-                ey = loc.getY();
-                ez = loc.getZ();
-                if ((bx-.75 <= ex && ex <= bx+1.75) && (bz-.75 <= ez && ez <= bz+1.75) && (by-1 <= ey && ey <= by+2.5)) {
-                    // entity is close enough, set target and stop
-                    if(entity instanceof Player) {
-                        if(UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) entity) != null) {
-                            return UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) entity);
-                        }
-                    }
-                }
-            }
-        }
-        return null;
+        return dot > 0.9D;
     }
 
+    @Override
     public void onUsePower(UHCPlayer player, Action clickAction) {
+        player.sendMessage(clickAction.name());
+
         if(uses >= maxUses && maxUses != -1) {
             player.sendMessage(ChatUtils.ERROR.getMessage("Vous avez déjà utilisé " + uses + " fois ce pouvoir."));
             return;
@@ -78,7 +42,13 @@ public abstract class TargetItemPower extends ItemPower {
             return;
         }
 
-        UHCPlayer target = getTargetPlayer(player.getPlayer(), range);
+        UHCPlayer target = null;
+        for(UHCPlayer player1 : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+            if(getLookingAt(player.getPlayer(), player1.getPlayer()) && player.isNextTo(player1, range)) {
+                target = player1;
+                break;
+            }
+        }
         if(target == null) {
             player.sendMessage(ChatUtils.ERROR.getMessage("Aucun joueur n'est visé."));
             return;

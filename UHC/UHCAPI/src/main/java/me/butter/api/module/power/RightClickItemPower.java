@@ -13,6 +13,7 @@ public abstract class RightClickItemPower extends ItemPower {
         super(name, material, cooldown, maxUses);
     }
 
+    @Override
     public void onUsePower(UHCPlayer player, Action clickAction) {
         if(clickAction == Action.LEFT_CLICK_AIR || clickAction == Action.LEFT_CLICK_BLOCK) return;
 

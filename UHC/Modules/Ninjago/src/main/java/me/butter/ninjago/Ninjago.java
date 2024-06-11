@@ -4,6 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.camp.Camp;
 import me.butter.api.module.roles.Role;
 import me.butter.api.module.roles.RoleType;
+import me.butter.ninjago.items.goldenWeapons.GoldenWeaponManager;
 import me.butter.ninjago.scenarios.GoldenNinjaScenario;
 import me.butter.ninjago.commands.CommandNinjago;
 import me.butter.ninjago.listener.CycleEvents;
@@ -21,6 +22,8 @@ public final class Ninjago extends JavaPlugin {
     private static Ninjago instance;
     private List<Role> rolesList;
 
+    private GoldenWeaponManager goldenWeaponManager;
+
     @Override
     public void onLoad() {
         instance = this;
@@ -30,6 +33,8 @@ public final class Ninjago extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        goldenWeaponManager = new GoldenWeaponManager();
+
         UHCAPI.getInstance().getModuleHandler().setModule(new NinjagoModule());
 
         UHCAPI.getInstance().getScenarioHandler().addScenario(new GoldenNinjaScenario());
@@ -90,5 +95,9 @@ public final class Ninjago extends JavaPlugin {
 
     public void setRolesList(List<Role> rolesList) {
         this.rolesList = rolesList;
+    }
+
+    public GoldenWeaponManager getGoldenWeaponManager() {
+        return goldenWeaponManager;
     }
 }

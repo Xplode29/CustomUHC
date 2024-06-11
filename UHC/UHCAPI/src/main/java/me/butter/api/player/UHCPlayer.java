@@ -40,6 +40,7 @@ public interface UHCPlayer {
     int getDiamondMined(); void setDiamondMined(int amount);
     boolean canPickItems(); void setCanPickItems(boolean canPickItems);
     boolean hasNoFall(); void setNoFall(boolean hasNoFall);
+    boolean isAbleToMove(); void setAbleToMove(boolean canMove);
 
     List<UUID> getKilledPlayers(); void setKilledPlayers(List<UUID> killedPlayers);
     void addKilledPlayer(UHCPlayer player); void removeKilledPlayer(UHCPlayer player);

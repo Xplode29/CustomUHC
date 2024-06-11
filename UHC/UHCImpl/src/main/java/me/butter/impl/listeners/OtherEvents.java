@@ -18,12 +18,21 @@ public class OtherEvents implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
+        UHCPlayer player = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer());
         if (player == null) return;
+
+        if(
+            !player.isAbleToMove() &&
+            (event.getTo().getX() != event.getFrom().getX() || event.getTo().getZ() != event.getFrom().getZ())
+        ) {
+            event.setCancelled(true);
+        }
 
         if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
             if (isOutsideOfBorder(event.getTo())) {
-                player.teleport(new Location(player.getWorld(), 0, 90, 0));
+                if(player.getPlayer() != null) {
+                    player.getPlayer().teleport(new Location(player.getPlayer().getWorld(), 0, 90, 0));
+                }
             }
         }
     }

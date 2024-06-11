@@ -1,13 +1,9 @@
 package me.butter.ninjago.structures;
 
 import me.butter.impl.structures.AbstractStructure;
-import me.butter.ninjago.items.AbstractGoldenWeapon;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import me.butter.ninjago.items.goldenWeapons.AbstractGoldenWeapon;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class StructChestHolder extends AbstractStructure {
@@ -23,8 +19,6 @@ public class StructChestHolder extends AbstractStructure {
     public void onSpawn() {
         if(getWorld().getBlockAt(getX() + 3, getY() + 1, getZ() + 3).getState() instanceof Chest) {
             chest = (Chest) getWorld().getBlockAt(getX() + 3, getY() + 1, getZ() + 3).getState();
-
-            setItemInChest(13, weapon.getItemStack());
         }
     }
 
@@ -34,6 +28,12 @@ public class StructChestHolder extends AbstractStructure {
 
     public void setWeapon(AbstractGoldenWeapon weapon) {
         this.weapon = weapon;
+        setItemInChest(13, weapon.getItemStack());
+    }
+
+    public void clearChest() {
+        this.weapon = null;
+        chest.getBlockInventory().clear();
     }
 
     public Chest getChest() {

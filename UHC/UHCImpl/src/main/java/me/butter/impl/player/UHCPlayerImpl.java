@@ -38,7 +38,7 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     private Role role;
 
-    private boolean canPickItems, noFall, disconnected;
+    private boolean canPickItems, noFall, disconnected, canMove;
     private int diamondMined, disconnectionTime;
 
     private List<UUID> killedPlayers;
@@ -60,6 +60,8 @@ public class UHCPlayerImpl implements UHCPlayer {
         this.diamondMined = 0;
         this.disconnected = false;
         this.disconnectionTime = 0;
+
+        this.canMove = true;
 
         this.killedPlayers = new ArrayList<>();
 
@@ -126,7 +128,8 @@ public class UHCPlayerImpl implements UHCPlayer {
         if (this == object) return true;
         if (!(object instanceof UHCPlayerImpl)) return false;
         UHCPlayerImpl uhcPlayer = (UHCPlayerImpl) object;
-        return playerUUID.equals(uhcPlayer.playerUUID);
+        if (playerUUID == null || uhcPlayer.getUniqueId() == null) return false;
+        return playerUUID.equals(uhcPlayer.getUniqueId());
     }
 
     @Override
@@ -222,6 +225,16 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override
     public void setNoFall(boolean hasNoFall) {
         this.noFall = hasNoFall;
+    }
+
+    @Override
+    public boolean isAbleToMove() {
+        return canMove;
+    }
+
+    @Override
+    public void setAbleToMove(boolean canMove) {
+        this.canMove = canMove;
     }
 
     @Override
@@ -620,5 +633,4 @@ public class UHCPlayerImpl implements UHCPlayer {
         removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
         if(resiEffect > 0) addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, resiLevel);
     }
-
 }

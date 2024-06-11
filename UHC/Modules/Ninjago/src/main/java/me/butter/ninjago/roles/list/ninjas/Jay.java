@@ -55,15 +55,16 @@ public class Jay extends NinjagoRole {
         if(!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
 
         UHCPlayer damager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
-        Player targetPlayer = (Player) event.getEntity();
+        UHCPlayer target = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
+        if(damager == null || target == null || target.getPlayer() == null) return;
 
         if(damager.equals(getUHCPlayer())) {
             if(power.foudreActive) {
                 if((new Random()).nextInt(100) <= 15) {
-                    targetPlayer.getWorld().playSound(targetPlayer.getLocation(), Sound.EXPLODE, 3.0f, 1.0f);
-                    targetPlayer.getWorld().strikeLightningEffect(targetPlayer.getLocation());
+                    target.getPlayer().getWorld().strikeLightningEffect(target.getPlayer().getLocation());
+                    target.getPlayer().getWorld().playSound(target.getPlayer().getLocation(), Sound.EXPLODE, 1.0f, 1.0f);
 
-                    targetPlayer.setHealth(Math.max(0, targetPlayer.getHealth() - 3.0));
+                    target.getPlayer().setHealth(Math.max(0.5, target.getPlayer().getHealth() - 3.0));
                 }
             }
         }

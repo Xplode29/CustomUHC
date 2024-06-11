@@ -83,7 +83,7 @@ public class Lumiere extends NinjagoRole {
     private static class BlindPower extends TargetItemPower {
 
         public BlindPower() {
-            super(ChatColor.WHITE + "Rayonnement§r", Material.NETHER_STAR, 20, 3 * 60, -1);
+            super(ChatColor.WHITE + "Rayonnement§r", Material.NETHER_STAR, 20, 3, -1);
         }
 
         @Override

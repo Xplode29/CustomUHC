@@ -17,7 +17,7 @@ import java.util.Random;
 public class GoldenWeaponsTimer extends AbstractTimer {
 
     public GoldenWeaponsTimer() {
-        super("Apparition des Armes d'or", Material.GOLD_SWORD, 40 * 60);
+        super("Apparition des Armes d'or", Material.GOLD_SWORD, 10);
     }
 
     @Override
@@ -25,6 +25,11 @@ public class GoldenWeaponsTimer extends AbstractTimer {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if(Ninjago.getInstance().getGoldenWeaponManager().getChests().size() >= Ninjago.getInstance().getGoldenWeaponManager().getWeapons().size()) {
+                    cancel();
+                    return;
+                }
+
                 int maxRadius = Math.min((int) (UHCAPI.getInstance().getWorldHandler().getWorld().getWorldBorder().getSize() / 2) - 50, 450);
 
                 int radius;
@@ -42,10 +47,12 @@ public class GoldenWeaponsTimer extends AbstractTimer {
                 Block block = world.getHighestBlockAt(x, z);
                 int y = block.getY() + 1;
 
-                Structure structure = new StructChestHolder(x, y, z, world);
+                StructChestHolder structure = new StructChestHolder(x, y, z, world);
 
                 UHCAPI.getInstance().getStructureHandler().addStructure(structure);
                 UHCAPI.getInstance().getStructureHandler().spawnStructure(structure);
+
+                Ninjago.getInstance().getGoldenWeaponManager().addChest(structure);
 
                 Bukkit.broadcastMessage(ChatUtils.SEPARATOR.prefix);
                 Bukkit.broadcastMessage("");
@@ -53,7 +60,7 @@ public class GoldenWeaponsTimer extends AbstractTimer {
                 Bukkit.broadcastMessage("");
                 Bukkit.broadcastMessage(ChatUtils.SEPARATOR.prefix);
             }
-        }.runTaskTimer(Ninjago.getInstance(), 0, 5 * 60 * 20);
+        }.runTaskTimer(Ninjago.getInstance(), 0, 5 * 20);
     }
 
     @Override

@@ -109,6 +109,7 @@ public class Facteur extends NinjagoRole {
                 message.remove(0);
 
                 target.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Facteur: " + Joiner.on(" ").join(message)));
+                player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez envoyé '" + Joiner.on(" ").join(message) + "' to " + target.getName()));
 
                 messageCount ++;
             }

@@ -93,6 +93,7 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
     public void onClickItem(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if(player == null) return;
+
         UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
         if(uhcPlayer == null) return;
 

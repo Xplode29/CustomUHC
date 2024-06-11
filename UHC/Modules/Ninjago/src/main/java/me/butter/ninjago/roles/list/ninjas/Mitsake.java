@@ -26,7 +26,7 @@ public class Mitsake extends NinjagoRole {
     public void onGiveRole() {
         ItemStack heal = new Potion(PotionType.INSTANT_HEAL, 2, true).toItemStack(3);
         ItemStack poison = new Potion(PotionType.POISON, 1, true).toItemStack(1);
-        ItemStack speed = new Potion(PotionType.SPEED, 0, true).toItemStack(1);
+        ItemStack speed = new Potion(PotionType.SPEED, 1, true).toItemStack(1);
 
         getUHCPlayer().giveItem(heal, true);
         getUHCPlayer().giveItem(poison, true);

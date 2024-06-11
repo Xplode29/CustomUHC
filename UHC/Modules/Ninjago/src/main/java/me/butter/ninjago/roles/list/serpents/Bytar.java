@@ -58,7 +58,7 @@ public class Bytar extends NinjagoRole {
 
     @EventHandler
     public void onKillPlayer(UHCPlayerDeathEvent event) {
-        if(event.getKiller().equals(getUHCPlayer())) {
+        if(event.getKiller() != null && event.getKiller().equals(getUHCPlayer())) {
             getUHCPlayer().addResi(3);
         }
     }

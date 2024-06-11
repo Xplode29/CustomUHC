@@ -58,6 +58,7 @@ public class JoinEvents implements Listener {
 
             Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(spawnLocation), 2);
 
+            player.getInventory().clear();
             UHCAPI.getInstance().getItemHandler().giveLobbyItems(uhcPlayer);
 
             UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
@@ -73,6 +74,7 @@ public class JoinEvents implements Listener {
             else {
                 Location teleport = new Location(UHCAPI.getInstance().getWorldHandler().getWorld(), 0.0D, 100, 0.0D);
 
+                player.getInventory().clear();
                 player.teleport(teleport);
                 player.setGameMode(GameMode.SPECTATOR);
             }
@@ -82,9 +84,10 @@ public class JoinEvents implements Listener {
         }
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING ||
                 UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
-            if(uhcPlayer.getPlayerState() != PlayerState.IN_GAME) {
+            if(uhcPlayer.getPlayerState() != PlayerState.DEAD && uhcPlayer.getPlayerState() != PlayerState.IN_GAME) {
                 Location teleport = new Location(UHCAPI.getInstance().getWorldHandler().getWorld(), 0.0D, 100, 0.0D);
 
+                player.getInventory().clear();
                 player.teleport(teleport);
                 player.setGameMode(GameMode.SPECTATOR);
             }

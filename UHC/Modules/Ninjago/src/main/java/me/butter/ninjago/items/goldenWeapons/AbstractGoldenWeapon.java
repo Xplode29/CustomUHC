@@ -6,6 +6,7 @@ import me.butter.api.utils.GraphicUtils;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.api.utils.chat.ChatUtils;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 public class AbstractGoldenWeapon {
@@ -17,7 +18,7 @@ public class AbstractGoldenWeapon {
     int cooldown, lastTimeUsed;
 
     public AbstractGoldenWeapon(String name, Material material, int cooldown) {
-        this.name = "§r" + name;
+        this.name = "§l§6" + name;
         this.material = material;
 
         this.cooldown = cooldown;
@@ -49,7 +50,12 @@ public class AbstractGoldenWeapon {
     }
 
     public ItemStack getItemStack() {
-        return new ItemBuilder(material).setName(name).setUnbreakable().toItemStack();
+        return new ItemBuilder(material)
+                .setName(name)
+                .addEnchant(Enchantment.DURABILITY, 1)
+                .hideEnchants()
+                .setUnbreakable()
+                .toItemStack();
     }
 
     public UHCPlayer getHolder() {

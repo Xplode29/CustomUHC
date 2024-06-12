@@ -14,14 +14,14 @@ import java.util.Map;
 
 public class MainNinjagoMenu extends AbstractMenu {
     public MainNinjagoMenu() {
-        super("Ninjago UHC", 6 * 9, true);
+        super("Ninjago UHC", 5 * 9, true);
     }
 
     @Override
     public Map<Integer, Button> getButtons() {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(11, new ButtonImpl() {
+        buttons.put(22, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
                 return new ItemBuilder(Material.DIAMOND).setName("§rRoles").toItemStack();

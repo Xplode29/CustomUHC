@@ -32,7 +32,7 @@ import java.util.*;
 
 public class UHCPlayerImpl implements UHCPlayer {
 
-    private UUID playerUUID;
+    private final UUID playerUUID;
     private String playerName;
     private PlayerState playerState;
 
@@ -76,8 +76,7 @@ public class UHCPlayerImpl implements UHCPlayer {
         this.playerPotionEffects = new ArrayList<>();
         this.maxHealth = (int) player.getMaxHealth();
         setMaxHealth(20);
-        this.speedEffect = 0; this.strengthEffect = 0; this.resiEffect = 0;
-        updateEffects();
+        setSpeed(0); setStrength(0); setResi(0);
     }
 
     @Override
@@ -552,19 +551,40 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override @Deprecated
     public void setSpeed(int amount) {
         speedEffect = amount;
-        updateEffects();
+
+        if(getPlayer() == null) return;
+        try {
+            getPlayer().setWalkSpeed(0.2f * (1 + speedEffect / 100f));
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void addSpeed(int amount) {
         speedEffect += amount;
-        updateEffects();
+
+        if(getPlayer() == null) return;
+        try {
+            getPlayer().setWalkSpeed(0.2f * (1 + speedEffect / 100f));
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void removeSpeed(int amount) {
         speedEffect -= amount;
-        updateEffects();
+
+        if(getPlayer() == null) return;
+        try {
+            getPlayer().setWalkSpeed(0.2f * (1 + speedEffect / 100f));
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -575,19 +595,31 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override @Deprecated
     public void setStrength(int amount) {
         strengthEffect = amount;
-        updateEffects();
+
+        int strengthLevel = strengthEffect / 20;
+        removePotionEffect(PotionEffectType.INCREASE_DAMAGE); removePotionEffect(PotionEffectType.WEAKNESS);
+        if(strengthEffect > 0) addPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, strengthLevel);
+        else if (strengthEffect < 0) addPotionEffect(PotionEffectType.WEAKNESS, -1, -strengthLevel);
     }
 
     @Override
     public void addStrength(int amount) {
         strengthEffect += amount;
-        updateEffects();
+
+        int strengthLevel = strengthEffect / 20;
+        removePotionEffect(PotionEffectType.INCREASE_DAMAGE); removePotionEffect(PotionEffectType.WEAKNESS);
+        if(strengthEffect > 0) addPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, strengthLevel);
+        else if (strengthEffect < 0) addPotionEffect(PotionEffectType.WEAKNESS, -1, -strengthLevel);
     }
 
     @Override
     public void removeStrength(int amount) {
         strengthEffect -= amount;
-        updateEffects();
+
+        int strengthLevel = strengthEffect / 20;
+        removePotionEffect(PotionEffectType.INCREASE_DAMAGE); removePotionEffect(PotionEffectType.WEAKNESS);
+        if(strengthEffect > 0) addPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, strengthLevel);
+        else if (strengthEffect < 0) addPotionEffect(PotionEffectType.WEAKNESS, -1, -strengthLevel);
     }
 
     @Override
@@ -598,36 +630,24 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override
     public void setResi(int amount) {
         resiEffect = amount;
-        updateEffects();
+
+        int resiLevel = resiEffect / 20;
+        removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+        if(resiEffect > 0) addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, resiLevel);
     }
 
     @Override
     public void addResi(int amount) {
         resiEffect += amount;
-        updateEffects();
+
+        int resiLevel = resiEffect / 20;
+        removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+        if(resiEffect > 0) addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, resiLevel);
     }
 
     @Override
     public void removeResi(int amount) {
         resiEffect -= amount;
-        updateEffects();
-    }
-
-    @Override
-    public void updateEffects() {
-        if(getPlayer() == null) return;
-
-        try {
-            getPlayer().setWalkSpeed(0.2f * (1 + speedEffect / 100f));
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        int strengthLevel = strengthEffect / 20;
-        removePotionEffect(PotionEffectType.INCREASE_DAMAGE); removePotionEffect(PotionEffectType.WEAKNESS);
-        if(strengthEffect > 0) addPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, strengthLevel);
-        else if (strengthEffect < 0) addPotionEffect(PotionEffectType.WEAKNESS, -1, -strengthLevel);
 
         int resiLevel = resiEffect / 20;
         removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);

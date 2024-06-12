@@ -6,6 +6,8 @@ public interface TabHandler {
 
     void updateAllTabs();
 
+    void addTab(CustomTab tab);
+
     void setPlayerTab(Class<? extends CustomTab> tabClass, UHCPlayer uhcPlayer);
     void removePlayerTab(UHCPlayer uhcPlayer);
 

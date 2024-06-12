@@ -5,7 +5,6 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.tab.CustomTab;
 import me.butter.api.tab.TabHandler;
 import me.butter.impl.tab.list.GameTab;
-import me.butter.impl.tab.list.LobbyTab;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -18,9 +17,6 @@ public class TabHandlerImpl implements TabHandler {
     public TabHandlerImpl() {
         customTabList = new ArrayList<>();
 
-        customTabList.add(new LobbyTab());
-        customTabList.add(new GameTab());
-
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -32,6 +28,12 @@ public class TabHandlerImpl implements TabHandler {
     @Override
     public void updateAllTabs() {
         customTabList.forEach(CustomTab::updateTab);
+    }
+
+    @Override
+    public void addTab(CustomTab tab) {
+        if(customTabList.contains(tab)) return;
+        customTabList.add(new GameTab());
     }
 
     @Override

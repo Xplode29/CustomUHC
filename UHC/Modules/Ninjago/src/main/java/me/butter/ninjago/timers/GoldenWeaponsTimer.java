@@ -17,7 +17,7 @@ import java.util.Random;
 public class GoldenWeaponsTimer extends AbstractTimer {
 
     public GoldenWeaponsTimer() {
-        super("Apparition des Armes d'or", Material.GOLD_SWORD, 10);
+        super("Apparition des Armes d'or", Material.GOLD_SWORD, 40 * 60);
     }
 
     @Override
@@ -56,11 +56,11 @@ public class GoldenWeaponsTimer extends AbstractTimer {
 
                 Bukkit.broadcastMessage(ChatUtils.SEPARATOR.prefix);
                 Bukkit.broadcastMessage("");
-                Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Une arme d'or est apparue entre 250 et 400 blocks du centre !"));
+                Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Une arme d'or est apparue entre " + (maxRadius > 250 ? "250" : "0") + " et " + maxRadius + " blocks du centre !"));
                 Bukkit.broadcastMessage("");
                 Bukkit.broadcastMessage(ChatUtils.SEPARATOR.prefix);
             }
-        }.runTaskTimer(Ninjago.getInstance(), 0, 5 * 20);
+        }.runTaskTimer(Ninjago.getInstance(), 0, 5 * 60 * 20);
     }
 
     @Override

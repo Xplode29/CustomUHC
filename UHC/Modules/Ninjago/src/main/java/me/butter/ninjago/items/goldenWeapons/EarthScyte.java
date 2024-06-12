@@ -43,7 +43,7 @@ public class EarthScyte extends AbstractGoldenWeapon {
                 }
                 getHolder().setAbleToMove(true);
             }
-        }.runTaskLater(UHCAPI.getInstance(), 2 * 20);
+        }.runTaskLater(UHCAPI.getInstance(), 10 * 20);
 
         return true;
     }

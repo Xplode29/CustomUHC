@@ -43,7 +43,7 @@ public class Skales extends NinjagoRole {
 
     @Override
     public List<String> additionalDescription() {
-        return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(pythor == null ? "Pas de Pythor" : "Pythor:" + pythor.getName()));
+        return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(pythor == null ? "Pas de Pythor" : "Pythor: " + pythor.getName()));
     }
 
     @Override
@@ -98,7 +98,7 @@ public class Skales extends NinjagoRole {
             UHCPlayer player, target;
             int timer;
 
-            int timeToInfect = 60;
+            int timeToInfect = 7 * 60;
 
             public InfectRunnable(UHCPlayer player, UHCPlayer target) {
                 this.player = player;

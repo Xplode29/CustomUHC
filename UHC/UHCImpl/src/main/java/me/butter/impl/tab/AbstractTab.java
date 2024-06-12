@@ -5,7 +5,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.tab.CustomTab;
 import net.minecraft.server.v1_8_R3.ChatComponentText;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerListHeaderFooter;
-import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.libs.joptsimple.internal.Strings;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -102,7 +102,7 @@ public abstract class AbstractTab implements CustomTab {
 
         if(listOfVariations.size() <= line) {
             for(int i = listOfVariations.size(); i <= line; i++) {
-                listOfVariations.add(Arrays.asList("\n"));
+                listOfVariations.add(Collections.singletonList(""));
             }
         }
 
@@ -131,7 +131,7 @@ public abstract class AbstractTab implements CustomTab {
 
         if(listOfVariations.size() <= line) {
             for(int i = listOfVariations.size(); i <= line; i++) {
-                listOfVariations.add(Collections.singletonList("\n"));
+                listOfVariations.add(Collections.singletonList(""));
             }
         }
 
@@ -141,24 +141,21 @@ public abstract class AbstractTab implements CustomTab {
 
     private List<String> convertToVariationList(List<List<String>> listOfVariations) {
         int maxVariations = 0;
+
         for(List<String> line : listOfVariations) {
             if(line.size() > maxVariations) maxVariations = line.size();
         }
 
         List<String> variations = new ArrayList<>();
         for(int i = 0; i < maxVariations; i++) {
-            StringBuilder variation = new StringBuilder();
+            List<String> variation = new ArrayList<>();
             for(int j = 0; j < listOfVariations.size(); j++) {
                 int index = i % listOfVariations.get(j).size();
-                variation.append(listOfVariations.get(j).get(index)).append("\n");
+                variation.add("§r" + listOfVariations.get(j).get(index));
             }
-            variations.add("§r"+ variation);
+            variations.add(Strings.join(variation, "\n"));
         }
 
         return variations;
-    }
-
-    private String format(String text) {
-        return ChatColor.translateAlternateColorCodes('&', text);
     }
 }

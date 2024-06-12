@@ -67,5 +67,4 @@ public interface UHCPlayer {
     int getSpeed(); @Deprecated void setSpeed(int amount); void addSpeed(int amount); void removeSpeed(int amount);
     int getStrength(); @Deprecated void setStrength(int amount); void addStrength(int amount); void removeStrength(int amount);
     int getResi(); @Deprecated void setResi(int amount); void addResi(int amount); void removeResi(int amount);
-    void updateEffects();
 }

@@ -4,6 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.camp.Camp;
 import me.butter.api.module.roles.Role;
 import me.butter.api.module.roles.RoleType;
+import me.butter.impl.tab.list.GameTab;
 import me.butter.ninjago.items.goldenWeapons.GoldenWeaponManager;
 import me.butter.ninjago.scenarios.GoldenNinjaScenario;
 import me.butter.ninjago.commands.CommandNinjago;
@@ -36,6 +37,8 @@ public final class Ninjago extends JavaPlugin {
         goldenWeaponManager = new GoldenWeaponManager();
 
         UHCAPI.getInstance().getModuleHandler().setModule(new NinjagoModule());
+
+        UHCAPI.getInstance().getTabHandler().addTab(new GameTab());
 
         UHCAPI.getInstance().getScenarioHandler().addScenario(new GoldenNinjaScenario());
         UHCAPI.getInstance().getTimerHandler().addTimer(new GoldenWeaponsTimer());

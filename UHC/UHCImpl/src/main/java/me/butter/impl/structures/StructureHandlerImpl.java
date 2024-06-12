@@ -13,6 +13,9 @@ import me.butter.api.structures.StructureHandler;
 import me.butter.impl.UHCImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +23,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StructureHandlerImpl implements StructureHandler {
+public class StructureHandlerImpl implements StructureHandler, Listener {
 
     List<Structure> structures;
 
@@ -35,6 +38,8 @@ public class StructureHandlerImpl implements StructureHandler {
         File schematicFolder = new File(UHCImpl.getInstance().getDataFolder(), "schematics");
         if(!schematicFolder.exists()) schematicFolder.mkdirs();
         this.schematicFolder = schematicFolder;
+
+        Bukkit.getPluginManager().registerEvents(this, UHCImpl.getInstance());
     }
 
     @Override

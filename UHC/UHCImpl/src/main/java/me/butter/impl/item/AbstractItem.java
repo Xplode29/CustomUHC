@@ -6,10 +6,6 @@ import me.butter.api.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public abstract class AbstractItem implements CustomItem {
 
     private Material material;

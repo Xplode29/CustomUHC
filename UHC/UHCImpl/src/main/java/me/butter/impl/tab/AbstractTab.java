@@ -10,7 +10,10 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 public abstract class AbstractTab implements CustomTab {
 
@@ -18,8 +21,8 @@ public abstract class AbstractTab implements CustomTab {
     private List<String> footerVariations;
 
     private PacketPlayOutPlayerListHeaderFooter packet;
-    private int headerCount = 0;
-    private int footerCount = 0;
+    private int headerCount;
+    private int footerCount;
 
     List<UUID> playersToSend;
 
@@ -149,9 +152,9 @@ public abstract class AbstractTab implements CustomTab {
         List<String> variations = new ArrayList<>();
         for(int i = 0; i < maxVariations; i++) {
             List<String> variation = new ArrayList<>();
-            for(int j = 0; j < listOfVariations.size(); j++) {
-                int index = i % listOfVariations.get(j).size();
-                variation.add("§r" + listOfVariations.get(j).get(index));
+            for (List<String> listOfVariation : listOfVariations) {
+                int index = i % listOfVariation.size();
+                variation.add("§r" + listOfVariation.get(index));
             }
             variations.add(Strings.join(variation, "\n"));
         }

@@ -45,6 +45,7 @@ public class SkullsGenerator {
             e.printStackTrace();
         }
 
+        assert profileField != null;
         profileField.setAccessible(true);
 
         try {

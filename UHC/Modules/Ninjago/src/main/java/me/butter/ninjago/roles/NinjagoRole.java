@@ -80,7 +80,7 @@ public class NinjagoRole implements Role, Listener {
     @Override
     public boolean hasItems() {
         for(Power power : getPowers()) {
-            if(power instanceof ItemPower && !power.hidePower()) {
+            if(power instanceof ItemPower && power.showPower()) {
                 return true;
             }
         }
@@ -90,7 +90,7 @@ public class NinjagoRole implements Role, Listener {
     @Override
     public boolean hasCommands() {
         for(Power power : getPowers()) {
-            if(power instanceof CommandPower && !power.hidePower()) {
+            if(power instanceof CommandPower && power.showPower()) {
                 return true;
             }
         }

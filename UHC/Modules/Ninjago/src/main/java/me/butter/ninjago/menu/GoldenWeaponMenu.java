@@ -4,9 +4,7 @@ import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
-import me.butter.ninjago.items.goldenWeapons.AbstractGoldenWeapon;
 import me.butter.ninjago.structures.StructChestHolder;
-import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 

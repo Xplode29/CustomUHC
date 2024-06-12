@@ -14,7 +14,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -26,7 +25,7 @@ public class Acidicus extends NinjagoRole {
     UHCPlayer pythor;
 
     public Acidicus() {
-        super("Acidicus", "/roles/serpent/acidicus", Arrays.asList(new VeninCommand()));
+        super("Acidicus", "/roles/serpent/acidicus", Collections.singletonList(new VeninCommand()));
         for(Power power : getPowers()) {
             if(power instanceof VeninCommand) {
                 this.power = (VeninCommand) power;

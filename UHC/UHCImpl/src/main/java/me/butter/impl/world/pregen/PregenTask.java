@@ -1,10 +1,8 @@
 package me.butter.impl.world.pregen;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.UHCImpl;
 import me.butter.impl.structures.StructureBuilderTask;
-import me.butter.impl.task.SpawnPointsTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

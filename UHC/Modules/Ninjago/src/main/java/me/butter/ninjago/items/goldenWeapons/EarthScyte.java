@@ -4,7 +4,6 @@ import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.roles.list.ninjas.Cole;
-import me.butter.ninjago.roles.list.ninjas.Jay;
 import me.butter.ninjago.roles.list.ninjas.Lloyd;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;

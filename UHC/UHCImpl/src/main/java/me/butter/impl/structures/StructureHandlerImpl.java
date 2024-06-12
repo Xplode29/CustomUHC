@@ -1,6 +1,9 @@
 package me.butter.impl.structures;
 
-import com.sk89q.worldedit.*;
+import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
@@ -13,9 +16,7 @@ import me.butter.api.structures.StructureHandler;
 import me.butter.impl.UHCImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,6 +71,7 @@ public class StructureHandlerImpl implements StructureHandler, Listener {
 
             try {
                 ClipboardFormat format = ClipboardFormat.findByFile(file);
+                assert format != null;
                 ClipboardReader reader = format.getReader(Files.newInputStream(file.toPath()));
                 Clipboard clipboard = reader.read(session.getWorld().getWorldData());
                 structure.setClipboard(clipboard);
@@ -94,6 +96,7 @@ public class StructureHandlerImpl implements StructureHandler, Listener {
 
             try {
                 ClipboardFormat format = ClipboardFormat.findByFile(file);
+                assert format != null;
                 ClipboardReader reader = format.getReader(Files.newInputStream(file.toPath()));
                 Clipboard clipboard = reader.read(session.getWorld().getWorldData());
                 structure.setClipboard(clipboard);

@@ -1,9 +1,14 @@
 package me.butter.ninjago.roles;
 
-import me.butter.ninjago.roles.list.maitres.*;
+import me.butter.ninjago.roles.list.maitres.Fumee;
+import me.butter.ninjago.roles.list.maitres.Lumiere;
+import me.butter.ninjago.roles.list.maitres.Metal;
+import me.butter.ninjago.roles.list.maitres.Vitesse;
 import me.butter.ninjago.roles.list.ninjas.*;
 import me.butter.ninjago.roles.list.serpents.*;
-import me.butter.ninjago.roles.list.solos.*;
+import me.butter.ninjago.roles.list.solos.Garmadon;
+import me.butter.ninjago.roles.list.solos.Morro;
+import me.butter.ninjago.roles.list.solos.Skylor;
 import org.bukkit.Material;
 
 public enum RoleEnum {
@@ -43,10 +48,10 @@ public enum RoleEnum {
     SKYLOR(Skylor.class, CampEnum.SOLO, Material.FIREWORK, "Skylor"),
     ;
 
-    private Class<? extends NinjagoRole> roleClass;
-    private CampEnum camp;
-    private Material icon;
-    private String name;
+    private final Class<? extends NinjagoRole> roleClass;
+    private final CampEnum camp;
+    private final Material icon;
+    private final String name;
 
     private int amount;
 

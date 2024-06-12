@@ -32,8 +32,4 @@ public abstract class RightClickItemPower extends ItemPower {
             lastTimeUsed = UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer();
         }
     }
-
-    public boolean onEnable(UHCPlayer player, Action clickAction) {
-        return false;
-    }
 }

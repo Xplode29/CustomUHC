@@ -1,10 +1,7 @@
 package me.butter.api.structures;
 
-import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import org.bukkit.World;
-
-import java.io.File;
 
 public interface Structure {
 

@@ -3,8 +3,6 @@ package me.butter.impl.clickablechat;
 import me.butter.api.clickablechat.ClickableChatCommand;
 import me.butter.api.player.UHCPlayer;
 
-import java.util.Arrays;
-
 public abstract class AbstractClickableChatCommand implements ClickableChatCommand {
 
     UHCPlayer player;

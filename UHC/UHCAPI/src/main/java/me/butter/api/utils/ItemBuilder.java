@@ -42,26 +42,22 @@ public class ItemBuilder {
 
 
     public ItemBuilder(Material m, int amount, byte durability) {
-        this.is = new ItemStack(m, amount, (short) durability);
+        this.is = new ItemStack(m, amount, durability);
     }
-
 
     public ItemBuilder clone() {
         return new ItemBuilder(this.is);
     }
-
 
     public ItemBuilder setDurability(short dur) {
         this.is.setDurability(dur);
         return this;
     }
 
-
     public ItemBuilder setDurability(int dur) {
         setDurability((short) dur);
         return this;
     }
-
 
     public ItemBuilder setTexture(String hash) {
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
@@ -83,14 +79,12 @@ public class ItemBuilder {
         }
     }
 
-
     public ItemBuilder setName(String name) {
         ItemMeta im = this.is.getItemMeta();
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         this.is.setItemMeta(im);
         return this;
     }
-
 
     public ItemBuilder setCoolName(String name) {
         ItemMeta im = this.is.getItemMeta();
@@ -99,11 +93,10 @@ public class ItemBuilder {
         return this;
     }
 
-
     public ItemBuilder hideItemFlags() {
         ItemMeta im = this.is.getItemMeta();
         for (ItemFlag value : ItemFlag.values()) {
-            im.addItemFlags(new ItemFlag[]{value});
+            im.addItemFlags(value);
         }
         this.is.setItemMeta(im);
         return this;
@@ -121,30 +114,26 @@ public class ItemBuilder {
         return this;
     }
 
-
     public ItemBuilder addUnsafeEnchantment(Enchantment ench, int level) {
         this.is.addUnsafeEnchantment(ench, level);
         return this;
     }
-
 
     public ItemBuilder removeEnchantment(Enchantment ench) {
         this.is.removeEnchantment(ench);
         return this;
     }
 
-
     public ItemBuilder setSkullOwner(String owner) {
         try {
             SkullMeta im = (SkullMeta) this.is.getItemMeta();
             im.setOwner(owner);
-            this.is.setItemMeta((ItemMeta) im);
-        } catch (ClassCastException classCastException) {
+            this.is.setItemMeta(im);
+        } catch (ClassCastException ignored) {
         }
 
         return this;
     }
-
 
     public ItemBuilder addEnchant(Enchantment ench, int level) {
         ItemMeta im = this.is.getItemMeta();
@@ -153,12 +142,10 @@ public class ItemBuilder {
         return this;
     }
 
-
     public ItemBuilder addEnchantments(Map<Enchantment, Integer> enchantments) {
         this.is.addEnchantments(enchantments);
         return this;
     }
-
 
     public ItemBuilder setUnbreakable() {
         ItemMeta meta = this.is.getItemMeta();
@@ -166,7 +153,6 @@ public class ItemBuilder {
         this.is.setItemMeta(meta);
         return this;
     }
-
 
     public ItemBuilder setLore(String... lore) {
         ItemMeta im = this.is.getItemMeta();
@@ -179,7 +165,6 @@ public class ItemBuilder {
         return this;
     }
 
-
     public ItemBuilder setLore(List<String> lore) {
         ItemMeta im = this.is.getItemMeta();
         List<String> list = new ArrayList<>();
@@ -191,7 +176,6 @@ public class ItemBuilder {
         return this;
     }
 
-
     public ItemBuilder removeLoreLine(String line) {
         ItemMeta im = this.is.getItemMeta();
         List<String> lore = new ArrayList<>(im.getLore());
@@ -202,7 +186,6 @@ public class ItemBuilder {
         return this;
     }
 
-
     public ItemBuilder removeLoreLine(int index) {
         ItemMeta im = this.is.getItemMeta();
         List<String> lore = new ArrayList<>(im.getLore());
@@ -212,7 +195,6 @@ public class ItemBuilder {
         this.is.setItemMeta(im);
         return this;
     }
-
 
     public ItemBuilder addLoreLine(String line) {
         line = ChatColor.translateAlternateColorCodes('&', line);
@@ -225,7 +207,6 @@ public class ItemBuilder {
         return this;
     }
 
-
     public ItemBuilder addLoreLine(String line, int pos) {
         line = ChatColor.translateAlternateColorCodes('&', line);
         ItemMeta im = this.is.getItemMeta();
@@ -236,56 +217,50 @@ public class ItemBuilder {
         return this;
     }
 
-
     public ItemBuilder setDyeColor(DyeColor color) {
-        this.is.setDurability((short) color.getData());
+        this.is.setDurability(color.getData());
         return this;
     }
-
 
     @Deprecated
     public ItemBuilder setWoolColor(DyeColor color) {
         if (!this.is.getType().equals(Material.WOOL)) return this;
-        this.is.setDurability((short) color.getData());
+        this.is.setDurability(color.getData());
         return this;
     }
-
 
     public ItemBuilder setLeatherArmorColor(Color color) {
         try {
             LeatherArmorMeta im = (LeatherArmorMeta) this.is.getItemMeta();
             im.setColor(color);
-            this.is.setItemMeta((ItemMeta) im);
-        } catch (ClassCastException classCastException) {
+            this.is.setItemMeta(im);
+        } catch (ClassCastException ignored) {
         }
 
         return this;
     }
-
 
     public ItemBuilder setBannerColor(DyeColor color) {
         try {
             BannerMeta im = (BannerMeta) this.is.getItemMeta();
             im.setBaseColor(color);
-            this.is.setItemMeta((ItemMeta) im);
-        } catch (ClassCastException classCastException) {
+            this.is.setItemMeta(im);
+        } catch (ClassCastException ignored) {
         }
 
         return this;
     }
-
 
     public ItemBuilder addBannerPattern(Pattern pattern) {
         try {
             BannerMeta im = (BannerMeta) this.is.getItemMeta();
             im.addPattern(pattern);
-            this.is.setItemMeta((ItemMeta) im);
-        } catch (ClassCastException classCastException) {
+            this.is.setItemMeta(im);
+        } catch (ClassCastException ignored) {
         }
 
         return this;
     }
-
 
     public ItemStack toItemStack() {
         return this.is;

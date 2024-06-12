@@ -6,7 +6,6 @@ import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.roles.list.ninjas.Kai;
 import me.butter.ninjago.roles.list.ninjas.Lloyd;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

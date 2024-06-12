@@ -2,8 +2,6 @@ package me.butter.impl.task;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.module.Module;
-import me.butter.api.module.power.ItemPower;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
@@ -12,11 +10,7 @@ import me.butter.impl.UHCImpl;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.DayNightChangeEvent;
 import me.butter.impl.events.custom.EpisodeEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameTask extends BukkitRunnable {
 

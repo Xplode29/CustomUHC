@@ -61,7 +61,7 @@ public class MenuHandlerImpl implements MenuHandler, Listener {
         UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer().getUniqueId());
         if(uhcPlayer == null) return;
 
-        if(getOpenedMenu(uhcPlayer) != null && getOpenedMenu(uhcPlayer).equals(event.getInventory())) {
+        if(getOpenedMenu(uhcPlayer) != null && getOpenedMenu(uhcPlayer).getInventory().equals(event.getInventory())) {
             closeMenu(uhcPlayer);
         }
     }

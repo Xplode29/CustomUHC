@@ -1,7 +1,6 @@
 package me.butter.ninjago.timers;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.structures.Structure;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.timer.AbstractTimer;
 import me.butter.ninjago.Ninjago;

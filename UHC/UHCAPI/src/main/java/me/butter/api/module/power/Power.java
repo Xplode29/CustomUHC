@@ -63,7 +63,7 @@ public abstract class Power {
         return false;
     }
 
-    public boolean hidePower() {
-        return false;
+    public boolean showPower() {
+        return true;
     }
 }

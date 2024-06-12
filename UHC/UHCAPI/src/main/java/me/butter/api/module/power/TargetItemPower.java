@@ -12,7 +12,7 @@ import org.bukkit.util.Vector;
 
 public abstract class TargetItemPower extends ItemPower {
 
-    int range = 20;
+    int range;
 
     public TargetItemPower(String name, Material material, int range, int cooldown, int maxUses) {
         super(name, material, cooldown, maxUses);

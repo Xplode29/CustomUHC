@@ -19,10 +19,10 @@ public abstract class UHCAPI extends JavaPlugin {
 
     private static UHCAPI UHCAPI;
 
-    public static void setInstance(UHCAPI UHCAPI) {
-        if (UHCAPI.UHCAPI != null)
+    public static void setInstance(UHCAPI newApi) {
+        if (UHCAPI != null)
             throw new IllegalStateException("API already set!");
-        UHCAPI.UHCAPI = UHCAPI;
+        UHCAPI = newApi;
     }
 
     public static UHCAPI getInstance() {

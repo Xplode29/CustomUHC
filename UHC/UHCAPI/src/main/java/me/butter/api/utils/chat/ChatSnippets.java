@@ -39,7 +39,7 @@ public class ChatSnippets {
         if(uhcPlayer.getRole().hasItems()) {
             player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Items"));
             for(Power power : uhcPlayer.getRole().getPowers()) {
-                if(power instanceof ItemPower && !power.hidePower()) {
+                if(power instanceof ItemPower && power.showPower()) {
                     player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage(
                             power.getName() + "§r: " + String.join(" ", power.getDescription()) +
                                     (power.hideCooldowns() ? "" : (
@@ -56,7 +56,7 @@ public class ChatSnippets {
         if(uhcPlayer.getRole().hasCommands()) {
             player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Commandes"));
             for(Power power : uhcPlayer.getRole().getPowers()) {
-                if(power instanceof CommandPower && !power.hidePower()) {
+                if(power instanceof CommandPower && power.showPower()) {
                     CommandPower commandPower = (CommandPower) power;
                     player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage(
                             power.getName() + "§r (/ni " + commandPower.getArgument() + "): " + String.join(" ", power.getDescription()) +

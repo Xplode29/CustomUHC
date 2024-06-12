@@ -26,21 +26,21 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onChunkPopulate(ChunkPopulateEvent event) {
-        if(event.getWorld().getName() == "arena") {
+        if(event.getWorld().getName().equals("arena")) {
             setBiomeCenter(event.getChunk());
         }
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        if(event.getWorld().getName() == "arena") {
+        if(event.getWorld().getName().equals("arena")) {
             setBiomeCenter(event.getChunk());
         }
     }
 
     @EventHandler
     public void onChunkUnload(ChunkLoadEvent event) {
-        if(event.getWorld().getName() == "world" && Math.abs(event.getChunk().getX()) <= 60 && Math.abs(event.getChunk().getZ()) <= 60) {
+        if(event.getWorld().getName().equals("world") && Math.abs(event.getChunk().getX()) <= 60 && Math.abs(event.getChunk().getZ()) <= 60) {
             event.getChunk().load();
         }
     }

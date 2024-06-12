@@ -7,7 +7,6 @@ import me.butter.ninjago.roles.list.ninjas.Lloyd;
 import me.butter.ninjago.roles.list.ninjas.Zane;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

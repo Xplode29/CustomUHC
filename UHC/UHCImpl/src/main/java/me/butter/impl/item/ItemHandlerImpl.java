@@ -6,15 +6,11 @@ import me.butter.api.item.ItemHandler;
 import me.butter.api.player.UHCPlayer;
 import me.butter.impl.item.list.GrapplingItem;
 import me.butter.impl.item.list.MenuItem;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;

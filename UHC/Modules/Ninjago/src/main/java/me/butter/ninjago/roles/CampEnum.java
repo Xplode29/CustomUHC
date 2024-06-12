@@ -13,8 +13,8 @@ public enum CampEnum {
     MASTER(new MaitreCamp(), Material.EMERALD),
     SOLO(new SoloCamp(), Material.DIAMOND);
 
-    private Camp camp;
-    private Material icon;
+    private final Camp camp;
+    private final Material icon;
 
     CampEnum(Camp camp, Material icon) {
         this.camp = camp;

@@ -202,8 +202,8 @@ public class Morro extends NinjagoRole {
         }
 
         @Override
-        public boolean hidePower() {
-            return !hasZanePower;
+        public boolean showPower() {
+            return hasZanePower;
         }
 
         @Override

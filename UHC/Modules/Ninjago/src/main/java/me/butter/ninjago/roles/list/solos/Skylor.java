@@ -1,8 +1,6 @@
 package me.butter.ninjago.roles.list.solos;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.CommandPower;
-import me.butter.api.module.power.Power;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
@@ -10,15 +8,11 @@ import me.butter.impl.clickablechat.list.ChatEffectChooser;
 import me.butter.impl.events.custom.EpisodeEvent;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.roles.NinjagoRole;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

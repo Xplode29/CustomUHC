@@ -13,7 +13,6 @@ import me.butter.ninjago.roles.list.ninjas.Lloyd;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class Skales extends NinjagoRole {
     InfectPower infectionPower;
 
     public Skales() {
-        super("Skales", "/roles/serpent/skales", Arrays.asList(new InfectPower()));
+        super("Skales", "/roles/serpent/skales", Collections.singletonList(new InfectPower()));
         for(Power power : getPowers()) {
             if(power instanceof InfectPower) {
                 infectionPower = (InfectPower) power;

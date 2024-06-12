@@ -9,8 +9,8 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
-import me.butter.ninjago.roles.NinjagoRole;
 import me.butter.ninjago.items.SpinjitzuPower;
+import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -248,8 +248,8 @@ public class Apprenti extends NinjagoRole {
         }
 
         @Override
-        public boolean hidePower() {
-            return true;
+        public boolean showPower() {
+            return false;
         }
     }
 
@@ -272,8 +272,8 @@ public class Apprenti extends NinjagoRole {
         }
 
         @Override
-        public boolean hidePower() {
-            return true;
+        public boolean showPower() {
+            return false;
         }
 
         @Override

@@ -88,8 +88,8 @@ public class Wu extends NinjagoRole {
         }
 
         @Override
-        public boolean hidePower() {
-            return true;
+        public boolean showPower() {
+            return false;
         }
 
         @Override

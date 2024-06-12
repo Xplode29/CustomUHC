@@ -206,15 +206,7 @@ public class DamageHealthEvents implements Listener {
                 if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
                     if(UHCAPI.getInstance().getModuleHandler().hasModule()) {
                         if(!UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().isEmpty()) {
-                            List<Camp> camps = new ArrayList<>();
-
-                            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
-                                if(uhcPlayer.getPlayer() == null || uhcPlayer.getRole() == null) continue;
-                                Camp camp = uhcPlayer.getRole().getCamp();
-                                if(!camps.contains(camp)) {
-                                    camps.add(camp);
-                                }
-                            }
+                            List<Camp> camps = getCamps();
 
                             if(camps.size() > 1) return;
 
@@ -271,6 +263,19 @@ public class DamageHealthEvents implements Listener {
                 uhcVictim.revive();
             }
         }, 5 * 20L);
+    }
+
+    private static List<Camp> getCamps() {
+        List<Camp> camps = new ArrayList<>();
+
+        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+            if(uhcPlayer.getPlayer() == null || uhcPlayer.getRole() == null) continue;
+            Camp camp = uhcPlayer.getRole().getCamp();
+            if(!camps.contains(camp)) {
+                camps.add(camp);
+            }
+        }
+        return camps;
     }
 
     @EventHandler

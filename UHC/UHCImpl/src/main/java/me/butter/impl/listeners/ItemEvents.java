@@ -7,20 +7,12 @@ import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public class ItemEvents implements Listener {
 

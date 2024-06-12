@@ -2,21 +2,16 @@ package me.butter.ninjago.items.goldenWeapons;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.structures.Structure;
 import me.butter.ninjago.menu.GoldenWeaponMenu;
 import me.butter.ninjago.structures.StructChestHolder;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.Collections;

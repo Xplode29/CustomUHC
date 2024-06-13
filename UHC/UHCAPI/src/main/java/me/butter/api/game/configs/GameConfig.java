@@ -2,9 +2,14 @@ package me.butter.api.game.configs;
 
 import me.butter.api.player.UHCPlayer;
 
+import java.util.List;
+
 public interface GameConfig {
 
     UHCPlayer getHost(); void setHost(UHCPlayer host);
+
+    List<UHCPlayer> getCoHosts(); void setCoHosts(List<UHCPlayer> coHosts);
+    void addCoHost(UHCPlayer coHost); void removeCoHost(UHCPlayer coHost);
 
     int getMaxPlayers(); void setMaxPlayers(int maxPlayers);
 

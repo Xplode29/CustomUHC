@@ -5,12 +5,12 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.GraphicUtils;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.impl.item.AbstractItem;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-public class AbstractGoldenWeapon {
-
+public class AbstractGoldenWeapon extends AbstractItem {
     UHCPlayer holder;
     String name;
     Material material;
@@ -18,14 +18,18 @@ public class AbstractGoldenWeapon {
     int cooldown, lastTimeUsed;
 
     public AbstractGoldenWeapon(String name, Material material, int cooldown) {
-        this.name = "§l§6" + name;
+        super(material, "§6§l" + name);
+        this.name = "§6§l" + name;
         this.material = material;
 
         this.cooldown = cooldown;
         this.lastTimeUsed = -cooldown;
     }
 
-    public void onUse() {
+    @Override
+    public void onClick(UHCPlayer uhcPlayer) {
+        if(!uhcPlayer.equals(getHolder())) return;
+
         if(lastTimeUsed + cooldown > UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer()) {
             getHolder().sendMessage(ChatUtils.ERROR.getMessage("Vous devez attendre " +
                     GraphicUtils.convertToAccurateTime(cooldown + lastTimeUsed - UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer()) +
@@ -49,6 +53,12 @@ public class AbstractGoldenWeapon {
 
     }
 
+    @Override
+    public boolean isDroppable() {
+        return true;
+    }
+
+    @Override
     public ItemStack getItemStack() {
         return new ItemBuilder(material)
                 .setName(name)

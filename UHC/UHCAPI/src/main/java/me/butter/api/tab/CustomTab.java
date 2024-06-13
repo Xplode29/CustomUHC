@@ -3,13 +3,17 @@ package me.butter.api.tab;
 import me.butter.api.player.UHCPlayer;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface CustomTab {
 
-    void setHeaderLine(int line, String text); void setHeaderLine(int line, List<String> lineUpdates);
-    void setFooterLine(int line, String text); void setFooterLine(int line, List<String> lineUpdates);
+    //void setHeaderLine(UUID playerId, int line, List<String> lineUpdates);
+
+    //void setFooterLine(UUID playerId, int line, List<String> lineUpdates);
+
+    void addPlayer(UHCPlayer uhcPlayer); void removePlayer(UHCPlayer uhcPlayer);
 
     void updateTab();
 
-    void addPlayer(UHCPlayer uhcPlayer); void removePlayer(UHCPlayer uhcPlayer);
+    List<String> modifyHeader(UHCPlayer uhcPlayer, List<String> header); List<String> modifyFooter(UHCPlayer uhcPlayer, List<String> footer);
 }

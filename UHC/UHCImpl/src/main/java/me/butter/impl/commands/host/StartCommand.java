@@ -14,8 +14,12 @@ public class StartCommand extends AbstractCommand {
     @Override
     public void onCommand(UHCPlayer sender, String command, String[] args) {
         if (!UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting()) {
-            UHCAPI.getInstance().getGameHandler().getGameConfig().setStarting(true);
-            new LaunchGameTask();
+            startGame();
         }
+    }
+
+    public static void startGame() {
+        UHCAPI.getInstance().getGameHandler().getGameConfig().setStarting(true);
+        new LaunchGameTask();
     }
 }

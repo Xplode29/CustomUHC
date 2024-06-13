@@ -3,15 +3,23 @@ package me.butter.impl.game.configs;
 import me.butter.api.game.configs.GameConfig;
 import me.butter.api.player.UHCPlayer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class GameConfigImpl implements GameConfig {
 
     private UHCPlayer host;
+
+    private List<UHCPlayer> coHosts;
 
     private int maxPlayers, timer, groupSize, dayDuration, episode, episodeDuration;
 
     private boolean starting, day, doesDayCycle, invincibility, pvp, meetup, chatEnabled;
 
     public GameConfigImpl() {
+        coHosts = new ArrayList<>();
+
         this.maxPlayers = 39;
         this.groupSize = 6;
         this.starting = false;
@@ -37,6 +45,27 @@ public class GameConfigImpl implements GameConfig {
     @Override
     public void setHost(UHCPlayer host) {
         this.host = host;
+    }
+
+    @Override
+    public List<UHCPlayer> getCoHosts() {
+        return coHosts;
+    }
+
+    @Override
+    public void setCoHosts(List<UHCPlayer> coHosts) {
+        this.coHosts = coHosts;
+    }
+
+    @Override
+    public void addCoHost(UHCPlayer coHost) {
+        if(coHosts.contains(coHost)) return;
+        coHosts.add(coHost);
+    }
+
+    @Override
+    public void removeCoHost(UHCPlayer coHost) {
+        coHosts.remove(coHost);
     }
 
     @Override

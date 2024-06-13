@@ -5,6 +5,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.ninjago.menu.GoldenWeaponMenu;
 import me.butter.ninjago.structures.StructChestHolder;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -42,6 +43,7 @@ public class GoldenWeaponManager implements Listener {
     }
 
     public void addWeapon(AbstractGoldenWeapon weapon) {
+        UHCAPI.getInstance().getItemHandler().addCustomItem(weapon);
         weapons.add(weapon);
     }
 
@@ -77,18 +79,8 @@ public class GoldenWeaponManager implements Listener {
             for(StructChestHolder chestHolder : chests) {
                 if(chestHolder.getWeapon() != null && chestHolder.isSpawned() && chestHolder.getBlockChest().getLocation().equals(event.getClickedBlock().getLocation())) {
                     player.openMenu(new GoldenWeaponMenu(chestHolder), false);
+                    if(player.getPlayer() != null) player.getPlayer().playSound(player.getLocation(), Sound.CHEST_OPEN, 3.0F, 1.0F);
                     event.setCancelled(true);
-                    return;
-                }
-            }
-        }
-
-        for(AbstractGoldenWeapon weapon : weapons) {
-            if(weapon.getItemStack().isSimilar(event.getItem())) {
-                if(weapon.getHolder() != null && weapon.getHolder().equals(player)) {
-                    weapon.onUse();
-                    event.setCancelled(true);
-
                     return;
                 }
             }

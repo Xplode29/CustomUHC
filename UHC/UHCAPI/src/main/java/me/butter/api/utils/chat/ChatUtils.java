@@ -9,6 +9,7 @@ public enum ChatUtils {
     NORMAL(" "),
     JOINED(ChatColor.DARK_GRAY + "» "),
     LEFT(ChatColor.DARK_GRAY + "« "),
+    CHAT(ChatColor.GRAY + " »§r "),
     GLOBAL_INFO("§8[§e§lGlobal§r§8]§r "),
     PLAYER_INFO("§8[§e§lPlayer§r§8]§r "),
     ERROR("§c│ "),

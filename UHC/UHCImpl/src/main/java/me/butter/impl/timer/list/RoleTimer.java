@@ -81,10 +81,11 @@ public class RoleTimer extends AbstractTimer {
 
         UHCAPI.getInstance().getModuleHandler().getModule().setRolesList(roleList);
 
-        for(Role role : roleList) {
-            role.onDistributionFinished();
+        for(UHCPlayer player : players) {
+            if(player.getRole() == null) continue;
 
-            ChatSnippets.rolePresentation(role.getUHCPlayer());
+            player.getRole().onDistributionFinished();
+            ChatSnippets.rolePresentation(player);
         }
     }
 

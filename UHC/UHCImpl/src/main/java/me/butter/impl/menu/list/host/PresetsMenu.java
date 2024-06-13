@@ -71,19 +71,19 @@ public class PresetsMenu extends AbstractMenu {
                     UHCAPI.getInstance().getGameHandler().getInventoriesConfig().setStartingArmor(preset.getStartingArmor());
                 }
 
-                UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(100);
-                UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(50);
+                UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(250);
+                UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(100);
 
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setDiamondLimit(0);
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setExpBoost(0);
                 UHCAPI.getInstance().getGameHandler().getGameConfig().setDayCycleActivated(true);
-                UHCAPI.getInstance().getGameHandler().getGameConfig().setDayDuration(30 + 2 * 60);
-                UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(5 * 60);
+                UHCAPI.getInstance().getGameHandler().getGameConfig().setDayDuration(5 * 60);
+                UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(10 * 60);
 
-                UHCAPI.getInstance().getTimerHandler().getTimer(InvincibilityTimer.class).setMaxTimer(10);
-                UHCAPI.getInstance().getTimerHandler().getTimer(RoleTimer.class).setMaxTimer(10);
-                UHCAPI.getInstance().getTimerHandler().getTimer(PVPTimer.class).setMaxTimer(30);
-                UHCAPI.getInstance().getTimerHandler().getTimer(MeetupTimer.class).setMaxTimer(60);
+                UHCAPI.getInstance().getTimerHandler().getTimer(InvincibilityTimer.class).setMaxTimer(60);
+                UHCAPI.getInstance().getTimerHandler().getTimer(RoleTimer.class).setMaxTimer(2 * 60);
+                UHCAPI.getInstance().getTimerHandler().getTimer(PVPTimer.class).setMaxTimer(3 * 60);
+                UHCAPI.getInstance().getTimerHandler().getTimer(MeetupTimer.class).setMaxTimer(3 * 60);
                 UHCAPI.getInstance().getTimerHandler().getTimer(BorderTimer.class).setMaxTimer(10 * 60);
             }
         });

@@ -6,6 +6,8 @@ import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
+import me.butter.impl.scoreboard.list.LobbyScoreboard;
+import me.butter.impl.tab.list.GameTab;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.server.v1_8_R3.ChatComponentText;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
@@ -262,6 +264,9 @@ public class UHCPlayerImpl implements UHCPlayer {
         player.setFoodLevel(20);
         player.setLevel(0);
         player.setExp(0);
+
+        UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, this);
+        UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, this);
     }
 
     @Override
@@ -532,6 +537,7 @@ public class UHCPlayerImpl implements UHCPlayer {
         playerPotionEffects = new ArrayList<>();
         speedEffect = 0; strengthEffect = 0; resiEffect = 0;
 
+        if(getPlayer() == null) return;
         for(PotionEffect effect : getPlayer().getActivePotionEffects()) {
             getPlayer().removePotionEffect(effect.getType());
         }

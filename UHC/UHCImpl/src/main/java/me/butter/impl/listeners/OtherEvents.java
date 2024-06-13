@@ -39,7 +39,7 @@ public class OtherEvents implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
+        UHCPlayer player = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer());
         if (player == null) return;
 
         if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
@@ -48,8 +48,19 @@ public class OtherEvents implements Listener {
             ) {
                 player.sendMessage(ChatUtils.ERROR.getMessage("Le chat est actuellement désactivé."));
                 event.setCancelled(true);
+                return;
             }
         }
+
+        String prefix = ChatColor.GRAY + player.getName();
+        if(player.equals(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost())) {
+            prefix = "§lHOST " + player.getName() + "§r";
+        }
+        else if(UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts().contains(player)) {
+            prefix = "§lCO-HOST " + player.getName() + "§r";
+        }
+        event.setFormat(prefix + ChatUtils.CHAT + ChatColor.translateAlternateColorCodes('&', event.getMessage())
+        );
     }
 
     @EventHandler

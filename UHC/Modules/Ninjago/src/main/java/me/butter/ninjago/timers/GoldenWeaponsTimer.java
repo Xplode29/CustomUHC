@@ -59,7 +59,7 @@ public class GoldenWeaponsTimer extends AbstractTimer {
                 Bukkit.broadcastMessage("");
                 Bukkit.broadcastMessage(ChatUtils.SEPARATOR.prefix);
             }
-        }.runTaskTimer(Ninjago.getInstance(), 0, 5 * 60 * 20);
+        }.runTaskTimer(Ninjago.getInstance(), 0, 150 * 20);
     }
 
     @Override

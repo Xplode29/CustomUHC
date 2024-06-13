@@ -40,7 +40,7 @@ public class GameScoreboard extends AbstractScoreboard {
                 ChatUtils.formatScoreboard("PVP", UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()),
                 ChatUtils.formatScoreboard("Meetup", UHCAPI.getInstance().getGameHandler().getGameConfig().isMeetup()),
                 new DuplicateString("§7§m---------------------", 2).getString(),
-                ChatUtils.formatScoreboard("Bordure", String.valueOf(UHCAPI.getInstance().getWorldHandler().getWorld() == null ? 0 : UHCAPI.getInstance().getWorldHandler().getWorld().getWorldBorder().getSize() / 2)),
+                ChatUtils.formatScoreboard("Bordure", String.valueOf(UHCAPI.getInstance().getWorldHandler().getWorld() == null ? 0 : (int) (UHCAPI.getInstance().getWorldHandler().getWorld().getWorldBorder().getSize() / 2))),
                 ChatUtils.formatScoreboard("Episode", String.valueOf(UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisode())),
                 new DuplicateString("§7§m---------------------", 3).getString()
         ));

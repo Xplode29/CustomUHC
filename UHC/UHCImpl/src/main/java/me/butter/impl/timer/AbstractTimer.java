@@ -9,10 +9,14 @@ public abstract class AbstractTimer implements Timer {
     private Material icon;
     private int maxTimer;
 
+    private boolean fired;
+
     public AbstractTimer(String name, Material icon, int maxTimer) {
         this.name = name;
         this.icon = icon;
         this.maxTimer = maxTimer;
+
+        fired = false;
     }
 
     @Override
@@ -38,5 +42,16 @@ public abstract class AbstractTimer implements Timer {
     @Override
     public void setMaxTimer(int timer) {
         this.maxTimer = timer;
+    }
+
+    @Override
+    public boolean isFired() {
+        return fired;
+    }
+
+    @Override
+    public void fireTimer() {
+        onTimerDone();
+        fired = true;
     }
 }

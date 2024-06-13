@@ -41,12 +41,9 @@ public class Skylor extends NinjagoRole {
     public void onNewEpisode(EpisodeEvent event) {
         List<UHCPlayer> uhcPlayers = new ArrayList<>();
 
-        for(Entity entity : getUHCPlayer().getPlayer().getNearbyEntities(100, 100, 100)) {
-            if(entity instanceof Player) {
-                UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) entity);
-                if(uhcPlayer != null && uhcPlayer.getRole() != null && uhcPlayer != getUHCPlayer()){
-                    uhcPlayers.add(uhcPlayer);
-                }
+        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+            if(uhcPlayer != null && getUHCPlayer().isNextTo(uhcPlayer, 100) && uhcPlayer.getRole() != null) {
+                uhcPlayers.add(uhcPlayer);
             }
         }
 

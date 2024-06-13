@@ -83,7 +83,7 @@ public class DamageHealthEvents implements Listener {
 
                 event.setDamage(
                         EntityDamageEvent.DamageModifier.RESISTANCE,
-                        event.getDamage(EntityDamageEvent.DamageModifier.RESISTANCE) / (1 - (potionEffect.getAmplifier() + 1.0) * (1 / 5.0))
+                        event.getDamage(EntityDamageEvent.DamageModifier.RESISTANCE) * (1 - uhcVictim.getResi() / 100.0f) / (1 - (potionEffect.getAmplifier() + 1.0) * (1 / 5.0))
                 );
             }
         }
@@ -122,7 +122,7 @@ public class DamageHealthEvents implements Listener {
                     damageBeforeReduction += itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 1.25;
                 }
 
-                event.setDamage(damageBeforeReduction);
+                event.setDamage(damageBeforeReduction * (1 + uhcDamager.getStrength() / 100.0f));
             }
         }
     }
@@ -291,15 +291,25 @@ public class DamageHealthEvents implements Listener {
             }
         }
 
+        String message = getMessage(event);
+        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts()) {
+            uhcPlayer.sendMessage(message);
+        }
+        UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().sendMessage(message);
+    }
+
+    private static String getMessage(UHCPlayerDeathEvent event) {
+        String message = "";
         if(event.getKiller() != null) {
-            UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().sendMessage(ChatUtils.GLOBAL_INFO.getMessage(event.getKiller().getName() + " a tue " + event.getVictim().getName() + "."));
+            message = ChatUtils.GLOBAL_INFO.getMessage(event.getKiller().getName() + " a tue " + event.getVictim().getName() + ".");
         }
         else if(event.getVictim().getPlayer() != null) {
-            UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().sendMessage(ChatUtils.GLOBAL_INFO.getMessage(event.getVictim().getPlayer().getName() + " est mort par " + event.getVictim().getPlayer().getLastDamageCause().getCause().name() + "."));
+            message = ChatUtils.GLOBAL_INFO.getMessage(event.getVictim().getPlayer().getName() + " est mort par " + event.getVictim().getPlayer().getLastDamageCause().getCause().name() + ".");
         }
         else {
-            UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().sendMessage(ChatUtils.GLOBAL_INFO.getMessage(event.getVictim().getPlayer().getName() + " est mort."));
+            message = ChatUtils.GLOBAL_INFO.getMessage(event.getVictim().getPlayer().getName() + " est mort.");
         }
+        return message;
     }
 
     @EventHandler

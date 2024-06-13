@@ -5,7 +5,8 @@ import me.butter.api.module.camp.Camp;
 import me.butter.api.module.roles.Role;
 import me.butter.api.module.roles.RoleType;
 import me.butter.impl.tab.list.GameTab;
-import me.butter.ninjago.commands.CommandNinjago;
+import me.butter.ninjago.commands.NiCommand;
+import me.butter.ninjago.commands.old.CommandNinjago;
 import me.butter.ninjago.items.goldenWeapons.GoldenWeaponManager;
 import me.butter.ninjago.listener.CycleEvents;
 import me.butter.ninjago.roles.RoleEnum;
@@ -28,12 +29,12 @@ public final class Ninjago extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
-
-        rolesList = new ArrayList<>();
     }
 
     @Override
     public void onEnable() {
+        rolesList = new ArrayList<>();
+
         goldenWeaponManager = new GoldenWeaponManager();
 
         UHCAPI.getInstance().getModuleHandler().setModule(new NinjagoModule());
@@ -52,7 +53,8 @@ public final class Ninjago extends JavaPlugin {
     }
 
     public void registerCommands() {
-        getCommand("ni").setExecutor(new CommandNinjago());
+        //getCommand("ni").setExecutor(new CommandNinjago());
+        getCommand("ni").setExecutor(new NiCommand());
     }
 
     public void registerListeners() {

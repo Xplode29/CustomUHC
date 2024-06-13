@@ -25,21 +25,27 @@ public class ChatEffectChooser extends AbstractClickableChatCommand {
 
     @Override
     public void send() {
-        TextComponent speedMsg = new TextComponent(amount + "% de speed (" + limit + "% max)");
+        TextComponent speedMsg = new TextComponent(
+                ChatUtils.LIST_ELEMENT.getMessage("[ " + amount + "% de speed (" + limit + "% max) ]")
+        );
         speedMsg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
                 ClickableChatHandlerImpl.commandPrefix + " " +
                         getArgument() + " 0 " + amount + " " + limit)
         );
         getUHCPlayer().sendMessage(speedMsg);
 
-        TextComponent strengthMsg = new TextComponent(amount + "% de force (" + limit + "% max)");
+        TextComponent strengthMsg = new TextComponent(
+                ChatUtils.LIST_ELEMENT.getMessage("[ " + amount + "% de force (" + limit + "% max) ]")
+        );
         strengthMsg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
                 ClickableChatHandlerImpl.commandPrefix + " " +
                         getArgument() + " 1 " + amount + " " + limit)
         );
         getUHCPlayer().sendMessage(strengthMsg);
 
-        TextComponent resiMsg = new TextComponent(amount + "% de resistance (" + limit + "% max)");
+        TextComponent resiMsg = new TextComponent(
+                ChatUtils.LIST_ELEMENT.getMessage("[ " + amount + "% de resistance (" + limit + "% max) ]")
+        );
         resiMsg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
                 ClickableChatHandlerImpl.commandPrefix + " " +
                         getArgument() + " 2 " + amount + " " + limit)

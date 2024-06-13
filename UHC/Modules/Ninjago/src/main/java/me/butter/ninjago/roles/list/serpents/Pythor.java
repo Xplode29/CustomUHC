@@ -37,16 +37,16 @@ public class Pythor extends NinjagoRole {
         return new String[]{
                 "Vous possédez Force 1 et Speed 1 permanent, ainsi qu'une liste contenant les roles Skales, Acidicus, Skalidor, Fangtom, Fangdam, Arcturus et Ed0.",
                 "",
-                "Attention, Ed ne gagne pas avec les serpents.",
-                "",
-                "(Suite pas encore dev)",
-                "Si vous obtenez les 4 armes d'or, que vous tuez au moins deux ninjas parmis Nya, Jay, Kai, Wu, Cole, Zane et qu'il reste 3 joueurs ou moins en vie parmis les serpents (vous inclus),",
-                "",
-                "Vous pouvez craft la forme finale du grand dévoreur (/ni craft gd pour voir le craft).",
-                "",
-                "Vous deviendrez alors solitaire, vous obtiendrez Speed 2, Resistance 1 et 15 coeurs permanents,",
-                "",
-                "Cependant, tous les joueurs de la partie seront informés que le Grand Dévoreur a été invoqué, sans mentionner votre pseudo."
+                "Attention, Ed ne gagne pas avec les serpents."
+                //"",
+                //"(Suite pas encore dev)",
+                //"Si vous obtenez les 4 armes d'or, que vous tuez au moins deux ninjas parmis Nya, Jay, Kai, Wu, Cole, Zane et qu'il reste 3 joueurs ou moins en vie parmis les serpents (vous inclus),",
+                //"",
+                //"Vous pouvez craft la forme finale du grand dévoreur (/ni craft gd pour voir le craft).",
+                //"",
+                //"Vous deviendrez alors solitaire, vous obtiendrez Speed 2, Resistance 1 et 15 coeurs permanents,",
+                //"",
+                //"Cependant, tous les joueurs de la partie seront informés que le Grand Dévoreur a été invoqué, sans mentionner votre pseudo."
         };
     }
 
@@ -89,9 +89,9 @@ public class Pythor extends NinjagoRole {
 
         @Override
         public String[] getDescription() {
-            return new String[]{
+            return new String[] {
                     "À l'activation, vous obtenez speed 2 et résistance 1 pendant 2 minutes",
-                    "Ce pouvoir ne peut être active qu'une seule fois par episode"
+                    "Ce pouvoir ne peut être actif qu'une seule fois par episode"
             };
         }
 

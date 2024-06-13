@@ -13,7 +13,7 @@ public abstract class AbstractItem implements CustomItem {
 
     public AbstractItem(Material material, String name) {
         this.material = material;
-        this.name = "§r"+name;
+        this.name = "§r" + name;
     }
 
     @Override

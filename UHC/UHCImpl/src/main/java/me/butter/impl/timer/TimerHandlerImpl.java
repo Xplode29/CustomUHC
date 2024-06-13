@@ -9,6 +9,7 @@ import me.butter.impl.timer.list.PVPTimer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TimerHandlerImpl implements TimerHandler {
 
@@ -32,6 +33,16 @@ public class TimerHandlerImpl implements TimerHandler {
     public Timer getTimer(Class<? extends Timer> timerClass) {
         for(Timer timer : timers) {
             if(timer.getClass() == timerClass) {
+                return timer;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Timer getTimer(String timerName) {
+        for(Timer timer : timers) {
+            if(Objects.equals(timer.getName(), timerName)) {
                 return timer;
             }
         }

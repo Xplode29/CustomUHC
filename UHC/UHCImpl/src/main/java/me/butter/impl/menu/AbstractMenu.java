@@ -7,6 +7,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 
@@ -86,13 +87,15 @@ public abstract class AbstractMenu implements Menu {
         if(button != null) {
             button.onClick(uhcPlayer, clickType);
             if(button.doesUpdateGui()) {
-                update();
+                this.inventory.setItem(slot, button.getIcon());
             }
+            if(opener.getPlayer() != null) opener.getPlayer().playSound(opener.getLocation(), Sound.CLICK, 0.1F, 1F);
             return;
         }
 
         if(previousMenu != null && slot == size - 5) {
             UHCAPI.getInstance().getMenuHandler().openMenu(uhcPlayer, previousMenu, false);
+            if(opener.getPlayer() != null) opener.getPlayer().playSound(opener.getLocation(), Sound.CLICK, 0.1F, 1F);
         }
     }
 

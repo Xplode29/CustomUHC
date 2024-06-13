@@ -1,4 +1,4 @@
-package me.butter.ninjago.commands;
+package me.butter.ninjago.commands.old;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;

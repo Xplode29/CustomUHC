@@ -3,6 +3,7 @@ package me.butter.impl.scoreboard;
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.scoreboard.CustomScoreboard;
+import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;

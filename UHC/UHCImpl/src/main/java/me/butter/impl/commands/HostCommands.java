@@ -20,17 +20,19 @@ import java.util.stream.Collectors;
 
 public class HostCommands implements TabExecutor {
 
-    private List<AbstractCommand> commands = new ArrayList<>();
+    private final List<AbstractCommand> commands = new ArrayList<>();
 
     public HostCommands() {
         commands.add(new EffectCommand());
         commands.add(new ReviveCommand());
         commands.add(new SaveInvCommand());
-        commands.add(new SetHostCommand());
+        commands.add(new CoHostCommand());
         commands.add(new StartCommand());
         commands.add(new StopCommand());
         commands.add(new TeleportCommand());
         commands.add(new ConfigCommand());
+        commands.add(new SayCommand());
+        commands.add(new ForceTimerCommand());
     }
 
     @Override
@@ -49,8 +51,15 @@ public class HostCommands implements TabExecutor {
 
                 if(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() != null) {
                     UHCAPI.getInstance().getItemHandler().removeItemFromPlayer(MenuItem.class, UHCAPI.getInstance().getGameHandler().getGameConfig().getHost());
+                    UHCAPI.getInstance().getGameHandler().getGameConfig().removeCoHost(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost());
+
+                    UHCAPI.getInstance().getMenuHandler().closeMenu(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost());
                 }
-                UHCAPI.getInstance().getItemHandler().giveItemToPlayer(MenuItem.class, sender);
+
+                if(!UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts().contains(sender)) {
+                    UHCAPI.getInstance().getItemHandler().giveItemToPlayer(MenuItem.class, sender);
+                    UHCAPI.getInstance().getGameHandler().getGameConfig().addCoHost(sender);
+                }
 
                 UHCAPI.getInstance().getGameHandler().getGameConfig().setHost(sender);
 
@@ -59,18 +68,20 @@ public class HostCommands implements TabExecutor {
             }
         }
         else {
-            if(!player.isOp() && (
-                UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() == null ||
-                !sender.equals(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost()))
+            if(
+                player.isOp() ||
+                UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts().contains(sender)
             ) {
-                player.sendMessage(ChatUtils.ERROR.getMessage("Tu n'es pas le host de la partie !"));
-                return true;
-            }
-            for(AbstractCommand command : commands) {
-                if(command.getArgument().equalsIgnoreCase(strings[0]) || Arrays.stream(command.getAliases()).anyMatch(alias -> alias.equalsIgnoreCase(strings[0]))) {
-                    command.onCommand(sender, s, strings);
-                    return true;
+                for(AbstractCommand command : commands) {
+                    if(command.getArgument().equalsIgnoreCase(strings[0]) || Arrays.stream(command.getAliases()).anyMatch(alias -> alias.equalsIgnoreCase(strings[0]))) {
+                        command.onCommand(sender, s, strings);
+                        return true;
+                    }
                 }
+            }
+            else {
+                player.sendMessage(ChatUtils.ERROR.getMessage("Tu n'as pas la permission !"));
+                return true;
             }
         }
         sender.sendMessage(ChatUtils.ERROR.getMessage("Usage: /host <" + Strings.join(commands.stream().map(AbstractCommand::getArgument).collect(Collectors.toList()), " | ") + ">"));
@@ -94,9 +105,5 @@ public class HostCommands implements TabExecutor {
             }
         }
         return Collections.emptyList();
-    }
-
-    public void addCommand(AbstractCommand command) {
-        commands.add(command);
     }
 }

@@ -7,6 +7,7 @@ public interface TimerHandler {
     List<Timer> getTimers();
 
     Timer getTimer(Class<? extends Timer> timerClass);
+    Timer getTimer(String timerName);
 
     void addTimer(Timer timer);
 

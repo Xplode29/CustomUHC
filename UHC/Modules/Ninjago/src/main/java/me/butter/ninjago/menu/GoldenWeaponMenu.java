@@ -5,6 +5,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.ninjago.structures.StructChestHolder;
+import org.bukkit.Sound;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
@@ -39,7 +40,6 @@ public class GoldenWeaponMenu extends AbstractMenu {
 
                 player.giveItem(chest.getWeapon().getItemStack(), true);
                 chest.clearChest();
-
                 closeMenu();
             }
         });

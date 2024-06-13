@@ -38,21 +38,16 @@ public class WorldListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onChunkUnload(ChunkLoadEvent event) {
-        if(event.getWorld().getName().equals("world") && Math.abs(event.getChunk().getX()) <= 60 && Math.abs(event.getChunk().getZ()) <= 60) {
-            event.getChunk().load();
-        }
-    }
-
     private void setBiomeCenter(Chunk chunk) {
         Location center = new Location(chunk.getWorld(), 0.0D, 60.0D, 0.0D);
-        if (chunk.getX() <= 60 && chunk.getZ() <= 60)
-            for (int x = 0; x < 16; x++)
+        if (chunk.getX() <= 60 && chunk.getZ() <= 60) {
+            for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     Block block = chunk.getBlock(x, 60, z);
                     if (block.getLocation().distance(center) <= 350.0D) block.setBiome(Biome.ROOFED_FOREST);
                     else if (block.getLocation().distance(center) <= 600.0D) block.setBiome(Biome.MEGA_TAIGA_HILLS);
                 }
+            }
+        }
     }
 }

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UHCPlayer {
-
     UUID getUniqueId();
     Player getPlayer(); boolean isPlayer(Player player);
     String getName(); void setName(String newName);

@@ -8,6 +8,7 @@ import me.butter.impl.item.list.GrapplingItem;
 import me.butter.impl.item.list.MenuItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -63,6 +64,7 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
     public void removeItemFromPlayer(Class<? extends CustomItem> itemClass, UHCPlayer uhcPlayer) {
         CustomItem item = getCustomItem(itemClass);
         if(item == null) return;
+        if(uhcPlayer.getPlayer() == null) return;
         for(ItemStack itemStack : uhcPlayer.getPlayer().getInventory().getContents()) {
             if(itemStack == null) continue;
             if(item.getItemStack().isSimilar(itemStack)) {
@@ -73,19 +75,19 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
 
     @Override
     public void giveLobbyItems(UHCPlayer uhcPlayer) {
-        if(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() != null && UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().equals(uhcPlayer)) {
+        if(UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts().contains(uhcPlayer)) {
             giveItemToPlayer(MenuItem.class, uhcPlayer);
         }
     }
 
     @Override
     public void removeLobbyItems(UHCPlayer uhcPlayer) {
-        if(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() != null && UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().equals(uhcPlayer)) {
+        if(UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts().contains(uhcPlayer)) {
             removeItemFromPlayer(MenuItem.class, uhcPlayer);
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onClickItem(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if(player == null) return;

@@ -1,11 +1,14 @@
 package me.butter.impl.menu.list.host;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.game.GameState;
 import me.butter.api.menu.Button;
 import me.butter.api.module.Module;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.impl.commands.host.StartCommand;
+import me.butter.impl.commands.host.StopCommand;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.impl.task.LaunchGameTask;
@@ -124,7 +127,9 @@ public class MainMenu extends AbstractMenu {
         buttons.put(49, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemStack((UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting() ? Material.FIREBALL : Material.SLIME_BALL));
+                return new ItemBuilder((UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting() ? Material.FIREBALL : Material.SLIME_BALL))
+                        .setName("§r" + (UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting() ? "Arreter" : "Lancer"))
+                        .toItemStack();
             }
 
             @Override
@@ -135,7 +140,7 @@ public class MainMenu extends AbstractMenu {
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
                 if (UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting()) {
-                    UHCAPI.getInstance().getGameHandler().getGameConfig().setStarting(false);
+                    StopCommand.stopGame();
                 }
                 else if(!UHCAPI.getInstance().getGameHandler().getWorldConfig().isWorldGenerated()) {
                     player.sendMessage(ChatUtils.ERROR.getMessage("Le monde arena n'est pas généré."));
@@ -144,8 +149,7 @@ public class MainMenu extends AbstractMenu {
                     player.sendMessage(ChatUtils.ERROR.getMessage("Le monde arena n'est pas encore totalement prégené."));
                 }
                 else {
-                    UHCAPI.getInstance().getGameHandler().getGameConfig().setStarting(true);
-                    new LaunchGameTask();
+                    StartCommand.startGame();
                 }
             }
         });

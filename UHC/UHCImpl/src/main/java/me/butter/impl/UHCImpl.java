@@ -8,6 +8,8 @@ import me.butter.api.item.ItemHandler;
 import me.butter.api.menu.MenuHandler;
 import me.butter.api.module.ModuleHandler;
 import me.butter.api.player.PlayerHandler;
+import me.butter.api.player.PlayerState;
+import me.butter.api.player.UHCPlayer;
 import me.butter.api.scenario.ScenarioHandler;
 import me.butter.api.scoreboard.ScoreboardHandler;
 import me.butter.api.structures.StructureHandler;
@@ -27,10 +29,13 @@ import me.butter.impl.menu.MenuHandlerImpl;
 import me.butter.impl.module.ModuleHandlerImpl;
 import me.butter.impl.player.PlayerHandlerImpl;
 import me.butter.impl.player.PotionUpdaterTask;
+import me.butter.impl.player.UHCPlayerImpl;
 import me.butter.impl.scenario.ScenarioHandlerImpl;
 import me.butter.impl.scoreboard.ScoreboardHandlerImpl;
+import me.butter.impl.scoreboard.list.LobbyScoreboard;
 import me.butter.impl.structures.StructureHandlerImpl;
 import me.butter.impl.tab.TabHandlerImpl;
+import me.butter.impl.tab.list.GameTab;
 import me.butter.impl.timer.TimerHandlerImpl;
 import me.butter.impl.world.WorldHandlerImpl;
 import org.bukkit.Bukkit;
@@ -62,27 +67,31 @@ public final class UHCImpl extends UHCAPI {
 
         UHCAPI.setInstance(this);
         UHCImpl.instance = this;
+    }
 
+    @Override
+    public void onEnable() {
         playerHandler = new PlayerHandlerImpl();
         gameHandler = new GameHandlerImpl();
         enchantHandler = new EnchantHandlerImpl();
         timerHandler = new TimerHandlerImpl();
         scenarioHandler = new ScenarioHandlerImpl();
-
         moduleHandler = new ModuleHandlerImpl();
-    }
-
-    @Override
-    public void onEnable() {
         worldHandler = new WorldHandlerImpl();
-
         scoreboardHandler = new ScoreboardHandlerImpl();
         tabHandler = new TabHandlerImpl();
         itemHandler = new ItemHandlerImpl();
         menuHandler = new MenuHandlerImpl();
         structureHandler = new StructureHandlerImpl();
-
         clickableChatHandler = new ClickableChatHandlerImpl();
+
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            playerHandler.addPlayer(player);
+        }
+
+        for(UHCPlayer uhcPlayer : playerHandler.getPlayers()) {
+            uhcPlayer.clearPlayer();
+        }
 
         registerCommands();
         registerListeners();

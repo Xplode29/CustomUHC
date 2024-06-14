@@ -86,8 +86,11 @@ public abstract class AbstractMenu implements Menu {
         Button button = getButtons().get(slot);
         if(button != null) {
             button.onClick(uhcPlayer, clickType);
-            if(button.doesUpdateGui()) {
+            if(button.doesUpdateButton()) {
                 this.inventory.setItem(slot, button.getIcon());
+            }
+            if(button.doesUpdateGui()) {
+                update();
             }
             if(opener.getPlayer() != null) opener.getPlayer().playSound(opener.getLocation(), Sound.CLICK, 0.1F, 1F);
             return;

@@ -7,6 +7,7 @@ import me.butter.api.item.ItemHandler;
 import me.butter.api.menu.MenuHandler;
 import me.butter.api.module.ModuleHandler;
 import me.butter.api.player.PlayerHandler;
+import me.butter.api.potion.PotionEffectHandler;
 import me.butter.api.scenario.ScenarioHandler;
 import me.butter.api.scoreboard.ScoreboardHandler;
 import me.butter.api.structures.StructureHandler;
@@ -28,6 +29,8 @@ public abstract class UHCAPI extends JavaPlugin {
     public static UHCAPI getInstance() {
         return UHCAPI;
     }
+
+    public abstract void reset();
 
     public abstract PlayerHandler getPlayerHandler();
 
@@ -54,4 +57,6 @@ public abstract class UHCAPI extends JavaPlugin {
     public abstract StructureHandler getStructureHandler();
 
     public abstract ClickableChatHandler getClickableChatHandler();
+
+    public abstract PotionEffectHandler getPotionEffectHandler();
 }

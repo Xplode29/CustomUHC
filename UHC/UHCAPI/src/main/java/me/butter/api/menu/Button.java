@@ -8,6 +8,7 @@ public interface Button {
 
     ItemStack getIcon(); void setIcon(ItemStack itemStack);
 
+    boolean doesUpdateButton();
     boolean doesUpdateGui();
 
     void onClick(UHCPlayer player, ClickType clickType);

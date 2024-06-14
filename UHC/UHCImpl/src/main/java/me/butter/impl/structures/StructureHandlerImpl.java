@@ -24,7 +24,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StructureHandlerImpl implements StructureHandler, Listener {
+public class StructureHandlerImpl implements StructureHandler {
 
     List<Structure> structures;
 
@@ -39,8 +39,6 @@ public class StructureHandlerImpl implements StructureHandler, Listener {
         File schematicFolder = new File(UHCImpl.getInstance().getDataFolder(), "schematics");
         if(!schematicFolder.exists()) schematicFolder.mkdirs();
         this.schematicFolder = schematicFolder;
-
-        Bukkit.getPluginManager().registerEvents(this, UHCImpl.getInstance());
     }
 
     @Override

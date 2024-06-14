@@ -1,4 +1,4 @@
-package me.butter.impl.menu.list.host;
+package me.butter.impl.menu.list.host.settings;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class RulesMenu extends PaginatedMenu {
-    public RulesMenu() {
+public class AuthorizedItemsMenu extends PaginatedMenu {
+    public AuthorizedItemsMenu() {
         super("Règles", 5 * 9);
     }
 
@@ -28,7 +28,7 @@ public class RulesMenu extends PaginatedMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 
@@ -45,7 +45,7 @@ public class RulesMenu extends PaginatedMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 
@@ -62,7 +62,7 @@ public class RulesMenu extends PaginatedMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 
@@ -79,7 +79,7 @@ public class RulesMenu extends PaginatedMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 
@@ -96,7 +96,7 @@ public class RulesMenu extends PaginatedMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 
@@ -113,7 +113,7 @@ public class RulesMenu extends PaginatedMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 

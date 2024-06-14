@@ -1,4 +1,4 @@
-package me.butter.impl.menu.list.host;
+package me.butter.impl.menu.list.host.settings.inventory;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
@@ -7,7 +7,6 @@ import me.butter.api.utils.ItemBuilder;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
-import me.butter.impl.menu.list.host.inventory.InvPresetsMenu;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;

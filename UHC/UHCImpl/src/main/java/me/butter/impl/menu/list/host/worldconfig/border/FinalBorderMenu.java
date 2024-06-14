@@ -1,4 +1,4 @@
-package me.butter.impl.menu.list.host.worldconfig;
+package me.butter.impl.menu.list.host.worldconfig.border;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
@@ -14,9 +14,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StartBorderMenu extends AbstractMenu {
-    public StartBorderMenu() {
-        super("Taille de la bordure initiale", 5 * 9, true);
+public class FinalBorderMenu extends AbstractMenu {
+    public FinalBorderMenu() {
+        super("Taille de la bordure finale", 5 * 9, true);
     }
 
     @Override
@@ -31,9 +31,9 @@ public class StartBorderMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() - 500);
-                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() < 100) {
-                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(100);
+                UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() - 500);
+                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() < 0) {
+                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(0);
                 }
             }
 
@@ -51,9 +51,9 @@ public class StartBorderMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() - 100);
-                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() < 100) {
-                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(100);
+                UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() - 100);
+                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() < 0) {
+                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(0);
                 }
             }
 
@@ -71,9 +71,9 @@ public class StartBorderMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() - 50);
-                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() < 100) {
-                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(100);
+                UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() - 50);
+                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() < 0) {
+                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(0);
                 }
             }
 
@@ -86,7 +86,7 @@ public class StartBorderMenu extends AbstractMenu {
         buttons.put(22, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.BARRIER).setName("§rTaille Initiale: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize()).toItemStack();
+                return new ItemBuilder(Material.BARRIER).setName("§rTaille Finale: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize()).toItemStack();
             }
         });
 
@@ -98,9 +98,9 @@ public class StartBorderMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() + 50);
-                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() > 2000) {
-                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(2000);
+                UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() + 50);
+                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() > 2000) {
+                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(2000);
                 }
             }
 
@@ -118,9 +118,9 @@ public class StartBorderMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() + 100);
-                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() > 2000) {
-                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(2000);
+                UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() + 100);
+                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() > 2000) {
+                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(2000);
                 }
             }
 
@@ -138,9 +138,9 @@ public class StartBorderMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() + 500);
-                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() > 2000) {
-                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(2000);
+                UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() + 500);
+                if(UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize() > 2000) {
+                    UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(2000);
                 }
             }
 

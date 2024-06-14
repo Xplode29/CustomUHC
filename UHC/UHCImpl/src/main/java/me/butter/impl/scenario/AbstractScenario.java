@@ -29,8 +29,18 @@ public abstract class AbstractScenario implements Scenario, Listener {
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[0];
+    public String getAuthor() {
+        return "";
+    }
+
+    @Override
+    public String getDeveloper() {
+        return "ButterOnPancakes";
+    }
+
+    @Override
+    public void openConfig() {
+
     }
 
     @Override
@@ -49,11 +59,6 @@ public abstract class AbstractScenario implements Scenario, Listener {
 
         if (enabled) onEnable();
         else onDisable();
-    }
-
-    @Override
-    public void openConfig() {
-
     }
 
     @Override

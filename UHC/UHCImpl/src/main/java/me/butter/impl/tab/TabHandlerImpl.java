@@ -17,6 +17,8 @@ public class TabHandlerImpl implements TabHandler {
     public TabHandlerImpl() {
         customTabList = new ArrayList<>();
 
+        addTab(new GameTab());
+
         new BukkitRunnable() {
             @Override
             public void run() {

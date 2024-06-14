@@ -49,7 +49,7 @@ public class CommandNinjago implements TabExecutor {
                 break;
 
             case "roles":
-                sender.sendMessage(ChatUtils.SEPARATOR.prefix);
+                sender.sendMessage(ChatUtils.LINE.prefix);
                 sender.sendMessage("");
                 for(CampEnum campEnum : CampEnum.values()) {
                     int rolesAmount = 0;
@@ -71,7 +71,7 @@ public class CommandNinjago implements TabExecutor {
                     }
                     sender.sendMessage("");
                 }
-                sender.sendMessage(ChatUtils.SEPARATOR.prefix);
+                sender.sendMessage(ChatUtils.LINE.prefix);
                 break;
 
             default:

@@ -1,4 +1,4 @@
-package me.butter.impl.menu.list.host.settings;
+package me.butter.impl.menu.list.host.settings.timers;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
@@ -30,7 +30,7 @@ public class TimerMenu extends PaginatedMenu {
                 }
 
                 @Override
-                public boolean doesUpdateGui() {
+                public boolean doesUpdateButton() {
                     return true;
                 }
 

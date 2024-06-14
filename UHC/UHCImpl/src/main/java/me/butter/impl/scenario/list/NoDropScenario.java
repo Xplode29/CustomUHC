@@ -20,16 +20,15 @@ public class NoDropScenario extends AbstractScenario {
     public void onBlockBreak(CustomBlockBreakEvent event) {
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
             if(
-                    event.getBlockBroken().getType() == Material.LAPIS_ORE ||
-                            event.getBlockBroken().getType() == Material.GOLD_ORE ||
-                            event.getBlockBroken().getType() == Material.IRON_ORE ||
-                            event.getBlockBroken().getType() == Material.DIAMOND_ORE ||
-                            event.getBlockBroken().getType() == Material.EMERALD_ORE
+                event.getBlockBroken().getType() == Material.GOLD_ORE ||
+                event.getBlockBroken().getType() == Material.IRON_ORE ||
+                event.getBlockBroken().getType() == Material.DIAMOND_ORE ||
+                event.getBlockBroken().getType() == Material.EMERALD_ORE
             ) {
                 for(ItemStack item : event.getDrops()) {
                     if(
-                            event.getUhcPlayer().getPlayer().getInventory().firstEmpty() > -1 ||
-                                    event.getUhcPlayer().getPlayer().getInventory().contains(item)
+                        event.getUhcPlayer().getPlayer().getInventory().firstEmpty() > -1 ||
+                        event.getUhcPlayer().getPlayer().getInventory().contains(item)
                     ) {
                         event.getUhcPlayer().giveItem(item, false);
                     }
@@ -42,5 +41,15 @@ public class NoDropScenario extends AbstractScenario {
                 event.setExpToDrop(0);
             }
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] {
+                "Les minerais précieux minés ",
+                "(Fer, Or, Diamant, Emeraude)",
+                "sont directement transférés",
+                "dans l'inventaire du joueur."
+        };
     }
 }

@@ -21,7 +21,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class JoinEvents implements Listener {
 
     private boolean generate;
-    private Location spawnLocation;
+    public static Location spawnLocation;
 
     public JoinEvents() {
         this.generate = false;
@@ -58,7 +58,6 @@ public class JoinEvents implements Listener {
 
             Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(spawnLocation), 2);
 
-            player.getInventory().clear();
             UHCAPI.getInstance().getItemHandler().giveLobbyItems(uhcPlayer);
 
             UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);

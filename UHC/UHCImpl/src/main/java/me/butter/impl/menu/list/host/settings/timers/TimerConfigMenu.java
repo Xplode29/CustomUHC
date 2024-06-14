@@ -1,4 +1,4 @@
-package me.butter.impl.menu.list.host.settings;
+package me.butter.impl.menu.list.host.settings.timers;
 
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;

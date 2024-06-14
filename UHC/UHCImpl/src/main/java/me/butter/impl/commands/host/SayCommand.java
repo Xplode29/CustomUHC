@@ -2,13 +2,10 @@ package me.butter.impl.commands.host;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.commands.AbstractCommand;
-import me.butter.impl.menu.list.host.MainMenu;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -27,10 +24,10 @@ public class SayCommand extends AbstractCommand {
             return;
         }
 
-        Bukkit.broadcastMessage(ChatUtils.SEPARATOR.prefix);
+        Bukkit.broadcastMessage(ChatUtils.LINE.prefix);
         Bukkit.broadcastMessage("");
         Bukkit.broadcastMessage("§lHOST " + sender.getName() + " §r» " + Joiner.on(" ").join(message));
         Bukkit.broadcastMessage("");
-        Bukkit.broadcastMessage(ChatUtils.SEPARATOR.prefix);
+        Bukkit.broadcastMessage(ChatUtils.LINE.prefix);
     }
 }

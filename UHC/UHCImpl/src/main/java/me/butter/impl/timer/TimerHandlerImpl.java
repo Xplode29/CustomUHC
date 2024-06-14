@@ -51,7 +51,7 @@ public class TimerHandlerImpl implements TimerHandler {
 
     @Override
     public void addTimer(Timer timer) {
-        if(!timers.contains(timer)) {
+        if(getTimer(timer.getClass()) == null) {
             timers.add(timer);
         }
     }

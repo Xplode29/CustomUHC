@@ -39,13 +39,15 @@ public final class Ninjago extends JavaPlugin {
 
         UHCAPI.getInstance().getModuleHandler().setModule(new NinjagoModule());
 
-        UHCAPI.getInstance().getTabHandler().addTab(new GameTab());
-
         UHCAPI.getInstance().getScenarioHandler().addScenario(new GoldenNinjaScenario());
         UHCAPI.getInstance().getTimerHandler().addTimer(new GoldenWeaponsTimer());
 
         registerCommands();
         registerListeners();
+
+        for(RoleEnum role : RoleEnum.values()) {
+            role.setAmount(0);
+        }
     }
 
     public static Ninjago getInstance() {

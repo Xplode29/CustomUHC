@@ -81,7 +81,7 @@ public class ItemBuilder {
 
     public ItemBuilder setName(String name) {
         ItemMeta im = this.is.getItemMeta();
-        im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "§r" + name));
         this.is.setItemMeta(im);
         return this;
     }
@@ -158,7 +158,7 @@ public class ItemBuilder {
         ItemMeta im = this.is.getItemMeta();
         List<String> list = new ArrayList<>();
         for (String s : lore) {
-            list.add(ChatColor.translateAlternateColorCodes('&', s));
+            list.add(ChatColor.translateAlternateColorCodes('&', "§r" + s));
         }
         im.setLore(list);
         this.is.setItemMeta(im);
@@ -169,7 +169,7 @@ public class ItemBuilder {
         ItemMeta im = this.is.getItemMeta();
         List<String> list = new ArrayList<>();
         for (String s : lore) {
-            list.add(ChatColor.translateAlternateColorCodes('&', s));
+            list.add(ChatColor.translateAlternateColorCodes('&', "§r" + s));
         }
         im.setLore(list);
         this.is.setItemMeta(im);
@@ -179,8 +179,8 @@ public class ItemBuilder {
     public ItemBuilder removeLoreLine(String line) {
         ItemMeta im = this.is.getItemMeta();
         List<String> lore = new ArrayList<>(im.getLore());
-        if (!lore.contains(line)) return this;
-        lore.remove(line);
+        if (!lore.contains("§r" + line)) return this;
+        lore.remove("§r" + line);
         im.setLore(lore);
         this.is.setItemMeta(im);
         return this;
@@ -197,7 +197,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder addLoreLine(String line) {
-        line = ChatColor.translateAlternateColorCodes('&', line);
+        line = ChatColor.translateAlternateColorCodes('&', "§r" + line);
         ItemMeta im = this.is.getItemMeta();
         List<String> lore = new ArrayList<>();
         if (im.hasLore()) lore = new ArrayList<>(im.getLore());

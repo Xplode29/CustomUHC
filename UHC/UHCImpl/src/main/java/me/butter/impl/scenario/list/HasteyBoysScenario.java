@@ -32,4 +32,12 @@ public class HasteyBoysScenario extends AbstractScenario {
             }
         }
     }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] {
+                "Les outils sont directement enchantés ",
+                "Efficacité III dès leur fabrication."
+        };
+    }
 }

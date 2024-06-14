@@ -25,17 +25,17 @@ public class GameTask extends BukkitRunnable {
     public void run() {
         if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.ENDING) {
             if(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().isEmpty()) {
-                StopCommand.stopGame();
+                UHCAPI.getInstance().reset();
             }
         }
 
         UHCAPI.getInstance().getGameHandler().getGameConfig().setTimer(UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer() + 1);
+        Bukkit.broadcastMessage("Timer: " + UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer());
 
         for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
             if(player.isDisconnected()) {
                 player.setDisconnectionTime(player.getDisconnectionTime() + 1);
                 if(player.getDisconnectionTime() >= 20 * 60) {
-                    player.clearPlayer();
                     player.setPlayerState(PlayerState.DEAD);
                 }
             }

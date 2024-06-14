@@ -14,7 +14,8 @@ public interface Timer {
 
     void setMaxTimer(int timer);
 
-    boolean isFired(); void fireTimer();
+    boolean isFired(); void setFired(boolean fired);
+    void fireTimer();
 
     void onTimerDone();
 

@@ -6,18 +6,26 @@ public enum ChatUtils {
     //https://www.digminecraft.com/lists/color_list_pc.php
     //https://gist.github.com/Arcensoth/7be59706aab15429ded8d7586a79f466
 
-    NORMAL(" "),
+
     JOINED(ChatColor.DARK_GRAY + "» "),
     LEFT(ChatColor.DARK_GRAY + "« "),
     CHAT(ChatColor.GRAY + " »§r "),
+
     GLOBAL_INFO("§8[§e§lGlobal§r§8]§r "),
     PLAYER_INFO("§8[§e§lPlayer§r§8]§r "),
     ERROR("§c│ "),
     WARNING("§c│ "),
+
+    INDENTED(" "),
     LIST_HEADER("▷ "),
     LIST_ELEMENT("  ◆ "),
     SUBLIST_ELEMENT("    - "),
-    SEPARATOR("§m                                                    ");
+
+    LINE("§m                                                    "),
+    ARROW("» "),
+    REVERSE_ARROW("«"),
+    SEPARATOR("§8│")
+    ;
 
     public final String prefix;
 

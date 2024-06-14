@@ -214,7 +214,7 @@ public class DamageHealthEvents implements Listener {
 
                             if(camp.isSolo() && UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() > 1) return;
 
-                            Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+                            Bukkit.broadcastMessage(ChatUtils.LINE + "");
                             Bukkit.broadcastMessage("");
                             if(camp.isSolo()) {
                                 UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().get(0);
@@ -233,7 +233,7 @@ public class DamageHealthEvents implements Listener {
                                 }
                             }
                             Bukkit.broadcastMessage("");
-                            Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+                            Bukkit.broadcastMessage(ChatUtils.LINE + "");
 
                             UHCAPI.getInstance().getGameHandler().setGameState(GameState.ENDING);
                         }
@@ -242,7 +242,7 @@ public class DamageHealthEvents implements Listener {
                         UHCAPI.getInstance().getGameHandler().setGameState(GameState.ENDING);
                         UHCPlayer winner = UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().get(0);
 
-                        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+                        Bukkit.broadcastMessage(ChatUtils.LINE + "");
                         Bukkit.broadcastMessage("");
                         Bukkit.broadcastMessage("Le joueur " + winner.getName() + " a gagne !");
                         Bukkit.broadcastMessage("");
@@ -255,7 +255,7 @@ public class DamageHealthEvents implements Listener {
                             }
                         }
                         Bukkit.broadcastMessage("");
-                        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+                        Bukkit.broadcastMessage(ChatUtils.LINE + "");
                     }
                 }
             }
@@ -295,7 +295,6 @@ public class DamageHealthEvents implements Listener {
         for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts()) {
             uhcPlayer.sendMessage(message);
         }
-        UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().sendMessage(message);
     }
 
     private static String getMessage(UHCPlayerDeathEvent event) {

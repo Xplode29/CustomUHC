@@ -21,24 +21,6 @@ public class StopCommand extends AbstractCommand {
         if(!UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting()) {
             sender.sendMessage(ChatUtils.ERROR.getMessage("La partie n'a pas commence !"));
         }
-
-        stopGame();
-    }
-
-    public static void stopGame() {
-        Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Arret de la partie..."));
-        Bukkit.getScheduler().cancelAllTasks();
-
-        Module module = UHCImpl.getInstance().getModuleHandler().getModule();
-        if(module != null) {
-            HandlerList.unregisterAll(module.getPlugin());
-        }
-        HandlerList.unregisterAll(UHCImpl.getInstance());
-
-        UHCImpl.getInstance().onEnable();
-        if(module != null) {
-            UHCImpl.getInstance().getModuleHandler().setModule(module);
-            module.getPlugin().onEnable();
-        }
+        UHCAPI.getInstance().reset();
     }
 }

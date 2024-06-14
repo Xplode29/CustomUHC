@@ -53,23 +53,31 @@ public class Zane extends NinjagoRole {
         return true;
     }
 
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        UHCPlayer player = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer());
-        if(!player.equals(getUHCPlayer())) return;
+    @Override
+    public void onGiveRole() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(freezePower.gelZonePlaced && freezePower.gelZoneCoords != null) {
+                    Location playerLoc = getUHCPlayer().getLocation();
 
-        if(freezePower.gelZonePlaced && freezePower.gelZoneCoords != null) {
-            Location playerLoc = event.getPlayer().getLocation();
-
-            if (Math.abs(playerLoc.getX() - freezePower.gelZoneCoords.getX()) <= 15 && Math.abs(playerLoc.getZ() - freezePower.gelZoneCoords.getZ()) <= 15 && !inZone) {
-                getUHCPlayer().addStrength(20);
-                inZone = true;
+                    if (playerLoc.distance(freezePower.gelZoneCoords) < 15 && !inZone) {
+                        getUHCPlayer().addStrength(20);
+                        inZone = true;
+                    }
+                    if (playerLoc.distance(freezePower.gelZoneCoords) >= 15 && inZone) {
+                        getUHCPlayer().removeStrength(20);
+                        inZone = false;
+                    }
+                }
+                else {
+                    if(inZone) {
+                        getUHCPlayer().removeStrength(20);
+                        inZone = false;
+                    }
+                }
             }
-            if (Math.abs(playerLoc.getX() - freezePower.gelZoneCoords.getX()) > 15 && Math.abs(playerLoc.getZ() - freezePower.gelZoneCoords.getZ()) > 15 && inZone) {
-                getUHCPlayer().removeStrength(20);
-                inZone = false;
-            }
-        }
+        }.runTaskTimer(Ninjago.getInstance(), 0, 20);
     }
 
     private static class FalconCommand extends TargetCommandPower {
@@ -110,7 +118,7 @@ public class Zane extends NinjagoRole {
         Location gelZoneCoords;
 
         public FreezePower() {
-            super(ChatColor.BLUE + "Déluge", Material.PACKED_ICE, 20 * 60, -1);
+            super(ChatColor.BLUE + "Déluge", Material.SNOW_BALL, 20 * 60, -1);
         }
 
         @Override

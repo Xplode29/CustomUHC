@@ -1,6 +1,7 @@
 package me.butter.ninjago.timers;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.timer.AbstractTimer;
 import me.butter.ninjago.Ninjago;
@@ -29,11 +30,10 @@ public class GoldenWeaponsTimer extends AbstractTimer {
                     return;
                 }
 
-                int maxRadius = Math.min((int) (UHCAPI.getInstance().getWorldHandler().getWorld().getWorldBorder().getSize() / 2) - 50, 450);
+                int maxRadius = Math.min((int) (UHCAPI.getInstance().getWorldHandler().getWorld().getWorldBorder().getSize() / 2) - 10, 450);
+                int minRadius = maxRadius > 250 ? 250 : 0;
 
-                int radius;
-                if(maxRadius < 250) radius = new Random().nextInt((int) (UHCAPI.getInstance().getWorldHandler().getWorld().getWorldBorder().getSize() / 2));
-                else radius = new Random().nextInt(maxRadius - 250) + 250;
+                int radius = new Random().nextInt(maxRadius - minRadius) + minRadius;
 
                 double angle = new Random().nextFloat() * 2 * Math.PI;
 
@@ -51,13 +51,17 @@ public class GoldenWeaponsTimer extends AbstractTimer {
                 UHCAPI.getInstance().getStructureHandler().addStructure(structure);
                 UHCAPI.getInstance().getStructureHandler().spawnStructure(structure);
 
+                for(UHCPlayer player : UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts()) {
+                    player.sendMessage(ChatUtils.GLOBAL_INFO.getMessage("Une arme d'or est apparue en X: " + x + "/ Y: " + y + "/ Z: " + z));
+                }
+
                 Ninjago.getInstance().getGoldenWeaponManager().addChest(structure);
 
-                Bukkit.broadcastMessage(ChatUtils.SEPARATOR.prefix);
+                Bukkit.broadcastMessage(ChatUtils.LINE.prefix);
                 Bukkit.broadcastMessage("");
-                Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Une arme d'or est apparue entre " + (maxRadius > 250 ? "250" : "0") + " et " + maxRadius + " blocks du centre !"));
+                Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Une arme d'or est apparue entre " + minRadius + " et " + maxRadius + " blocks du centre !"));
                 Bukkit.broadcastMessage("");
-                Bukkit.broadcastMessage(ChatUtils.SEPARATOR.prefix);
+                Bukkit.broadcastMessage(ChatUtils.LINE.prefix);
             }
         }.runTaskTimer(Ninjago.getInstance(), 0, 150 * 20);
     }

@@ -22,6 +22,11 @@ public abstract class ButtonImpl implements Button {
     }
 
     @Override
+    public boolean doesUpdateButton() {
+        return false;
+    }
+
+    @Override
     public boolean doesUpdateGui() {
         return false;
     }

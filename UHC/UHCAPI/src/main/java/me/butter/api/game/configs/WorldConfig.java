@@ -6,6 +6,10 @@ public interface WorldConfig {
 
     boolean isPregenDone(); void setPregenDone(boolean pregenDone);
 
+    boolean isNetherActivated(); void setNetherActivated(boolean netherActivated);
+
+    boolean isEnderActivated(); void setEnderActivated(boolean enderActivated);
+
     int getAppleDropRate(); void setAppleDropRate(int appleDropRate);
 
     int getFlintDropRate(); void setFlintDropRate(int flintDropRate);

@@ -4,13 +4,16 @@ import me.butter.api.game.configs.WorldConfig;
 
 public class WorldConfigImpl implements WorldConfig {
 
-    private boolean worldGenerated, pregenDone, borderMoving;
+    private boolean worldGenerated, pregenDone, borderMoving, netherActivated, enderActivated;
 
     private int appleDropRate, flintDropRate, enderPearlDropRate, diamondLimit, expBoost, startingBorderSize, finalBorderSize;
 
     public WorldConfigImpl() {
         this.worldGenerated = false;
         this.pregenDone = false;
+
+        this.netherActivated = false;
+        this.enderActivated = false;
 
         this.appleDropRate = 20;
         this.flintDropRate = 20;
@@ -41,6 +44,26 @@ public class WorldConfigImpl implements WorldConfig {
     @Override
     public void setPregenDone(boolean pregenDone) {
         this.pregenDone = pregenDone;
+    }
+
+    @Override
+    public boolean isNetherActivated() {
+        return netherActivated;
+    }
+
+    @Override
+    public void setNetherActivated(boolean netherActivated) {
+        this.netherActivated = netherActivated;
+    }
+
+    @Override
+    public boolean isEnderActivated() {
+        return enderActivated;
+    }
+
+    @Override
+    public void setEnderActivated(boolean enderActivated) {
+        this.enderActivated = enderActivated;
     }
 
     @Override

@@ -28,6 +28,13 @@ public class TimberScenario extends AbstractScenario {
         }
     }
 
+    @Override
+    public String[] getDescription() {
+        return new String[] {
+                "Les arbres sont minés en un coup."
+        };
+    }
+
     private static class breakRunnable extends BukkitRunnable {
         private final Block block;
 

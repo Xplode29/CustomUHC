@@ -1,4 +1,4 @@
-package me.butter.impl.menu.list.host.settings;
+package me.butter.impl.menu.list.host.worldconfig;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
@@ -29,7 +29,7 @@ public class DropsMenu extends AbstractMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 
@@ -50,7 +50,7 @@ public class DropsMenu extends AbstractMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 
@@ -71,7 +71,7 @@ public class DropsMenu extends AbstractMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 

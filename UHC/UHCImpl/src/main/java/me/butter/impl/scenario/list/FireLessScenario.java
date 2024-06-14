@@ -22,4 +22,12 @@ public class FireLessScenario extends AbstractScenario {
             }
         }
     }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] {
+                "Désactive les dégats ",
+                "issus du feu ou de la lave."
+        };
+    }
 }

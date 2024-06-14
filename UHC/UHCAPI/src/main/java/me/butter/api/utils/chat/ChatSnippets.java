@@ -14,7 +14,7 @@ public class ChatSnippets {
         Role role = player.getRole();
         if(role == null) return;
 
-        player.sendMessage(ChatUtils.SEPARATOR + "");
+        player.sendMessage(ChatUtils.LINE + "");
         player.sendMessage("");
         player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage("Vous êtes §r" + role.getCamp().getPrefix() + role.getName()));
 
@@ -24,7 +24,7 @@ public class ChatSnippets {
         player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Description:"));
         //Before the role presentation
         for(String line : role.getDescription()) {
-            player.sendMessage(ChatUtils.NORMAL.getMessage(line));
+            player.sendMessage(ChatUtils.INDENTED.getMessage(line));
         }
         player.sendMessage("");
 
@@ -63,31 +63,31 @@ public class ChatSnippets {
             player.sendMessage("");
         }
 
-        player.sendMessage(ChatUtils.SEPARATOR + "");
+        player.sendMessage(ChatUtils.LINE + "");
 
         //After the role presentation
         for(String line : role.additionalDescription()) {
-            player.sendMessage(ChatUtils.NORMAL.getMessage(line));
+            player.sendMessage(ChatUtils.INDENTED.getMessage(line));
         }
     }
 
     public static void listEffects(UHCPlayer uhcPlayer) {
         Player player = uhcPlayer.getPlayer();
-        player.sendMessage(ChatUtils.SEPARATOR + "");
+        player.sendMessage(ChatUtils.LINE + "");
         player.sendMessage("");
         player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage("Strength: " + uhcPlayer.getStrength() + "%"));
         player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage("Resistance: " + uhcPlayer.getResi() + "%"));
         player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage("Speed: " + uhcPlayer.getSpeed() + "%"));
         player.sendMessage("");
-        player.sendMessage(ChatUtils.SEPARATOR + "");
+        player.sendMessage(ChatUtils.LINE + "");
     }
 
     public static void playerDeath(UHCPlayer uhcPlayer) {
-        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+        Bukkit.broadcastMessage(ChatUtils.LINE + "");
         Bukkit.broadcastMessage("");
         Bukkit.broadcastMessage(ChatUtils.LIST_ELEMENT.getMessage("§rLe joueur " + uhcPlayer.getName() + "§r est mort."));
         if(uhcPlayer.getRole() != null) Bukkit.broadcastMessage(ChatUtils.LIST_ELEMENT.getMessage("§rIl était " + uhcPlayer.getRole().getName()));
         Bukkit.broadcastMessage("");
-        Bukkit.broadcastMessage(ChatUtils.SEPARATOR + "");
+        Bukkit.broadcastMessage(ChatUtils.LINE + "");
     }
 }

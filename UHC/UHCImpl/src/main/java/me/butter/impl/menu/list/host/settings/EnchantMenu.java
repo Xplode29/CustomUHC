@@ -50,7 +50,7 @@ public class EnchantMenu extends PaginatedMenu {
         }
 
         @Override
-        public boolean doesUpdateGui() {
+        public boolean doesUpdateButton() {
             return true;
         }
 

@@ -30,7 +30,7 @@ public class DayCycleMenu extends AbstractMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 
@@ -50,7 +50,7 @@ public class DayCycleMenu extends AbstractMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 
@@ -80,7 +80,7 @@ public class DayCycleMenu extends AbstractMenu {
             }
 
             @Override
-            public boolean doesUpdateGui() {
+            public boolean doesUpdateButton() {
                 return true;
             }
 

@@ -1,4 +1,4 @@
-package me.butter.impl.menu.list.host.inventory;
+package me.butter.impl.menu.list.host.settings.inventory;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.game.Preset;

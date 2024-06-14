@@ -252,26 +252,32 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     @Override
     public void clearPlayer() {
-        clearEffects(); clearInventory(); clearStash();
-        killedPlayers.clear();
-        playerPotionEffects.clear();
+        this.playerState = PlayerState.IN_SPEC;
 
-        if(getPlayer() == null) return;
-        Player player = getPlayer();
-        player.setGameMode(GameMode.SURVIVAL);
-        player.setMaxHealth(20);
-        player.setHealth(20);
-        player.setFoodLevel(20);
-        player.setLevel(0);
-        player.setExp(0);
+        this.canPickItems = true;
+        this.noFall = false;
+        this.diamondMined = 0;
+        this.disconnected = false;
+        this.disconnectionTime = 0;
+        this.canMove = true;
 
-        UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, this);
-        UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, this);
+        this.killedPlayers = new ArrayList<>();
+
+        this.spawnLocation = getPlayer().getLocation();
+        this.deathLocation = getPlayer().getLocation();
+
+        clearInventory();
+        clearStash();
+
+        clearEffects();
+
+        UHCAPI.getInstance().getScoreboardHandler().removePlayerScoreboard(this);
+        UHCAPI.getInstance().getTabHandler().removePlayerTab(this);
     }
 
     @Override
     public boolean isNextTo(UHCPlayer player, int radius) {
-        if(getPlayer() == null || player.getPlayer() == null) return false;
+        if(getPlayer() == null || player.getPlayer() == null || equals(player)) return false;
         return (getPlayerState() == PlayerState.IN_GAME && player.getPlayerState() == PlayerState.IN_GAME && getPlayer().getLocation().distance(player.getPlayer().getLocation()) <= radius);
     }
 
@@ -555,7 +561,12 @@ public class UHCPlayerImpl implements UHCPlayer {
 
         if(getPlayer() == null) return;
         try {
-            getPlayer().setWalkSpeed(0.2f * (1 + speedEffect / 100f));
+            getPlayer().setWalkSpeed(0.2f * (1 + (speedEffect % 20) / 100f));
+
+            int speedLevel = speedEffect / 20;
+            removePotionEffect(PotionEffectType.SPEED); removePotionEffect(PotionEffectType.SLOW);
+            if(speedEffect > 0) addPotionEffect(PotionEffectType.SPEED, -1, speedLevel);
+            else if (speedEffect < 0) addPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -568,7 +579,12 @@ public class UHCPlayerImpl implements UHCPlayer {
 
         if(getPlayer() == null) return;
         try {
-            getPlayer().setWalkSpeed(0.2f * (1 + speedEffect / 100f));
+            getPlayer().setWalkSpeed(0.2f * (1 + (speedEffect % 20) / 100f));
+
+            int speedLevel = speedEffect / 20;
+            removePotionEffect(PotionEffectType.SPEED); removePotionEffect(PotionEffectType.SLOW);
+            if(speedEffect > 0) addPotionEffect(PotionEffectType.SPEED, -1, speedLevel);
+            else if (speedEffect < 0) addPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -581,7 +597,12 @@ public class UHCPlayerImpl implements UHCPlayer {
 
         if(getPlayer() == null) return;
         try {
-            getPlayer().setWalkSpeed(0.2f * (1 + speedEffect / 100f));
+            getPlayer().setWalkSpeed(0.2f * (1 + (speedEffect % 20) / 100f));
+
+            int speedLevel = speedEffect / 20;
+            removePotionEffect(PotionEffectType.SPEED); removePotionEffect(PotionEffectType.SLOW);
+            if(speedEffect > 0) addPotionEffect(PotionEffectType.SPEED, -1, speedLevel);
+            else if (speedEffect < 0) addPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
         }
         catch(Exception e) {
             e.printStackTrace();

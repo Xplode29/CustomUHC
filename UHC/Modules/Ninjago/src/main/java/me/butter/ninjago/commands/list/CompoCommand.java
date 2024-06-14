@@ -17,7 +17,7 @@ public class CompoCommand extends AbstractCommand {
 
     @Override
     public void onCommand(UHCPlayer sender, String command, String[] args) {
-        sender.sendMessage(ChatUtils.SEPARATOR.prefix);
+        sender.sendMessage(ChatUtils.LINE.prefix);
         sender.sendMessage("");
         for(CampEnum campEnum : CampEnum.values()) {
             int rolesAmount = 0;
@@ -39,6 +39,6 @@ public class CompoCommand extends AbstractCommand {
             }
             sender.sendMessage("");
         }
-        sender.sendMessage(ChatUtils.SEPARATOR.prefix);
+        sender.sendMessage(ChatUtils.LINE.prefix);
     }
 }

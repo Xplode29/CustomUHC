@@ -50,6 +50,11 @@ public abstract class AbstractTimer implements Timer {
     }
 
     @Override
+    public void setFired(boolean fired) {
+        this.fired = fired;
+    }
+
+    @Override
     public void fireTimer() {
         onTimerDone();
         fired = true;

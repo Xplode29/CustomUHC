@@ -45,7 +45,7 @@ public abstract class PaginatedMenu extends AbstractMenu {
                 }
 
                 @Override
-                public boolean doesUpdateGui() {
+                public boolean doesUpdateButton() {
                     return true;
                 }
 
@@ -63,7 +63,7 @@ public abstract class PaginatedMenu extends AbstractMenu {
                 }
 
                 @Override
-                public boolean doesUpdateGui() {
+                public boolean doesUpdateButton() {
                     return true;
                 }
 

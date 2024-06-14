@@ -10,11 +10,15 @@ public interface Scenario {
 
     Material getIcon();
 
+    String getAuthor();
+
+    String getDeveloper();
+
+    void openConfig();
+
     void onEnable(); void onDisable();
 
     void toggle();
-
-    void openConfig();
 
     boolean isEnabled(); void setEnabled(boolean enabled);
 }

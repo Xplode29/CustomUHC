@@ -4,16 +4,19 @@ import me.butter.api.UHCAPI;
 import me.butter.api.clickablechat.ClickableChatHandler;
 import me.butter.api.enchant.EnchantHandler;
 import me.butter.api.game.GameHandler;
+import me.butter.api.game.GameState;
 import me.butter.api.item.ItemHandler;
 import me.butter.api.menu.MenuHandler;
 import me.butter.api.module.ModuleHandler;
 import me.butter.api.player.PlayerHandler;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.potion.PotionEffectHandler;
 import me.butter.api.scenario.ScenarioHandler;
 import me.butter.api.scoreboard.ScoreboardHandler;
 import me.butter.api.structures.StructureHandler;
 import me.butter.api.tab.TabHandler;
+import me.butter.api.timer.Timer;
 import me.butter.api.timer.TimerHandler;
 import me.butter.api.world.WorldHandler;
 import me.butter.impl.clickablechat.ClickableChatHandlerImpl;
@@ -29,10 +32,10 @@ import me.butter.impl.menu.MenuHandlerImpl;
 import me.butter.impl.module.ModuleHandlerImpl;
 import me.butter.impl.player.PlayerHandlerImpl;
 import me.butter.impl.player.PotionUpdaterTask;
-import me.butter.impl.player.UHCPlayerImpl;
+import me.butter.impl.potion.PotionEffectHandlerImpl;
 import me.butter.impl.scenario.ScenarioHandlerImpl;
 import me.butter.impl.scoreboard.ScoreboardHandlerImpl;
-import me.butter.impl.scoreboard.list.LobbyScoreboard;
+import me.butter.impl.scoreboard.list.GameScoreboard;
 import me.butter.impl.structures.StructureHandlerImpl;
 import me.butter.impl.tab.TabHandlerImpl;
 import me.butter.impl.tab.list.GameTab;
@@ -58,13 +61,10 @@ public final class UHCImpl extends UHCAPI {
     private ModuleHandler moduleHandler;
     private StructureHandler structureHandler;
     private ClickableChatHandler clickableChatHandler;
+    private PotionEffectHandler potionEffectHandler;
 
     @Override
     public void onLoad() {
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            player.kickPlayer("Please Reconnect!");
-        }
-
         UHCAPI.setInstance(this);
         UHCImpl.instance = this;
     }
@@ -84,6 +84,7 @@ public final class UHCImpl extends UHCAPI {
         menuHandler = new MenuHandlerImpl();
         structureHandler = new StructureHandlerImpl();
         clickableChatHandler = new ClickableChatHandlerImpl();
+        potionEffectHandler = new PotionEffectHandlerImpl();
 
         for(Player player : Bukkit.getOnlinePlayers()) {
             playerHandler.addPlayer(player);
@@ -93,10 +94,52 @@ public final class UHCImpl extends UHCAPI {
             uhcPlayer.clearPlayer();
         }
 
-        registerCommands();
         registerListeners();
+        registerCommands();
 
         new PotionUpdaterTask();
+    }
+
+    @Override
+    public void reset() {
+        Bukkit.getServer().getScheduler().cancelAllTasks();
+
+        gameHandler.setGameState(GameState.LOBBY);
+        gameHandler.getGameConfig().setEpisode(0);
+        gameHandler.getGameConfig().setTimer(0);
+        gameHandler.getGameConfig().setStarting(false);
+
+        gameHandler.getWorldConfig().setPregenDone(false);
+
+        gameHandler.getGameConfig().setInvincibility(false);
+        gameHandler.getGameConfig().setPvp(false);
+        gameHandler.getGameConfig().setMeetup(false);
+        gameHandler.getGameConfig().setChatEnabled(true);
+
+        for(UHCPlayer uhcPlayer : playerHandler.getPlayers()) {
+            uhcPlayer.clearPlayer();
+        }
+
+        scoreboardHandler = new ScoreboardHandlerImpl();
+        tabHandler = new TabHandlerImpl();
+
+        for(UHCPlayer uhcPlayer : playerHandler.getPlayers()) {
+            uhcPlayer.setPlayerState(PlayerState.IN_LOBBY);
+            uhcPlayer.setSpawnLocation(JoinEvents.spawnLocation);
+            uhcPlayer.getPlayer().teleport(JoinEvents.spawnLocation);
+
+            scoreboardHandler.setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
+            tabHandler.setPlayerTab(GameTab.class, uhcPlayer);
+
+            itemHandler.giveLobbyItems(uhcPlayer);
+        }
+
+        for(Timer timer : timerHandler.getTimers()) {
+            timer.setFired(false);
+        }
+
+        new PotionUpdaterTask();
+        worldHandler.createWorld("arena");
     }
 
     public static UHCImpl getInstance() {
@@ -182,5 +225,10 @@ public final class UHCImpl extends UHCAPI {
     @Override
     public ClickableChatHandler getClickableChatHandler() {
         return clickableChatHandler;
+    }
+
+    @Override
+    public PotionEffectHandler getPotionEffectHandler() {
+        return potionEffectHandler;
     }
 }

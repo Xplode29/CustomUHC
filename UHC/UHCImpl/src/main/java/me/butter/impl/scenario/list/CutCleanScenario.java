@@ -75,4 +75,12 @@ public class CutCleanScenario extends AbstractScenario {
             }
         }
     }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] {
+                "La nourriture et les minerais ",
+                "sont directement cuits."
+        };
+    }
 }

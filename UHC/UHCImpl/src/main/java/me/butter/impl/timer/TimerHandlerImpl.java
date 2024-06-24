@@ -42,7 +42,7 @@ public class TimerHandlerImpl implements TimerHandler {
     @Override
     public Timer getTimer(String timerName) {
         for(Timer timer : timers) {
-            if(Objects.equals(timer.getName(), timerName)) {
+            if(timer.getName().equalsIgnoreCase(timerName)) {
                 return timer;
             }
         }

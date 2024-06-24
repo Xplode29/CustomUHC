@@ -15,10 +15,18 @@ public class InvincibilityTimer extends AbstractTimer {
     }
 
     @Override
-    public void onTimerDone() {
-        UHCAPI.getInstance().getGameHandler().getGameConfig().setInvincibility(false);
+    public String[] getDescription() {
+        return new String[]{
+                "Definit le temps d'invincibilité des joueurs."
+        };
+    }
 
+    @Override
+    public boolean onTimerDone() {
+        UHCAPI.getInstance().getGameHandler().getGameConfig().setInvincibility(false);
         Bukkit.broadcastMessage(ChatUtils.WARNING.getMessage("Vous n'êtes plus invincible."));
+
+        return true;
     }
 
     @Override

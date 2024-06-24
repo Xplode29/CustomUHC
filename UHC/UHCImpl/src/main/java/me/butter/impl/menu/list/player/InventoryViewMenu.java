@@ -9,19 +9,27 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InventoryViewMenu extends AbstractMenu {
-    public InventoryViewMenu() {
+
+    List<ItemStack> inventory;
+    List<ItemStack> armor;
+
+    public InventoryViewMenu(List<ItemStack> inventory, List<ItemStack> armor) {
         super("Inventaire", 6 * 9, false);
+
+        this.inventory = inventory;
+        this.armor = armor;
     }
 
     @Override
     public Map<Integer, Button> getButtons() {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        for(int i = 0; i < UHCAPI.getInstance().getGameHandler().getInventoriesConfig().getStartingInventory().size(); i++) {
-            ItemStack itemStack = UHCAPI.getInstance().getGameHandler().getInventoriesConfig().getStartingInventory().get(i);
+        for(int i = 0; i < this.inventory.size(); i++) {
+            ItemStack itemStack = this.inventory.get(i);
             buttons.put((i < 9 ? i + 27 : i - 9), new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
@@ -48,8 +56,8 @@ public class InventoryViewMenu extends AbstractMenu {
             });
         }
 
-        for(int i = 0; i < UHCAPI.getInstance().getGameHandler().getInventoriesConfig().getStartingArmor().size(); i++) {
-            ItemStack itemStack = UHCAPI.getInstance().getGameHandler().getInventoriesConfig().getStartingArmor().get(i);
+        for(int i = 0; i < this.armor.size(); i++) {
+            ItemStack itemStack = this.armor.get(i);
             buttons.put(i + 45, new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {

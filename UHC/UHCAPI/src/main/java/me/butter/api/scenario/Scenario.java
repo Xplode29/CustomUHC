@@ -1,5 +1,6 @@
 package me.butter.api.scenario;
 
+import me.butter.api.menu.Menu;
 import org.bukkit.Material;
 
 public interface Scenario {
@@ -14,7 +15,11 @@ public interface Scenario {
 
     String getDeveloper();
 
-    void openConfig();
+    void onStartGame();
+
+    void onUpdate(int timer);
+
+    Menu getConfigMenu();
 
     void onEnable(); void onDisable();
 

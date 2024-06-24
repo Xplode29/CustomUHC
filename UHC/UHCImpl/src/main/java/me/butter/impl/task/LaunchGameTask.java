@@ -39,7 +39,7 @@ public class LaunchGameTask extends BukkitRunnable {
 
         if(timer < 0) {
             cancel();
-            Bukkit.getScheduler().runTaskLater(UHCImpl.getInstance(), SpawnPointsTask::new, 20);
+            Bukkit.getScheduler().runTaskLater(UHCImpl.getInstance(), TeleportingTask::new, 20);
             return;
         }
     }

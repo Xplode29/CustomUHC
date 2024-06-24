@@ -1,176 +1,122 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.EnchantBookPower;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.power.RightClickItemPower;
+import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.GraphicUtils;
+import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
-import me.butter.ninjago.items.SpinjitzuPower;
+import me.butter.impl.events.custom.EpisodeEvent;
+import me.butter.ninjago.goldenNinja.ChatEffectChooser;
 import me.butter.ninjago.roles.NinjagoRole;
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Arrays;
+import org.bukkit.util.Vector;
 
 public class Lloyd extends NinjagoRole {
 
-    private GoldenSwordPower goldenSwordPower;
+    SpinjitzuPower spinjitzuPower;
 
     public Lloyd() {
-        super("Lloyd", "/roles/ninjas/lloyd", Arrays.asList(
-                new GoldenSwordPower(),
-                new ProtectionBook(),
-                new SpinjitzuPower(ChatColor.GREEN)
-        ));
-
-        goldenSwordPower = null;
-        for(Power power : getPowers()) {
-            if(power instanceof GoldenSwordPower) {
-                goldenSwordPower = (GoldenSwordPower) power;
-                return;
-            }
-        }
+        super("Lloyd", "/roles/ninjas/lloyd");
+        addPower(spinjitzuPower = new SpinjitzuPower());
     }
 
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez 2 coeurs permanents supplémentaires"
+                "Vous possédez No Fall ainsi que 2 coeurs supplémentaires permanents",
+                "A chaque debut d'episode, vous pouvez choisir un effet entre Speed, Force et Resistance"
         };
     }
 
     @Override
-    public boolean isNinja() {
+    public boolean isElementalMaster() {
         return true;
     }
 
     @Override
     public void onGiveRole() {
-        getUHCPlayer().addStrength(20);
+        getUHCPlayer().setNoFall(true);
         getUHCPlayer().addMaxHealth(4);
     }
 
     @EventHandler
-    public void onPlayerAttack(EntityDamageByEntityEvent event) {
-        if(!(event.getEntity() instanceof LivingEntity) || !(event.getDamager() instanceof Player)) return;
+    public void onNewEpisode(EpisodeEvent event) {
+        if(getUHCPlayer().getPlayerState() != PlayerState.IN_GAME) return;
 
-        UHCPlayer damager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
-        LivingEntity targetPlayer = (LivingEntity) event.getEntity();
-        if(damager.equals(getUHCPlayer()) && damager.getPlayer().getItemInHand().isSimilar(goldenSwordPower.getItem()) && goldenSwordPower.explosionNextHit) {
-            targetPlayer.getWorld().playSound(targetPlayer.getLocation(), Sound.EXPLODE, 3.0f, 1.0f);
-            targetPlayer.getWorld().playEffect(targetPlayer.getLocation().add(0, 1, 0), Effect.EXPLOSION_LARGE, 1);
-
-            targetPlayer.setHealth(Math.max(0, targetPlayer.getHealth() - 4.0));
-            goldenSwordPower.explosionNextHit = false;
-            goldenSwordPower.forceCooldown();
-            event.setDamage(0);
+        if(spinjitzuPower.chatEffectChooser != null) {
+            switch (spinjitzuPower.chatEffectChooser.getChosen()) {
+                case 0:
+                    getUHCPlayer().removeSpeed(10);
+                    break;
+                case 1:
+                    getUHCPlayer().removeStrength(10);
+                    break;
+                case 2:
+                    getUHCPlayer().removeResi(10);
+                    break;
+            }
         }
+
+        spinjitzuPower.chatEffectChooser = new ChatEffectChooser(getUHCPlayer(), 10, -1);
+        UHCAPI.getInstance().getClickableChatHandler().sendToPlayer(spinjitzuPower.chatEffectChooser);
     }
 
-    private static class ProtectionBook extends EnchantBookPower {
-        public ProtectionBook() {
-            super("§rLivre Protection 3", Enchantment.PROTECTION_ENVIRONMENTAL, 3);
+    private static class SpinjitzuPower extends RightClickItemPower {
+        ChatEffectChooser chatEffectChooser;
+
+        public SpinjitzuPower() {
+            super(ChatColor.GREEN + "Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);
         }
 
         @Override
         public String[] getDescription() {
-            return new String[]{"Un livre enchanté protection 3. Il est possible de le fusionner avec une piece en diamant."};
-        }
-    }
-
-    private static class GoldenSwordPower extends RightClickItemPower {
-
-        public boolean explosionNextHit = false;
-
-        private boolean isCharging = false;
-
-        public GoldenSwordPower() {
-            super("§6Golden Sword", Material.DIAMOND_SWORD, 5 * 60, 2);
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[]{
-                    "En restant appuyé sur votre clic droit, vous chargez une barre d'énergie. ",
-                    "Lorsqu'elle est pleine, le prochain coup créera une explosion infligeant 2 coeurs a la cible"
+            return new String[] {
+                    "À l'activation, repousse tous les joueurs dans un rayon de 10 blocks.",
+                    "vous obtenez 10% de l'effet que vous avez choisi au debut d'episode pendant 2 minutes."
             };
         }
 
         @Override
-        public boolean doesCancelEvent() {
-            return false;
-        }
-
-        @Override
-        public ItemStack getItem() {
-            ItemStack goldenSword = new ItemStack(Material.DIAMOND_SWORD);
-            ItemMeta itemMeta = goldenSword.getItemMeta();
-
-            itemMeta.spigot().setUnbreakable(true);
-            itemMeta.addEnchant(Enchantment.DAMAGE_ALL, 3, true);
-            itemMeta.setDisplayName("§6Golden Sword");
-            goldenSword.setItemMeta(itemMeta);
-            return goldenSword;
-        }
-
-        @Override
         public boolean onEnable(UHCPlayer player, Action clickAction) {
-            if(!isCharging) {
-                new LoadRunnable(player);
-                isCharging = true;
-            }
-            return false;
-        }
+            Location center = player.getPlayer().getLocation();
 
-        private class LoadRunnable extends BukkitRunnable {
-            UHCPlayer uhcPlayer;
-            int timer;
+            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                if(uhcPlayer == null || uhcPlayer == player || uhcPlayer.getPlayer() == null) continue;
 
-            public LoadRunnable(UHCPlayer player) {
-                this.uhcPlayer = player;
-                this.timer = 0;
-                this.runTaskTimer(UHCAPI.getInstance(), 0, 1);
-            }
-
-            @Override
-            public void run() {
-                if(uhcPlayer.getPlayer() == null) {
-                    cancel();
-                    return;
-                }
-                if(timer < 3 * 20) {
-                    if(!uhcPlayer.getPlayer().isBlocking()) {
-                        uhcPlayer.sendMessage(ChatUtils.ERROR.getMessage("Vous avez relaché trop tot !"));
-                        isCharging = false;
-                        cancel();
-                        return;
-                    }
-                    timer++;
-                    float progress = (timer / (20f * 3));
-                    uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_STICKS, 3.0F, (float)Math.pow(2.0, ((double)(progress) * 12 - 12.0) / 12.0));
-                    uhcPlayer.sendActionBar(GraphicUtils.getProgressBar((int) (progress * 100), 100, 20, '|', ChatColor.GREEN, ChatColor.GRAY));
-                }
-                else {
-                    uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_PLING, 3.0F, 6.0f);
-                    uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Le prochain coup fera exploser le joueur frappé"));
-                    explosionNextHit = true;
-                    isCharging = false;
-                    cancel();
+                if(uhcPlayer.isNextTo(player, 10)) {
+                    double angle = Math.atan2(uhcPlayer.getLocation().getZ() - center.getZ(), uhcPlayer.getLocation().getX() - center.getX());
+                    Vector newVelocity = new Vector(
+                            1.5 * Math.cos(angle),
+                            0.5,
+                            1.5 * Math.sin(angle)
+                    );
+                    uhcPlayer.getPlayer().setVelocity(newVelocity);
                 }
             }
+
+            switch (chatEffectChooser.getChosen()) {
+                case 0:
+                    player.addSpeed(10);
+                    Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeSpeed(10), 2 * 60 * 20);
+                    break;
+                case 1:
+                    player.addStrength(10);
+                    Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeStrength(10), 2 * 60 * 20);
+                    break;
+                case 2:
+                    player.addResi(10);
+                    Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeResi(10), 2 * 60 * 20);
+                    break;
+                default:
+                    player.sendMessage(ChatUtils.ERROR.getMessage("Vous n'avez pas choisi d'effet, donc vous n'obtenez pas d'effet."));
+                    break;
+            }
+
+            ParticleUtils.tornadoEffect(player.getPlayer(), Color.GREEN);
+            return true;
         }
     }
 }

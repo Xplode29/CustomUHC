@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ItemHandlerImpl implements ItemHandler, Listener {
@@ -27,12 +28,14 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
         customItems.add(new MenuItem());
         customItems.add(new GrapplingItem());
 
-        //Register
-        UHCAPI.getInstance().getServer().getPluginManager().registerEvents(this, UHCAPI.getInstance());
-
         for(CustomItem item : customItems) {
             if(item instanceof Listener) UHCAPI.getInstance().getServer().getPluginManager().registerEvents((Listener) item, UHCAPI.getInstance());
         }
+    }
+
+    @Override
+    public List<CustomItem> getCustomItems() {
+        return customItems;
     }
 
     @Override
@@ -85,29 +88,5 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
         if(UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts().contains(uhcPlayer)) {
             removeItemFromPlayer(MenuItem.class, uhcPlayer);
         }
-    }
-
-    @EventHandler(priority = EventPriority.LOW)
-    public void onClickItem(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        if(player == null) return;
-
-        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
-        if(uhcPlayer == null) return;
-
-        customItems.stream()
-                .filter(item -> item.getItemStack().isSimilar(event.getItem()))
-                .findFirst().ifPresent(item -> item.onClick(uhcPlayer));
-    }
-
-    @EventHandler
-    public void onDropItem(PlayerDropItemEvent event) {
-        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer());
-        if(uhcPlayer == null) return;
-
-        CustomItem customItem = customItems.stream().filter(item -> item.getItemStack().isSimilar(event.getItemDrop().getItemStack())).findFirst().orElse(null);
-        if(customItem == null) return;
-
-        if(!customItem.isDroppable()) event.setCancelled(true);
     }
 }

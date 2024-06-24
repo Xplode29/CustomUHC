@@ -16,20 +16,6 @@ public abstract class RightClickItemPower extends ItemPower {
     @Override
     public void onUsePower(UHCPlayer player, Action clickAction) {
         if(clickAction == Action.LEFT_CLICK_AIR || clickAction == Action.LEFT_CLICK_BLOCK) return;
-
-        if(uses >= maxUses && maxUses != -1) {
-            player.sendMessage(ChatUtils.ERROR.getMessage("Vous avez déjà utilisé " + uses + " fois ce pouvoir."));
-            return;
-        }
-        if(lastTimeUsed + cooldown > UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer()) {
-            player.sendMessage(ChatUtils.ERROR.getMessage("Vous devez attendre " +
-                    GraphicUtils.convertToAccurateTime(cooldown + lastTimeUsed - UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer()) +
-                    " avant d'utiliser ce pouvoir."));
-            return;
-        }
-        if(onEnable(player, clickAction)) {
-            uses++;
-            lastTimeUsed = UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer();
-        }
+        super.onUsePower(player, clickAction);
     }
 }

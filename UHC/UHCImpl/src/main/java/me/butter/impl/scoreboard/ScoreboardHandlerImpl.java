@@ -9,6 +9,7 @@ import me.butter.impl.scoreboard.list.GameScoreboard;
 import me.butter.impl.scoreboard.list.LobbyScoreboard;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.List;
@@ -21,9 +22,6 @@ public class ScoreboardHandlerImpl implements ScoreboardHandler {
     public ScoreboardHandlerImpl() {
         scoreboardList = Lists.newArrayList();
         scoreboardManager = Bukkit.getScoreboardManager();
-
-        scoreboardList.add(new LobbyScoreboard(scoreboardManager.getNewScoreboard()));
-        scoreboardList.add(new GameScoreboard(scoreboardManager.getNewScoreboard()));
 
         new BukkitRunnable() {
             @Override
@@ -71,6 +69,18 @@ public class ScoreboardHandlerImpl implements ScoreboardHandler {
             return;
         }
     }
+
+    @Override
+    public void addScoreboard(CustomScoreboard scoreboard) {
+        if(!scoreboardList.contains(scoreboard))
+            scoreboardList.add(scoreboard);
+    }
+
+    @Override
+    public Scoreboard getNewScoreboard() {
+        return scoreboardManager.getNewScoreboard();
+    }
+
 
     @Override
     public List<CustomScoreboard> getScoreboards() {

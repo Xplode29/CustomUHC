@@ -4,14 +4,16 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.camp.Camp;
 import me.butter.api.module.roles.Role;
 import me.butter.api.module.roles.RoleType;
-import me.butter.impl.tab.list.GameTab;
-import me.butter.ninjago.commands.NiCommand;
-import me.butter.ninjago.commands.old.CommandNinjago;
-import me.butter.ninjago.items.goldenWeapons.GoldenWeaponManager;
+import me.butter.api.player.UHCPlayer;
+import me.butter.impl.scoreboard.list.GameScoreboard;
+import me.butter.impl.scoreboard.list.LobbyScoreboard;
+import me.butter.impl.tab.list.MainTab;
+import me.butter.ninjago.commands.NinjagoCommand;
+import me.butter.ninjago.goldenWeapons.GoldenWeaponManager;
 import me.butter.ninjago.listener.CycleEvents;
 import me.butter.ninjago.roles.RoleEnum;
-import me.butter.ninjago.scenarios.GoldenNinjaScenario;
-import me.butter.ninjago.timers.GoldenWeaponsTimer;
+import me.butter.ninjago.goldenNinja.GoldenNinjaScenario;
+import me.butter.ninjago.goldenWeapons.GoldenWeaponsScenario;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,13 +42,23 @@ public final class Ninjago extends JavaPlugin {
         UHCAPI.getInstance().getModuleHandler().setModule(new NinjagoModule());
 
         UHCAPI.getInstance().getScenarioHandler().addScenario(new GoldenNinjaScenario());
-        UHCAPI.getInstance().getTimerHandler().addTimer(new GoldenWeaponsTimer());
+        UHCAPI.getInstance().getScenarioHandler().addScenario(new GoldenWeaponsScenario());
 
         registerCommands();
         registerListeners();
 
         for(RoleEnum role : RoleEnum.values()) {
             role.setAmount(0);
+        }
+
+        UHCAPI.getInstance().getTabHandler().addTab(new MainTab());
+
+        UHCAPI.getInstance().getScoreboardHandler().addScoreboard(new LobbyScoreboard(UHCAPI.getInstance().getScoreboardHandler().getNewScoreboard()));
+        UHCAPI.getInstance().getScoreboardHandler().addScoreboard(new GameScoreboard(UHCAPI.getInstance().getScoreboardHandler().getNewScoreboard()));
+
+        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+            UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
+            UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, uhcPlayer);
         }
     }
 
@@ -55,8 +67,7 @@ public final class Ninjago extends JavaPlugin {
     }
 
     public void registerCommands() {
-        //getCommand("ni").setExecutor(new CommandNinjago());
-        getCommand("ni").setExecutor(new NiCommand());
+        getCommand("n").setExecutor(new NinjagoCommand());
     }
 
     public void registerListeners() {

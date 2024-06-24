@@ -21,7 +21,7 @@ public class TimberScenario extends AbstractScenario {
 
     @EventHandler
     public void onBlockBreak(CustomBlockBreakEvent event) {
-        if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
+        if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME && !UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) {
             if(event.getBlockBroken().getType() == Material.LOG || event.getBlockBroken().getType() == Material.LOG_2) {
                 new breakRunnable(event.getBlockBroken());
             }

@@ -13,10 +13,18 @@ public class MeetupTimer extends AbstractTimer {
     }
 
     @Override
-    public void onTimerDone() {
-        UHCAPI.getInstance().getGameHandler().getGameConfig().setMeetup(true);
+    public String[] getDescription() {
+        return new String[]{
+                "Definit le temps d'activation du Meetup."
+        };
+    }
 
+    @Override
+    public boolean onTimerDone() {
+        UHCAPI.getInstance().getGameHandler().getGameConfig().setMeetup(true);
         Bukkit.broadcastMessage(ChatUtils.WARNING.getMessage("Le Meetup est maintenant actif."));
+
+        return true;
     }
 
     @Override

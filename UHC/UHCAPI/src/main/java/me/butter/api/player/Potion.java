@@ -13,4 +13,6 @@ public interface Potion {
     boolean isActive(); void setActive(boolean active);
 
     boolean isValid();
+
+    boolean isPacket();
 }

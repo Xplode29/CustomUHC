@@ -18,12 +18,12 @@ public class WorldConfigImpl implements WorldConfig {
         this.appleDropRate = 20;
         this.flintDropRate = 20;
         this.enderPearlDropRate = 20;
-        this.diamondLimit = 22;
-        this.expBoost = 50;
+        this.diamondLimit = 0;
+        this.expBoost = 100;
 
         this.borderMoving = false;
-        this.startingBorderSize = 500;
-        this.finalBorderSize = 100;
+        this.startingBorderSize = 50;
+        this.finalBorderSize = 50;
     }
 
     @Override

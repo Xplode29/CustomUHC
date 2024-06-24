@@ -22,18 +22,30 @@ import java.util.Random;
 public class RoleTimer extends AbstractTimer {
 
     public RoleTimer() {
-        super("Obtention des roles", Material.ENDER_PEARL, 10);
+        super("Roles", Material.ENDER_PEARL, 20);
     }
 
     @Override
-    public void onTimerDone() {
+    public String[] getDescription() {
+        return new String[]{
+                "Definit le temps d'obtiention des roles."
+        };
+    }
+
+    @Override
+    public boolean onTimerDone() {
         List<Role> roleList = new ArrayList<>();
 
         List<RoleType> roleComposition = UHCAPI.getInstance().getModuleHandler().getModule().getRoleComposition();
-        Collections.reverse(roleComposition);
+        Collections.shuffle(roleComposition, new Random(new Random().nextLong()));
 
         List<UHCPlayer> players = new ArrayList<>(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame());
-        Collections.shuffle(players, new Random());
+        if(players.isEmpty()) {
+            Bukkit.broadcastMessage(ChatUtils.ERROR.getMessage("Il n'y a pas assez de joueurs !"));
+            return false;
+        }
+
+        Collections.shuffle(players, new Random(new Random().nextLong()));
 
         int index = 0;
         for(RoleType roleType : roleComposition) {
@@ -50,11 +62,11 @@ public class RoleTimer extends AbstractTimer {
                 }
             }
         }
-        Collections.shuffle(roleList, new Random());
+        Collections.shuffle(roleList, new Random(new Random().nextLong()));
 
         if(roleList.size() < players.size()) {
             Bukkit.broadcastMessage(ChatUtils.ERROR.getMessage("Il n'y a pas assez de roles actifs !"));
-            return;
+            return false;
         }
 
         for(int i = 0; i < players.size(); i++) {
@@ -87,6 +99,10 @@ public class RoleTimer extends AbstractTimer {
             player.getRole().onDistributionFinished();
             ChatSnippets.rolePresentation(player);
         }
+
+        UHCAPI.getInstance().getGameHandler().getGameConfig().setChatEnabled(false);
+
+        return true;
     }
 
     @Override

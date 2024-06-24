@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class FireLessScenario extends AbstractScenario {
     public FireLessScenario() {
-        super("FireLess", Material.FLINT_AND_STEEL);
+        super("FireLess", Material.LAVA_BUCKET);
     }
 
     @EventHandler

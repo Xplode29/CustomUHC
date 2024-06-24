@@ -5,6 +5,10 @@ import me.butter.api.player.PlayerState;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
 import me.butter.impl.UHCImpl;
+import net.minecraft.server.v1_8_R3.MobEffect;
+import net.minecraft.server.v1_8_R3.MobEffectList;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEffect;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -25,29 +29,41 @@ public class PotionUpdaterTask extends BukkitRunnable {
             }
 
             List<Potion> toRemove = new ArrayList<>();
+            List<Potion> toRemovePacket = new ArrayList<>();
 
             for (Potion potion : uhcPlayer.getPotionEffects()) {
                 if (!potion.isValid() || !potion.isActive()) {
                     continue;
                 }
 
-                if(potion.getDuration() == -1) {
-                    uhcPlayer.getPlayer().removePotionEffect(potion.getEffect());
-                    uhcPlayer.getPlayer().addPotionEffect(new PotionEffect(potion.getEffect(), Integer.MAX_VALUE, potion.getLevel() - 1, false, false));
+                if(potion.isPacket()) {
+                    if(potion.getDuration() != -1) {
+                        if(potion.getDuration() <= 0) toRemovePacket.add(potion);
+                        else potion.setDuration(potion.getDuration() - 1);
+                    }
                 }
                 else {
-                    if(!uhcPlayer.getPlayer().hasPotionEffect(potion.getEffect()) && potion.getDuration() > 0) {
-                        uhcPlayer.getPlayer().addPotionEffect(new PotionEffect(potion.getEffect(), potion.getDuration() * 20, potion.getLevel() - 1, false, false));
+                    if(potion.getDuration() == -1) {
+                        if(!uhcPlayer.getPlayer().hasPotionEffect(potion.getEffect())) {
+                            uhcPlayer.getPlayer().addPotionEffect(new PotionEffect(potion.getEffect(), Integer.MAX_VALUE, potion.getLevel() - 1, false, false));
+                        }
                     }
                     else {
-                        if(potion.getDuration() <= 0) toRemove.add(potion);
-                        else potion.setDuration(potion.getDuration() - 1);
+                        if(potion.getDuration() > 0) {
+                            potion.setDuration(potion.getDuration() - 1);
+                        }
+                        else {
+                            toRemove.add(potion);
+                        }
                     }
                 }
             }
 
             for(Potion potion : toRemove) {
                 uhcPlayer.removePotionEffect(potion.getEffect());
+            }
+            for(Potion potion : toRemovePacket) {
+                uhcPlayer.removePacketPotionEffect(potion.getEffect());
             }
         }
     }

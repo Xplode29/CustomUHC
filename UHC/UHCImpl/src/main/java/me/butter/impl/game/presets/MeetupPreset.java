@@ -42,9 +42,9 @@ public class MeetupPreset extends AbstractPreset {
         addToStartingInventory(16, new ItemStack(Material.LOG, 64));
         addToStartingInventory(17, new ItemStack(Material.LOG, 64));
 
-        addToStartingArmor(0, new ItemBuilder(Material.DIAMOND_HELMET).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).toItemStack());
-        addToStartingArmor(1, new ItemBuilder(Material.DIAMOND_CHESTPLATE).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).toItemStack());
-        addToStartingArmor(2, new ItemBuilder(Material.IRON_LEGGINGS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).addEnchant(Enchantment.DURABILITY, 3).toItemStack());
-        addToStartingArmor(3, new ItemBuilder(Material.DIAMOND_BOOTS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).toItemStack());
+        addToStartingArmor(0, new ItemBuilder(Material.IRON_HELMET).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).setUnbreakable().toItemStack());
+        addToStartingArmor(1, new ItemBuilder(Material.DIAMOND_CHESTPLATE).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).setUnbreakable().toItemStack());
+        addToStartingArmor(2, new ItemBuilder(Material.IRON_LEGGINGS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).setUnbreakable().addEnchant(Enchantment.DURABILITY, 3).toItemStack());
+        addToStartingArmor(3, new ItemBuilder(Material.DIAMOND_BOOTS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).setUnbreakable().toItemStack());
     }
 }

@@ -5,7 +5,7 @@ import me.butter.api.module.camp.Camp;
 public class MaitreCamp implements Camp {
     @Override
     public String getName() {
-        return "Maitres";
+        return "Alliance des elements";
     }
 
     @Override

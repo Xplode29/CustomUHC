@@ -6,33 +6,37 @@ import me.butter.api.module.Module;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.scenario.Scenario;
 import me.butter.api.timer.Timer;
 import me.butter.impl.UHCImpl;
 import me.butter.impl.commands.host.StopCommand;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.DayNightChangeEvent;
 import me.butter.impl.events.custom.EpisodeEvent;
+import me.butter.impl.timer.list.RoleTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class GameTask extends BukkitRunnable {
-
     public GameTask() {
+        for (Scenario scenario : UHCAPI.getInstance().getScenarioHandler().getEnabledScenarios()) {
+            scenario.onStartGame();
+        }
+
         this.runTaskTimer(UHCImpl.getInstance(), 0, 20);
     }
 
     @Override
     public void run() {
-        if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.ENDING) {
+        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.ENDING) {
             if(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().isEmpty()) {
                 UHCAPI.getInstance().reset();
             }
         }
 
         UHCAPI.getInstance().getGameHandler().getGameConfig().setTimer(UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer() + 1);
-        Bukkit.broadcastMessage("Timer: " + UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer());
 
-        for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+        for (UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
             if(player.isDisconnected()) {
                 player.setDisconnectionTime(player.getDisconnectionTime() + 1);
                 if(player.getDisconnectionTime() >= 20 * 60) {
@@ -41,13 +45,17 @@ public class GameTask extends BukkitRunnable {
             }
         }
 
+        for (Scenario scenario : UHCAPI.getInstance().getScenarioHandler().getEnabledScenarios()) {
+            scenario.onUpdate(UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer());
+        }
+
         for (Timer timer : UHCAPI.getInstance().getTimerHandler().getTimers()) {
             if(!timer.isFired() && timer.getMaxTimer() > UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer()) {
                 timer.onUpdate(UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer());
             }
 
             if(!timer.isFired() && timer.getMaxTimer() == UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer()) {
-                timer.onTimerDone();
+                timer.setFired(timer.onTimerDone());
             }
         }
 

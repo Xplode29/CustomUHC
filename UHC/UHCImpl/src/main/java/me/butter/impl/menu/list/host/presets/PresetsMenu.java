@@ -40,8 +40,8 @@ public class PresetsMenu extends AbstractMenu {
                     UHCAPI.getInstance().getGameHandler().getInventoriesConfig().setStartingArmor(preset.getStartingArmor());
                 }
 
-                UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(500);
-                UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(100);
+                UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(1000);
+                UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(200);
 
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setDiamondLimit(22);
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setExpBoost(50);
@@ -77,8 +77,8 @@ public class PresetsMenu extends AbstractMenu {
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setDiamondLimit(0);
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setExpBoost(0);
                 UHCAPI.getInstance().getGameHandler().getGameConfig().setDayCycleActivated(true);
-                UHCAPI.getInstance().getGameHandler().getGameConfig().setDayDuration(5 * 60);
-                UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(10 * 60);
+                UHCAPI.getInstance().getGameHandler().getGameConfig().setDayDuration(30);
+                UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(60);
 
                 UHCAPI.getInstance().getTimerHandler().getTimer(InvincibilityTimer.class).setMaxTimer(60);
                 UHCAPI.getInstance().getTimerHandler().getTimer(RoleTimer.class).setMaxTimer(2 * 60);

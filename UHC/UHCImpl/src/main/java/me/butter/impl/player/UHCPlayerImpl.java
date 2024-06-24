@@ -6,13 +6,8 @@ import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
-import me.butter.impl.scoreboard.list.LobbyScoreboard;
-import me.butter.impl.tab.list.GameTab;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.minecraft.server.v1_8_R3.ChatComponentText;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -26,6 +21,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class UHCPlayerImpl implements UHCPlayer {
 
@@ -38,7 +34,7 @@ public class UHCPlayerImpl implements UHCPlayer {
     private boolean canPickItems, noFall, disconnected, canMove;
     private int diamondMined, disconnectionTime;
 
-    private List<UUID> killedPlayers;
+    private List<UHCPlayer> killedPlayers;
 
     private Location deathLocation, spawnLocation;
 
@@ -251,7 +247,7 @@ public class UHCPlayerImpl implements UHCPlayer {
     }
 
     @Override
-    public void clearPlayer() {
+    public void resetPlayer() {
         this.playerState = PlayerState.IN_SPEC;
 
         this.canPickItems = true;
@@ -263,16 +259,24 @@ public class UHCPlayerImpl implements UHCPlayer {
 
         this.killedPlayers = new ArrayList<>();
 
-        this.spawnLocation = getPlayer().getLocation();
-        this.deathLocation = getPlayer().getLocation();
-
         clearInventory();
         clearStash();
-
         clearEffects();
 
         UHCAPI.getInstance().getScoreboardHandler().removePlayerScoreboard(this);
         UHCAPI.getInstance().getTabHandler().removePlayerTab(this);
+
+        if(getPlayer() == null) return;
+        getPlayer().setGameMode(GameMode.SURVIVAL);
+
+        getPlayer().setHealth(20);
+        getPlayer().setFoodLevel(20);
+        getPlayer().setLevel(0);
+        getPlayer().setExp(0);
+        getPlayer().setTotalExperience(0);
+
+        this.spawnLocation = getPlayer().getLocation();
+        this.deathLocation = getPlayer().getLocation();
     }
 
     @Override
@@ -282,30 +286,22 @@ public class UHCPlayerImpl implements UHCPlayer {
     }
 
     @Override
-    public List<UUID> getKilledPlayers() {
+    public List<UHCPlayer> getKilledPlayers() {
         return killedPlayers;
     }
 
     @Override
-    public void setKilledPlayers(List<UUID> killedPlayers) {
+    public void setKilledPlayers(List<UHCPlayer> killedPlayers) {
         this.killedPlayers = killedPlayers;
     }
 
     @Override
     public void addKilledPlayer(UHCPlayer player) {
-        killedPlayers.add(player.getUniqueId());
-    }
-    @Override
-    public void addKilledPlayer(Player player) {
-        killedPlayers.add(player.getUniqueId());
+        killedPlayers.add(player);
     }
 
     @Override
     public void removeKilledPlayer(UHCPlayer player) {
-        killedPlayers.remove(player.getUniqueId());
-    }
-    @Override
-    public void removeKilledPlayer(Player player) {
         killedPlayers.remove(player.getUniqueId());
     }
 
@@ -482,19 +478,52 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override
     public void addPotionEffect(PotionEffectType effect, int duration, int level) {
         for(Potion potion : playerPotionEffects) {
-            if(potion.getEffect() == effect && potion.getLevel() == level) {
+            if(potion.getEffect() == effect && potion.getLevel() == level && !potion.isPacket()) {
                 potion.setDuration(duration);
                 return;
             }
         }
-        playerPotionEffects.add(new PotionImpl(effect, duration, level));
+        playerPotionEffects.add(new PotionImpl(effect, duration, level, false));
+
+        if(getPlayer() == null) return;
+        getPlayer().addPotionEffect(new PotionEffect(effect, (duration == -1 ? Integer.MAX_VALUE : duration * 20), level - 1, false, false));
+    }
+
+    @Override
+    public void addPacketPotionEffect(PotionEffectType effect, int duration, int level) {
+        for(Potion potion : playerPotionEffects) {
+            if(potion.getEffect() == effect && potion.getLevel() == level && potion.isPacket()) {
+                potion.setDuration(duration);
+                return;
+            }
+        }
+        playerPotionEffects.add(new PotionImpl(effect, duration, level, true));
+
+        if(getPlayer() == null) return;
+        PacketPlayOutEntityEffect packet = new PacketPlayOutEntityEffect(
+                getPlayer().getEntityId(),
+                new MobEffect(effect.getId(), (duration == -1 ? Integer.MAX_VALUE : duration * 20), level - 1)
+        );
+        ((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(packet);
     }
 
     @Override
     public void removePotionEffect(PotionEffectType effect) {
-        playerPotionEffects.removeIf(potion -> potion.getEffect() == effect);
-        if (getPlayer() != null && getPlayer().hasPotionEffect(effect))
+        playerPotionEffects.removeIf(potion -> potion.getEffect() == effect && !potion.isPacket());
+        if (getPlayer() != null)
             getPlayer().removePotionEffect(effect);
+    }
+
+    @Override
+    public void removePacketPotionEffect(PotionEffectType effect) {
+        playerPotionEffects.removeIf(potion -> potion.getEffect() == effect && potion.isPacket());
+
+        if(getPlayer() == null) return;
+        PacketPlayOutRemoveEntityEffect packet = new PacketPlayOutRemoveEntityEffect(
+                getPlayer().getEntityId(),
+                new MobEffect(effect.getId(), Integer.MAX_VALUE, 0)
+        );
+        ((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(packet);
     }
 
     @Override
@@ -540,14 +569,21 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     @Override
     public void clearEffects() {
-        playerPotionEffects = new ArrayList<>();
-        speedEffect = 0; strengthEffect = 0; resiEffect = 0;
-
-        if(getPlayer() == null) return;
-        for(PotionEffect effect : getPlayer().getActivePotionEffects()) {
-            getPlayer().removePotionEffect(effect.getType());
+        List<Potion> toRemove = new ArrayList<>(playerPotionEffects);
+        for(Potion potion : toRemove) {
+            if(potion.isPacket()) removePacketPotionEffect(potion.getEffect());
+            else removePotionEffect(potion.getEffect());
         }
-        getPlayer().setWalkSpeed(0.2f);
+
+        if(getPlayer() != null) {
+            for(PotionEffect potionEffect : getPlayer().getActivePotionEffects()) {
+                getPlayer().removePotionEffect(potionEffect.getType());
+            }
+        }
+
+        removeSpeed(getSpeed());
+        removeStrength(getStrength());
+        removeResi(getResi());
     }
 
     @Override
@@ -560,13 +596,13 @@ public class UHCPlayerImpl implements UHCPlayer {
         speedEffect = amount;
 
         if(getPlayer() == null) return;
-        try {
-            getPlayer().setWalkSpeed(0.2f * (1 + (speedEffect % 20) / 100f));
+        getPlayer().setWalkSpeed(0.2f * (1 + speedEffect / 100f));
 
+        try {
             int speedLevel = speedEffect / 20;
-            removePotionEffect(PotionEffectType.SPEED); removePotionEffect(PotionEffectType.SLOW);
-            if(speedEffect > 0) addPotionEffect(PotionEffectType.SPEED, -1, speedLevel);
-            else if (speedEffect < 0) addPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
+            removePacketPotionEffect(PotionEffectType.SPEED); removePacketPotionEffect(PotionEffectType.SLOW);
+            if(speedEffect >= 20) addPacketPotionEffect(PotionEffectType.SPEED, -1, speedLevel);
+            else if (speedEffect <= -20) addPacketPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -578,13 +614,13 @@ public class UHCPlayerImpl implements UHCPlayer {
         speedEffect += amount;
 
         if(getPlayer() == null) return;
-        try {
-            getPlayer().setWalkSpeed(0.2f * (1 + (speedEffect % 20) / 100f));
+        getPlayer().setWalkSpeed(0.2f * (1 + speedEffect / 100f));
 
+        try {
             int speedLevel = speedEffect / 20;
-            removePotionEffect(PotionEffectType.SPEED); removePotionEffect(PotionEffectType.SLOW);
-            if(speedEffect > 0) addPotionEffect(PotionEffectType.SPEED, -1, speedLevel);
-            else if (speedEffect < 0) addPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
+            removePacketPotionEffect(PotionEffectType.SPEED); removePacketPotionEffect(PotionEffectType.SLOW);
+            if(speedEffect >= 20) addPacketPotionEffect(PotionEffectType.SPEED, -1, speedLevel);
+            else if (speedEffect <= -20) addPacketPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -596,13 +632,13 @@ public class UHCPlayerImpl implements UHCPlayer {
         speedEffect -= amount;
 
         if(getPlayer() == null) return;
-        try {
-            getPlayer().setWalkSpeed(0.2f * (1 + (speedEffect % 20) / 100f));
+        getPlayer().setWalkSpeed(0.2f * (1 + speedEffect / 100f));
 
+        try {
             int speedLevel = speedEffect / 20;
-            removePotionEffect(PotionEffectType.SPEED); removePotionEffect(PotionEffectType.SLOW);
-            if(speedEffect > 0) addPotionEffect(PotionEffectType.SPEED, -1, speedLevel);
-            else if (speedEffect < 0) addPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
+            removePacketPotionEffect(PotionEffectType.SPEED); removePacketPotionEffect(PotionEffectType.SLOW);
+            if(speedEffect >= 20) addPacketPotionEffect(PotionEffectType.SPEED, -1, speedLevel);
+            else if (speedEffect <= -20) addPacketPotionEffect(PotionEffectType.SLOW, -1, -speedLevel);
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -618,30 +654,30 @@ public class UHCPlayerImpl implements UHCPlayer {
     public void setStrength(int amount) {
         strengthEffect = amount;
 
-        int strengthLevel = strengthEffect / 20;
-        removePotionEffect(PotionEffectType.INCREASE_DAMAGE); removePotionEffect(PotionEffectType.WEAKNESS);
-        if(strengthEffect > 0) addPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, strengthLevel);
-        else if (strengthEffect < 0) addPotionEffect(PotionEffectType.WEAKNESS, -1, -strengthLevel);
+        int strengthLevel = strengthEffect / 15;
+        removePacketPotionEffect(PotionEffectType.INCREASE_DAMAGE); removePacketPotionEffect(PotionEffectType.WEAKNESS);
+        if(strengthEffect >= 15) addPacketPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, strengthLevel);
+        else if (strengthEffect <= -15) addPacketPotionEffect(PotionEffectType.WEAKNESS, -1, -strengthLevel);
     }
 
     @Override
     public void addStrength(int amount) {
         strengthEffect += amount;
 
-        int strengthLevel = strengthEffect / 20;
-        removePotionEffect(PotionEffectType.INCREASE_DAMAGE); removePotionEffect(PotionEffectType.WEAKNESS);
-        if(strengthEffect > 0) addPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, strengthLevel);
-        else if (strengthEffect < 0) addPotionEffect(PotionEffectType.WEAKNESS, -1, -strengthLevel);
+        int strengthLevel = strengthEffect / 15;
+        removePacketPotionEffect(PotionEffectType.INCREASE_DAMAGE); removePacketPotionEffect(PotionEffectType.WEAKNESS);
+        if(strengthEffect >= 15) addPacketPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, strengthLevel);
+        else if (strengthEffect <= -15) addPacketPotionEffect(PotionEffectType.WEAKNESS, -1, -strengthLevel);
     }
 
     @Override
     public void removeStrength(int amount) {
         strengthEffect -= amount;
 
-        int strengthLevel = strengthEffect / 20;
-        removePotionEffect(PotionEffectType.INCREASE_DAMAGE); removePotionEffect(PotionEffectType.WEAKNESS);
-        if(strengthEffect > 0) addPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, strengthLevel);
-        else if (strengthEffect < 0) addPotionEffect(PotionEffectType.WEAKNESS, -1, -strengthLevel);
+        int strengthLevel = strengthEffect / 15;
+        removePacketPotionEffect(PotionEffectType.INCREASE_DAMAGE); removePacketPotionEffect(PotionEffectType.WEAKNESS);
+        if(strengthEffect >= 15) addPacketPotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, strengthLevel);
+        else if (strengthEffect <= -15) addPacketPotionEffect(PotionEffectType.WEAKNESS, -1, -strengthLevel);
     }
 
     @Override
@@ -654,8 +690,8 @@ public class UHCPlayerImpl implements UHCPlayer {
         resiEffect = amount;
 
         int resiLevel = resiEffect / 20;
-        removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-        if(resiEffect > 0) addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, resiLevel);
+        removePacketPotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+        if(resiEffect >= 20) addPacketPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, resiLevel);
     }
 
     @Override
@@ -663,8 +699,8 @@ public class UHCPlayerImpl implements UHCPlayer {
         resiEffect += amount;
 
         int resiLevel = resiEffect / 20;
-        removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-        if(resiEffect > 0) addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, resiLevel);
+        removePacketPotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+        if(resiEffect >= 20) addPacketPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, resiLevel);
     }
 
     @Override
@@ -672,7 +708,7 @@ public class UHCPlayerImpl implements UHCPlayer {
         resiEffect -= amount;
 
         int resiLevel = resiEffect / 20;
-        removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-        if(resiEffect > 0) addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, resiLevel);
+        removePacketPotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+        if(resiEffect >= 20) addPacketPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, resiLevel);
     }
 }

@@ -33,32 +33,30 @@ public class Nya extends NinjagoRole {
     SamuraiPower samuraiPower;
 
     public Nya() {
-        super("Nya", "/roles/ninjas/nya", Collections.singletonList(new SamuraiPower()));
-
-        for(Power power : getPowers()) {
-            if(power instanceof SamuraiPower) {
-                samuraiPower = (SamuraiPower) power;
-            }
-        }
+        super("Nya", "/roles/ninjas/nya");
+        addPower(samuraiPower = new SamuraiPower());
     }
 
     @Override
     public String[] getDescription() {
         return new String[]{
                 "Au 3eme épisode, vous obtenez une liste de 3 pseudos contenant celui de Kai.",
-                "En restant 10 minutes à 10 blocs de celui-ci, vous obtiendrez un livre depth rider 3."
+                "En restant 5 minutes à 10 blocs de celui-ci, vous obtiendrez un livre depth rider 3."
         };
     }
 
     @Override
+    public boolean isElementalMaster() {
+        return true;
+    }
+
+    @Override
     public void onDistributionFinished() {
-        UHCPlayer kay = null;
         for(Role role : Ninjago.getInstance().getRolesList()) {
-            if(role instanceof Nya && role.getUHCPlayer() != null) {
-                kay = role.getUHCPlayer();
-            }
+            if(role instanceof Kai && role.getUHCPlayer() != null) finalKay = role.getUHCPlayer();
         }
-        finalKay = kay;
+
+        if(finalKay == null) return;
         Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), new Runnable() {
             boolean nextToKay = false;
             int bookTimer = 0;
@@ -153,11 +151,16 @@ public class Nya extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[]{
-                    "Lorsque cet item est activé, vous obtenez 20% de speed et 20% de force. ",
-                    "Vous avez 2 minutes d'utilisation. ",
-                    "Lorsque vous faites un kill, vous obtenez 30 secondes d'utilisation supplémentaires",
-                    "Vous pouvez vérifier le temps qu'il vous reste avec un clic gauche"
+                    "Lorsque cet item est activé, vous obtenez Speed 1 et Force 1.",
+                    "Vous avez 2 minutes d'utilisation.",
+                    "Lorsque vous faites un kill, vous obtenez 30 secondes d'utilisation supplémentaires.",
+                    "Vous pouvez vérifier le temps qu'il vous reste avec un clic gauche."
             };
+        }
+
+        @Override
+        public boolean hideCooldowns() {
+            return true;
         }
 
         @Override
@@ -174,12 +177,12 @@ public class Nya extends NinjagoRole {
                 else {
                     samuraiActive = !samuraiActive;
                     if(samuraiActive) {
-                        player.addStrength(20);
+                        player.addStrength(15);
                         player.addSpeed(20);
                         player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Samurai X activé"));
                     }
                     else {
-                        player.removeStrength(20);
+                        player.removeStrength(15);
                         player.removeSpeed(20);
                         player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Samurai X désactivé"));
                     }

@@ -9,11 +9,13 @@ public class PotionImpl implements Potion {
     private int duration;
     private int level;
     private boolean active;
+    private final boolean packet;
 
-    public PotionImpl(PotionEffectType effect, int duration, int level) {
+    public PotionImpl(PotionEffectType effect, int duration, int level, boolean packet) {
         this.effect = effect;
         this.duration = duration;
         this.level = level;
+        this.packet = packet;
         this.active = true;
     }
 
@@ -60,5 +62,10 @@ public class PotionImpl implements Potion {
     @Override
     public boolean isValid() {
         return (effect != null) && (level > 0);
+    }
+
+    @Override
+    public boolean isPacket() {
+        return packet;
     }
 }

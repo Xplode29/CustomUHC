@@ -25,13 +25,8 @@ public class Fangtom extends NinjagoRole {
     FangChat fangChat;
 
     public Fangtom() {
-        super("Fangtom", "/roles/serpent/fangtom", Collections.singletonList(new FangChat()));
-        for(Power power : getPowers()) {
-            if(power instanceof FangChat) {
-                fangChat = (FangChat) power;
-                break;
-            }
-        }
+        super("Fangtom", "/roles/serpent/fangtom");
+        addPower(fangChat = new FangChat());
     }
 
     @Override
@@ -43,16 +38,12 @@ public class Fangtom extends NinjagoRole {
     }
 
     @Override
-    public List<String> additionalDescription() {
-        if(pythor == null || pythor.getPlayerState() != PlayerState.IN_GAME) {
-            for (Role role : Ninjago.getInstance().getRolesList()) {
-                if(role instanceof Pythor && role.getUHCPlayer() != null && role.getUHCPlayer().getPlayerState() == PlayerState.IN_GAME) {
-                    pythor = role.getUHCPlayer();
-                    break;
-                }
-            }
-        }
+    public boolean isInList() {
+        return true;
+    }
 
+    @Override
+    public List<String> additionalDescription() {
         return Arrays.asList(
                 ChatUtils.PLAYER_INFO.getMessage(pythor == null ? "Pas de Pythor" : "Pythor:" + pythor.getName()),
                 ChatUtils.PLAYER_INFO.getMessage(fangdam == null ? "Pas de Fangdam" : "Fangdam:" + fangdam.getName())
@@ -61,18 +52,25 @@ public class Fangtom extends NinjagoRole {
 
     @Override
     public void onDistributionFinished() {
-        UHCPlayer fangdam = null;
         for(Role role : Ninjago.getInstance().getRolesList()) {
-            if(role instanceof Fangdam && role.getUHCPlayer() != null) {
-                fangdam = role.getUHCPlayer();
-            }
+            if(role.getUHCPlayer() == null) continue;
+            if(role instanceof Fangdam) fangdam = role.getUHCPlayer();
+            if(role instanceof Pythor) pythor = role.getUHCPlayer();
         }
 
         if (fangdam != null) {
-            this.fangdam = fangdam;
             fangChat.fangdam = fangdam;
             Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {
-                if(getUHCPlayer() == null) {
+                if(fangdam.getPlayerState() == PlayerState.DEAD && !nextToDuo) return;
+                if(getUHCPlayer().getPlayer() == null || fangdam.getPlayer() == null) {
+                    return;
+                }
+
+                if(fangdam.getPlayerState() == PlayerState.DEAD) {
+                    if(nextToDuo) {
+                        getUHCPlayer().removeResi(20);
+                        nextToDuo = false;
+                    }
                     return;
                 }
 
@@ -88,17 +86,12 @@ public class Fangtom extends NinjagoRole {
         }
     }
 
-    @Override
-    public boolean isInList() {
-        return true;
-    }
-
     private static class FangChat extends CommandPower {
 
         UHCPlayer fangdam;
 
         public FangChat() {
-            super("Chat avec Fangdam", "fchat", 0, -1);
+            super("Chat avec Fangdam", "chat", 0, -1);
         }
 
         @Override
@@ -114,7 +107,7 @@ public class Fangtom extends NinjagoRole {
         @Override
         public boolean onEnable(UHCPlayer player, String[] args) {
             List<String> message = Lists.newArrayList(args);
-            message.remove("fchat");
+            message.remove(0);
             if(fangdam != null) {
                 fangdam.sendMessage(ChatUtils.PLAYER_INFO.getMessage(
                         "Fangtom: " + Joiner.on(" ").join(message)

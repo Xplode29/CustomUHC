@@ -1,20 +1,25 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.module.roles.Role;
+import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
 
 import java.util.Collections;
+import java.util.List;
 
 public class Ed extends NinjagoRole {
 
+    UHCPlayer jay;
     boolean nextToJay;
 
     public Ed() {
-        super("Ed", "/roles/ninjas/ed", Collections.emptyList());
+        super("Ed", "/roles/ninjas/ed");
     }
 
     @Override
@@ -22,8 +27,13 @@ public class Ed extends NinjagoRole {
         return new String[] {
                 "Vous apparaissez dans la liste de Pythor. ",
                 "A l'annonce des roles, vous obtenez le pseudo de Jay. ",
-                "Vous obtenez force à 15 blocks de celui-ci"
+                "Vous obtenez Force 1 à 15 blocks de celui-ci"
         };
+    }
+
+    @Override
+    public List<String> additionalDescription() {
+        return Collections.singletonList(jay == null ? "Il n'y a pas de Jay dans cette partie" : "Jay : " + jay.getName());
     }
 
     @Override
@@ -33,29 +43,33 @@ public class Ed extends NinjagoRole {
 
     @Override
     public void onDistributionFinished() {
-        UHCPlayer jay = null;
         for(Role role : Ninjago.getInstance().getRolesList()) {
             if(role instanceof Jay && role.getUHCPlayer() != null) {
                 getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Jay:" + role.getUHCPlayer().getName()));
                 jay = role.getUHCPlayer();
             }
         }
-        if (jay == null) {
-            getUHCPlayer().sendMessage(ChatUtils.ERROR.getMessage("Il n'y a pas de Jay dans cette partie"));
-        }
-        else {
-            UHCPlayer finalJay = jay;
+
+        if (this.jay != null) {
             Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {
                 if(getUHCPlayer() == null) {
                     return;
                 }
 
-                if(getUHCPlayer().isNextTo(finalJay, 15) && !nextToJay) {
-                    getUHCPlayer().addStrength(10);
+                if(jay.getPlayerState() != PlayerState.IN_GAME) {
+                    if(nextToJay) {
+                        getUHCPlayer().removeStrength(15);
+                        nextToJay = false;
+                    }
+                    return;
+                }
+
+                if(getUHCPlayer().isNextTo(this.jay, 15) && !nextToJay) {
+                    getUHCPlayer().addStrength(15);
                     nextToJay = true;
                 }
-                else if(!getUHCPlayer().isNextTo(finalJay, 15) && nextToJay) {
-                    getUHCPlayer().removeStrength(10);
+                else if(!getUHCPlayer().isNextTo(this.jay, 15) && nextToJay) {
+                    getUHCPlayer().removeStrength(15);
                     nextToJay = false;
                 }
             }, 20, 20);

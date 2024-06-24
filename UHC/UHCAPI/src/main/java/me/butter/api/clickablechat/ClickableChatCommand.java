@@ -12,5 +12,5 @@ public interface ClickableChatCommand {
 
     void send();
 
-    void onCommand(List<String> args);
+    boolean onCommand(List<String> args);
 }

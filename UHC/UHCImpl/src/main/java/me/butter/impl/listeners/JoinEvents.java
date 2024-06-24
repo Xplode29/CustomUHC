@@ -3,14 +3,18 @@ package me.butter.impl.listeners;
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
 import me.butter.api.player.PlayerState;
+import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.BlockUtils;
 import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.scoreboard.list.GameScoreboard;
 import me.butter.impl.scoreboard.list.LobbyScoreboard;
-import me.butter.impl.tab.list.GameTab;
+import me.butter.impl.tab.list.MainTab;
+import net.minecraft.server.v1_8_R3.MobEffect;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEffect;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -35,8 +39,8 @@ public class JoinEvents implements Listener {
             int spawnSize = 40, spawnHeight = 10;
             BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2, spawnLocation.getBlockY() - 1, spawnLocation.getBlockZ() - spawnSize/2, spawnSize, spawnHeight, spawnSize, Material.BARRIER);
             BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2 + 1, spawnLocation.getBlockY(), spawnLocation.getBlockZ() - spawnSize/2 + 1, spawnSize - 2, spawnHeight - 1, spawnSize - 2, Material.AIR);
-
             generate = true;
+            spawnLocation.getChunk().load();
         }
 
         Player player = event.getPlayer();
@@ -53,46 +57,66 @@ public class JoinEvents implements Listener {
         uhcPlayer.setDisconnectionTime(0);
 
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY) {
-            uhcPlayer.clearPlayer();
+            uhcPlayer.resetPlayer();
             uhcPlayer.setPlayerState(PlayerState.IN_LOBBY);
-
-            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(spawnLocation), 2);
 
             UHCAPI.getInstance().getItemHandler().giveLobbyItems(uhcPlayer);
 
             UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
-            UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
+            UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, uhcPlayer);
+            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(spawnLocation), 2);
 
             ParticleUtils.tornadoEffect(uhcPlayer.getPlayer(), Color.fromRGB(255, 255, 255));
+
+            uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Bienvenue en Ninjago UHC !"));
+            uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Cet UHC est encore est beta, donc envoie les bugs sur le discord !"));
+            uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Pour plus d'informations sur le mode de jeu -> /doc"));
         }
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING) {
+            Location teleport;
+
             if(uhcPlayer.getPlayerState() == PlayerState.IN_GAME) {
-                player.teleport(uhcPlayer.getSpawnLocation());
+                teleport = uhcPlayer.getSpawnLocation();
                 player.setGameMode(GameMode.SURVIVAL);
             }
             else {
-                Location teleport = new Location(UHCAPI.getInstance().getWorldHandler().getWorld(), 0.0D, 100, 0.0D);
-
-                player.getInventory().clear();
-                player.teleport(teleport);
+                teleport = new Location(UHCAPI.getInstance().getWorldHandler().getWorld(), 0.0D, 100, 0.0D);
+                uhcPlayer.clearInventory();
                 player.setGameMode(GameMode.SPECTATOR);
             }
 
+            teleport.getChunk().load();
+            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(teleport), 2);
+
             UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
-            UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
+            UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, uhcPlayer);
         }
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING ||
                 UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
             if(uhcPlayer.getPlayerState() != PlayerState.DEAD && uhcPlayer.getPlayerState() != PlayerState.IN_GAME) {
                 Location teleport = new Location(UHCAPI.getInstance().getWorldHandler().getWorld(), 0.0D, 100, 0.0D);
 
-                player.getInventory().clear();
-                player.teleport(teleport);
                 player.setGameMode(GameMode.SPECTATOR);
+                uhcPlayer.clearInventory();
+
+                teleport.getChunk().load();
+                Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(teleport), 2);
             }
+
             UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
-            UHCAPI.getInstance().getTabHandler().setPlayerTab(GameTab.class, uhcPlayer);
+            UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, uhcPlayer);
         }
+
+        for(Potion potion : uhcPlayer.getPotionEffects()) {
+            if(potion.isPacket()) {
+                PacketPlayOutEntityEffect packet = new PacketPlayOutEntityEffect(
+                        uhcPlayer.getPlayer().getEntityId(),
+                        new MobEffect(potion.getEffect().getId(), (potion.getDuration() == -1 ? Integer.MAX_VALUE : potion.getDuration() * 20), potion.getLevel() - 1)
+                );
+                ((CraftPlayer) uhcPlayer.getPlayer()).getHandle().playerConnection.sendPacket(packet);
+            }
+        }
+        uhcPlayer.addSpeed(0);
 
         event.setJoinMessage(null);
         Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage(
@@ -127,6 +151,6 @@ public class JoinEvents implements Listener {
                         (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() - 1) + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.DARK_GRAY + "] "
         ));
 
-        if(uhcPlayer.getPlayerState() == PlayerState.IN_LOBBY || uhcPlayer.getPlayerState() == PlayerState.IN_SPEC) UHCAPI.getInstance().getPlayerHandler().removePlayer(player);
+        if(uhcPlayer.getPlayerState() == PlayerState.IN_LOBBY || uhcPlayer.getPlayerState() == PlayerState.IN_SPEC) UHCAPI.getInstance().getPlayerHandler().removePlayer(uhcPlayer);
     }
 }

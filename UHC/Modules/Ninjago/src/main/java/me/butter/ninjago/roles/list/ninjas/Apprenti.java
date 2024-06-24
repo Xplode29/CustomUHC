@@ -6,34 +6,39 @@ import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
-import me.butter.ninjago.items.SpinjitzuPower;
+import me.butter.ninjago.goldenNinja.ChatEffectChooser;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class Apprenti extends NinjagoRole {
 
-    boolean hasMaster = false, isKaiMaster, isLloydMaster, isColeMaster, isJayMaster, isWuMaster;
+    boolean hasMaster = false, isKaiMaster = false, isZaneMaster = false, isWuMaster = false;
     UHCPlayer master;
 
     public Apprenti() {
-        super("Apprenti", "/roles/ninjas/apprenti-du-dojo", Collections.emptyList());
+        super("Apprenti", "/roles/ninjas/apprenti-du-dojo");
     }
 
     @Override
@@ -47,13 +52,13 @@ public class Apprenti extends NinjagoRole {
                 "",
                 ChatUtils.LIST_ELEMENT + "§cKai§r: Vous obtenez 10% de force ainsi que 10% de chances d'enflammer le joueur frappé (si vous possédez le Sabre de feu, vous enflammez à coup sur le joueur frappé)",
                 "",
-                ChatUtils.LIST_ELEMENT + "§aLloyd§r: Vous obtenez 2 coeurs permanent supplémentaires ainsi qu'un autre coeur permanent à sa mort",
+                ChatUtils.LIST_ELEMENT + "§aLloyd§r: Vous obtenez le choix entre 15% de speed, 15% de force ou 15% de resistance.",
                 "",
                 ChatUtils.LIST_ELEMENT + "§8Cole§r: Vous obtenez 10% de résistance à 20 blocks de lui, et 20% de résistance permanent à sa mort",
                 "",
-                ChatUtils.LIST_ELEMENT + "§bZane§r: Vous obtenez No Fall et 10% de speed permanent",
+                ChatUtils.LIST_ELEMENT + "§bZane§r: Vous obtenez 1 coeur permanent supplémentaire ainsi qu'un autre coeur permanent à sa mort",
                 "",
-                ChatUtils.LIST_ELEMENT + "§eWu§r: Vous obtenez l'accès au Spinjitzu"
+                ChatUtils.LIST_ELEMENT + "§eWu§r: Vous obtenez l'accès au Spinjitzu. Comme Wu, vous obtenez Regeneration 2 pendant 30 secondes.",
         };
     }
 
@@ -83,6 +88,8 @@ public class Apprenti extends NinjagoRole {
         hasMaster = true;
         this.master = player;
 
+        getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Votre nouveau maitre est " + master.getName()));
+
         if(master.getRole() instanceof Nya) {
             DepthStriderBook book = new DepthStriderBook();
             addPower(book);
@@ -90,30 +97,29 @@ public class Apprenti extends NinjagoRole {
         }
         else if(master.getRole() instanceof Jay) {
             new JayMasterRunnable(master).runTaskTimer(Ninjago.getInstance(), 20, 20);
-            isJayMaster = true;
         }
         else if(master.getRole() instanceof Kai) {
             getUHCPlayer().addStrength(10);
             isKaiMaster = true;
         }
         else if(master.getRole() instanceof Lloyd) {
-            getUHCPlayer().addMaxHealth(4);
-            isLloydMaster = true;
+            UHCAPI.getInstance().getClickableChatHandler().sendToPlayer(new ChatEffectChooser(getUHCPlayer(), 15, -1));
         }
         else if(master.getRole() instanceof Cole) {
             new ColeMasterRunnable(master).runTaskTimer(Ninjago.getInstance(), 20, 20);
-            isColeMaster = true;
         }
         else if(master.getRole() instanceof Zane) {
-            getUHCPlayer().addSpeed(10);
-            getUHCPlayer().setNoFall(true);
+            getUHCPlayer().addMaxHealth(2);
+            isZaneMaster = true;
         }
         else if(master.getRole() instanceof Wu) {
-            addPower(new SpinjitzuPower(ChatColor.AQUA));
+            SpinjitzuPower power = new SpinjitzuPower();
+            addPower(power);
+            getUHCPlayer().giveItem(power.getItem(), true);
             isWuMaster = true;
-        }
 
-        getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Votre nouveau maitre est " + master.getName()));
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu l'accès au Spinjitzu !"));
+        }
     }
 
     @EventHandler
@@ -123,7 +129,7 @@ public class Apprenti extends NinjagoRole {
         UHCPlayer damager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
         if(damager.equals(getUHCPlayer())) {
             if(hasMaster && isKaiMaster) {
-                if(new Random().nextInt(100) <= 10) {
+                if(new Random().nextInt(100) <= 10 || getUHCPlayer().equals(Ninjago.getInstance().getGoldenWeaponManager().fireSaber.getHolder())) {
                     event.getEntity().setFireTicks(20 * 3);
                 }
             }
@@ -133,11 +139,13 @@ public class Apprenti extends NinjagoRole {
     @EventHandler
     public void onPlayerDie(UHCPlayerDeathEvent event) {
         if(!hasMaster || !event.getVictim().equals(master)) return;
-        if(isLloydMaster) getUHCPlayer().addMaxHealth(2);
+        if(isZaneMaster) getUHCPlayer().addMaxHealth(2);
         if(isWuMaster) {
             StickPower stick = new StickPower();
             addPower(stick);
             getUHCPlayer().giveItem(stick.getItem(), true);
+
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu le baton de Wu !"));
         }
     }
 
@@ -286,6 +294,44 @@ public class Apprenti extends NinjagoRole {
             itemMeta.setDisplayName("§r" + getName());
             goldenSword.setItemMeta(itemMeta);
             return goldenSword;
+        }
+    }
+
+    private static class SpinjitzuPower extends RightClickItemPower {
+
+        public SpinjitzuPower() {
+            super(ChatColor.YELLOW + "Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[] {
+                    "À l'activation, repousse tous les joueurs dans un rayon de 10 blocks.",
+                    "vous obtenez Regeneration 2 pendant 30 secondes."
+            };
+        }
+
+        @Override
+        public boolean onEnable(UHCPlayer player, Action clickAction) {
+            Location center = player.getPlayer().getLocation();
+
+            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                if(uhcPlayer == null || uhcPlayer == player || uhcPlayer.getPlayer() == null) continue;
+
+                if(uhcPlayer.isNextTo(player, 10)) {
+                    double angle = Math.atan2(uhcPlayer.getLocation().getZ() - center.getZ(), uhcPlayer.getLocation().getX() - center.getX());
+                    Vector newVelocity = new Vector(
+                            1.5 * Math.cos(angle),
+                            0.5,
+                            1.5 * Math.sin(angle)
+                    );
+                    uhcPlayer.getPlayer().setVelocity(newVelocity);
+                }
+            }
+
+            player.addPotionEffect(PotionEffectType.REGENERATION, 30, 2);
+            ParticleUtils.tornadoEffect(player.getPlayer(), Color.YELLOW);
+            return true;
         }
     }
 }

@@ -1,6 +1,7 @@
 package me.butter.api.utils;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.player.UHCPlayer;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Color;
@@ -11,7 +12,44 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParticleUtils {
+
+    public static void showParticleToPlayer(UHCPlayer player, Location loc, EnumParticle particle, Color color) {
+        if(player.getPlayer() == null) return;
+
+        PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
+                EnumParticle.REDSTONE, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), (float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255, (float) 1, 0
+        );
+
+        ((CraftPlayer) player.getPlayer()).getHandle().playerConnection.sendPacket(packet);
+    }
+
+    public static void showParticleToPlayers(List<UHCPlayer> players, Location loc, EnumParticle particle, Color color) {
+        PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
+                EnumParticle.REDSTONE, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), (float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255, (float) 1, 0
+        );
+
+        for(UHCPlayer player : players) {
+            if(player.getPlayer() == null) continue;
+            ((CraftPlayer) player.getPlayer()).getHandle().playerConnection.sendPacket(packet);
+        }
+    }
+
+    public static void zoneEffect(UHCPlayer player, Location center, int size, Color color) {
+        for(int i = 0; i < 64; i++) {
+            double alpha = i * (Math.PI / 32);
+            Location loc = center.add(
+                    size * Math.cos(alpha),
+                    0,
+                    size * Math.sin(alpha)
+            );
+            showParticleToPlayer(player, loc, EnumParticle.REDSTONE, color);
+        }
+    }
+
     public static void tornadoEffect(Player player, Color color) {
         new BukkitRunnable() {
             double height = 0;
@@ -26,15 +64,7 @@ public class ParticleUtils {
                             (0.5 + height) * Math.sin(alpha) / 2
                     );
 
-                    PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-                            EnumParticle.REDSTONE, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), (float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255, (float) 1, 0
-                    );
-                    for(Entity entity : player.getNearbyEntities(50, 50, 50)) {
-                        if(entity instanceof Player) {
-                            ((CraftPlayer)entity).getHandle().playerConnection.sendPacket(packet);
-                        }
-                    }
-                    ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+                    showParticleToPlayers(UHCAPI.getInstance().getPlayerHandler().getPlayers(), loc, EnumParticle.REDSTONE, color);
                 }
                 height += 0.2;
 
@@ -43,37 +73,6 @@ public class ParticleUtils {
                 }
             }
         }.runTaskTimer(UHCAPI.getInstance(), 0, 1);
-    }
-
-    public static void slicingEffect(Player player, int amount, Color color) {
-        Location location = player.getLocation().clone();
-
-        Vector lookVector = player.getLocation().getDirection().normalize();
-        Vector rightHeadVector = new Vector(lookVector.getZ(), 0, -lookVector.getX()).normalize();
-
-        for(double i = 0; i < amount; i++) {
-            double angle = (Math.PI / 3) * (i / amount) + (11 * Math.PI / 6);
-
-            Vector vector = new Vector(
-                    lookVector.getX() * Math.cos(angle) + rightHeadVector.getX() * Math.sin(angle),
-                    lookVector.getY() * Math.cos(angle) + rightHeadVector.getY() * Math.sin(angle),
-                    lookVector.getZ() * Math.cos(angle) + rightHeadVector.getZ() * Math.sin(angle)
-            ).normalize().multiply(4);
-
-            float x = (float) (vector.getX() + location.getX());
-            float y = (float) (vector.getY() + location.getY()) + 1.5f;
-            float z = (float) (vector.getZ() + location.getZ());
-
-            PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-                    EnumParticle.REDSTONE, true, x, y, z, (float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255, (float) 1, 0
-            );
-            for(Entity entity : player.getNearbyEntities(50, 50, 50)) {
-                if(entity instanceof Player) {
-                    ((CraftPlayer)entity).getHandle().playerConnection.sendPacket(packet);
-                }
-            }
-            ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
-        }
     }
 
     private static Vector rotateAroundAxisX(Vector v, double angle) {

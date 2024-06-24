@@ -6,6 +6,6 @@ depend:
   - Impl
 
 commands:
-  ni:
+  n:
     description: Commande principale du mode de jeu
-    usage: /ni <argument>
+    usage: /n <argument>

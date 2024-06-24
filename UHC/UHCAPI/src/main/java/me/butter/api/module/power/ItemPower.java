@@ -11,12 +11,15 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class ItemPower extends Power {
 
-    ItemStack item;
+    Material material;
 
     public ItemPower(String name, Material material, int cooldown, int maxUses) {
         super(name, cooldown, maxUses);
+        this.material = material;
+    }
 
-        this.item = new ItemBuilder(material).setName("§r" + name).toItemStack();
+    public Material getMaterial() {
+        return material;
     }
 
     public boolean doesCancelEvent() {
@@ -24,7 +27,7 @@ public abstract class ItemPower extends Power {
     }
 
     public ItemStack getItem() {
-        return item;
+        return new ItemBuilder(getMaterial()).setName("§r" + getName()).toItemStack();
     }
 
     public void onUsePower(UHCPlayer player, Action clickAction) {

@@ -33,6 +33,11 @@ public class HostCommands implements TabExecutor {
         commands.add(new ConfigCommand());
         commands.add(new SayCommand());
         commands.add(new ForceTimerCommand());
+        commands.add(new ViewInvCommand());
+        commands.add(new SetGroupCommand());
+        commands.add(new ResetPowersCommand());
+        commands.add(new ChatCommand());
+        commands.add(new SpecCommand());
     }
 
     @Override
@@ -94,13 +99,15 @@ public class HostCommands implements TabExecutor {
         UHCPlayer sender = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(((Player) commandSender).getUniqueId());
         if(sender == null) return Collections.emptyList();
 
+        String typing = strings.length > 0 ? strings[strings.length - 1] : "";
+
         if(strings.length < 2) {
-            return commands.stream().map(AbstractCommand::getArgument).collect(Collectors.toList());
+            return commands.stream().map(AbstractCommand::getArgument).filter(argument -> argument.startsWith(typing)).collect(Collectors.toList());
         }
         else {
             for(AbstractCommand command : commands) {
                 if(command.getArgument().equalsIgnoreCase(strings[0]) || Arrays.stream(command.getAliases()).anyMatch(alias -> alias.equalsIgnoreCase(strings[0]))) {
-                    return command.onTabComplete(sender, s, strings);
+                    return command.onTabComplete(sender, s, strings).stream().filter(argument -> argument.startsWith(typing)).collect(Collectors.toList());
                 }
             }
         }

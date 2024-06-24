@@ -59,9 +59,8 @@ public class PlayerHandlerImpl implements PlayerHandler {
     }
 
     @Override
-    public void removePlayer(Player player) {
-        UHCPlayer uhcPlayer = getUHCPlayer(player.getUniqueId());
-        uhcPlayers.remove(uhcPlayer);
+    public void removePlayer(UHCPlayer player) {
+        uhcPlayers.remove(player);
     }
 
     @Override

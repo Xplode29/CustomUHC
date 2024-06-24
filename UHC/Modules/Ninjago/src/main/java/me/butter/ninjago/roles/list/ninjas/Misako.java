@@ -9,7 +9,7 @@ import java.util.Collections;
 
 public class Misako extends NinjagoRole {
     public Misako() {
-        super("Misako", "/roles/ninjas/misako", Collections.singletonList(new InventoryCommand()));
+        super("Misako", "/roles/ninjas/misako", new InventoryCommand());
     }
 
     @Override

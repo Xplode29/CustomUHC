@@ -7,6 +7,7 @@ import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 
 import java.util.Collections;
@@ -14,12 +15,12 @@ import java.util.List;
 
 public class Slithraa extends NinjagoRole {
 
-    boolean hadSpeed = false;
+    boolean hadEffects = false;
 
     UHCPlayer skales;
 
     public Slithraa() {
-        super("Slithraa", "/roles/serpent/bytar", Collections.emptyList());
+        super("Slithraa", "/roles/serpent/slithraa");
     }
 
     @Override
@@ -27,36 +28,43 @@ public class Slithraa extends NinjagoRole {
         return new String[]{
                 "A l'annonce des roles, vous obtenez le pseudo de Skales.",
                 "Lorsque vous effectuez un kill, vous obtenez 3% de force supplémentaire",
-                "Si Skales meurt sans avoir infecté un joueur, vous obtenez 20% de speed supplémentaire"
+                "Si Skales meurt, vous obtenez Speed 1 permanent."
         };
     }
 
     @Override
-    public List<String> additionalDescription() {
-        if(skales == null || skales.getPlayerState() != PlayerState.IN_GAME) {
-            for (Role role : Ninjago.getInstance().getRolesList()) {
-                if(role instanceof Skales && role.getUHCPlayer() != null && role.getUHCPlayer().getPlayerState() == PlayerState.IN_GAME) {
-                    skales = role.getUHCPlayer();
-                    break;
-                }
+    public void onDistributionFinished() {
+        for (Role role : Ninjago.getInstance().getRolesList()) {
+            if(role instanceof Skales && role.getUHCPlayer() != null && role.getUHCPlayer().getPlayerState() == PlayerState.IN_GAME) {
+                skales = role.getUHCPlayer();
+                break;
             }
         }
 
-        if(skales == null) return Collections.emptyList();
-        return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage("Skales:" + skales.getName()));
+        if(skales != null) {
+            Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {
+                if(skales == null) return;
+
+                if(skales.getPlayerState() != PlayerState.IN_GAME) {
+                    if(!hadEffects) {
+                        getUHCPlayer().addSpeed(20);
+                        getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu Speed 1 suite a la mort de Skales."));
+                        hadEffects = true;
+                    }
+                }
+            }, 0, 20);
+        }
+    }
+
+    @Override
+    public List<String> additionalDescription() {
+        return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(skales == null ? "Il n'y a pas de Skales dans cet partie" : "Skales:" + skales.getName()));
     }
 
     @EventHandler
     public void onKillPlayer(UHCPlayerDeathEvent event) {
         if(event.getKiller() != null && event.getKiller().equals(getUHCPlayer())) {
             getUHCPlayer().addStrength(3);
-        }
-
-        if(event.getVictim().getRole() instanceof Skales && !hadSpeed) {
-            if(!((Skales) event.getVictim().getRole()).infectionPower.infected) {
-                getUHCPlayer().addSpeed(20);
-                hadSpeed = true;
-            }
         }
     }
 }

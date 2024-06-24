@@ -9,6 +9,7 @@ import me.butter.api.player.UHCPlayer;
 import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class NinjagoRole implements Role, Listener {
@@ -20,10 +21,10 @@ public class NinjagoRole implements Role, Listener {
 
     private Camp camp;
 
-    public NinjagoRole(String name, String doc, List<Power> powers) {
+    public NinjagoRole(String name, String doc, Power... powers) {
         this.name = name;
         this.doc = doc;
-        this.powers = new ArrayList<>(powers);
+        this.powers = new ArrayList<>(Arrays.asList(powers));
     }
 
     @Override
@@ -68,8 +69,7 @@ public class NinjagoRole implements Role, Listener {
 
     @Override
     public void addPower(Power power) {
-        if(powers.contains(power)) return;
-        powers.add(power);
+        if(!powers.contains(power) && power != null) powers.add(power);
     }
 
     @Override
@@ -127,11 +127,11 @@ public class NinjagoRole implements Role, Listener {
 
     }
 
-    public boolean isNinja() {
+    public boolean isInList() {
         return false;
     }
 
-    public boolean isInList() {
+    public boolean isElementalMaster() {
         return false;
     }
 }

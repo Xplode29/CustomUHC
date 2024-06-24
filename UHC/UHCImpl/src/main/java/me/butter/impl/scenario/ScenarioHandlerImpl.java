@@ -16,10 +16,11 @@ public class ScenarioHandlerImpl implements ScenarioHandler {
         scenarios = new ArrayList<>();
 
         scenarios.add(new CutCleanScenario());
-        scenarios.add(new FireLessScenario());
         scenarios.add(new HasteyBoysScenario());
         scenarios.add(new TimberScenario());
         scenarios.add(new NoDropScenario());
+        scenarios.add(new SafeMinerScenario());
+        scenarios.add(new FireLessScenario());
     }
 
     @Override

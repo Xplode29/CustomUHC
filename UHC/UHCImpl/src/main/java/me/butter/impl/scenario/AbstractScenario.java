@@ -1,6 +1,7 @@
 package me.butter.impl.scenario;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.menu.Menu;
 import me.butter.api.scenario.Scenario;
 import org.bukkit.Material;
 import org.bukkit.event.HandlerList;
@@ -39,8 +40,18 @@ public abstract class AbstractScenario implements Scenario, Listener {
     }
 
     @Override
-    public void openConfig() {
+    public void onStartGame() {
 
+    }
+
+    @Override
+    public void onUpdate(int timer) {
+
+    }
+
+    @Override
+    public Menu getConfigMenu() {
+        return null;
     }
 
     @Override

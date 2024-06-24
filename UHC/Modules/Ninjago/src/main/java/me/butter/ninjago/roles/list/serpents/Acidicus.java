@@ -1,13 +1,19 @@
 package me.butter.ninjago.roles.list.serpents;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;
-import me.butter.api.module.power.Power;
+import me.butter.api.module.power.EnchantedItemPower;
+import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -15,23 +21,22 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 public class Acidicus extends NinjagoRole {
 
-    private VeninCommand power;
-
+    private VeninCommand command;
+    private CrochetSword sword;
     UHCPlayer pythor;
 
+    int coups = 0;
+
     public Acidicus() {
-        super("Acidicus", "/roles/serpent/acidicus", Collections.singletonList(new VeninCommand()));
-        for(Power power : getPowers()) {
-            if(power instanceof VeninCommand) {
-                this.power = (VeninCommand) power;
-                break;
-            }
-        }
+        super("Acidicus", "/roles/serpent/acidicus");
+        addPower(command = new VeninCommand());
+        addPower(sword = new CrochetSword());
     }
 
     @Override
@@ -87,12 +92,39 @@ public class Acidicus extends NinjagoRole {
         UHCPlayer damager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
         UHCPlayer damaged = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
 
-        if(damager.equals(getUHCPlayer()) && damaged != null) {
-            if(power.veninActive) {
-                if((new Random()).nextInt(100) <= 25) {
-                    damaged.addPotionEffect(PotionEffectType.POISON, 10, 1);
+        if(damager.equals(getUHCPlayer()) && damaged != null && ((Player) event.getDamager()).getItemInHand().isSimilar(sword.getItem())) {
+            if(command.veninActive) {
+                coups++;
+                if(coups % 20 == 0) {
+                    damaged.addPotionEffect(PotionEffectType.POISON, 5, 1);
+                }
+                if(coups % 30 == 0) {
+                    damaged.removeStrength(15);
+                    Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> damaged.addStrength(15), 10 * 20);
+                }
+                if(coups % 50 == 0) {
+                    damaged.removeSpeed(20);
+                    Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> damaged.addSpeed(20), 10 * 20);
                 }
             }
+        }
+    }
+
+    private static class CrochetSword extends EnchantedItemPower {
+
+        public CrochetSword() {
+            super("Crochet", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 3));
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[] {
+                    "Lorsque vous tapez un joueur avec, vous infligez des effets en fonction ud nombre de coups",
+                    ChatUtils.LIST_ELEMENT + "Tous les 20 coups, vous infligez Poison 1 pendant 5 secondes.",
+                    ChatUtils.LIST_ELEMENT + "Tous les 30 coups, vous infligez Faiblesse 1 pendant 10 secondes.",
+                    ChatUtils.LIST_ELEMENT + "Tous les 50 coups, vous infligez Lenteur 1 pendant 10 secondes.",
+                    "Ces effets sont cumulables."
+            };
         }
     }
 
@@ -106,7 +138,14 @@ public class Acidicus extends NinjagoRole {
 
         @Override
         public String[] getDescription() {
-            return new String[]{"Active / désactive votre passif. Lorsqu'il est activé, vous avez 25% d'infliger Poison 1 au joueur frappé"};
+            return new String[]{
+                    "Active / désactive la capacite de votre epee Crochet."
+            };
+        }
+
+        @Override
+        public boolean hideCooldowns() {
+            return true;
         }
 
         @Override
@@ -121,5 +160,4 @@ public class Acidicus extends NinjagoRole {
             return false;
         }
     }
-
 }

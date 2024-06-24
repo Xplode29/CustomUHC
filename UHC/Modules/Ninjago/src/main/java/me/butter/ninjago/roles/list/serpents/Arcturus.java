@@ -1,5 +1,6 @@
 package me.butter.ninjago.roles.list.serpents;
 
+import me.butter.api.UHCAPI;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
@@ -17,10 +18,8 @@ public class Arcturus extends NinjagoRole {
 
     UHCPlayer pythor;
 
-    boolean invisible = false;
-
     public Arcturus() {
-        super("Arcturus", "/roles/serpent/bytar", Collections.emptyList());
+        super("Arcturus", "/roles/serpent/arcturus");
     }
 
     @Override
@@ -38,6 +37,34 @@ public class Arcturus extends NinjagoRole {
     }
 
     @Override
+    public void onGiveRole() {
+        if(!UHCAPI.getInstance().getGameHandler().getGameConfig().isDay()) {
+            getUHCPlayer().addStrength(15);
+        }
+
+        Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {
+            if(getUHCPlayer().getPlayer() == null) return;
+
+            boolean invisible = true;
+            for(ItemStack item : getUHCPlayer().getPlayer().getInventory().getArmorContents()) {
+                if(item.getType() != Material.AIR) {
+                    invisible = false;
+                    break;
+                }
+            }
+
+            if(!invisible && getUHCPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+                getUHCPlayer().setNoFall(false);
+                getUHCPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
+            }
+            if(invisible && !getUHCPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+                getUHCPlayer().setNoFall(true);
+                getUHCPlayer().addPotionEffect(PotionEffectType.INVISIBILITY, -1, 1);
+            }
+        }, 0, 10);
+    }
+
+    @Override
     public void onDistributionFinished() {
         for (Role role : Ninjago.getInstance().getRolesList()) {
             if(role instanceof Pythor && role.getUHCPlayer() != null) {
@@ -48,35 +75,12 @@ public class Arcturus extends NinjagoRole {
     }
 
     @Override
-    public void onGiveRole() {
-        Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {
-            if(getUHCPlayer().getPlayer() == null) return;
-
-            for(ItemStack item : getUHCPlayer().getPlayer().getInventory().getArmorContents()) {
-                if(item.getType() != Material.AIR) {
-                    if(invisible) {
-                        getUHCPlayer().setNoFall(false);
-                        getUHCPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
-                        invisible = false;
-                    }
-                    return;
-                }
-            }
-            if(!invisible) {
-                getUHCPlayer().setNoFall(true);
-                getUHCPlayer().addPotionEffect(PotionEffectType.INVISIBILITY, -1, 1);
-                invisible = true;
-            }
-        }, 0, 10);
-    }
-
-    @Override
     public void onDay() {
-        getUHCPlayer().removeStrength(20);
+        getUHCPlayer().removeStrength(15);
     }
 
     @Override
     public void onNight() {
-        getUHCPlayer().addStrength(20);
+        getUHCPlayer().addStrength(15);
     }
 }

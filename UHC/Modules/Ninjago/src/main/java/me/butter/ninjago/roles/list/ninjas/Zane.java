@@ -1,23 +1,19 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.Ninjago;
-import me.butter.ninjago.items.SpinjitzuPower;
 import me.butter.ninjago.roles.NinjagoRole;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.event.EventHandler;
+import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,154 +21,130 @@ import java.util.List;
 
 public class Zane extends NinjagoRole {
 
-    FreezePower freezePower;
-
-    boolean inZone;
+    TraqueCommand traqueCommand;
 
     public Zane() {
-        super("Zane", "/roles/ninjas/zane", Arrays.asList(
-                new FalconCommand(),
-                new FreezePower(),
-                new SpinjitzuPower(ChatColor.WHITE)
-        ));
-        for(Power power : getPowers()) {
-            if(power instanceof FreezePower) {
-                freezePower = (FreezePower) power;
-                break;
-            }
-        }
+        super("Zane", "/roles/ninjas/zane", new SpinjitzuPower());
+        addPower(traqueCommand = new TraqueCommand());
     }
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Vous n'avez pas d'effets particuliers"};
+        return new String[]{"Vous avez 2 coeurs permanents."};
     }
 
     @Override
-    public boolean isNinja() {
+    public boolean isElementalMaster() {
         return true;
     }
 
     @Override
     public void onGiveRole() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if(freezePower.gelZonePlaced && freezePower.gelZoneCoords != null) {
-                    Location playerLoc = getUHCPlayer().getLocation();
-
-                    if (playerLoc.distance(freezePower.gelZoneCoords) < 15 && !inZone) {
-                        getUHCPlayer().addStrength(20);
-                        inZone = true;
-                    }
-                    if (playerLoc.distance(freezePower.gelZoneCoords) >= 15 && inZone) {
-                        getUHCPlayer().removeStrength(20);
-                        inZone = false;
-                    }
-                }
-                else {
-                    if(inZone) {
-                        getUHCPlayer().removeStrength(20);
-                        inZone = false;
-                    }
-                }
-            }
-        }.runTaskTimer(Ninjago.getInstance(), 0, 20);
+        getUHCPlayer().addMaxHealth(4);
     }
 
-    private static class FalconCommand extends TargetCommandPower {
-        public FalconCommand() {
-            super("Faucon", "faucon", 5 * 60, 4);
+    private static class TraqueCommand extends TargetCommandPower {
+
+        UHCPlayer target;
+
+        public TraqueCommand() {
+            super("Traque", "traque", 10 * 60, -1);
         }
 
         @Override
         public String[] getDescription() {
-            return new String[]{"A l'activation, vous obtenez le nombre de pommes en or ainsi que le nombre de kills du joueur ciblé"};
+            return new String[]{
+                    "Permet de traquer le joueur ciblé pendant 2 minutes"
+            };
         }
 
         @Override
         public boolean onEnable(UHCPlayer player, UHCPlayer target, String[] args) {
-            int gapples = 0;
-            for(ItemStack item : target.getInventory()) {
-                if(item != null) {
-                    if(item.getType() == Material.GOLDEN_APPLE) {
-                        gapples += item.getAmount();
+            this.target = target;
+
+            new BukkitRunnable() {
+                int timer = 2 * 60;
+
+                @Override
+                public void run() {
+                    if(player == null || player.getPlayer() == null || target == null || target.getPlayer() == null) return;
+
+                    if(timer <= 0) {
+                        player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("La traque de " + target.getPlayer().getName() + " est terminée"));
+                        cancel();
+                        return;
                     }
+
+                    Location eye = player.getPlayer().getEyeLocation().clone().add(0, -1.0, 0);
+                    Vector eyeDirection = eye.getDirection().setY(0);
+                    Vector toEntity = target.getPlayer().getEyeLocation().clone().toVector().setY(0).subtract(eye.toVector().setY(0));
+                    double dot = toEntity.normalize().dot(eyeDirection);
+                    double otherDot = eyeDirection.getZ() * toEntity.getX() - eyeDirection.getX() * toEntity.getZ();
+
+                    String dotArrow = "";
+                    if(dot > 0.5) dotArrow = "▲";
+                    else if(dot < -0.5) dotArrow = "▼";
+                    else {
+                        if(otherDot > 0) dotArrow = "◀";
+                        if(otherDot < 0) dotArrow = "▶";
+                    }
+
+                    player.sendActionBar("§l" + dotArrow);
+
+                    timer--;
                 }
-            }
+            }.runTaskTimer(Ninjago.getInstance(), 0, 20);
 
-            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage(
-                    "Le joueur " + target.getName() + " a " + gapples + " pommes d'or et a tué " + target.getKilledPlayers().size() + " joueurs."
-            ));
-
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez traque " + target.getPlayer().getName()));
             return true;
         }
     }
 
-    private static class FreezePower extends RightClickItemPower {
-        final int zoneTimer = 2 * 60;
-        FreezeZoneCooldown freezeZoneRunnable;
-        List<Block> icedBlocks;
+    private static class SpinjitzuPower extends RightClickItemPower {
 
-        boolean gelZonePlaced;
-        Location gelZoneCoords;
-
-        public FreezePower() {
-            super(ChatColor.BLUE + "Déluge", Material.SNOW_BALL, 20 * 60, -1);
+        public SpinjitzuPower() {
+            super(ChatColor.AQUA + "Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);
         }
 
         @Override
         public String[] getDescription() {
-            return new String[]{"À l'activation, vous recouvrez de glace une zone de 30x30 où vous possédez Force 1"};
+            return new String[] {
+                    "À l'activation, repousse tous les joueurs dans un rayon de 10 blocks.",
+                    "Vous ralentissez tous les joueurs touches pendant 1 minute."
+            };
         }
 
         @Override
         public boolean onEnable(UHCPlayer player, Action clickAction) {
-            if(gelZonePlaced) {
-                player.sendMessage(ChatUtils.ERROR.getMessage("Vous avez déjà placé votre zone !"));
-                return false;
-            }
+            Location center = player.getPlayer().getLocation();
 
-            if(freezeZoneRunnable != null) {
-                freezeZoneRunnable.cancel();
-                freezeZoneRunnable = null;
-            }
-            freezeZoneRunnable = new FreezeZoneCooldown();
-            freezeZoneRunnable.runTaskLater(Ninjago.getInstance(), zoneTimer * 20);
+            List<UHCPlayer> slowed = new ArrayList<>();
 
-            gelZoneCoords = player.getLocation();
+            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                if(uhcPlayer == null || uhcPlayer == player || uhcPlayer.getPlayer() == null) continue;
 
-            icedBlocks = new ArrayList<>();
-            for(int x = -14; x <= 14; x++) {
-                for(int z = -14; z <= 14; z++) {
-                    icedBlocks.add(gelZoneCoords.getWorld().getHighestBlockAt((int) (gelZoneCoords.getX() + x), (int) (gelZoneCoords.getZ() + z)).getLocation().add(0, -1, 0).getBlock());
-                    gelZoneCoords.getWorld().getHighestBlockAt((int) (gelZoneCoords.getX() + x), (int) (gelZoneCoords.getZ() + z)).getLocation().add(0, -1, 0).getBlock().setType(Material.PACKED_ICE);
+                if(uhcPlayer.isNextTo(player, 10)) {
+                    double angle = Math.atan2(uhcPlayer.getLocation().getZ() - center.getZ(), uhcPlayer.getLocation().getX() - center.getX());
+                    Vector newVelocity = new Vector(
+                            1.5 * Math.cos(angle),
+                            0.5,
+                            1.5 * Math.sin(angle)
+                    );
+                    uhcPlayer.getPlayer().setVelocity(newVelocity);
+
+                    slowed.add(uhcPlayer);
                 }
             }
-            gelZonePlaced = true;
 
+            for(UHCPlayer u : slowed) {
+                u.removeSpeed(20);
+                u.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous ete ralenti par Zane !"));
+            }
+
+            Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> slowed.forEach(u -> u.addSpeed(20)), 60 * 20);
+
+            ParticleUtils.tornadoEffect(player.getPlayer(), Color.WHITE);
             return true;
-        }
-
-        private class FreezeZoneCooldown extends BukkitRunnable {
-            @Override
-            public void run() {
-                for(Block block : icedBlocks) {
-                    if(
-                        block.getLocation().add(0, -1, 0).getBlock().getType() == Material.AIR ||
-                        block.getLocation().add(0, -1, 0).getBlock().getType() == Material.LEAVES ||
-                        block.getLocation().add(0, -1, 0).getBlock().getType() == Material.LEAVES_2 ||
-                        block.getLocation().add(0, -1, 0).getBlock().getType() == Material.LOG ||
-                        block.getLocation().add(0, -1, 0).getBlock().getType() == Material.LOG_2
-                    ) {
-                        block.setType(Material.LEAVES);
-                    }
-                    else {
-                        block.setType(Material.GRASS);
-                    }
-                }
-                gelZonePlaced = false;
-            }
         }
     }
 }

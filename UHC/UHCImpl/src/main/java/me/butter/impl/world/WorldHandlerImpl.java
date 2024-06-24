@@ -78,6 +78,7 @@ public class WorldHandlerImpl implements WorldHandler {
 
             this.world.getWorldBorder().setCenter(new Location(this.world, 0.0D, 0.0D, 0.0D));
             this.world.getWorldBorder().setSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize());
+            this.world.getWorldBorder().setDamageAmount(0.0D);
 
             UHCAPI.getInstance().getGameHandler().getWorldConfig().setWorldGenerated(true);
         }, 20);

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class AuthorizedItemsMenu extends PaginatedMenu {
     public AuthorizedItemsMenu() {
-        super("Règles", 5 * 9);
+        super("Items autorisés", 5 * 9);
     }
 
     @Override

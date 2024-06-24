@@ -1,31 +1,25 @@
 package me.butter.ninjago.roles;
 
-import me.butter.ninjago.roles.list.maitres.Fumee;
-import me.butter.ninjago.roles.list.maitres.Lumiere;
-import me.butter.ninjago.roles.list.maitres.Metal;
-import me.butter.ninjago.roles.list.maitres.Vitesse;
+import me.butter.ninjago.roles.list.maitres.*;
 import me.butter.ninjago.roles.list.ninjas.*;
 import me.butter.ninjago.roles.list.serpents.*;
-import me.butter.ninjago.roles.list.solos.Garmadon;
-import me.butter.ninjago.roles.list.solos.Morro;
-import me.butter.ninjago.roles.list.solos.Skylor;
 import org.bukkit.Material;
 
 public enum RoleEnum {
+    WU(Wu.class, CampEnum.NINJA, Material.STICK, "Wu"),
     LLOYD(Lloyd.class, CampEnum.NINJA, Material.GOLD_SWORD, "Lloyd"),
     KAI(Kai.class, CampEnum.NINJA, Material.FIREBALL, "Kai"),
-    NYA(Nya.class, CampEnum.NINJA, Material.WATER_BUCKET, "Nya"),
+    JAY(Jay.class, CampEnum.NINJA, Material.LAPIS_ORE, "Jay"),
     ZANE(Zane.class, CampEnum.NINJA, Material.ICE, "Zane"),
     COLE(Cole.class, CampEnum.NINJA, Material.BEDROCK, "Cole"),
-    WU(Wu.class, CampEnum.NINJA, Material.STICK, "Wu"),
-    JAY(Jay.class, CampEnum.NINJA, Material.LAPIS_ORE, "Jay"),
+    NYA(Nya.class, CampEnum.NINJA, Material.WATER_BUCKET, "Nya"),
+    MISAKO(Misako.class, CampEnum.NINJA, Material.FEATHER, "Misako"),
     PIXAL(PIXAL.class, CampEnum.NINJA, Material.DIODE, "PIXAL"),
-    MITSAKE(Mitsake.class, CampEnum.NINJA, Material.POTION, "Mitsake"),
+    MYSTAKE(Mystake.class, CampEnum.NINJA, Material.POTION, "Mitsake"),
     DARETH(Dareth.class, CampEnum.NINJA, Material.BOW, "Dareth"),
+    APPRENTI(Apprenti.class, CampEnum.NINJA, Material.LEATHER_HELMET, "Apprenti"),
     ED(Ed.class, CampEnum.NINJA, Material.CLAY, "Ed"),
     FACTEUR(Facteur.class, CampEnum.NINJA, Material.WOOD_DOOR, "Facteur"),
-    APPRENTI(Apprenti.class, CampEnum.NINJA, Material.LEATHER_HELMET, "Apprenti"),
-    MISAKO(Misako.class, CampEnum.NINJA, Material.FEATHER, "Misako"),
 
     PYTHOR(Pythor.class, CampEnum.SNAKE, Material.WATER_LILY, "Pythor"),
     SKALES(Skales.class, CampEnum.SNAKE, Material.BEACON, "Skales"),
@@ -38,14 +32,14 @@ public enum RoleEnum {
     SLITHRAA(Slithraa.class, CampEnum.SNAKE, Material.STAINED_GLASS, "Slithraa"),
     ARCTURUS(Arcturus.class, CampEnum.SNAKE, Material.DARK_OAK_DOOR_ITEM, "Arcturus"),
 
-    VITESSE(Vitesse.class, CampEnum.MASTER, Material.SUGAR, "Griffin Turner (Maitre de la vitesse)"),
-    LUMIERE(Lumiere.class, CampEnum.MASTER, Material.GLOWSTONE, "Invizable (Maitre de la lumière)"),
-    METAL(Metal.class, CampEnum.MASTER, Material.IRON_CHESTPLATE, "Karlof (Maitre du métal)"),
-    FUMEE(Fumee.class, CampEnum.MASTER, Material.FEATHER, "Ash (Maitre de la fumée)"),
-
-    MORRO(Morro.class, CampEnum.SOLO, Material.SLIME_BALL, "Morro"),
-    GARMADON(Garmadon.class, CampEnum.SOLO, Material.OBSIDIAN, "Garmadon"),
-    SKYLOR(Skylor.class, CampEnum.SOLO, Material.FIREWORK, "Skylor"),
+    GRIFFIN(Griffin.class, CampEnum.MASTER, Material.SUGAR, "Griffin Turner"),
+    INVIZABLE(Invizable.class, CampEnum.MASTER, Material.GLOWSTONE, "Invizable"),
+    KARLOF(Karlof.class, CampEnum.MASTER, Material.IRON_CHESTPLATE, "Karlof"),
+    ASH(Ash.class, CampEnum.MASTER, Material.FEATHER, "Ash"),
+//
+//    MORRO(Morro.class, CampEnum.SOLO, Material.SLIME_BALL, "Morro"),
+//    SKYLOR(Skylor.class, CampEnum.SOLO, Material.FIREWORK, "Skylor"),
+//    GARMADON(Garmadon.class, CampEnum.SOLO, Material.OBSIDIAN, "Garmadon"),
     ;
 
     private final Class<? extends NinjagoRole> roleClass;

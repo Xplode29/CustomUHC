@@ -24,7 +24,7 @@ public abstract class EnchantBookPower extends ItemPower {
     public ItemStack getItem() {
         ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta itemMeta = book.getItemMeta();
-        itemMeta.setDisplayName(getName());
+        itemMeta.setDisplayName("§r" + getName());
         ((EnchantmentStorageMeta) itemMeta).addStoredEnchant(enchant, level, true);
         book.setItemMeta(itemMeta);
         return book;

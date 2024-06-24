@@ -17,7 +17,7 @@ public interface Timer {
     boolean isFired(); void setFired(boolean fired);
     void fireTimer();
 
-    void onTimerDone();
+    boolean onTimerDone();
 
     void onUpdate(int timer);
 }

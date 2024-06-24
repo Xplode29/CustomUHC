@@ -11,7 +11,7 @@ public interface PlayerHandler {
 
     UHCPlayer getUHCPlayer(String name); UHCPlayer getUHCPlayer(UUID uuid); UHCPlayer getUHCPlayer(Player player);
 
-    void addPlayer(Player player); void removePlayer(Player player);
+    void addPlayer(Player player); void removePlayer(UHCPlayer player);
 
     List<UHCPlayer> getPlayersInLobby();
 

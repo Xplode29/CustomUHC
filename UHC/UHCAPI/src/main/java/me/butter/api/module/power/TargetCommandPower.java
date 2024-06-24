@@ -12,7 +12,7 @@ public class TargetCommandPower extends CommandPower{
 
     public void onUsePower(UHCPlayer player, String[] args) {
         if(args.length < 2) {
-            player.sendMessage(ChatUtils.ERROR.getMessage("Usage: /ni" + argument + "<joueur>"));
+            player.sendMessage(ChatUtils.ERROR.getMessage("Usage: /n " + argument + "<joueur>"));
             return;
         }
 

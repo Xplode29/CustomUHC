@@ -5,9 +5,13 @@ import me.butter.api.game.GameState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.CustomBlockBreakEvent;
+import net.minecraft.server.v1_8_R3.EntityExperienceOrb;
+import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -77,7 +81,13 @@ public class BlockEvents implements Listener {
                 return;
             }
 
-            event.setExpToDrop(blockBreakEvent.getExpToDrop());
+            event.setExpToDrop(0);
+
+            if(blockBreakEvent.getExpToDrop() > 0) {
+                int value = (int) (blockBreakEvent.getExpToDrop() * (1 + (UHCAPI.getInstance().getGameHandler().getWorldConfig().getExpBoost() / 100f)));
+                World w = ((CraftWorld) blockBreakEvent.getBlockBroken().getWorld()).getHandle();
+                w.addEntity(new EntityExperienceOrb(w, blockBreakEvent.getBlockBroken().getX(), blockBreakEvent.getBlockBroken().getY(), blockBreakEvent.getBlockBroken().getZ(), value));
+            }
 
             if(blockBreakEvent.isModified()) {
                 event.getBlock().setType(Material.AIR);
@@ -116,12 +126,10 @@ public class BlockEvents implements Listener {
 
     @EventHandler
     public void onLeavesDecay(LeavesDecayEvent event) {
-        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
-            final Block b = event.getBlock();
-            if ((new Random()).nextInt(100) <= UHCAPI.getInstance().getGameHandler().getWorldConfig().getAppleDropRate() && b.getType() == Material.LEAVES) {
-                b.setType(Material.AIR);
-                b.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(Material.APPLE, 1));
-            }
+        final Block b = event.getBlock();
+        if ((new Random()).nextInt(100) <= UHCAPI.getInstance().getGameHandler().getWorldConfig().getAppleDropRate() && b.getType() == Material.LEAVES) {
+            b.setType(Material.AIR);
+            b.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(Material.APPLE, 1));
         }
     }
 }

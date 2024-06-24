@@ -3,116 +3,200 @@ package me.butter.ninjago.roles.list.ninjas;
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.Power;
+import me.butter.api.module.power.RightClickItemPower;
+import me.butter.api.module.power.TargetBlockItemPower;
+import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.impl.events.custom.EpisodeEvent;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
-import me.butter.ninjago.items.SpinjitzuPower;
+import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class Cole extends NinjagoRole {
 
-    RockPower rockPower;
+    boolean canBeGhost = false;
+    boolean ghost = false;
+
+    int coups = 0;
 
     public Cole() {
-        super("Cole", "/roles/ninjas/cole", Arrays.asList(
-                new RockPower(),
-                new SpinjitzuPower(ChatColor.GRAY)
-        ));
-        for(Power power : getPowers()) {
-            if(power instanceof RockPower) {
-                rockPower = (RockPower) power;
-                break;
-            }
-        }
+        super("Cole", "/roles/ninjas/cole", new EarthWall(), new SpinjitzuPower());
     }
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Vous possédez Force 1 (20%) permanent"};
+        return new String[]{
+                "A partir du 3eme episode, vous avez 3% de chance de devenir un fantome lors de la mort d'un joueur.",
+                "Lorsque vous etes un fantome, vous avez Faiblesse 1 le jour et Speed 1 la nuit.",
+                "De plus, vous esquivez un coup tous les 10 coups subits."
+        };
     }
 
     @Override
-    public boolean isNinja() {
+    public boolean isElementalMaster() {
         return true;
     }
 
+    @EventHandler
+    public void onNewEpisode(EpisodeEvent event) {
+        if(event.getEpisode() == 3) {
+            canBeGhost = true;
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if(!(event.getEntity() instanceof Player)) return;
+        if(!ghost) return;
+
+        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
+
+        if(getUHCPlayer().equals(uhcPlayer)) {
+            if(coups >= 10) {
+                coups = 0;
+                event.setCancelled(true);
+
+                getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez esquive un coup !"));
+            }
+            else {
+                coups++;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDeath(UHCPlayerDeathEvent event) {
+        if(ghost) return;
+
+        if(canBeGhost) {
+            if(new Random().nextInt(100) <= 3) {
+                ghost = true;
+                getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous etes devenu un fantome !"));
+
+                if(UHCAPI.getInstance().getGameHandler().getGameConfig().isDay()) {
+                    getUHCPlayer().removeStrength(15);
+                }
+                else {
+                    getUHCPlayer().addSpeed(20);
+                }
+            }
+        }
+    }
+
     @Override
-    public void onGiveRole() {
-        getUHCPlayer().addStrength(20);
-    }
-
-    @EventHandler
-    public void onPlayerAttack(EntityDamageByEntityEvent event) {
-        if(!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
-
-        UHCPlayer damaged = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
-        if(damaged.equals(getUHCPlayer())) {
-            if(rockPower.rockActive && rockPower.coups > 0) {
-                rockPower.coups--;
-            } else if (rockPower.rockActive) {
-                getUHCPlayer().removeResi(20);
-                getUHCPlayer().sendMessage(ChatUtils.ERROR.getMessage("Vous avez recu trop de coups"));
-                rockPower.rockActive = false;
-            }
+    public void onDay() {
+        if(ghost) {
+            getUHCPlayer().removeStrength(15);
+            getUHCPlayer().removeSpeed(20);
         }
     }
 
-    @EventHandler
-    public void onPlayerKill(UHCPlayerDeathEvent event) {
-        if(event.getKiller() != null && event.getKiller().equals(getUHCPlayer())) {
-            rockPower.coups += 15;
-            if(rockPower.coups > 60) {
-                rockPower.coups = 60;
-            }
+    @Override
+    public void onNight() {
+        if(ghost) {
+            getUHCPlayer().addStrength(15);
+            getUHCPlayer().addSpeed(20);
         }
     }
 
-    private static class RockPower extends ItemPower {
-        boolean rockActive = false;
-        int coups = 25;
+    private static class EarthWall extends TargetBlockItemPower {
 
-        public RockPower() {
-            super(ChatColor.GRAY + "Rock", Material.NETHER_STAR, 0, -1);
+        public EarthWall() {
+            super(ChatColor.GRAY + "Mur de Terre", Material.CLAY_BALL, 20, 15 * 60, -1);
         }
 
         @Override
         public String[] getDescription() {
-            return new String[] {"Lorsque cet item est activé, vous obtenez 20% de résistance. ",
-                    "Cet item se désactive après avoir recu 25 coups. ",
-                    "Lorsque vous faites un kill, vous obtenez 15 coups supplémentaires, avec un maximum de 60 coups. ",
-                    "Vous pouvez vérifier les coups qu'il vous reste avec un clic gauche."
+            return new String[] {
+                    "Place un mur de 9x9 sur le bloc vise."
+            };
+        }
+
+        @Override
+        public boolean onEnable(UHCPlayer player, Block target, Action clickAction) {
+            Vector dir = player.getPlayer().getEyeLocation().getDirection().setY(0).normalize();
+            Vector orthogonal = new Vector(-dir.getZ(), 0, dir.getX());
+
+            new BukkitRunnable() {
+                int y = target.getY();
+
+                @Override
+                public void run() {
+                    if(y >= target.getY() + 9) {
+                        cancel();
+                        return;
+                    }
+
+                    for(int i = -5; i <= 5; i++) {
+                        Block block = target.getWorld().getBlockAt(
+                                (int) (target.getX() + i * orthogonal.getX()),
+                                y,
+                                (int) (target.getZ() + i * orthogonal.getZ()));
+                        if(block.getType() == Material.AIR) {
+                            if(new Random().nextDouble() < 0.2) block.setType(Material.COBBLESTONE);
+                            else block.setType(Material.STONE);
+                        }
+                    }
+                    y++;
+                }
+            }.runTaskTimer(Ninjago.getInstance(), 0, 2);
+
+            return true;
+        }
+    }
+
+    private static class SpinjitzuPower extends RightClickItemPower {
+
+        public SpinjitzuPower() {
+            super(ChatColor.GRAY + "Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[] {
+                    "À l'activation, vous repoussez tous les joueurs autour de vous dans un rayon de 10 blocks.",
+                    "Vous obtenez 10% de resistance pendant 2 minute."
             };
         }
 
         @Override
         public boolean onEnable(UHCPlayer player, Action clickAction) {
-            if(clickAction == Action.RIGHT_CLICK_AIR || clickAction == Action.RIGHT_CLICK_BLOCK) {
-                if(coups <= 0) {
-                    player.sendMessage(ChatUtils.ERROR.getMessage("Vous avez infligé trop de coups"));
-                    return false;
-                }
-                rockActive = !rockActive;
-                if(rockActive) {
-                    player.addResi(20);
-                    player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Passif activé"));
-                }
-                else {
-                    player.removeResi(20);
-                    player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Passif désactivé"));
+            Location center = player.getPlayer().getLocation();
+
+            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                if(uhcPlayer == null || uhcPlayer == player || uhcPlayer.getPlayer() == null) continue;
+
+                if(uhcPlayer.isNextTo(player, 10)) {
+                    double angle = Math.atan2(uhcPlayer.getLocation().getZ() - center.getZ(), uhcPlayer.getLocation().getX() - center.getX());
+                    Vector newVelocity = new Vector(
+                            1.5 * Math.cos(angle),
+                            0.5,
+                            1.5 * Math.sin(angle)
+                    );
+                    uhcPlayer.getPlayer().setVelocity(newVelocity);
                 }
             }
-            else {
-                player.sendMessage(ChatUtils.ERROR.getMessage("Il vous reste: " + coups + " coups"));
-            }
-            return false;
+
+            player.addResi(10);
+            Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> player.removeResi(10), 2 * 60 * 20);
+
+            ParticleUtils.tornadoEffect(player.getPlayer(), Color.GRAY);
+            return true;
         }
     }
 }

@@ -21,19 +21,8 @@ public class OtherEvents implements Listener {
         UHCPlayer player = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer());
         if (player == null) return;
 
-        if(
-            !player.isAbleToMove() &&
-            (event.getTo().getX() != event.getFrom().getX() || event.getTo().getZ() != event.getFrom().getZ())
-        ) {
-            event.setCancelled(true);
-        }
-
-        if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
-            if (isOutsideOfBorder(event.getTo())) {
-                if(player.getPlayer() != null) {
-                    player.getPlayer().teleport(new Location(player.getPlayer().getWorld(), 0, 90, 0));
-                }
-            }
+        if(!player.isAbleToMove() && (event.getTo().getX() != event.getFrom().getX() || event.getTo().getZ() != event.getFrom().getZ())) {
+            event.setTo(event.getFrom());
         }
     }
 
@@ -42,14 +31,10 @@ public class OtherEvents implements Listener {
         UHCPlayer player = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer());
         if (player == null) return;
 
-        if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
-            if (!event.isCancelled() &&
-                !UHCAPI.getInstance().getGameHandler().getGameConfig().isChatEnabled()
-            ) {
-                player.sendMessage(ChatUtils.ERROR.getMessage("Le chat est actuellement désactivé."));
-                event.setCancelled(true);
-                return;
-            }
+        if (!UHCAPI.getInstance().getGameHandler().getGameConfig().isChatEnabled() && !event.isCancelled()) {
+            player.sendMessage(ChatUtils.ERROR.getMessage("Le chat est actuellement désactivé."));
+            event.setCancelled(true);
+            return;
         }
 
         String prefix = ChatColor.GRAY + player.getName();
@@ -59,8 +44,7 @@ public class OtherEvents implements Listener {
         else if(UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts().contains(player)) {
             prefix = "§lCO-HOST " + player.getName() + "§r";
         }
-        event.setFormat(prefix + ChatUtils.CHAT + ChatColor.translateAlternateColorCodes('&', event.getMessage())
-        );
+        event.setFormat(prefix + ChatUtils.CHAT + ChatColor.translateAlternateColorCodes('&', event.getMessage()));
     }
 
     @EventHandler
@@ -88,13 +72,5 @@ public class OtherEvents implements Listener {
             uhcPlayer.sendTitle("Episode " + event.getEpisode(), ChatColor.GOLD);
             uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.NOTE_PLING, 6.0F, 1.0F);
         }
-    }
-
-    public static boolean isOutsideOfBorder(Location location) {
-        WorldBorder border = location.getWorld().getWorldBorder();
-        double x = location.getX();
-        double z = location.getZ();
-        double size = border.getSize() / 2;
-        return ((x > size || (-x) > size) || (z > size || (-z) > size));
     }
 }

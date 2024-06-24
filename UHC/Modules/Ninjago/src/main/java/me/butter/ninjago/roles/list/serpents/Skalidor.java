@@ -1,5 +1,6 @@
 package me.butter.ninjago.roles.list.serpents;
 
+import me.butter.api.UHCAPI;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
@@ -14,15 +15,20 @@ public class Skalidor extends NinjagoRole {
     UHCPlayer pythor;
 
     public Skalidor() {
-        super("Skalidor", "/roles/serpent/skalidor", Collections.emptyList());
+        super("Skalidor", "/roles/serpent/skalidor");
     }
 
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez Force 1 la nuit ainsi que Resistance 1 permanent. ",
+                "Vous possédez Resistance 1 le jour et Force 1 la nuit.",
                 "A l'annonce des roles, vous obtenez le pseudo de Pythor."
         };
+    }
+
+    @Override
+    public boolean isInList() {
+        return true;
     }
 
     @Override
@@ -42,21 +48,19 @@ public class Skalidor extends NinjagoRole {
 
     @Override
     public void onGiveRole() {
-        getUHCPlayer().addResi(20);
-    }
-
-    @Override
-    public boolean isInList() {
-        return true;
+        if(UHCAPI.getInstance().getGameHandler().getGameConfig().isDay()) getUHCPlayer().addResi(20);
+        else getUHCPlayer().addStrength(15);
     }
 
     @Override
     public void onDay() {
-        getUHCPlayer().removeStrength(20);
+        getUHCPlayer().removeStrength(15);
+        getUHCPlayer().addResi(20);
     }
 
     @Override
     public void onNight() {
-        getUHCPlayer().addStrength(20);
+        getUHCPlayer().addStrength(15);
+        getUHCPlayer().removeResi(20);
     }
 }

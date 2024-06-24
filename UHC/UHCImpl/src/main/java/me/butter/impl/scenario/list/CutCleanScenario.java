@@ -28,7 +28,6 @@ public class CutCleanScenario extends AbstractScenario {
         //ores
         cookedMats.put(Material.IRON_ORE, Material.IRON_INGOT);
         cookedMats.put(Material.GOLD_ORE, Material.GOLD_INGOT);
-        cookedMats.put(Material.QUARTZ_ORE, Material.QUARTZ);
 
         //nice stone
         cookedMats.put(Material.SANDSTONE, Material.SANDSTONE);
@@ -44,6 +43,12 @@ public class CutCleanScenario extends AbstractScenario {
             for(ItemStack item : event.getDrops()) {
                 if(cookedMats.containsKey(item.getType())) {
                     newDrops.add(new ItemStack(cookedMats.get(item.getType()), item.getAmount()));
+
+                    if(cookedMats.get(item.getType()) == Material.IRON_INGOT)
+                        event.setExpToDrop(event.getExpToDrop() + 5);
+                    if(cookedMats.get(item.getType()) == Material.GOLD_ORE)
+                        event.setExpToDrop(event.getExpToDrop() + 8);
+
                     modified = true;
                 } else {
                     newDrops.add(item);
@@ -52,7 +57,6 @@ public class CutCleanScenario extends AbstractScenario {
 
             if(modified) {
                 event.setDrops(newDrops);
-                event.setExpToDrop(event.getExpToDrop() + 5);
             }
         }
     }

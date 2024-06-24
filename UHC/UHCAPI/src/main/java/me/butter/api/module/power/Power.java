@@ -59,6 +59,11 @@ public abstract class Power {
         return cooldown;
     }
 
+    public void reset() {
+        uses = 0;
+        lastTimeUsed = -cooldown;
+    }
+
     public boolean hideCooldowns() {
         return false;
     }

@@ -3,6 +3,8 @@ package me.butter.api.module;
 import me.butter.api.menu.Menu;
 import me.butter.api.module.roles.Role;
 import me.butter.api.module.roles.RoleType;
+import me.butter.api.scoreboard.CustomScoreboard;
+import me.butter.api.tab.CustomTab;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;

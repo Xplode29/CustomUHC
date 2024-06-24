@@ -1,5 +1,6 @@
 package me.butter.ninjago.roles.list.serpents;
 
+import me.butter.api.UHCAPI;
 import me.butter.api.module.power.Power;
 import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.module.roles.Role;
@@ -20,22 +21,14 @@ public class Skales extends NinjagoRole {
 
     UHCPlayer pythor;
 
-    InfectPower infectionPower;
-
     public Skales() {
-        super("Skales", "/roles/serpent/skales", Collections.singletonList(new InfectPower()));
-        for(Power power : getPowers()) {
-            if(power instanceof InfectPower) {
-                infectionPower = (InfectPower) power;
-                break;
-            }
-        }
+        super("Skales", "/roles/serpent/skales", new InfectPower());
     }
 
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez force 1 la nuit. ",
+                "Vous possédez Force 1 la nuit. ",
                 "A l'annonce des roles, vous obtenez le pseudo de Pythor."
         };
     }
@@ -43,6 +36,13 @@ public class Skales extends NinjagoRole {
     @Override
     public List<String> additionalDescription() {
         return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(pythor == null ? "Pas de Pythor" : "Pythor: " + pythor.getName()));
+    }
+
+    @Override
+    public void onGiveRole() {
+        if(!UHCAPI.getInstance().getGameHandler().getGameConfig().isDay()) {
+            getUHCPlayer().addStrength(15);
+        }
     }
 
     @Override
@@ -62,12 +62,12 @@ public class Skales extends NinjagoRole {
 
     @Override
     public void onDay() {
-        getUHCPlayer().removeStrength(20);
+        getUHCPlayer().removeStrength(15);
     }
 
     @Override
     public void onNight() {
-        getUHCPlayer().addStrength(20);
+        getUHCPlayer().addStrength(15);
     }
 
     public static class InfectPower extends TargetCommandPower {
@@ -97,7 +97,7 @@ public class Skales extends NinjagoRole {
             UHCPlayer player, target;
             int timer;
 
-            int timeToInfect = 7 * 60;
+            int timeToInfect = 7;
 
             public InfectRunnable(UHCPlayer player, UHCPlayer target) {
                 this.player = player;
@@ -108,6 +108,8 @@ public class Skales extends NinjagoRole {
 
             @Override
             public void run() {
+                if(target.getPlayer() == null || player.getPlayer() == null) return;
+
                 float progress = (float) timer / timeToInfect;
                 player.sendActionBar(GraphicUtils.getProgressBar((int) (progress * 100), 100, 20, '|', ChatColor.GREEN, ChatColor.GRAY));
 

@@ -20,12 +20,13 @@ public interface UHCPlayer {
     boolean equals(Object obj);
 
     void sendMessage(String message); void sendMessage(BaseComponent component);
-    void sendActionBar(String text); void sendTitle(String text, ChatColor color);
+    void sendActionBar(String text);
+    void sendTitle(String text, ChatColor color);
 
     void openMenu(Menu menu, boolean isPrevMenu);
 
     void revive();
-    void clearPlayer();
+    void resetPlayer();
 
     boolean isNextTo(UHCPlayer player, int radius);
 
@@ -41,9 +42,8 @@ public interface UHCPlayer {
     boolean hasNoFall(); void setNoFall(boolean hasNoFall);
     boolean isAbleToMove(); void setAbleToMove(boolean canMove);
 
-    List<UUID> getKilledPlayers(); void setKilledPlayers(List<UUID> killedPlayers);
+    List<UHCPlayer> getKilledPlayers(); void setKilledPlayers(List<UHCPlayer> killedPlayers);
     void addKilledPlayer(UHCPlayer player); void removeKilledPlayer(UHCPlayer player);
-    void addKilledPlayer(Player player); void removeKilledPlayer(Player player);
 
     Location getSpawnLocation(); void setSpawnLocation(Location location);
     Location getDeathLocation(); void setDeathLocation(Location location);
@@ -59,7 +59,9 @@ public interface UHCPlayer {
     List<Potion> getPotionEffects(); @Deprecated void setPotionEffects(List<Potion> potionEffects);
     void clearEffects();
     void addPotionEffect(PotionEffectType effect, int duration, int level);
+    void addPacketPotionEffect(PotionEffectType effect, int duration, int level);
     void removePotionEffect(PotionEffectType effect);
+    void removePacketPotionEffect(PotionEffectType effect);
     boolean hasPotionEffect(PotionEffectType effect); Potion getPotion(PotionEffectType effect);
 
     int getMaxHealth(); @Deprecated void setMaxHealth(int amount); void addMaxHealth(int amount); void removeMaxHealth(int amount);

@@ -29,8 +29,16 @@ public class ClickableChatHandlerImpl implements ClickableChatHandler, Listener 
 
     @Override
     public void sendToPlayer(ClickableChatCommand command) {
-        command.send();
+        List<ClickableChatCommand> toRemove = new ArrayList<>();
+        for(ClickableChatCommand chatCommand : remainingClickableMessages) {
+            if(chatCommand.getUHCPlayer() == command.getUHCPlayer()) toRemove.add(chatCommand);
+        }
+        for(ClickableChatCommand chatCommand : toRemove) {
+            remainingClickableMessages.remove(chatCommand);
+        }
+
         remainingClickableMessages.add(command);
+        command.send();
     }
 
     @Override
@@ -40,9 +48,7 @@ public class ClickableChatHandlerImpl implements ClickableChatHandler, Listener 
 
             if(chatCommand.getArgument().equals(prefix)) {
                 if(chatCommand.getParametersSize() > args.size()) return;
-                chatCommand.onCommand(args);
-
-                remainingClickableMessages.remove(chatCommand);
+                if(chatCommand.onCommand(args)) remainingClickableMessages.remove(chatCommand);
                 return;
             }
         }

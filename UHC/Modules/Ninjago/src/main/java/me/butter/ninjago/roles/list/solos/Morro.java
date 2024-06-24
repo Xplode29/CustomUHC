@@ -34,7 +34,7 @@ public class Morro extends NinjagoRole {
     FreezePower freezePower;
 
     public Morro() {
-        super("Morro", "/roles/solitaires/morro", Arrays.asList(new FreezePower(), new GhostPower()));
+        super("Morro", "/roles/solitaires/morro", new FreezePower(), new GhostPower());
 
         for(Power power : getPowers()) {
             if(power instanceof GhostPower) ghostPower = (GhostPower) power;
@@ -52,8 +52,13 @@ public class Morro extends NinjagoRole {
                 ChatUtils.LIST_ELEMENT.getMessage("§9Jay§r: Vous obtenez speed 2"),
                 ChatUtils.LIST_ELEMENT.getMessage("§cKai§r: Vous obtenez fire aspect sur votre épée et flame sur votre arc"),
                 ChatUtils.LIST_ELEMENT.getMessage("§8Cole§r: Vous obtenez résistance 1"),
-                ChatUtils.LIST_ELEMENT.getMessage("§3Zane§r: Vous obtenez un passif (/ni freeze).")
+                ChatUtils.LIST_ELEMENT.getMessage("§3Zane§r: Vous obtenez un passif (/n freeze).")
         };
+    }
+
+    @Override
+    public boolean isElementalMaster() {
+        return true;
     }
 
     @Override
@@ -137,7 +142,7 @@ public class Morro extends NinjagoRole {
             addPower(book);
             getUHCPlayer().giveItem(book.getItem(), true);
 
-            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Kai ! /ni role pour plus d'informations."));
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Kai ! /n role pour plus d'informations."));
         }
         if(role instanceof Cole) {
             getUHCPlayer().addResi(20);
@@ -147,7 +152,7 @@ public class Morro extends NinjagoRole {
             freezePower = new FreezePower();
             addPower(freezePower);
 
-            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Zane ! /ni role pour plus d'informations."));
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Zane ! /n role pour plus d'informations."));
         }
     }
 

@@ -32,7 +32,7 @@ public class RulesViewMenu extends PaginatedMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                player.openMenu(new InventoryViewMenu(), true);
+                player.openMenu(new InventoryViewMenu(UHCAPI.getInstance().getGameHandler().getInventoriesConfig().getStartingInventory(), UHCAPI.getInstance().getGameHandler().getInventoriesConfig().getStartingArmor()), true);
             }
         });
         return buttonMap;

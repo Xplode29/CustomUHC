@@ -102,9 +102,6 @@ public class MainMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING) {
-                    UHCAPI.getInstance().getGameHandler().getGameConfig().setStarting(false);
-                }
                 if (UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting()) {
                     UHCAPI.getInstance().reset();
                 }

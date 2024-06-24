@@ -54,75 +54,31 @@ public class DamageHealthEvents implements Listener {
 
     @EventHandler
     public void onPlayerDamaged(EntityDamageByEntityEvent event) {
-        if(!(event.getEntity() instanceof Player)) return;
+        if(event.getDamager() instanceof Player) {
+            UHCPlayer attacker = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
+            if(attacker != null) {
+                event.setDamage(event.getDamage() * (1 + attacker.getStrength() / 100.0f));
+            }
+        }
 
-        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
-            if(!UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) {
-                if (event.getDamager() instanceof Player) {
-                    event.setCancelled(true);
-                }
-                else if(event.getDamager() instanceof Projectile) {
-                    Projectile projectile = (Projectile) event.getDamager();
-                    if(projectile.getShooter() instanceof Player) {
+        if(event.getEntity() instanceof Player) {
+            UHCPlayer victim = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
+            if(victim != null) {
+                event.setDamage(event.getDamage() * (1 - victim.getResi() / 100.0f));
+            }
+
+            if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
+                if(!UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) {
+                    if (event.getDamager() instanceof Player) {
                         event.setCancelled(true);
                     }
+                    else if(event.getDamager() instanceof Projectile) {
+                        Projectile projectile = (Projectile) event.getDamager();
+                        if(projectile.getShooter() instanceof Player) {
+                            event.setCancelled(true);
+                        }
+                    }
                 }
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOW)
-    public void patchDamage(EntityDamageByEntityEvent event) {
-        //After Reduction (Resistance)
-        if(event.getEntity() instanceof Player) {
-            UHCPlayer uhcVictim = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
-            if(uhcVictim != null) {
-                PotionEffect potionEffect = uhcVictim.getPlayer().getActivePotionEffects().stream().filter(
-                        e -> e.getType().equals(PotionEffectType.DAMAGE_RESISTANCE)
-                ).findFirst().orElse(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 0, -1));
-
-                event.setDamage(
-                        EntityDamageEvent.DamageModifier.RESISTANCE,
-                        event.getDamage(EntityDamageEvent.DamageModifier.RESISTANCE) * (1 - uhcVictim.getResi() / 100.0f) / (1 - (potionEffect.getAmplifier() + 1.0) * (1 / 5.0))
-                );
-            }
-        }
-
-        //Before Reduction (Strength / Weakness)
-        if(event.getDamager() instanceof Player) {
-            UHCPlayer uhcDamager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
-            if(uhcDamager != null) {
-                //Remove damages from others
-                double damageBeforeReduction = event.getDamage();
-                ItemStack itemStack = uhcDamager.getPlayer().getInventory().getItemInHand();
-                if(itemStack != null && itemStack.containsEnchantment(Enchantment.DAMAGE_ALL)) {
-                    damageBeforeReduction -= itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 1.25;
-                }
-
-                boolean isCrit = uhcDamager.getPlayer().getFallDistance() > 0.0F && !uhcDamager.getPlayer().isOnGround() && uhcDamager.getPlayer() instanceof EntityLiving && !uhcDamager.getPlayer().hasPotionEffect(PotionEffectType.BLINDNESS) && uhcDamager.getPlayer().getVehicle() == null;
-                if(isCrit) damageBeforeReduction /= 1.5;
-
-                //Modify Damages with potions
-                //Remove Strength
-                PotionEffect potionEffect = uhcDamager.getPlayer().getActivePotionEffects().stream().filter(
-                        e -> e.getType().equals(PotionEffectType.INCREASE_DAMAGE)
-                ).findFirst().orElse(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 0, -1));
-                damageBeforeReduction /= (1 + 1.3 * (potionEffect.getAmplifier() + 1.0));
-
-                //Remove Weakness
-                potionEffect = uhcDamager.getPlayer().getActivePotionEffects().stream().filter(
-                        e -> e.getType().equals(PotionEffectType.WEAKNESS)
-                ).findFirst().orElse(new PotionEffect(PotionEffectType.WEAKNESS, 0, -1));
-                damageBeforeReduction += (0.5 * (potionEffect.getAmplifier() + 1.0));
-
-                //Add damages from others
-                if(isCrit) damageBeforeReduction *= 1.5;
-
-                if(itemStack != null && itemStack.containsEnchantment(Enchantment.DAMAGE_ALL)) {
-                    damageBeforeReduction += itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 1.25;
-                }
-
-                event.setDamage(damageBeforeReduction * (1 + uhcDamager.getStrength() / 100.0f));
             }
         }
     }
@@ -180,14 +136,14 @@ public class DamageHealthEvents implements Listener {
             victim.teleport(uhcVictim.getDeathLocation());
 
             victim.setGameMode(GameMode.SPECTATOR);
-            uhcVictim.setPlayerState(PlayerState.DEAD);
 
             EventUtils.callEvent(deathEvent);
         }, 1L);
 
         Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
-            if(uhcVictim.getPlayerState() != PlayerState.DEAD) return;
             if(!deathEvent.isCancelled()) {
+                uhcVictim.setPlayerState(PlayerState.DEAD);
+
                 for (ItemStack item : drops) {
                     uhcVictim.getDeathLocation().getWorld().dropItemNaturally(uhcVictim.getDeathLocation(), item);
                 }
@@ -323,10 +279,8 @@ public class DamageHealthEvents implements Listener {
 
     @EventHandler
     public void onRegainHeal(EntityRegainHealthEvent event) {
-        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
-            if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED || event.getRegainReason() == EntityRegainHealthEvent.RegainReason.EATING) {
-                event.setCancelled(true);
-            }
+        if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED || event.getRegainReason() == EntityRegainHealthEvent.RegainReason.EATING) {
+            event.setCancelled(true);
         }
     }
 }

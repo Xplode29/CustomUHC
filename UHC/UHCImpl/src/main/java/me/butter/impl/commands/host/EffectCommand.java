@@ -45,6 +45,10 @@ public class EffectCommand extends AbstractCommand {
                 target.addResi(amount);
                 return;
             }
+            else if(args[3].equalsIgnoreCase("coeurs")) {
+                target.addMaxHealth(amount);
+                return;
+            }
         }
         else if(args[2].equalsIgnoreCase("remove")) {
             if(args[3].equalsIgnoreCase("speed")) {
@@ -57,6 +61,10 @@ public class EffectCommand extends AbstractCommand {
             }
             else if(args[3].equalsIgnoreCase("resistance")) {
                 target.removeResi(amount);
+                return;
+            }
+            else if(args[3].equalsIgnoreCase("coeurs")) {
+                target.removeMaxHealth(amount);
                 return;
             }
         }
@@ -73,7 +81,7 @@ public class EffectCommand extends AbstractCommand {
             return Lists.newArrayList("add", "remove");
         }
         if(args.length == 4) {
-            return Lists.newArrayList("speed", "force", "resistance");
+            return Lists.newArrayList("speed", "force", "resistance", "coeurs");
         }
         return new ArrayList<>();
     }

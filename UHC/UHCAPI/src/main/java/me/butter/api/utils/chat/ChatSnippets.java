@@ -34,7 +34,7 @@ public class ChatSnippets {
             for(Power power : role.getPowers()) {
                 if(power instanceof ItemPower && power.showPower()) {
                     player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage(
-                            power.getName() + "§r: " + String.join(" ", power.getDescription()) +
+                            power.getName() + "§r: " + String.join("\n ", power.getDescription()) +
                                     (power.hideCooldowns() ? "" : (
                                         " (" + ((power.getMaxUses() > 0) ? (power.getMaxUses() + " Utilisation(s)") : "Utilisation infinie") +
                                         " / " + ((power.getCooldown() > 0) ? (GraphicUtils.convertToAccurateTime(power.getCooldown())) : "Pas de cooldown") + ")"
@@ -52,7 +52,7 @@ public class ChatSnippets {
                 if(power instanceof CommandPower && power.showPower()) {
                     CommandPower commandPower = (CommandPower) power;
                     player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage(
-                            power.getName() + "§r (/ni " + commandPower.getArgument() + "): " + String.join(" ", power.getDescription()) +
+                            power.getName() + "§r (/n " + commandPower.getArgument() + "): " + String.join("\n ", power.getDescription()) +
                                     (power.hideCooldowns() ? "" : (
                                         " (" + ((power.getMaxUses() > 0) ? (power.getMaxUses() + " Utilisation(s)") : "Utilisation infinie") +
                                         " / " + ((power.getCooldown() > 0) ? (GraphicUtils.convertToAccurateTime(power.getCooldown())) : "Pas de cooldown") + ")"
@@ -86,7 +86,7 @@ public class ChatSnippets {
         Bukkit.broadcastMessage(ChatUtils.LINE + "");
         Bukkit.broadcastMessage("");
         Bukkit.broadcastMessage(ChatUtils.LIST_ELEMENT.getMessage("§rLe joueur " + uhcPlayer.getName() + "§r est mort."));
-        if(uhcPlayer.getRole() != null) Bukkit.broadcastMessage(ChatUtils.LIST_ELEMENT.getMessage("§rIl était " + uhcPlayer.getRole().getName()));
+        if(uhcPlayer.getRole() != null) Bukkit.broadcastMessage(ChatUtils.LIST_ELEMENT.getMessage("§rIl était " + uhcPlayer.getRole().getCamp().getPrefix() + uhcPlayer.getRole().getName()));
         Bukkit.broadcastMessage("");
         Bukkit.broadcastMessage(ChatUtils.LINE + "");
     }

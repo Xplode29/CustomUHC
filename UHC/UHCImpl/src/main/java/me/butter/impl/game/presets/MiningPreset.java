@@ -17,6 +17,7 @@ public class MiningPreset extends AbstractPreset {
         addToStartingInventory(4, new ItemStack(Material.WATER_BUCKET));
         addToStartingInventory(5, new ItemStack(Material.COOKED_BEEF, 64));
         addToStartingInventory(6, new ItemStack(Material.ARROW, 64));
+        addToStartingInventory(7, new ItemStack(Material.BOOK, 12));
 
         addToStartingInventory(15, new ItemStack(Material.LOG, 64));
         addToStartingInventory(16, new ItemStack(Material.LOG, 64));

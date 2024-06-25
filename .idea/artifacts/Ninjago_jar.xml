@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="Ninjago:jar">
-    <output-path>$PROJECT_DIR$/../../../Minecraft/LocalHost/plugins</output-path>
+    <output-path>$USER_HOME$/Documents/Minecraft Server/plugins</output-path>
     <root id="archive" name="Ninjago.jar">
       <element id="module-output" name="Ninjago" />
       <element id="library" level="project" name="Maven Shade: me.butter:UHCImpl:1.0-SNAPSHOT" />

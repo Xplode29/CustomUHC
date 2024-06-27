@@ -1,14 +1,18 @@
 package me.butter.ninjago.roles.list.solos;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.goldenNinja.ChatEffectChooser;
 import me.butter.impl.events.custom.EpisodeEvent;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.event.EventHandler;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,27 +21,19 @@ import java.util.List;
 public class Skylor extends NinjagoRole {
 
     public Skylor() {
-        super("Skylor", "/roles/solitaires/skylor");
+        super("Skylor", "/roles/solitaires/skylor", new CopyCommand());
     }
 
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Vous avez Force et speed permanent",
-                "A chaque début d'épisode, vous obtenez les effets et le pseudo d'un joueur aléatoire dans un rayon de 100 blocks. ",
-                "A chaque kill, vous pouvez choisir 5% d'un effet de votre choix (avec maximum 40% par effet)"
+                "A chaque début d'épisode, vous obtenez les effets et le pseudo d'un joueur aléatoire dans un rayon de 100 blocks. "
         };
     }
 
     @Override
     public boolean isElementalMaster() {
         return true;
-    }
-
-    @Override
-    public void onGiveRole() {
-        getUHCPlayer().addSpeed(20);
-        getUHCPlayer().addStrength(20);
     }
 
     @EventHandler
@@ -64,9 +60,39 @@ public class Skylor extends NinjagoRole {
         }
     }
 
-    @EventHandler
-    public void onKillPlayer(UHCPlayerDeathEvent event) {
-        if(!event.getKiller().equals(getUHCPlayer())) return;
-        UHCAPI.getInstance().getClickableChatHandler().sendToPlayer(new ChatEffectChooser(getUHCPlayer(), 5, 40));
+    public static class CopyCommand extends TargetCommandPower {
+        public CopyCommand() {
+            super("Copie", "copie", 10 * 60, -1);
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[] {
+                    "Copie les effets du joueur ciblé pendant 10 minutes."
+            };
+        }
+
+        @Override
+        public boolean onEnable(UHCPlayer player, UHCPlayer target, String[] args) {
+            for(Potion potion : target.getPotionEffects()) {
+                player.addPotionEffect(potion.getEffect(), potion.getDuration(), potion.getLevel());
+            }
+            player.addResi(target.getResi());
+            player.addStrength(target.getStrength());
+            player.addSpeed(target.getSpeed());
+
+            player.addMaxHealth(target.getMaxHealth() - 20);
+            player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Vous avez copie les effets de " + target.getName()));
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    player.clearEffects();
+                    player.removeMaxHealth(player.getMaxHealth() - 20);
+                }
+            }.runTaskLater(Ninjago.getInstance(), 10 * 60 * 20);
+
+            return true;
+        }
     }
 }

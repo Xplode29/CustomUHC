@@ -3,6 +3,7 @@ package me.butter.ninjago.roles;
 import me.butter.ninjago.roles.list.maitres.*;
 import me.butter.ninjago.roles.list.ninjas.*;
 import me.butter.ninjago.roles.list.serpents.*;
+import me.butter.ninjago.roles.list.solos.*;
 import org.bukkit.Material;
 
 public enum RoleEnum {
@@ -36,10 +37,10 @@ public enum RoleEnum {
     INVIZABLE(Invizable.class, CampEnum.MASTER, Material.GLOWSTONE, "Invizable"),
     KARLOF(Karlof.class, CampEnum.MASTER, Material.IRON_CHESTPLATE, "Karlof"),
     ASH(Ash.class, CampEnum.MASTER, Material.FEATHER, "Ash"),
-//
-//    MORRO(Morro.class, CampEnum.SOLO, Material.SLIME_BALL, "Morro"),
-//    SKYLOR(Skylor.class, CampEnum.SOLO, Material.FIREWORK, "Skylor"),
-//    GARMADON(Garmadon.class, CampEnum.SOLO, Material.OBSIDIAN, "Garmadon"),
+
+    MORRO(Morro.class, CampEnum.SOLO, Material.SLIME_BALL, "Morro"),
+    SKYLOR(Skylor.class, CampEnum.SOLO, Material.FIREWORK, "Skylor"),
+    //GARMADON(Garmadon.class, CampEnum.SOLO, Material.OBSIDIAN, "Garmadon"),
     ;
 
     private final Class<? extends NinjagoRole> roleClass;

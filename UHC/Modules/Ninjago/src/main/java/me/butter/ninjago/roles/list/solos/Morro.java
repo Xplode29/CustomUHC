@@ -1,10 +1,8 @@
 package me.butter.ninjago.roles.list.solos;
 
+import com.google.common.collect.ImmutableMap;
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.CommandPower;
-import me.butter.api.module.power.EnchantBookPower;
-import me.butter.api.module.power.Power;
-import me.butter.api.module.power.RightClickItemPower;
+import me.butter.api.module.power.*;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ItemBuilder;
@@ -34,11 +32,9 @@ public class Morro extends NinjagoRole {
     FreezePower freezePower;
 
     public Morro() {
-        super("Morro", "/roles/solitaires/morro", new FreezePower(), new GhostPower());
+        super("Morro", "/roles/solitaires/morro");
+        addPower(ghostPower = new GhostPower());
 
-        for(Power power : getPowers()) {
-            if(power instanceof GhostPower) ghostPower = (GhostPower) power;
-        }
         ninjasTimers = new HashMap<>();
     }
 
@@ -68,7 +64,7 @@ public class Morro extends NinjagoRole {
 
     @Override
     public void onGiveRole() {
-        getUHCPlayer().addStrength(20);
+        getUHCPlayer().addStrength(15);
         getUHCPlayer().addMaxHealth(4);
 
         new BukkitRunnable() {
@@ -96,7 +92,6 @@ public class Morro extends NinjagoRole {
             else if(role instanceof Kai) ninjasTimers.put(role.getUHCPlayer(), 0);
             else if(role instanceof Cole) ninjasTimers.put(role.getUHCPlayer(), 0);
             else if(role instanceof Zane) ninjasTimers.put(role.getUHCPlayer(), 0);
-
             if(role instanceof Wu) wu = role.getUHCPlayer();
         }
     }
@@ -138,7 +133,7 @@ public class Morro extends NinjagoRole {
             addPower(bow);
             getUHCPlayer().giveItem(bow.getItem(), true);
 
-            FireAspectBook book = new FireAspectBook();
+            FlameSword book = new FlameSword();
             addPower(book);
             getUHCPlayer().giveItem(book.getItem(), true);
 
@@ -149,43 +144,35 @@ public class Morro extends NinjagoRole {
             getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu 20% de resistance"));
         }
         if(role instanceof Zane) {
-            freezePower = new FreezePower();
-            addPower(freezePower);
-
+            addPower(freezePower = new FreezePower());
             getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Zane ! /n role pour plus d'informations."));
         }
     }
 
-    private static class FlameBow extends RightClickItemPower {
+    private static class FlameBow extends EnchantedItemPower {
 
         public FlameBow() {
-            super("Arc de flamme", Material.BOW, 0, -1);
+            super("Arc de flamme", Material.BOW, ImmutableMap.of(Enchantment.ARROW_DAMAGE, 3, Enchantment.ARROW_FIRE, 1));
         }
 
         @Override
         public String[] getDescription() {
-            return new String[]{"Un arc enchanté Power 3 Flame 1."};
-        }
-
-        @Override
-        public ItemStack getItem() {
-            return new ItemBuilder(Material.BOW)
-                    .setName(getName())
-                    .addEnchant(Enchantment.ARROW_DAMAGE, 3)
-                    .addEnchant(Enchantment.ARROW_FIRE, 1)
-                    .setUnbreakable()
-                    .toItemStack();
+            return new String[]{
+                    "Un arc enchanté Power 2 Flame 1."
+            };
         }
     }
 
-    private static class FireAspectBook extends EnchantBookPower {
-        public FireAspectBook() {
-            super("Livre Fire Aspect", Enchantment.FIRE_ASPECT, 1);
+    private static class FlameSword extends EnchantedItemPower {
+        public FlameSword() {
+            super("Epee des flammes", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 3, Enchantment.FIRE_ASPECT, 1));
         }
 
         @Override
         public String[] getDescription() {
-            return new String[]{"Un livre enchanté fire aspect 1. Il est possible de le fusionner avec son épée en diamant."};
+            return new String[]{
+                    "Une epee enchantee Fire Aspect 1."
+            };
         }
     }
 

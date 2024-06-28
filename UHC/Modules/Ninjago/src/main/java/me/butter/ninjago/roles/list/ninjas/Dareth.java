@@ -1,25 +1,18 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import com.google.common.collect.ImmutableMap;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.EnchantedItemPower;
-import me.butter.api.module.power.ItemPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ItemBuilder;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.EpisodeEvent;
-import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.Collections;
 
 public class Dareth extends NinjagoRole {
+
     public Dareth() {
         super("Dareth", "/roles/ninjas/dareth", new Bow());
     }

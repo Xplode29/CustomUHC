@@ -17,17 +17,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Karlof extends NinjagoRole {
 
-    List<String> maitres;
-
-    SteelPower steelPower;
+    private List<String> maitres;
+    private boolean steelActive = false;
+    private int steelTimer = 3 * 60;
 
     public Karlof() {
         super("Karlof", "/roles/alliance-des-elements/karlof");
-        addPower(steelPower = new SteelPower());
+        addPower(new SteelPower());
     }
 
     @Override
@@ -55,11 +54,11 @@ public class Karlof extends NinjagoRole {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(steelPower.steelActive) {
-                    steelPower.steelTimer--;
+                if(steelActive) {
+                    steelTimer--;
 
-                    if(steelPower.steelTimer <= 0) {
-                        steelPower.steelActive = false;
+                    if(steelTimer <= 0) {
+                        steelActive = false;
                         getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous n'avez plus assez de temps, votre blindage s'est désactivé !"));
                     }
                 }
@@ -81,14 +80,12 @@ public class Karlof extends NinjagoRole {
     @EventHandler
     public void onPlayerDeath(UHCPlayerDeathEvent event) {
         if(getUHCPlayer().equals(event.getKiller())) {
-            steelPower.steelTimer += 30;
+            steelTimer += 30;
             getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez gagnez 30 secondes d'utilisation supplémentaires"));
         }
     }
 
-    private static class SteelPower extends ItemPower {
-        boolean steelActive = false;
-        int steelTimer = 3 * 60;
+    private class SteelPower extends ItemPower {
 
         public SteelPower() {
             super("§3Blindage", Material.NETHER_STAR, 0, -1);

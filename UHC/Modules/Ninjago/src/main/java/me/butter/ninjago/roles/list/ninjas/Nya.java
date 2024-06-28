@@ -3,7 +3,6 @@ package me.butter.ninjago.roles.list.ninjas;
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.EnchantBookPower;
 import me.butter.api.module.power.ItemPower;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.GraphicUtils;
@@ -25,16 +24,16 @@ import java.util.List;
 
 public class Nya extends NinjagoRole {
 
-    int maxBookTimer = 5 * 60;
-    boolean bookGiven = false;
+    private int samuraiTimer = 0, maxSamuraiTimer = 2 * 60;
+    private final int maxBookTimer = 5 * 60;
 
-    UHCPlayer finalKay;
+    private boolean bookGiven = false, samuraiActive = false;
 
-    SamuraiPower samuraiPower;
+    private UHCPlayer finalKay;
 
     public Nya() {
         super("Nya", "/roles/ninjas/nya");
-        addPower(samuraiPower = new SamuraiPower());
+        addPower(new SamuraiPower());
     }
 
     @Override
@@ -115,32 +114,10 @@ public class Nya extends NinjagoRole {
     public void onPlayerDeath(UHCPlayerDeathEvent event) {
         if(event.getKiller() != getUHCPlayer()) return;
 
-        samuraiPower.maxSamuraiTimer += 30;
+        maxSamuraiTimer += 30;
     }
 
-    private static class DepthStriderBook extends EnchantBookPower {
-        public DepthStriderBook() {
-            super("§rLivre Depth Strider 3", Enchantment.DEPTH_STRIDER, 3);
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[]{
-                    "Un livre enchanté Depth Strider 3. Il est possible de le fusionner avec une piece en diamant."
-            };
-        }
-
-        @Override
-        public boolean showPower() {
-            return false;
-        }
-    }
-
-    private static class SamuraiPower extends ItemPower {
-
-        boolean samuraiActive = false;
-        int samuraiTimer = 0;
-        public int maxSamuraiTimer = 2 * 60;
+    private class SamuraiPower extends ItemPower {
 
         SamuraiTimer timer;
 
@@ -216,6 +193,24 @@ public class Nya extends NinjagoRole {
                     }
                 }
             }
+        }
+    }
+
+    private static class DepthStriderBook extends EnchantBookPower {
+        public DepthStriderBook() {
+            super("§rLivre Depth Strider 3", Enchantment.DEPTH_STRIDER, 3);
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[]{
+                    "Un livre enchanté Depth Strider 3. Il est possible de le fusionner avec une piece en diamant."
+            };
+        }
+
+        @Override
+        public boolean showPower() {
+            return false;
         }
     }
 }

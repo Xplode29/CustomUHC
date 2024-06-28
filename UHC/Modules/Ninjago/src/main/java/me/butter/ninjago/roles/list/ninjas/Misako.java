@@ -5,8 +5,6 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.ninjago.menu.MisakoMenu;
 import me.butter.ninjago.roles.NinjagoRole;
 
-import java.util.Collections;
-
 public class Misako extends NinjagoRole {
     public Misako() {
         super("Misako", "/roles/ninjas/misako", new InventoryCommand());

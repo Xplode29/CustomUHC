@@ -1,11 +1,8 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.ItemPower;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.power.TargetBlockItemPower;
-import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
@@ -22,9 +19,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class Cole extends NinjagoRole {

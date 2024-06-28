@@ -77,13 +77,13 @@ public class PresetsMenu extends AbstractMenu {
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setDiamondLimit(0);
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setExpBoost(0);
                 UHCAPI.getInstance().getGameHandler().getGameConfig().setDayCycleActivated(true);
-                UHCAPI.getInstance().getGameHandler().getGameConfig().setDayDuration(30);
-                UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(60);
+                UHCAPI.getInstance().getGameHandler().getGameConfig().setDayDuration(60);
+                UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(2 * 60);
 
                 UHCAPI.getInstance().getTimerHandler().getTimer(InvincibilityTimer.class).setMaxTimer(60);
-                UHCAPI.getInstance().getTimerHandler().getTimer(RoleTimer.class).setMaxTimer(2 * 60);
-                UHCAPI.getInstance().getTimerHandler().getTimer(PVPTimer.class).setMaxTimer(3 * 60);
-                UHCAPI.getInstance().getTimerHandler().getTimer(MeetupTimer.class).setMaxTimer(3 * 60);
+                UHCAPI.getInstance().getTimerHandler().getTimer(RoleTimer.class).setMaxTimer(30);
+                UHCAPI.getInstance().getTimerHandler().getTimer(PVPTimer.class).setMaxTimer(60);
+                UHCAPI.getInstance().getTimerHandler().getTimer(MeetupTimer.class).setMaxTimer(60);
                 UHCAPI.getInstance().getTimerHandler().getTimer(BorderTimer.class).setMaxTimer(10 * 60);
             }
         });

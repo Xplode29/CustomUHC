@@ -16,8 +16,6 @@ import org.bukkit.util.Vector;
 
 public class Kai extends NinjagoRole {
 
-    boolean nextToNya;
-
     public Kai() {
         super("Kai", "/roles/ninjas/kai", new FlameBow(), new FlameSword(), new SpinjitzuPower());
     }

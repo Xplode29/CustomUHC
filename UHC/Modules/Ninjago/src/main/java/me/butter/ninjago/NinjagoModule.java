@@ -30,7 +30,7 @@ public class NinjagoModule implements Module {
 
     @Override
     public String getCreator() {
-        return "Dev: Butter | GD: ISimpForNezuko, ";
+        return "Dev: ButterOnPancakes | GD: ISimpForNezuko";
     }
 
     @Override

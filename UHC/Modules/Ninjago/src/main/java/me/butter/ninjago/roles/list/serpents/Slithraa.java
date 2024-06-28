@@ -15,9 +15,8 @@ import java.util.List;
 
 public class Slithraa extends NinjagoRole {
 
-    boolean hadEffects = false;
-
-    UHCPlayer skales;
+    private boolean hadEffects = false;
+    private UHCPlayer skales;
 
     public Slithraa() {
         super("Slithraa", "/roles/serpent/slithraa");

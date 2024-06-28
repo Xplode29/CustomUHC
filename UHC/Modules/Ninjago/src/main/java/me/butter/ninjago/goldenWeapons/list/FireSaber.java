@@ -4,7 +4,6 @@ import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.goldenWeapons.AbstractGoldenWeapon;
-import me.butter.ninjago.roles.list.ninjas.Apprenti;
 import me.butter.ninjago.roles.list.ninjas.Kai;
 import me.butter.ninjago.roles.list.ninjas.Lloyd;
 import org.bukkit.Material;

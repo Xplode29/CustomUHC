@@ -6,19 +6,13 @@ import me.butter.api.module.power.EnchantedItemPower;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ParticleUtils;
-import me.butter.api.utils.chat.ChatUtils;
-import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
@@ -29,7 +23,7 @@ import java.util.Random;
 
 public class Wu extends NinjagoRole {
 
-    UHCPlayer ninja;
+    private UHCPlayer ninja;
 
     public Wu() {
         super("Wu", "/roles/ninjas/wu", new StickPower(), new SpinjitzuPower());

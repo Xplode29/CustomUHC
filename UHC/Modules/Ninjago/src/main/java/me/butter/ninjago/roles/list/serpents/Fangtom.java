@@ -3,7 +3,6 @@ package me.butter.ninjago.roles.list.serpents;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import me.butter.api.module.power.CommandPower;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
@@ -13,20 +12,17 @@ import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.Bukkit;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Fangtom extends NinjagoRole {
 
-    UHCPlayer pythor, fangdam;
+    private UHCPlayer pythor, fangdam;
 
-    boolean nextToDuo;
-
-    FangChat fangChat;
+    private boolean nextToDuo;
 
     public Fangtom() {
         super("Fangtom", "/roles/serpent/fangtom");
-        addPower(fangChat = new FangChat());
+        addPower(new FangChat());
     }
 
     @Override
@@ -59,7 +55,6 @@ public class Fangtom extends NinjagoRole {
         }
 
         if (fangdam != null) {
-            fangChat.fangdam = fangdam;
             Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {
                 if(fangdam.getPlayerState() == PlayerState.DEAD && !nextToDuo) return;
                 if(getUHCPlayer().getPlayer() == null || fangdam.getPlayer() == null) {
@@ -86,9 +81,7 @@ public class Fangtom extends NinjagoRole {
         }
     }
 
-    private static class FangChat extends CommandPower {
-
-        UHCPlayer fangdam;
+    private class FangChat extends CommandPower {
 
         public FangChat() {
             super("Chat avec Fangdam", "chat", 0, -1);

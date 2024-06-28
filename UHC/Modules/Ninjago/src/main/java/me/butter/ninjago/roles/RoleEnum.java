@@ -1,9 +1,14 @@
 package me.butter.ninjago.roles;
 
-import me.butter.ninjago.roles.list.maitres.*;
+import me.butter.ninjago.roles.list.maitres.Ash;
+import me.butter.ninjago.roles.list.maitres.Griffin;
+import me.butter.ninjago.roles.list.maitres.Invizable;
+import me.butter.ninjago.roles.list.maitres.Karlof;
 import me.butter.ninjago.roles.list.ninjas.*;
 import me.butter.ninjago.roles.list.serpents.*;
-import me.butter.ninjago.roles.list.solos.*;
+import me.butter.ninjago.roles.list.solos.Garmadon;
+import me.butter.ninjago.roles.list.solos.Morro;
+import me.butter.ninjago.roles.list.solos.Skylor;
 import org.bukkit.Material;
 
 public enum RoleEnum {
@@ -40,7 +45,7 @@ public enum RoleEnum {
 
     MORRO(Morro.class, CampEnum.SOLO, Material.SLIME_BALL, "Morro"),
     SKYLOR(Skylor.class, CampEnum.SOLO, Material.FIREWORK, "Skylor"),
-    //GARMADON(Garmadon.class, CampEnum.SOLO, Material.OBSIDIAN, "Garmadon"),
+    GARMADON(Garmadon.class, CampEnum.SOLO, Material.OBSIDIAN, "Garmadon"),
     ;
 
     private final Class<? extends NinjagoRole> roleClass;

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Skalidor extends NinjagoRole {
 
-    UHCPlayer pythor;
+    private UHCPlayer pythor;
 
     public Skalidor() {
         super("Skalidor", "/roles/serpent/skalidor");

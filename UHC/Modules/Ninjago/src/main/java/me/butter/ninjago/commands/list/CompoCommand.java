@@ -1,7 +1,6 @@
 package me.butter.ninjago.commands.list;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.game.GameState;
 import me.butter.api.module.roles.RoleType;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
@@ -10,9 +9,7 @@ import me.butter.impl.timer.list.RoleTimer;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.CampEnum;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CompoCommand extends AbstractCommand {

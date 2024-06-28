@@ -3,7 +3,6 @@ package me.butter.ninjago.roles.list.ninjas;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
@@ -14,16 +13,16 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.Collections;
 import java.util.List;
 
 public class Facteur extends NinjagoRole {
 
-    LetterCommand letterCommand;
+    int messageCount = 0, timeToSend = 2 * 60;
+    boolean canSendMessage = true;
 
     public Facteur() {
         super("Facteur", "/roles/ninjas/facteur");
-        addPower(letterCommand = new LetterCommand());
+        addPower(new LetterCommand());
     }
 
     @Override
@@ -62,19 +61,16 @@ public class Facteur extends NinjagoRole {
 
     @Override
     public void onDay() {
-        letterCommand.messageCount = 0;
-        letterCommand.canSendMessage = true;
+        messageCount = 0;
+        canSendMessage = true;
     }
 
     @Override
     public void onNight() {
-        letterCommand.canSendMessage = false;
+        canSendMessage = false;
     }
 
-    private static class LetterCommand extends TargetCommandPower {
-
-        int messageCount = 0, timeToSend = 2 * 60;
-        boolean canSendMessage = true;
+    private class LetterCommand extends TargetCommandPower {
 
         public LetterCommand() {
             super("Lettre", "lettre", 0, -1);

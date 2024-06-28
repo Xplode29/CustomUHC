@@ -1,7 +1,9 @@
 package me.butter.ninjago.roles.list.ninjas;
 
+import com.google.common.collect.ImmutableMap;
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.EnchantBookPower;
+import me.butter.api.module.power.EnchantedItemPower;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
@@ -22,8 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -34,8 +34,8 @@ import java.util.Random;
 
 public class Apprenti extends NinjagoRole {
 
-    boolean hasMaster = false, isKaiMaster = false, isZaneMaster = false, isWuMaster = false;
-    UHCPlayer master;
+    private boolean hasMaster = false, isKaiMaster = false, isZaneMaster = false, isWuMaster = false;
+    private UHCPlayer master;
 
     public Apprenti() {
         super("Apprenti", "/roles/ninjas/apprenti-du-dojo");
@@ -261,10 +261,9 @@ public class Apprenti extends NinjagoRole {
         }
     }
 
-    private static class StickPower extends RightClickItemPower {
-
+    private static class StickPower extends EnchantedItemPower {
         public StickPower() {
-            super("§eBaton", Material.DIAMOND_SWORD, 0, -1);
+            super("§eBaton", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 4));
         }
 
         @Override
@@ -272,28 +271,6 @@ public class Apprenti extends NinjagoRole {
             return new String[]{
                     "Une épée en diamant sharpness 4"
             };
-        }
-
-        @Override
-        public boolean doesCancelEvent() {
-            return false;
-        }
-
-        @Override
-        public boolean showPower() {
-            return false;
-        }
-
-        @Override
-        public ItemStack getItem() {
-            ItemStack goldenSword = new ItemStack(Material.DIAMOND_SWORD);
-            ItemMeta itemMeta = goldenSword.getItemMeta();
-
-            itemMeta.spigot().setUnbreakable(true);
-            itemMeta.addEnchant(Enchantment.DAMAGE_ALL, 4, true);
-            itemMeta.setDisplayName("§r" + getName());
-            goldenSword.setItemMeta(itemMeta);
-            return goldenSword;
         }
     }
 

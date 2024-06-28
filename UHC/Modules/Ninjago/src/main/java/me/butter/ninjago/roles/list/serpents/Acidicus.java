@@ -1,11 +1,9 @@
 package me.butter.ninjago.roles.list.serpents;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;
 import me.butter.api.module.power.EnchantedItemPower;
-import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
@@ -21,22 +19,19 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Acidicus extends NinjagoRole {
 
-    private VeninCommand command;
-    private CrochetSword sword;
-    UHCPlayer pythor;
-
-    int coups = 0;
+    private UHCPlayer pythor;
+    private int coups = 0;
+    private boolean veninActive = false;
+    private final CrochetSword crochetSword;
 
     public Acidicus() {
         super("Acidicus", "/roles/serpent/acidicus");
-        addPower(command = new VeninCommand());
-        addPower(sword = new CrochetSword());
+        addPower(new VeninCommand());
+        addPower(crochetSword = new CrochetSword());
     }
 
     @Override
@@ -92,8 +87,8 @@ public class Acidicus extends NinjagoRole {
         UHCPlayer damager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
         UHCPlayer damaged = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
 
-        if(damager.equals(getUHCPlayer()) && damaged != null && ((Player) event.getDamager()).getItemInHand().isSimilar(sword.getItem())) {
-            if(command.veninActive) {
+        if(damager.equals(getUHCPlayer()) && damaged != null && ((Player) event.getDamager()).getItemInHand().isSimilar(crochetSword.getItem())) {
+            if(veninActive) {
                 coups++;
                 if(coups % 20 == 0) {
                     damaged.addPotionEffect(PotionEffectType.POISON, 5, 1);
@@ -128,9 +123,7 @@ public class Acidicus extends NinjagoRole {
         }
     }
 
-    private static class VeninCommand extends CommandPower {
-
-        boolean veninActive = false;
+    private class VeninCommand extends CommandPower {
 
         public VeninCommand() {
             super("Venin", "venin", 0, -1);

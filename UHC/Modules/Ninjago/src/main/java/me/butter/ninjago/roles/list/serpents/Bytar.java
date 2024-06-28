@@ -14,7 +14,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collections;
@@ -22,7 +21,7 @@ import java.util.List;
 
 public class Bytar extends NinjagoRole {
 
-    UHCPlayer skalidor;
+    private UHCPlayer skalidor;
 
     public Bytar() {
         super("Bytar", "/roles/serpent/bytar", new DiggingPower());

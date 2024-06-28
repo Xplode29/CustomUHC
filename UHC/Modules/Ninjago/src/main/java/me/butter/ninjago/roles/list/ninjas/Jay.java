@@ -2,7 +2,6 @@ package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ParticleUtils;
@@ -18,8 +17,7 @@ import org.bukkit.util.Vector;
 
 public class Jay extends NinjagoRole {
 
-    private LightningCommand power;
-
+    private boolean foudreActive = false;
     private int coups = 0;
 
     public Jay() {
@@ -53,7 +51,7 @@ public class Jay extends NinjagoRole {
         if(damager == null || target == null || target.getPlayer() == null) return;
 
         if(damager.equals(getUHCPlayer())) {
-            if(power.foudreActive) {
+            if(foudreActive) {
                 coups++;
                 getUHCPlayer().sendActionBar("Coups: " + coups + "/10");
 
@@ -68,9 +66,7 @@ public class Jay extends NinjagoRole {
         }
     }
 
-    private static class LightningCommand extends CommandPower {
-
-        boolean foudreActive = false;
+    private class LightningCommand extends CommandPower {
 
         public LightningCommand() {
             super("Foudre", "foudre", 0, -1);

@@ -5,11 +5,9 @@ import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
-import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.potion.PotionEffectType;
 
@@ -18,7 +16,7 @@ import java.util.List;
 
 public class Lizaru extends NinjagoRole {
 
-    UHCPlayer acidicus;
+    private UHCPlayer acidicus;
 
     public Lizaru() {
         super("Lizaru", "/roles/serpent/lizaru", new Bite());

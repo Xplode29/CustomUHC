@@ -9,28 +9,24 @@ import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.goldenWeapons.AbstractGoldenWeapon;
 import me.butter.ninjago.roles.NinjagoRole;
-import me.butter.ninjago.roles.list.ninjas.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Pythor extends NinjagoRole {
 
-    EaterPower eaterPower;
-    InvokeCommand invokeCommand;
-
-    List<String> list = new ArrayList<>();
+    private final List<String> list = new ArrayList<>();
 
     public Pythor() {
-        super("Pythor", "/roles/serpent/pythor");
-        addPower(eaterPower = new EaterPower());
-        addPower(invokeCommand = new InvokeCommand(eaterPower));
+        super("Pythor", "/roles/serpent/pythor", new EaterPower(), new InvokeCommand());
     }
 
     @Override
@@ -77,52 +73,23 @@ public class Pythor extends NinjagoRole {
         }
     }
 
-    private static class EaterPower extends RightClickItemPower {
-        public EaterPower() {
-            super("Grand Devoreur", Material.NETHER_STAR, 20 * 60, 2);
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[] {
-                    "À l'activation, vous obtenez speed 2 et résistance 1 pendant 2 minutes"
-            };
-        }
-
-        @Override
-        public boolean onEnable(UHCPlayer player, Action clickAction) {
-            player.addResi(20);
-            player.addSpeed(20);
-
-            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeResi(20), 2 * 60 * 20);
-            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeSpeed(20), 2 * 60 * 20);
-
-            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez activé votre pouvoir !"));
-            return true;
-        }
-    }
-
     private static class InvokeCommand extends CommandPower {
 
-        List<ItemStack> goldenWeapons;
+        private final List<ItemStack> goldenWeapons;
 
-        EaterPower eaterPower;
-
-        public InvokeCommand(EaterPower eaterPower) {
+        public InvokeCommand() {
             super("Invocation du Grand Dévoreur", "summon", 0, 1);
-
-            this.eaterPower = eaterPower;
-            goldenWeapons = Ninjago.getInstance().getGoldenWeaponManager().getWeapons().stream().map(AbstractGoldenWeapon::getItemStack).collect(Collectors.toList());
+            this.goldenWeapons = Ninjago.getInstance().getGoldenWeaponManager().getWeapons().stream().map(AbstractGoldenWeapon::getItemStack).collect(Collectors.toList());
         }
 
         @Override
         public String[] getDescription() {
             return new String[] {
-                "Si vous obtenez les 4 armes d'or, vous pouvez exectuer l'invocation du Grand Dévoreur.",
-                "",
-                "Vous deviendrez alors solitaire, vous obtiendrez Resistance 1 et 13 coeurs permanents,",
-                "Cependant, vous perdez Speed 1 et tous les joueurs de la partie seront informés que le Grand Dévoreur a été invoqué.",
-                "Les armes d'or seront alors detruites"
+                    "Si vous obtenez les 4 armes d'or, vous pouvez exectuer l'invocation du Grand Dévoreur.",
+                    "",
+                    "Vous deviendrez alors solitaire, vous obtiendrez Resistance 1 et 13 coeurs permanents,",
+                    "Cependant, vous perdez Speed 1 et tous les joueurs de la partie seront informés que le Grand Dévoreur a été invoqué.",
+                    "Les armes d'or seront alors detruites"
             };
         }
 
@@ -139,7 +106,7 @@ public class Pythor extends NinjagoRole {
                 if(!weapon.getHolder().equals(player)) {
                     player.sendMessage(ChatUtils.ERROR.getMessage(
                             "Vous n'avez pas toutes les armes d'or pour invoquer le Grand Dévoreur ! " +
-                            "Si ce n'est pas le cas, essayez de les drop puis de les ramasser."
+                                    "Si ce n'est pas le cas, essayez de les drop puis de les ramasser."
                     ));
                     return false;
                 }
@@ -161,6 +128,32 @@ public class Pythor extends NinjagoRole {
                     uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.ENDERDRAGON_GROWL, 3.0F, 1.0F);
             }
 
+            return true;
+        }
+    }
+
+    private static class EaterPower extends RightClickItemPower {
+
+        public EaterPower() {
+            super("Grand Devoreur", Material.NETHER_STAR, 20 * 60, 2);
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[] {
+                    "À l'activation, vous obtenez speed 2 et résistance 1 pendant 2 minutes"
+            };
+        }
+
+        @Override
+        public boolean onEnable(UHCPlayer player, Action clickAction) {
+            player.addResi(20);
+            player.addSpeed(20);
+
+            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeResi(20), 2 * 60 * 20);
+            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeSpeed(20), 2 * 60 * 20);
+
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez activé votre pouvoir !"));
             return true;
         }
     }

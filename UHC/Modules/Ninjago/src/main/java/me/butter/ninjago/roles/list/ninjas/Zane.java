@@ -9,23 +9,17 @@ import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Zane extends NinjagoRole {
 
-    TraqueCommand traqueCommand;
-
     public Zane() {
-        super("Zane", "/roles/ninjas/zane", new SpinjitzuPower());
-        addPower(traqueCommand = new TraqueCommand());
+        super("Zane", "/roles/ninjas/zane", new SpinjitzuPower(), new TraqueCommand());
     }
 
     @Override

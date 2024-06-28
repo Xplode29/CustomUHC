@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Arcturus extends NinjagoRole {
 
-    UHCPlayer pythor;
+    private UHCPlayer pythor;
 
     public Arcturus() {
         super("Arcturus", "/roles/serpent/arcturus");

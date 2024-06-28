@@ -15,12 +15,11 @@ import org.bukkit.event.block.Action;
 import org.bukkit.util.Vector;
 
 public class Lloyd extends NinjagoRole {
-
-    SpinjitzuPower spinjitzuPower;
+    ChatEffectChooser chatEffectChooser;
 
     public Lloyd() {
         super("Lloyd", "/roles/ninjas/lloyd");
-        addPower(spinjitzuPower = new SpinjitzuPower());
+        addPower(new SpinjitzuPower());
     }
 
     @Override
@@ -46,8 +45,8 @@ public class Lloyd extends NinjagoRole {
     public void onNewEpisode(EpisodeEvent event) {
         if(getUHCPlayer().getPlayerState() != PlayerState.IN_GAME) return;
 
-        if(spinjitzuPower.chatEffectChooser != null) {
-            switch (spinjitzuPower.chatEffectChooser.getChosen()) {
+        if(chatEffectChooser != null) {
+            switch (chatEffectChooser.getChosen()) {
                 case 0:
                     getUHCPlayer().removeSpeed(10);
                     break;
@@ -60,12 +59,11 @@ public class Lloyd extends NinjagoRole {
             }
         }
 
-        spinjitzuPower.chatEffectChooser = new ChatEffectChooser(getUHCPlayer(), 10, -1);
-        UHCAPI.getInstance().getClickableChatHandler().sendToPlayer(spinjitzuPower.chatEffectChooser);
+        chatEffectChooser = new ChatEffectChooser(getUHCPlayer(), 10, -1);
+        UHCAPI.getInstance().getClickableChatHandler().sendToPlayer(chatEffectChooser);
     }
 
-    private static class SpinjitzuPower extends RightClickItemPower {
-        ChatEffectChooser chatEffectChooser;
+    private class SpinjitzuPower extends RightClickItemPower {
 
         public SpinjitzuPower() {
             super(ChatColor.GREEN + "Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);

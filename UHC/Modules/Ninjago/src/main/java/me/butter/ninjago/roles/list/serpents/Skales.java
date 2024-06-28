@@ -1,7 +1,6 @@
 package me.butter.ninjago.roles.list.serpents;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class Skales extends NinjagoRole {
 
-    UHCPlayer pythor;
+    private UHCPlayer pythor;
 
     public Skales() {
         super("Skales", "/roles/serpent/skales", new InfectPower());

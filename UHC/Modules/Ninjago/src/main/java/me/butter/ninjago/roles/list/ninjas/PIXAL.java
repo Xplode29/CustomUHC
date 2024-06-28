@@ -1,7 +1,6 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.Power;
 import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.Potion;
@@ -19,12 +18,13 @@ import java.util.List;
 
 public class PIXAL extends NinjagoRole {
 
-    EffectsCommand effectsCommand;
-    UHCPlayer zane;
+    private boolean canUseCommand = true;
+
+    private UHCPlayer zane;
 
     public PIXAL() {
         super("PIXAL", "/roles/ninjas/pixal");
-        addPower(effectsCommand = new EffectsCommand());
+        addPower(new EffectsCommand());
     }
 
     @Override
@@ -50,11 +50,10 @@ public class PIXAL extends NinjagoRole {
 
     @EventHandler
     public void onNewEpisode(EpisodeEvent event) {
-        effectsCommand.canUseCommand = true;
+        canUseCommand = true;
     }
 
-    private static class EffectsCommand extends TargetCommandPower {
-        boolean canUseCommand = true;
+    private class EffectsCommand extends TargetCommandPower {
 
         public EffectsCommand() {
             super("Analyse", "analyse", 0, -1);
@@ -91,7 +90,7 @@ public class PIXAL extends NinjagoRole {
             return true;
         }
 
-        private static String getName(Potion potion, CustomPotionEffect effect) {
+        private String getName(Potion potion, CustomPotionEffect effect) {
             String name = effect == null ? potion.getEffect().getName() : effect.getName();
 
             if(effect == null) {

@@ -2,10 +2,11 @@ package me.butter.ninjago.roles.list.solos;
 
 import com.google.common.collect.ImmutableMap;
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.*;
+import me.butter.api.module.power.CommandPower;
+import me.butter.api.module.power.EnchantedItemPower;
+import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ItemBuilder;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
@@ -19,17 +20,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
 public class Morro extends NinjagoRole {
 
-    UHCPlayer wu = null;
-    Map<UHCPlayer, Integer> ninjasTimers;
-    GhostPower ghostPower;
-    FreezePower freezePower;
+    private UHCPlayer wu = null;
+    private final Map<UHCPlayer, Integer> ninjasTimers;
+    private boolean visible = true, freezeActivated = false, hasZanePower = false;
+    private final GhostPower ghostPower;
 
     public Morro() {
         super("Morro", "/roles/solitaires/morro");
@@ -104,7 +104,7 @@ public class Morro extends NinjagoRole {
         UHCPlayer damaged = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
 
         if(damager.equals(getUHCPlayer()) && damaged != null) {
-            if(freezePower != null && freezePower.freezeActivated) {
+            if(freezeActivated) {
                 if(new Random().nextInt(100) <= 5) {
                     damaged.removeSpeed(20);
                     Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> damaged.addSpeed(20), 5 * 20);
@@ -112,7 +112,7 @@ public class Morro extends NinjagoRole {
                 }
             }
 
-            if(!ghostPower.visible) {
+            if(!visible) {
                 ghostPower.onUsePower(damager, Action.RIGHT_CLICK_AIR);
             }
         }
@@ -144,42 +144,13 @@ public class Morro extends NinjagoRole {
             getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu 20% de resistance"));
         }
         if(role instanceof Zane) {
-            addPower(freezePower = new FreezePower());
+            addPower(new FreezePower());
+            hasZanePower = true;
             getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Zane ! /n role pour plus d'informations."));
         }
     }
 
-    private static class FlameBow extends EnchantedItemPower {
-
-        public FlameBow() {
-            super("Arc de flamme", Material.BOW, ImmutableMap.of(Enchantment.ARROW_DAMAGE, 3, Enchantment.ARROW_FIRE, 1));
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[]{
-                    "Un arc enchanté Power 2 Flame 1."
-            };
-        }
-    }
-
-    private static class FlameSword extends EnchantedItemPower {
-        public FlameSword() {
-            super("Epee des flammes", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 3, Enchantment.FIRE_ASPECT, 1));
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[]{
-                    "Une epee enchantee Fire Aspect 1."
-            };
-        }
-    }
-
-    private static class FreezePower extends CommandPower {
-
-        boolean freezeActivated = false;
-        boolean hasZanePower = false;
+    private class FreezePower extends CommandPower {
 
         public FreezePower() {
             super("Freeze", "freeze", 0, -1);
@@ -216,16 +187,16 @@ public class Morro extends NinjagoRole {
         }
     }
 
-    private static class GhostPower extends RightClickItemPower {
-
-        boolean visible = true;
+    private class GhostPower extends RightClickItemPower {
 
         public GhostPower() {
             super(ChatColor.GREEN + "Fantome", Material.NETHER_STAR, 5 * 60, -1);
         }
         @Override
         public String[] getDescription() {
-            return new String[]{"Active / désactive votre passif. Lorqu'il est activé, vous êtes invisible, même avec votre armure"};
+            return new String[]{
+                    "Active / désactive votre passif. Lorqu'il est activé, vous êtes invisible, même avec votre armure"
+            };
         }
 
         @Override
@@ -245,6 +216,33 @@ public class Morro extends NinjagoRole {
                 }
                 return false;
             }
+        }
+    }
+
+    private static class FlameBow extends EnchantedItemPower {
+
+        public FlameBow() {
+            super("Arc de flamme", Material.BOW, ImmutableMap.of(Enchantment.ARROW_DAMAGE, 3, Enchantment.ARROW_FIRE, 1));
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[]{
+                    "Un arc enchanté Power 2 Flame 1."
+            };
+        }
+    }
+
+    private static class FlameSword extends EnchantedItemPower {
+        public FlameSword() {
+            super("Epee des flammes", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 3, Enchantment.FIRE_ASPECT, 1));
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[]{
+                    "Une epee enchantee Fire Aspect 1."
+            };
         }
     }
 }

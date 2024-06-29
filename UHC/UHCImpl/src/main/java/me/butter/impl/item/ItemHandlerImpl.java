@@ -6,16 +6,10 @@ import me.butter.api.item.ItemHandler;
 import me.butter.api.player.UHCPlayer;
 import me.butter.impl.item.list.GrapplingItem;
 import me.butter.impl.item.list.MenuItem;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ItemHandlerImpl implements ItemHandler, Listener {

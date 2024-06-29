@@ -9,9 +9,7 @@ import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -118,7 +116,6 @@ public class ItemEvents implements Listener {
             if(itemType == Material.FLINT_AND_STEEL && !UHCAPI.getInstance().getGameHandler().getItemConfig().isFlintAndSteel()) {
                 uhcPlayer.sendMessage(ChatUtils.ERROR.getMessage("Les briquets sont actuellement désactivés."));
                 event.setCancelled(true);
-                return;
             }
         }
     }

@@ -8,8 +8,6 @@ import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.impl.menu.list.host.worldconfig.border.BorderMenu;
-import me.butter.impl.menu.list.host.worldconfig.border.FinalBorderMenu;
-import me.butter.impl.menu.list.host.worldconfig.border.StartBorderMenu;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;

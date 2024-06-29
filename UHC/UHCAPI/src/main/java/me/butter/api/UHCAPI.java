@@ -2,7 +2,6 @@ package me.butter.api;
 
 import me.butter.api.clickablechat.ClickableChatHandler;
 import me.butter.api.customEntities.CustomEntitiesHandler;
-import me.butter.api.customEntities.CustomEntity;
 import me.butter.api.enchant.EnchantHandler;
 import me.butter.api.game.GameHandler;
 import me.butter.api.item.ItemHandler;

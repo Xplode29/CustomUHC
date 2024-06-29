@@ -3,7 +3,6 @@ package me.butter.impl.scoreboard;
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.scoreboard.CustomScoreboard;
-import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -17,7 +16,6 @@ public abstract class AbstractScoreboard implements CustomScoreboard {
     private final Scoreboard scoreboard;
     private final Objective objective;
 
-    private String title;
     private List<String> lines;
 
     private List<UUID> players;
@@ -64,7 +62,6 @@ public abstract class AbstractScoreboard implements CustomScoreboard {
     }
 
     public void setTitle(String title) {
-        this.title = title;
         objective.setDisplayName(title);
     }
 

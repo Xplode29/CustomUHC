@@ -1,7 +1,6 @@
 package me.butter.impl.menu.list.host.settings;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.enchant.Enchant;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.potion.CustomPotionEffect;

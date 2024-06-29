@@ -2,11 +2,9 @@ package me.butter.impl.potion;
 
 import me.butter.api.potion.CustomPotionEffect;
 import me.butter.api.potion.PotionEffectHandler;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class PotionEffectHandlerImpl implements PotionEffectHandler {

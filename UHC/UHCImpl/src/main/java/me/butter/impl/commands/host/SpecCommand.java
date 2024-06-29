@@ -7,7 +7,6 @@ import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.commands.AbstractCommand;
-import me.butter.impl.item.list.MenuItem;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 
@@ -62,7 +61,6 @@ public class SpecCommand extends AbstractCommand {
         }
         else {
             sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Usage : /h cohost <joueur> <add|remove>"));
-            return;
         }
     }
 

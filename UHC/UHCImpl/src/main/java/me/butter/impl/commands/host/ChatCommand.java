@@ -4,11 +4,6 @@ import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.commands.AbstractCommand;
-import me.butter.impl.menu.list.player.InventoryViewMenu;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ChatCommand extends AbstractCommand {
     public ChatCommand() {

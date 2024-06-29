@@ -35,7 +35,6 @@ public class TeleportCommand extends AbstractCommand {
         if(args.length == 2) {
             sender.getPlayer().teleport(target.getPlayer());
             sender.getPlayer().sendMessage(ChatUtils.GLOBAL_INFO.getMessage("Vous avez ete teleporte vers " + target.getPlayer().getName()));
-            return;
         }
         else {
             for (World world : Bukkit.getWorlds()) {

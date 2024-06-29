@@ -1,7 +1,6 @@
 package me.butter.impl.potion;
 
 import me.butter.api.potion.CustomPotionEffect;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class PotionEffectImpl implements CustomPotionEffect {

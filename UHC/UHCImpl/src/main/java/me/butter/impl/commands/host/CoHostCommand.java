@@ -61,7 +61,6 @@ public class CoHostCommand extends AbstractCommand {
         }
         else {
             sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Usage : /h cohost <joueur> <add|remove>"));
-            return;
         }
     }
 

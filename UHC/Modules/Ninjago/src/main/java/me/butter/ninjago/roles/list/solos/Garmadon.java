@@ -102,19 +102,6 @@ public class Garmadon extends NinjagoRole {
         }
     }
 
-    private class StickPower extends EnchantedItemPower {
-        public StickPower() {
-            super("§eBaton", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 4));
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[]{
-                    "Une épée en diamant Tranchant 4"
-            };
-        }
-    }
-
     private class PactePower extends ItemPower {
 
         public PactePower() {
@@ -252,7 +239,20 @@ public class Garmadon extends NinjagoRole {
         }
     }
 
-    private class SpinjitzuPower extends RightClickItemPower {
+    private static class StickPower extends EnchantedItemPower {
+        public StickPower() {
+            super("§eBaton", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 4));
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[]{
+                    "Une épée en diamant Tranchant 4"
+            };
+        }
+    }
+
+    private static class SpinjitzuPower extends RightClickItemPower {
 
         public SpinjitzuPower() {
             super(ChatColor.DARK_PURPLE + "Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);

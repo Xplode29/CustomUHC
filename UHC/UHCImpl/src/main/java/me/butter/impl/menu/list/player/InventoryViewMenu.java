@@ -1,6 +1,5 @@
 package me.butter.impl.menu.list.player;
 
-import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.AbstractMenu;

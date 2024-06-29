@@ -5,8 +5,6 @@ import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.scoreboard.CustomScoreboard;
 import me.butter.api.scoreboard.ScoreboardHandler;
-import me.butter.impl.scoreboard.list.GameScoreboard;
-import me.butter.impl.scoreboard.list.LobbyScoreboard;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;

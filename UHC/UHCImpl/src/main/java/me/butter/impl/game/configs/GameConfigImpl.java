@@ -4,7 +4,6 @@ import me.butter.api.game.configs.GameConfig;
 import me.butter.api.player.UHCPlayer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class GameConfigImpl implements GameConfig {

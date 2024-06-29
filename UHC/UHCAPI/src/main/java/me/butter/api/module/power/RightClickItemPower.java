@@ -1,9 +1,6 @@
 package me.butter.api.module.power;
 
-import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.GraphicUtils;
-import me.butter.api.utils.chat.ChatUtils;
 import org.bukkit.Material;
 import org.bukkit.event.block.Action;
 

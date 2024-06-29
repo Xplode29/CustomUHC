@@ -16,7 +16,6 @@ import me.butter.api.structures.StructureHandler;
 import me.butter.impl.UHCImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.event.Listener;
 
 import java.io.File;
 import java.io.IOException;

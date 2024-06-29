@@ -21,7 +21,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class UHCPlayerImpl implements UHCPlayer {
 
@@ -69,7 +68,7 @@ public class UHCPlayerImpl implements UHCPlayer {
         this.playerPotionEffects = new ArrayList<>();
         this.maxHealth = (int) player.getMaxHealth();
         setMaxHealth(20);
-        setSpeed(0); setStrength(0); setResi(0);
+        removeSpeed(getSpeed()); removeStrength(getStrength()); removeResi(getResi());
     }
 
     @Override
@@ -302,7 +301,7 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     @Override
     public void removeKilledPlayer(UHCPlayer player) {
-        killedPlayers.remove(player.getUniqueId());
+        killedPlayers.remove(player);
     }
 
     @Override
@@ -685,7 +684,7 @@ public class UHCPlayerImpl implements UHCPlayer {
         return resiEffect;
     }
 
-    @Override
+    @Override @Deprecated
     public void setResi(int amount) {
         resiEffect = amount;
 

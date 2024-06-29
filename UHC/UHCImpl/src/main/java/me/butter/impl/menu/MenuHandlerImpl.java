@@ -4,7 +4,6 @@ import me.butter.api.UHCAPI;
 import me.butter.api.menu.Menu;
 import me.butter.api.menu.MenuHandler;
 import me.butter.api.player.UHCPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

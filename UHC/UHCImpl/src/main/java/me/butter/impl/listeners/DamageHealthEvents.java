@@ -11,20 +11,15 @@ import me.butter.api.utils.chat.ChatSnippets;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
-import net.minecraft.server.v1_8_R3.EntityLiving;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -254,7 +249,7 @@ public class DamageHealthEvents implements Listener {
     }
 
     private static String getMessage(UHCPlayerDeathEvent event) {
-        String message = "";
+        String message;
         if(event.getKiller() != null) {
             message = ChatUtils.GLOBAL_INFO.getMessage(event.getKiller().getName() + " a tue " + event.getVictim().getName() + ".");
         }
@@ -273,7 +268,6 @@ public class DamageHealthEvents implements Listener {
             UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
             UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING) {
             event.setCancelled(true);
-            return;
         }
     }
 

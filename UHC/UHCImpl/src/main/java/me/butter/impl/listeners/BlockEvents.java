@@ -11,7 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -40,13 +39,11 @@ public class BlockEvents implements Listener {
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY) {
             if (!player.isOp()) {
                 event.setCancelled(true);
-                return;
             }
         }
         else if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
                 UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING) {
             event.setCancelled(true);
-            return;
         }
     }
 
@@ -64,13 +61,11 @@ public class BlockEvents implements Listener {
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY) {
             if (!player.isOp()) {
                 event.setCancelled(true);
-                return;
             }
         }
         else if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
                 UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING) {
             event.setCancelled(true);
-            return;
         }
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
             CustomBlockBreakEvent blockBreakEvent = new CustomBlockBreakEvent(event, uhcPlayer);

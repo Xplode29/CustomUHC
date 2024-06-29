@@ -9,12 +9,9 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.scenario.Scenario;
 import me.butter.api.timer.Timer;
 import me.butter.impl.UHCImpl;
-import me.butter.impl.commands.host.StopCommand;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.DayNightChangeEvent;
 import me.butter.impl.events.custom.EpisodeEvent;
-import me.butter.impl.timer.list.RoleTimer;
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class GameTask extends BukkitRunnable {

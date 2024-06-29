@@ -10,7 +10,9 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public abstract class AbstractTab implements CustomTab {
 
@@ -76,80 +78,5 @@ public abstract class AbstractTab implements CustomTab {
             ((CraftPlayer) uhcPlayer.getPlayer()).getHandle().playerConnection.sendPacket(packet);
         }
         catch (Exception ignored) {}
-    }
-
-//    @Override
-//    public void setHeaderLine(UUID playerId, int line, List<String> lineUpdates) {
-//        List<String> playerHeaderVariations = header.get(playerId);
-//
-//        List<List<String>> listOfVariations = new ArrayList<>();
-//        if(playerHeaderVariations.isEmpty()) playerHeaderVariations.add("");
-//        int lines = playerHeaderVariations.get(0).split("\n").length;
-//
-//        for(int i = 0; i < lines; i++) {
-//            List<String> lineVariation = new ArrayList<>();
-//            for(String variation : playerHeaderVariations) {
-//                lineVariation.add(variation.split("\n")[i]);
-//            }
-//            listOfVariations.add(lineVariation);
-//        }
-//
-//        if(listOfVariations.size() <= line) {
-//            for(int i = listOfVariations.size(); i <= line; i++) {
-//                listOfVariations.add(Collections.singletonList(""));
-//            }
-//        }
-//
-//        listOfVariations.set(line, lineUpdates);
-//        playerHeaderVariations = convertToVariationList(listOfVariations);
-//
-//        header.put(playerId, playerHeaderVariations);
-//    }
-
-//    @Override
-//    public void setFooterLine(UUID playerId, int line, List<String> lineUpdates) {
-//        List<String> playerFooterVariations = footer.get(playerId);
-//        List<List<String>> listOfVariations = new ArrayList<>();
-//        if(playerFooterVariations.isEmpty()) playerFooterVariations.add("");
-//        int lines = playerFooterVariations.get(0).split("\n").length;
-//
-//        for(int i = 0; i < lines; i++) {
-//            List<String> lineVariation = new ArrayList<>();
-//            for(String variation : playerFooterVariations) {
-//                lineVariation.add(variation.split("\n")[i]);
-//            }
-//            listOfVariations.add(lineVariation);
-//        }
-//
-//        if(listOfVariations.size() <= line) {
-//            for(int i = listOfVariations.size(); i <= line; i++) {
-//                listOfVariations.add(Collections.singletonList(""));
-//            }
-//        }
-//
-//        listOfVariations.set(line, lineUpdates);
-//        playerFooterVariations = convertToVariationList(listOfVariations);
-//
-//        footer.replace(playerId, playerFooterVariations);
-//    }
-
-    private List<String> convertToVariationList(List<List<String>> listOfVariations) {
-        int maxVariations = 0;
-
-        for(List<String> line : listOfVariations) {
-            if(line.size() > maxVariations) maxVariations = line.size();
-        }
-
-        List<String> variations = new ArrayList<>();
-        for(int i = 0; i < maxVariations; i++) {
-            List<String> variation = new ArrayList<>();
-            for (List<String> listOfVariation : listOfVariations) {
-                int index = i % listOfVariation.size();
-                variation.add("§r" + listOfVariation.get(index));
-            }
-            variations.add(Strings.join(variation, "\n"));
-        }
-
-        return variations;
     }
 }

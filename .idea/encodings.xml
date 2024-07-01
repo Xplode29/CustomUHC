@@ -3,12 +3,14 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/UHC/Modules/Ninjago/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UHC/Modules/Ninjago/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/UHC/Modules/NinjagoV2/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/UHC/Modules/NinjagoV2/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UHC/Modules/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UHC/Modules/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UHC/UHCAPI/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UHC/UHCAPI/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/UHC/UHCImpl/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/UHC/UHCImpl/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/UHC/UHCBase/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/UHC/UHCBase/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UHC/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UHC/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />

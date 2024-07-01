@@ -42,7 +42,7 @@
         </dependency>
         <dependency>
             <groupId>me.butter</groupId>
-            <artifactId>UHCImpl</artifactId>
+            <artifactId>UHCBase</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>

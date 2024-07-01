@@ -1,0 +1,18 @@
+name: UHCBase
+version: '${project.version}'
+main: me.butter.impl.UHCBase
+
+commands:
+    host:
+        description: Définit l'host d'une partie
+        usage: /host <argument>
+        aliases: h
+    rules:
+        description: Permet de voir les informations sur la partie
+        usage: /rules
+    full:
+        description: Permet de recuperer vos items
+        usage: /full
+    doc:
+        description: Permet d'accéder au document explicatif du mode de jeu
+        usage: /doc

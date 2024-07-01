@@ -21,9 +21,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Ninjago extends JavaPlugin {
+public final class NinjagoV2 extends JavaPlugin {
 
-    private static Ninjago instance;
+    private static NinjagoV2 instance;
     private List<Role> rolesList;
 
     private GoldenWeaponManager goldenWeaponManager;
@@ -52,7 +52,7 @@ public final class Ninjago extends JavaPlugin {
         }
     }
 
-    public static Ninjago getInstance() {
+    public static NinjagoV2 getInstance() {
         return instance;
     }
 

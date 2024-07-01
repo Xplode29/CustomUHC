@@ -1,6 +1,6 @@
-name: Ninjago
+name: NinjagoV2
 version: '${project.version}'
-main: me.butter.ninjago.Ninjago
+main: me.butter.ninjago.NinjagoV2
 
 depend:
   - UHCBase

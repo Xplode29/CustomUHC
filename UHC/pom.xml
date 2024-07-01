@@ -14,7 +14,7 @@
 
     <modules>
         <module>UHCAPI</module>
-        <module>UHCImpl</module>
+        <module>UHCBase</module>
         <module>Modules</module>
     </modules>
 

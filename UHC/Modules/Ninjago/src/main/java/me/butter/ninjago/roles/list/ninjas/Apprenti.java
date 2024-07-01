@@ -1,32 +1,19 @@
 package me.butter.ninjago.roles.list.ninjas;
 
-import com.google.common.collect.ImmutableMap;
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.EnchantBookPower;
-import me.butter.api.module.power.EnchantedItemPower;
-import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.goldenNinja.ChatEffectChooser;
 import me.butter.ninjago.roles.NinjagoRole;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,21 +31,14 @@ public class Apprenti extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                ChatUtils.LIST_HEADER + "Lorsque vous passez pour la première fois à moins de 5 blocks d'un des roles suivants, vous deviendrez son élève. Vous obtendrez donc son pseudo ainsi que les capacités suivantes :",
-                "",
-                ChatUtils.LIST_ELEMENT + "§3Nya§r: Vous obtenez un livre Depth Strider 3",
-                "",
-                ChatUtils.LIST_ELEMENT + "§1Jay§r: Vous obtenez 20% de speed à 20 blocks de lui, et 30% de speed permanent à sa mort",
-                "",
-                ChatUtils.LIST_ELEMENT + "§cKai§r: Vous obtenez 10% de force ainsi que 10% de chances d'enflammer le joueur frappé (si vous possédez le Sabre de feu, vous enflammez à coup sur le joueur frappé)",
-                "",
-                ChatUtils.LIST_ELEMENT + "§aLloyd§r: Vous obtenez le choix entre 15% de speed, 15% de force ou 15% de resistance.",
-                "",
-                ChatUtils.LIST_ELEMENT + "§8Cole§r: Vous obtenez 10% de résistance à 20 blocks de lui, et 20% de résistance permanent à sa mort",
-                "",
-                ChatUtils.LIST_ELEMENT + "§bZane§r: Vous obtenez 1 coeur permanent supplémentaire ainsi qu'un autre coeur permanent à sa mort",
-                "",
-                ChatUtils.LIST_ELEMENT + "§eWu§r: Vous obtenez l'accès au Spinjitzu. Comme Wu, vous obtenez Regeneration 2 pendant 30 secondes.",
+                "Lorsque vous passez pour la première fois à moins de 5 blocks d'un des roles suivants, vous deviendrez son élève. Vous obtendrez donc son pseudo ainsi que les capacités suivantes :",
+                " §3Nya§r: Vous obtenez un livre §bDepth Strider 3§r",
+                " §9Jay§r: Vous obtenez §920% de speed§r à 20 blocks de lui, et §930% de speed§r permanent à sa mort",
+                " §cKai§r: Vous obtenez §c10% de force§r ainsi que 10% de chances d'enflammer le joueur frappé (si vous possédez le §cSabre de feu§r, vous enflammez à coup sur le joueur frappé)",
+                " §aLloyd§r: Vous obtenez le choix entre §915% de speed§r, §c15% de force§r ou §715% de resistance§r.",
+                " §8Cole§r: Vous obtenez §710% de résistance§r à 20 blocks de lui, et §720% de résistance§r permanent à sa mort",
+                " §bZane§r: Vous obtenez §l1 coeur§r permanent supplémentaire ainsi qu'§lun autre coeur§r permanent à sa mort",
+                " §eWu§r: Vous obtenez l'accès au §eSpinjitzu§r. Comme Wu, vous obtenez §eRegeneration 2§r pendant 30 secondes.",
         };
     }
 
@@ -91,7 +71,7 @@ public class Apprenti extends NinjagoRole {
         getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Votre nouveau maitre est " + master.getName()));
 
         if(master.getRole() instanceof Nya) {
-            DepthStriderBook book = new DepthStriderBook();
+            Nya.DepthStriderBook book = new Nya.DepthStriderBook();
             addPower(book);
             getUHCPlayer().giveItem(book.getItem(), true);
         }
@@ -113,7 +93,7 @@ public class Apprenti extends NinjagoRole {
             isZaneMaster = true;
         }
         else if(master.getRole() instanceof Wu) {
-            SpinjitzuPower power = new SpinjitzuPower();
+            Wu.SpinjitzuPower power = new Wu.SpinjitzuPower();
             addPower(power);
             getUHCPlayer().giveItem(power.getItem(), true);
             isWuMaster = true;
@@ -141,7 +121,7 @@ public class Apprenti extends NinjagoRole {
         if(!hasMaster || !event.getVictim().equals(master)) return;
         if(isZaneMaster) getUHCPlayer().addMaxHealth(2);
         if(isWuMaster) {
-            StickPower stick = new StickPower();
+            Wu.StickPower stick = new Wu.StickPower();
             addPower(stick);
             getUHCPlayer().giveItem(stick.getItem(), true);
 
@@ -240,75 +220,6 @@ public class Apprenti extends NinjagoRole {
                 getUHCPlayer().removeResi(10);
                 nextToCole = false;
             }
-        }
-    }
-
-    private static class DepthStriderBook extends EnchantBookPower {
-        public DepthStriderBook() {
-            super("§rLivre Depth Strider 3", Enchantment.DEPTH_STRIDER, 3);
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[]{
-                    "Un livre enchanté Depth Strider 3. Il est possible de le fusionner avec une piece en diamant."
-            };
-        }
-
-        @Override
-        public boolean showPower() {
-            return false;
-        }
-    }
-
-    private static class StickPower extends EnchantedItemPower {
-        public StickPower() {
-            super("§eBaton", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 4));
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[]{
-                    "Une épée en diamant sharpness 4"
-            };
-        }
-    }
-
-    private static class SpinjitzuPower extends RightClickItemPower {
-
-        public SpinjitzuPower() {
-            super(ChatColor.YELLOW + "Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[] {
-                    "À l'activation, repousse tous les joueurs dans un rayon de 10 blocks.",
-                    "vous obtenez Regeneration 2 pendant 30 secondes."
-            };
-        }
-
-        @Override
-        public boolean onEnable(UHCPlayer player, Action clickAction) {
-            Location center = player.getPlayer().getLocation();
-
-            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
-                if(uhcPlayer == null || uhcPlayer == player || uhcPlayer.getPlayer() == null) continue;
-
-                if(uhcPlayer.isNextTo(player, 10)) {
-                    double angle = Math.atan2(uhcPlayer.getLocation().getZ() - center.getZ(), uhcPlayer.getLocation().getX() - center.getX());
-                    Vector newVelocity = new Vector(
-                            1.5 * Math.cos(angle),
-                            0.5,
-                            1.5 * Math.sin(angle)
-                    );
-                    uhcPlayer.getPlayer().setVelocity(newVelocity);
-                }
-            }
-
-            player.addPotionEffect(PotionEffectType.REGENERATION, 30, 2);
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.YELLOW);
-            return true;
         }
     }
 }

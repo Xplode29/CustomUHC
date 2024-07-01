@@ -236,6 +236,18 @@ public class UHCPlayerImpl implements UHCPlayer {
         setPlayerState(PlayerState.IN_GAME);
         loadInventory();
 
+        if(getPlayer() != null) {
+            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                if(uhcPlayer.getPlayer() == null) continue;
+                uhcPlayer.getPlayer().showPlayer(getPlayer());
+            }
+
+            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                if(uhcPlayer.getPlayer() == null || uhcPlayer.getPlayerState() == PlayerState.IN_GAME) continue;
+                getPlayer().hidePlayer(uhcPlayer.getPlayer());
+            }
+        }
+
         for (Entity entity : getDeathLocation().getWorld().getNearbyEntities(getDeathLocation(), 5, 100, 5)) {
             if (entity instanceof Item) {
                 entity.remove();

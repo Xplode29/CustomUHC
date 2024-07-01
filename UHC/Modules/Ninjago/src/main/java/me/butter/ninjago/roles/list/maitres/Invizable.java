@@ -8,7 +8,6 @@ import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.CampEnum;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
@@ -29,9 +28,9 @@ public class Invizable extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous avez Speed 1 permanent.",
-                "Lorsque vous enlevez votre armure, vous obtenez Invisibilité, No Fall, Force 1 et Resistance 2. ",
-                "Vous conaissez la liste des membres de l'alliance"
+                "Vous avez §9Speed 1§r permanent.",
+                "Lorsque vous enlevez votre armure, vous obtenez §bInvisibilité§r, §2No Fall§r, §cForce 1§r et §7Resistance 2§r. ",
+                "Vous connaissez la liste des membres de l'alliance"
         };
     }
 
@@ -88,12 +87,12 @@ public class Invizable extends NinjagoRole {
 
     private static class BlindPowerPlayer extends TargetPlayerItemPower {
         public BlindPowerPlayer() {
-            super(ChatColor.WHITE + "Rayonnement§r", Material.NETHER_STAR, 20, 5 * 60, -1);
+            super("Rayonnement", Material.NETHER_STAR, 20, 5 * 60, -1);
         }
 
         @Override
         public String[] getDescription() {
-            return new String[]{
+            return new String[] {
                     "Aveugle le joueur vise pendant 10 secondes (Distance maximum: 20 blocks)"
             };
         }
@@ -101,7 +100,8 @@ public class Invizable extends NinjagoRole {
         @Override
         public boolean onEnable(UHCPlayer player, UHCPlayer target, Action clickAction) {
             target.addPotionEffect(PotionEffectType.BLINDNESS, 10, 1);
-            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez ébloui " + target.getName()));
+
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez aveuglé " + target.getName()));
             return true;
         }
     }

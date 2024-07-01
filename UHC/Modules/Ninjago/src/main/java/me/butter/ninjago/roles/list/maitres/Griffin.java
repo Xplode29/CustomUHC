@@ -22,7 +22,9 @@ public class Griffin extends NinjagoRole {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Vous conaissez la liste des membres de l'alliance"};
+        return new String[] {
+                "Vous connaissez la liste des membres de l'alliance"
+        };
     }
 
     @Override
@@ -49,12 +51,14 @@ public class Griffin extends NinjagoRole {
     private static class SpeedCommand extends CommandPower {
 
         public SpeedCommand() {
-            super("Vitesse", "vitesse", 0, -1);
+            super("§9Vitesse Extrème§r", "vitesse", 0, -1);
         }
 
         @Override
         public String[] getDescription() {
-            return new String[]{"Vous pouvez choisir votre pourcentage de vitesse, entre 0% et 50%"};
+            return new String[]{
+                    "Vous permet de changer votre §9pourcentage de speed§r, entre 0 et 50%."
+            };
         }
 
         @Override
@@ -65,11 +69,11 @@ public class Griffin extends NinjagoRole {
             }
 
             int speed = Integer.parseInt(args[1]);
-            if(0 <= speed &&  speed <= 50) {
+            if(0 <= speed && speed <= 50) {
                 player.addSpeed(speed - player.getSpeed());
             }
             else {
-                player.sendMessage(ChatUtils.ERROR.getMessage("Veuillez entrer un nombre entre 0 et 50"));
+                player.sendMessage(ChatUtils.ERROR.getMessage("Veuillez entrer un nombre compris entre 0 et 50"));
             }
 
             return false;

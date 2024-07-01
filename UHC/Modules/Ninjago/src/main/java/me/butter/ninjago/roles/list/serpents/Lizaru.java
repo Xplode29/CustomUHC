@@ -25,7 +25,7 @@ public class Lizaru extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "A l'annonce des roles, vous obtenez le pseudo de Acidicus.",
+                "A l'annonce des roles, vous obtenez le pseudo de §1Acidicus§r.",
         };
     }
 
@@ -51,7 +51,7 @@ public class Lizaru extends NinjagoRole {
 
         public String[] getDescription() {
             return new String[] {
-                    "Inflige 1.5 coeurs de degats et Poison 1 pendant 5 secondes au joueur visé."
+                    "Inflige 1.5 coeurs de degats et §2Poison 1§r pendant 5 secondes au joueur visé."
             };
         }
 
@@ -60,7 +60,7 @@ public class Lizaru extends NinjagoRole {
             target.getPlayer().setHealth(Math.max(0.5, target.getPlayer().getHealth() - 3.0));
             target.addPotionEffect(PotionEffectType.POISON, 5, 1);
 
-            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez empoisonne " + target.getName()));
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez empoisonné " + target.getName()));
             return true;
         }
     }

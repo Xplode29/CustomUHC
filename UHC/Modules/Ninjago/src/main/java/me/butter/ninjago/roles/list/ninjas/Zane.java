@@ -24,7 +24,7 @@ public class Zane extends NinjagoRole {
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Vous avez 2 coeurs permanents."};
+        return new String[]{"Vous avez §l2 coeurs§r permanents."};
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Zane extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[]{
-                    "Permet de traquer le joueur ciblé pendant 2 minutes"
+                    "Traque le joueur ciblé pendant 2 minutes"
             };
         }
 
@@ -103,8 +103,7 @@ public class Zane extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "À l'activation, repousse tous les joueurs dans un rayon de 10 blocks.",
-                    "Vous ralentissez tous les joueurs touches pendant 1 minute."
+                    "Repousse tous les joueurs dans un rayon de 10 blocks. Vous ralentissez tous les joueurs touchés pendant 1 minute."
             };
         }
 
@@ -138,6 +137,7 @@ public class Zane extends NinjagoRole {
             Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> slowed.forEach(u -> u.addSpeed(20)), 60 * 20);
 
             ParticleUtils.tornadoEffect(player.getPlayer(), Color.WHITE);
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));
             return true;
         }
     }

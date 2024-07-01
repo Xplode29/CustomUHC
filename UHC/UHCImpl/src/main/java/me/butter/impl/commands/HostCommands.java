@@ -38,6 +38,9 @@ public class HostCommands implements TabExecutor {
         commands.add(new ResetPowersCommand());
         commands.add(new ChatCommand());
         commands.add(new SpecCommand());
+
+
+        commands.add(new GiveRoleCommand());
     }
 
     @Override
@@ -102,7 +105,7 @@ public class HostCommands implements TabExecutor {
         String typing = strings.length > 0 ? strings[strings.length - 1] : "";
 
         if(strings.length < 2) {
-            return commands.stream().map(AbstractCommand::getArgument).filter(argument -> argument.startsWith(typing)).collect(Collectors.toList());
+            return commands.stream().filter(command -> !command.isHidden()).map(AbstractCommand::getArgument).filter(argument -> argument.startsWith(typing)).collect(Collectors.toList());
         }
         else {
             for(AbstractCommand command : commands) {

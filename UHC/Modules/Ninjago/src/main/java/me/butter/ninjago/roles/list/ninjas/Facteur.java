@@ -28,8 +28,8 @@ public class Facteur extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous avez speed 1 permanent. ",
-                "Lorsque vous enlevez votre armure, vous obtenez invisibilité et no fall. "
+                "Vous avez §9Speed 1§r permanent. ",
+                "Lorsque vous enlevez votre armure, vous obtenez §bInvisibilité§r et §2No Fall§r. "
         };
     }
 

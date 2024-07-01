@@ -30,7 +30,7 @@ public class PIXAL extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[] {
-                "A l'annonce des roles, vous obtenez le pseudo de Zane."
+                "A l'annonce des roles, vous obtenez le pseudo de §aZane§r."
         };
     }
 
@@ -62,7 +62,7 @@ public class PIXAL extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[]{
-                    "A l'execution, vous obtenez les effets du joueur ciblé. Vous ne pouvez utiliser cette commande qu'une seule fois par episode."
+                    "Vous obtenez les effets du joueur ciblé. (1x/Episode)"
             };
         }
 

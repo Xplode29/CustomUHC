@@ -28,7 +28,7 @@ public class Jay extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez Speed 1 permanent"
+                "Vous possédez §9Speed 1§r permanent"
         };
     }
 
@@ -69,14 +69,13 @@ public class Jay extends NinjagoRole {
     private class LightningCommand extends CommandPower {
 
         public LightningCommand() {
-            super("Foudre", "foudre", 0, -1);
+            super("§9Foudre", "foudre", 0, -1);
         }
 
         @Override
         public String[] getDescription() {
             return new String[]{
-                    "Active / désactive votre passif. " +
-                    "Lorsqu'il est activé, vous faites tomber un éclair qui inflige 1 coeurs de dégâts sur la personne frappé tous les 10 coups. "};
+                    "Active / désactive votre passif. Lorsqu'il est activé, vous faites tomber un éclair qui inflige §c1 coeur§r de dégâts sur la personne frappé §ltous les 10 coups§r. "};
         }
 
         @Override
@@ -100,14 +99,13 @@ public class Jay extends NinjagoRole {
     private static class SpinjitzuPower extends RightClickItemPower {
 
         public SpinjitzuPower() {
-            super(ChatColor.BLUE + "Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);
+            super("§9Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);
         }
 
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "À l'activation, repousse tous les joueurs dans un rayon de 10 blocks.",
-                    "vous obtenez 10% de speed pendant 2 minutes."
+                    "Repousse tous les joueurs dans un rayon de 10 blocks. Vous obtenez §910% de speed§r pendant 2 minutes."
             };
         }
 
@@ -133,6 +131,7 @@ public class Jay extends NinjagoRole {
             Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> player.removeSpeed(10), 2 * 60 * 20);
 
             ParticleUtils.tornadoEffect(player.getPlayer(), Color.BLUE);
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));
             return true;
         }
     }

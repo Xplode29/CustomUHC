@@ -27,8 +27,8 @@ public class Skales extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez Force 1 la nuit. ",
-                "A l'annonce des roles, vous obtenez le pseudo de Pythor."
+                "Vous possédez §cForce 1§r la nuit. ",
+                "A l'annonce des roles, vous obtenez le pseudo de §1Pythor§r."
         };
     }
 
@@ -81,7 +81,7 @@ public class Skales extends NinjagoRole {
         public String[] getDescription() {
             return new String[]{
                     "En restant pendant 7 minutes à 12 blocs du joueur ciblé, vous pouvez le faire rejoindre votre camp. ",
-                    "Vous ne pouvez pas infecter les solitaires et Lloyd. Vous ne serez pas informé si l'infection a échoué. "
+                    "Vous ne pouvez pas infecter les §eSolitaires§r et §cLloyd§r. Vous ne serez pas informé si l'infection a échoué. "
             };
         }
 
@@ -117,12 +117,16 @@ public class Skales extends NinjagoRole {
                 }
 
                 if(timer >= timeToInfect) {
-                    player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("L'infection de " + target.getPlayer().getName() + " est terminée."));
-
-                    if(!(target.getRole().getCamp() == CampEnum.SOLO.getCamp() || target.getRole() instanceof Lloyd)) { //Réussie
+                    if(!(
+                        target.getRole().getCamp() == CampEnum.DUO_LLOYD_GARMADON.getCamp() ||
+                        target.getRole().getCamp() == CampEnum.SOLO.getCamp() ||
+                        target.getRole() instanceof Lloyd
+                    )) { //Réussie
                         target.getRole().setCamp(CampEnum.SNAKE.getCamp());
                         target.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez été infecté par Skales (" + player.getName() + "). Vous devez maintenant gagner avec les " + ChatColor.DARK_BLUE + "Serpents§r."));
                     }
+
+                    player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("L'infection de " + target.getPlayer().getName() + " est terminée."));
                     infected = true;
                     cancel();
                 }

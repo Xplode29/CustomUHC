@@ -6,8 +6,8 @@ import me.butter.api.module.power.EnchantedItemPower;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ParticleUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.roles.NinjagoRole;
-import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,7 +32,7 @@ public class Wu extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous conaissez l'identité d'un ninja parmis Lloyd, Kai, Jay, Cole et Zane"
+                "Vous connaissez l'identité d'un ninja parmis §aLloyd§r, §aKai§r, §aJay§r, §aCole§r et §aZane§r"
         };
     }
 
@@ -60,7 +60,7 @@ public class Wu extends NinjagoRole {
         }
     }
 
-    private static class StickPower extends EnchantedItemPower {
+    public static class StickPower extends EnchantedItemPower {
         public StickPower() {
             super("§eBaton", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 4));
         }
@@ -73,17 +73,16 @@ public class Wu extends NinjagoRole {
         }
     }
 
-    private static class SpinjitzuPower extends RightClickItemPower {
+    public static class SpinjitzuPower extends RightClickItemPower {
 
         public SpinjitzuPower() {
-            super(ChatColor.YELLOW + "Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);
+            super("§eSpinjitzu", Material.NETHER_STAR, 20 * 60, -1);
         }
 
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "À l'activation, repousse tous les joueurs dans un rayon de 10 blocks.",
-                    "vous obtenez Regeneration 2 pendant 30 secondes."
+                    "Repousse tous les joueurs dans un rayon de 10 blocks. Vous obtenez §eRegeneration 2§r pendant 30 secondes."
             };
         }
 
@@ -106,7 +105,9 @@ public class Wu extends NinjagoRole {
             }
 
             player.addPotionEffect(PotionEffectType.REGENERATION, 30, 2);
+
             ParticleUtils.tornadoEffect(player.getPlayer(), Color.YELLOW);
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez utilisé votre Spinjitzu !"));
             return true;
         }
     }

@@ -38,7 +38,7 @@ public enum RoleEnum {
     SLITHRAA(Slithraa.class, CampEnum.SNAKE, Material.STAINED_GLASS, "Slithraa"),
     ARCTURUS(Arcturus.class, CampEnum.SNAKE, Material.DARK_OAK_DOOR_ITEM, "Arcturus"),
 
-    GRIFFIN(Griffin.class, CampEnum.MASTER, Material.SUGAR, "Griffin Turner"),
+    GRIFFIN(Griffin.class, CampEnum.MASTER, Material.SUGAR, "Turner"),
     INVIZABLE(Invizable.class, CampEnum.MASTER, Material.GLOWSTONE, "Invizable"),
     KARLOF(Karlof.class, CampEnum.MASTER, Material.IRON_CHESTPLATE, "Karlof"),
     ASH(Ash.class, CampEnum.MASTER, Material.FEATHER, "Ash"),

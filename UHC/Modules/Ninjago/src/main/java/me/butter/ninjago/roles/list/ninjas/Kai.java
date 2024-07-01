@@ -6,6 +6,7 @@ import me.butter.api.module.power.EnchantedItemPower;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ParticleUtils;
+import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.*;
@@ -23,7 +24,7 @@ public class Kai extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez Fire Resistance permanent",
+                "Vous possédez §cFire Resistance§r permanent",
         };
     }
 
@@ -37,10 +38,10 @@ public class Kai extends NinjagoRole {
         getUHCPlayer().addPotionEffect(PotionEffectType.FIRE_RESISTANCE, -1, 1);
     }
 
-    private static class FlameBow extends EnchantedItemPower {
+    public static class FlameBow extends EnchantedItemPower {
 
         public FlameBow() {
-            super("Arc de flamme", Material.BOW, ImmutableMap.of(Enchantment.ARROW_DAMAGE, 3, Enchantment.ARROW_FIRE, 1));
+            super("§cArc des Flammes", Material.BOW, ImmutableMap.of(Enchantment.ARROW_DAMAGE, 3, Enchantment.ARROW_FIRE, 1));
         }
 
         @Override
@@ -51,9 +52,9 @@ public class Kai extends NinjagoRole {
         }
     }
 
-    private static class FlameSword extends EnchantedItemPower {
+    public static class FlameSword extends EnchantedItemPower {
         public FlameSword() {
-            super("Epee des flammes", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 3, Enchantment.FIRE_ASPECT, 1));
+            super("§cEpée des Flammes", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 3, Enchantment.FIRE_ASPECT, 1));
         }
 
         @Override
@@ -78,8 +79,7 @@ public class Kai extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "À l'activation, repousse tous les joueurs dans un rayon de 10 blocks.",
-                    "vous obtenez 10% de force pendant 2 minutes."
+                    "Repousse tous les joueurs dans un rayon de 10 blocks. Vous obtenez §c10% de force§r pendant 2 minutes."
             };
         }
 
@@ -105,6 +105,7 @@ public class Kai extends NinjagoRole {
             Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> player.removeStrength(10), 2 * 60 * 20);
 
             ParticleUtils.tornadoEffect(player.getPlayer(), Color.RED);
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));
             return true;
         }
     }

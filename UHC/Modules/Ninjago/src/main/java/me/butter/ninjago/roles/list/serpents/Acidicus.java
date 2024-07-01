@@ -37,8 +37,8 @@ public class Acidicus extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous n'êtes pas affecté par les effets négatifs (poison, faiblesse, lenteur, mining fatigue). ",
-                "Vous conaissez l'identité de Pythor"
+                "Vous n'êtes pas affecté par les §2effets négatifs§r (poison, faiblesse, lenteur, mining fatigue). ",
+                "Vous connaissez l'identité de §1Pythor§r"
         };
     }
 
@@ -108,17 +108,16 @@ public class Acidicus extends NinjagoRole {
     private static class CrochetSword extends EnchantedItemPower {
 
         public CrochetSword() {
-            super("Crochet", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 3));
+            super("§2Crochet", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 3));
         }
 
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "Lorsque vous tapez un joueur avec, vous infligez des effets en fonction ud nombre de coups",
-                    ChatUtils.LIST_ELEMENT + "Tous les 20 coups, vous infligez Poison 1 pendant 5 secondes.",
-                    ChatUtils.LIST_ELEMENT + "Tous les 30 coups, vous infligez Faiblesse 1 pendant 10 secondes.",
-                    ChatUtils.LIST_ELEMENT + "Tous les 50 coups, vous infligez Lenteur 1 pendant 10 secondes.",
-                    "Ces effets sont cumulables."
+                    "Lorsque vous tapez un joueur avec, vous infligez des effets en fonction du nombre de coups (les effets sont cumulables).",
+                    " Tous les 20 coups, vous infligez §2Poison 1§r pendant 5 secondes.",
+                    " Tous les 30 coups, vous infligez §3Faiblesse 1§r pendant 10 secondes.",
+                    " Tous les 50 coups, vous ralentissez le joueur frappé pendant 10 secondes."
             };
         }
     }
@@ -126,13 +125,13 @@ public class Acidicus extends NinjagoRole {
     private class VeninCommand extends CommandPower {
 
         public VeninCommand() {
-            super("Venin", "venin", 0, -1);
+            super("§cVenin", "venin", 0, -1);
         }
 
         @Override
         public String[] getDescription() {
             return new String[]{
-                    "Active / désactive la capacite de votre epee Crochet."
+                    "Active / désactive la capacité de votre épée §2Crochet§r."
             };
         }
 

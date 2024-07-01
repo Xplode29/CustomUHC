@@ -139,6 +139,18 @@ public class DamageHealthEvents implements Listener {
             if(!deathEvent.isCancelled()) {
                 uhcVictim.setPlayerState(PlayerState.DEAD);
 
+                if(uhcVictim.getPlayer() != null) {
+                    for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                        if(uhcPlayer.getPlayer() == null) continue;
+                        uhcPlayer.getPlayer().hidePlayer(uhcVictim.getPlayer());
+                    }
+
+                    for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                        if(uhcPlayer.getPlayer() == null) continue;
+                        uhcVictim.getPlayer().showPlayer(uhcPlayer.getPlayer());
+                    }
+                }
+
                 for (ItemStack item : drops) {
                     uhcVictim.getDeathLocation().getWorld().dropItemNaturally(uhcVictim.getDeathLocation(), item);
                 }

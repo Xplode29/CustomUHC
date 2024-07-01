@@ -47,7 +47,7 @@ public class Ash extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Vous conaissez la liste des membres de l'alliance"
+                "Vous connaissez la liste des membres de l'alliance"
         };
     }
 
@@ -84,7 +84,7 @@ public class Ash extends NinjagoRole {
                 coups = 0;
                 event.setCancelled(true);
 
-                getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez esquive un coup !"));
+                getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez esquivé un coup !"));
             }
             else {
                 coups++;
@@ -97,9 +97,11 @@ public class Ash extends NinjagoRole {
         if(getUHCPlayer().equals(event.getKiller())) {
             if(hideKills) {
                 for(UHCPlayer uhcPlayer : maitres) {
-                    uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("(Visible seulement par l'alliance) Mort de " + event.getVictim().getName()));
+                    uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("(Visible seulement par l'alliance) Le joueur " + event.getVictim().getName() + "est mort."));
                     if(event.getVictim().getRole() != null) {
-                        uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Son role était: " + event.getVictim().getRole().getName()));
+                        uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage(
+                                "Il était: " + event.getVictim().getRole().getCamp().getPrefix() + event.getVictim().getRole().getName()
+                        ));
                     }
                 }
                 event.showDeath = false;
@@ -110,14 +112,14 @@ public class Ash extends NinjagoRole {
     private class HideKillsCommand extends CommandPower {
 
         public HideKillsCommand() {
-            super("Brouilleur", "brouille", 0, -1);
+            super(ChatColor.DARK_GRAY + "Brouilleur", "brouille", 0, -1);
         }
 
         @Override
         public String[] getDescription() {
-            return new String[]{
-                    "Active / désactive votre passif. Lorsqu'il est activé, vous cachez le message de mort des kills.",
-                    "Cependant, les maitres seront toujours informés de la mort"
+            return new String[] {
+                    "Lorsque ce passif est activé, vous cachez l'annonce de mort des joueurs que vous tuez.",
+                    "Les membres de l'alliance seront informés du nom et du role du joueur mort."
             };
         }
 
@@ -137,15 +139,15 @@ public class Ash extends NinjagoRole {
     private class SmokePower extends TargetBlockItemPower {
 
         public SmokePower() {
-            super(ChatColor.GRAY + "Ecran de Fumée§r", Material.NETHER_STAR, 20, 15 * 60, -1);
+            super(ChatColor.GRAY + "Ecran de Fumée", Material.NETHER_STAR, 20, 15 * 60, -1);
         }
 
         @Override
         public String[] getDescription() {
-            return new String[]{
+            return new String[] {
                     "Recouvre de fumée une zone de 25 blocks de rayon pendant 2 minutes. (Cooldown: 15 minutes / Utilisation infinie)",
-                    "Dans cette zone, vous possédez Speed 1 et vous esquivez un coup tous les 10 coups subits.",
-                    "De plus, vous pouvez vous teleporter sur un bloc present dans la zone a l'aide d'un clic droit. (Cooldown: 10 secondes / Utilisation infinie)"
+                    "Dans cette zone, vous possédez §9Speed 1§r et vous esquivez un coup tous les §l10 coups§r subits.",
+                    "De plus, vous pouvez vous téléporter sur un bloc present dans la zone a l'aide d'un clic droit. (Cooldown: 10 secondes / Utilisation infinie)"
             };
         }
 
@@ -158,7 +160,7 @@ public class Ash extends NinjagoRole {
         public void onUsePower(UHCPlayer player, Action clickAction) {
             if(isSmokePlaced) {
                 if(timeSinceTp + 10 > UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer()) {
-                    player.sendMessage(ChatUtils.ERROR.getMessage("Vous devez attendre " + GraphicUtils.convertToAccurateTime(10 + timeSinceTp - UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer()) + " secondes avant de pouvoir utiliser ce pouvoir."));
+                    player.sendMessage(ChatUtils.ERROR.getMessage("Vous devez attendre " + GraphicUtils.convertToAccurateTime(10 + timeSinceTp - UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer()) + " secondes avant de pouvoir vous téléporter."));
                     return;
                 }
 
@@ -180,7 +182,7 @@ public class Ash extends NinjagoRole {
         public boolean onEnable(UHCPlayer player, Block target, Action clickAction) {
             if(isSmokePlaced) {
                 if(target.getLocation().distance(smokeCenter) > 25) {
-                    player.sendMessage(ChatUtils.ERROR.getMessage("Le bloc n'est pas dans la zone."));
+                    player.sendMessage(ChatUtils.ERROR.getMessage("Le bloc visé n'est pas dans la zone."));
                     return false;
                 }
 
@@ -194,7 +196,7 @@ public class Ash extends NinjagoRole {
                                 player.getLocation().getPitch()
                         )
                 );
-                player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous vous etes teleporté sur le bloc."));
+                player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous vous etes téléporté sur le bloc."));
                 return false;
             }
             else {

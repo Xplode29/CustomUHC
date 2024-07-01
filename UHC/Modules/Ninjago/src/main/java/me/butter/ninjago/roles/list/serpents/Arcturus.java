@@ -25,15 +25,15 @@ public class Arcturus extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez Force 1 la nuit",
-                "A l'annonce des roles, vous obtenez le pseudo de Pythor.",
-                "Lorsque vous retirez votre armure, vous obtenez Invisibilité et No fall"
+                "Vous possédez §cForce 1§r la nuit",
+                "A l'annonce des roles, vous obtenez le pseudo de §1Pythor§r.",
+                "Lorsque vous retirez votre armure, vous obtenez §bInvisibilité§r et §2No fall§r."
         };
     }
 
     @Override
     public List<String> additionalDescription() {
-        return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(pythor == null ? "Pas de Pythor" : "Pythor:" + pythor.getName()));
+        return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(pythor == null ? "Pas de §1Pythor§r" : "§1Pythor§r:" + pythor.getName()));
     }
 
     @Override

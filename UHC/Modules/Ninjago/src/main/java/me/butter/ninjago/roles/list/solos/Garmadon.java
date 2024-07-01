@@ -1,10 +1,8 @@
 package me.butter.ninjago.roles.list.solos;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
-import me.butter.api.module.power.EnchantedItemPower;
 import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.PlayerState;
@@ -21,7 +19,6 @@ import me.butter.ninjago.roles.NinjagoRole;
 import me.butter.ninjago.roles.list.ninjas.Lloyd;
 import me.butter.ninjago.roles.list.ninjas.Wu;
 import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.ClickType;
@@ -29,7 +26,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -47,17 +45,16 @@ public class Garmadon extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Vous avez 2 coeurs supplémentaires permanents. ",
-                "Vous possedez deux pactes: Gentil ou Mechant."
+                "Vous avez §l2 coeurs§r supplémentaires permanents. ",
+                "Vous possedez deux pactes: §aGentil§r ou §eSolitaire§r."
         };
     }
 
     @Override
     public List<String> additionalDescription() {
-        return Arrays.asList(
-                lloyd == null ? "Pas de Lloyd" : "Lloyd : " + lloyd.getName(),
-                solo ?  (wu == null ? "Pas de Wu" : "Wu : " + wu.getName()) : ""
-        );
+        List<String> list = new ArrayList<>(Collections.singletonList(lloyd == null ? "Il n'y a pas de Lloyd dans cette partie !" : "Lloyd : " + lloyd.getName()));
+        if(solo) list.add(wu == null ? "Il n'y a pas de Wu dans cette partie !" : "Wu : " + wu.getName());
+        return list;
     }
 
     @Override
@@ -80,25 +77,45 @@ public class Garmadon extends NinjagoRole {
 
     @EventHandler
     public void onKillPlayer(UHCPlayerDeathEvent event) {
-        if(event.getKiller() != getUHCPlayer()) return;
-        if(!solo) return;
+        if(!pacted) return;
 
-        if(event.getVictim().equals(lloyd)) {
-            getUHCPlayer().addResi(20);
+        if(solo && getUHCPlayer().equals(event.getKiller())) {
+            if(event.getVictim().equals(lloyd)) {
+                getUHCPlayer().addResi(20);
 
-            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tue Lloyd. Vous gagnez Resistance 1."));
+                getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Lloyd. Vous gagnez §7Resistance 1§r."));
+            }
+
+            if(event.getVictim().equals(wu)) {
+                Wu.StickPower stickPower = new Wu.StickPower();
+                addPower(stickPower);
+                getUHCPlayer().giveItem(stickPower.getItem(), true);
+
+                SpinjitzuPower spinjitzuPower = new SpinjitzuPower();
+                addPower(spinjitzuPower);
+                getUHCPlayer().giveItem(spinjitzuPower.getItem(), true);
+
+                getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Wu. Vous obtenez le Baton de Wu et le Spinjitzu."));
+            }
         }
+        else if(lloyd != null && getUHCPlayer().getPlayerState() == PlayerState.IN_GAME && lloyd.getPlayerState() == PlayerState.IN_GAME) {
+            double count = 0;
+            int total = UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size();
 
-        if(event.getVictim().equals(wu)) {
-            StickPower stickPower = new StickPower();
-            addPower(stickPower);
-            getUHCPlayer().giveItem(stickPower.getItem(), true);
+            for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                if(player.getRole() == null) continue;
+                if(player.getRole().getCamp().equals(CampEnum.NINJA.getCamp())) count++;
+            }
 
-            SpinjitzuPower spinjitzuPower = new SpinjitzuPower();
-            addPower(spinjitzuPower);
-            getUHCPlayer().giveItem(spinjitzuPower.getItem(), true);
+            if(count / total >= 0.5) {
+                lloyd.addSpeed(20);
+                lloyd.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous passez en duo avec Garmadon et vous gagnez §9Speed 1§r."));
+                lloyd.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Garmadon: " + getUHCPlayer().getName()));
 
-            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tue Wu. Vous obtenez le Baton de Wu et le Spinjitzu."));
+                setCamp(CampEnum.SOLO.getCamp());
+                getUHCPlayer().addSpeed(20);
+                getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous passez en duo avec Lloyd et vous gagnez §9Speed 1§r."));
+            }
         }
     }
 
@@ -142,13 +159,14 @@ public class Garmadon extends NinjagoRole {
                     @Override
                     public ItemStack getIcon() {
                         return new ItemBuilder(Material.INK_SACK, 1, (byte) 5)
-                                .setName("§aGentil")
+                                .setName("§aGentil§r")
                                 .setLore(
-                                        ChatUtils.LIST_ELEMENT.prefix + "Vous gagnez avec les Ninjas",
+                                        ChatUtils.LIST_ELEMENT.prefix + "Vous gagnez avec les §aNinjas§r",
                                         ChatUtils.LIST_ELEMENT.prefix + "Lorsque vous vous trouvez à 20 blocks de Lloyd,",
-                                        "vous obtenez Resistance 1",
+                                        "vous obtenez §7Resistance 1§r",
                                         ChatUtils.LIST_ELEMENT.prefix + "Lorsque le nombre de ninjas en vie est trop important,",
-                                        "vous passez en duo avec Lloyd"
+                                        "vous passez en duo avec Lloyd",
+                                        "Vous obtiendrez alors tous les deux §9Speed 1§r permanent."
                                 )
                                 .toItemStack();
                     }
@@ -161,6 +179,7 @@ public class Garmadon extends NinjagoRole {
                         new LloydRunnable(getOpener());
 
                         getUHCPlayer().getPlayer().setItemInHand(new ItemStack(Material.AIR));
+                        getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez choisi le Pacte §aGentil§r."));
                         closeMenu();
                     }
                 });
@@ -169,15 +188,15 @@ public class Garmadon extends NinjagoRole {
                     @Override
                     public ItemStack getIcon() {
                         return new ItemBuilder(Material.INK_SACK, 1, (byte) 5)
-                                .setName("§eSolitaire")
+                                .setName("§eSolitaire§r")
                                 .setLore(
-                                        ChatUtils.LIST_ELEMENT.prefix + "Vous gagnez Seul",
-                                        ChatUtils.LIST_ELEMENT.prefix + "Vous obtenez Force 1 permanent.",
+                                        ChatUtils.LIST_ELEMENT.prefix + "Vous gagnez §eSeul§r",
+                                        ChatUtils.LIST_ELEMENT.prefix + "Vous obtenez §cForce 1§r permanent.",
                                         ChatUtils.LIST_ELEMENT.prefix + "Lorsque vous tuez Lloyd,",
-                                        "Vous obtenez Resistance 1 permanent",
+                                        "Vous obtenez §7Resistance 1§r permanent",
                                         ChatUtils.LIST_ELEMENT.prefix + "Vous obtenez le pseudo de Wu.",
-                                        "Lorsque vous le tuez, vous obtenez Son baton et",
-                                        "le Spinjitzu qui vous octroit Speed 1",
+                                        "Lorsque vous le tuez, vous obtenez son Baton et",
+                                        "le Spinjitzu qui vous octroit §9Speed 1§r",
                                         "pendant 1 minute a son activation."
                                 )
                                 .toItemStack();
@@ -188,10 +207,11 @@ public class Garmadon extends NinjagoRole {
                         pacted = true;
                         solo = true;
                         getUHCPlayer().getRole().setCamp(CampEnum.SOLO.getCamp());
-                        getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage(wu == null ? "Pas de Wu" : "Wu : " + wu.getName()));
+                        getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage(wu == null ? "Il n'y a pas de Wu dans cette partie !" : "Wu : " + wu.getName()));
                         getUHCPlayer().addStrength(15);
 
                         getUHCPlayer().getPlayer().setItemInHand(new ItemStack(Material.AIR));
+                        getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez choisi le Pacte §eSolitaire§r."));
                         closeMenu();
                     }
                 });
@@ -236,19 +256,6 @@ public class Garmadon extends NinjagoRole {
                     nextToLloyd = false;
                 }
             }
-        }
-    }
-
-    private static class StickPower extends EnchantedItemPower {
-        public StickPower() {
-            super("§eBaton", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 4));
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[]{
-                    "Une épée en diamant Tranchant 4"
-            };
         }
     }
 

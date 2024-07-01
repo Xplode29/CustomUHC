@@ -29,15 +29,15 @@ public class Cole extends NinjagoRole {
     int coups = 0;
 
     public Cole() {
-        super("Cole", "/roles/ninjas/cole", new EarthWall(), new SpinjitzuPower());
+        super("Cole", "/roles/ninjas/cole", new StoneWall(), new SpinjitzuPower());
     }
 
     @Override
     public String[] getDescription() {
         return new String[]{
                 "A partir du 3eme episode, vous avez 3% de chance de devenir un fantome lors de la mort d'un joueur.",
-                "Lorsque vous etes un fantome, vous avez Faiblesse 1 le jour et Speed 1 la nuit.",
-                "De plus, vous esquivez un coup tous les 10 coups subits."
+                "Lorsque vous etes un fantome, vous avez §3Faiblesse 1§r le jour et §9Speed 1§r la nuit.",
+                "De plus, vous esquivez un coup §ltous les 10 coups§r subits."
         };
     }
 
@@ -65,7 +65,7 @@ public class Cole extends NinjagoRole {
                 coups = 0;
                 event.setCancelled(true);
 
-                getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez esquive un coup !"));
+                getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez esquivé un coup !"));
             }
             else {
                 coups++;
@@ -108,16 +108,16 @@ public class Cole extends NinjagoRole {
         }
     }
 
-    private static class EarthWall extends TargetBlockItemPower {
+    private static class StoneWall extends TargetBlockItemPower {
 
-        public EarthWall() {
-            super(ChatColor.GRAY + "Mur de Terre", Material.CLAY_BALL, 20, 15 * 60, -1);
+        public StoneWall() {
+            super(ChatColor.GRAY + "Mur de Pierre", Material.CLAY_BALL, 20, 15 * 60, -1);
         }
 
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "Place un mur de 9x9 sur le bloc vise."
+                    "Place un mur de 9x9 sur le bloc visé."
             };
         }
 
@@ -163,8 +163,7 @@ public class Cole extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "À l'activation, vous repoussez tous les joueurs autour de vous dans un rayon de 10 blocks.",
-                    "Vous obtenez 10% de resistance pendant 2 minute."
+                    "Repousse tous les joueurs dans un rayon de 10 blocks. Vous obtenez §710% de Résistance§r pendant 2 minute."
             };
         }
 
@@ -190,6 +189,7 @@ public class Cole extends NinjagoRole {
             Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> player.removeResi(10), 2 * 60 * 20);
 
             ParticleUtils.tornadoEffect(player.getPlayer(), Color.GRAY);
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));
             return true;
         }
     }

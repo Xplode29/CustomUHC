@@ -28,7 +28,7 @@ public class FullMenu extends PaginatedMenu {
                 }
 
                 @Override
-                public boolean doesUpdateButton() {
+                public boolean doesUpdateGui() {
                     return true;
                 }
 

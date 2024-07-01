@@ -77,6 +77,7 @@ public final class Ninjago extends JavaPlugin {
     public List<RoleType> getRolesComposition() {
         List<RoleType> roleList = new ArrayList<>();
         for(RoleEnum role : RoleEnum.values()) {
+            if(role.getAmount() <= 0) continue;
             roleList.add(new RoleType() {
                 @Override
                 public Class<? extends Role> getRoleClass() {

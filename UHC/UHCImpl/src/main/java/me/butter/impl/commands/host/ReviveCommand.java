@@ -32,6 +32,7 @@ public class ReviveCommand extends AbstractCommand {
             sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + target.getName() + " n'est pas mort !"));
             return;
         }
+
         target.revive();
         sender.getPlayer().sendMessage(ChatUtils.GLOBAL_INFO.getMessage("Vous avez reanime " + target.getName()));
     }

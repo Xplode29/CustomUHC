@@ -32,15 +32,15 @@ public class Pythor extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez Speed 1 permanent et Force 1 la nuit.",
-                "Vous connaissez une liste contenant : Skales, Acidicus, Skalidor, Fangtom, Fangdam, Arcturus et Ed.",
-                "Attention, Ed ne gagne pas avec les serpents."
+                "Vous possédez §9Speed 1§r permanent et §cForce 1§r la nuit.",
+                "Vous connaissez une liste contenant : §1Skales§r, §1Acidicus§r, §1Skalidor§r, §1Fangtom§r, §1Fangdam§r, §1Arcturus§r et §aEd§r.",
+                "Attention, §aEd§r ne gagne pas avec les serpents."
         };
     }
 
     @Override
     public List<String> additionalDescription() {
-        return Collections.singletonList("Liste des serpents (Le role Ed fire dans la liste !) : \n" + String.join(", ", list));
+        return Collections.singletonList("Liste des serpents (Le role §aEd§r fire dans la liste !) : \n" + String.join(", ", list));
     }
 
     @Override
@@ -85,11 +85,10 @@ public class Pythor extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "Si vous obtenez les 4 armes d'or, vous pouvez exectuer l'invocation du Grand Dévoreur.",
-                    "",
-                    "Vous deviendrez alors solitaire, vous obtiendrez Resistance 1 et 13 coeurs permanents,",
-                    "Cependant, vous perdez Speed 1 et tous les joueurs de la partie seront informés que le Grand Dévoreur a été invoqué.",
-                    "Les armes d'or seront alors detruites"
+                    "Si vous obtenez les 4 §6armes d'or§r, vous pouvez exectuer l'invocation du Grand Dévoreur.",
+                    "Vous deviendrez alors §eSolitaire§r, vous obtiendrez §7Resistance 1§r et §l3 coeurs§r permanents supplémentaires.",
+                    "Cependant, vous perdez §9Speed 1§r et tous les joueurs de la partie seront informés que le Grand Dévoreur a été invoqué.",
+                    "Les armes d'or seront alors detruites."
             };
         }
 
@@ -141,7 +140,7 @@ public class Pythor extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "À l'activation, vous obtenez speed 2 et résistance 1 pendant 2 minutes"
+                    "À l'activation, vous obtenez 20% de §9Speed§r et de §7Résistance§r supplémentaires pendant 2 minutes."
             };
         }
 

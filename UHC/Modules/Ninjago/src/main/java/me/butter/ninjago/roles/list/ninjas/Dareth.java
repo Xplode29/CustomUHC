@@ -20,8 +20,8 @@ public class Dareth extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Vous avez Faiblesse 1 la nuit.",
-                "A chaque debut d'episode, vous obtenez le nombre de joueurs autour de vous dans un rayon de 50 blocks maitrisant un element"
+                "Vous avez §3Faiblesse 1§r la nuit.",
+                "A chaque debut d'episode, vous obtenez le nombre de joueurs maitrisant un element autour de vous dans un rayon de 50 blocks."
         };
     }
 
@@ -65,7 +65,7 @@ public class Dareth extends NinjagoRole {
 
     private static class Bow extends EnchantedItemPower {
         public Bow() {
-            super("Arc", Material.BOW, ImmutableMap.of(Enchantment.ARROW_DAMAGE, 3, Enchantment.ARROW_KNOCKBACK, 1));
+            super("§3Arc Répulsif§r", Material.BOW, ImmutableMap.of(Enchantment.ARROW_DAMAGE, 3, Enchantment.ARROW_KNOCKBACK, 1));
         }
 
         @Override

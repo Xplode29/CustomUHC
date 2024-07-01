@@ -39,8 +39,8 @@ public class Nya extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Au 3eme épisode, vous obtenez une liste de 3 pseudos contenant celui de Kai.",
-                "En restant 5 minutes à 10 blocs de celui-ci, vous obtiendrez un livre depth rider 3."
+                "Au 3eme épisode, vous obtenez une liste de §l3 pseudos§r contenant celui de §aKai§r.",
+                "En restant 5 minutes à 10 blocs de celui-ci, vous obtiendrez un livre §9Depth Strider 3§r."
         };
     }
 
@@ -115,6 +115,7 @@ public class Nya extends NinjagoRole {
         if(event.getKiller() != getUHCPlayer()) return;
 
         maxSamuraiTimer += 30;
+        getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez gagné 30 secondes d'utilisation supplémentaires de votre samurai X !"));
     }
 
     private class SamuraiPower extends ItemPower {
@@ -128,9 +129,9 @@ public class Nya extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[]{
-                    "Lorsque cet item est activé, vous obtenez Speed 1 et Force 1.",
-                    "Vous avez 2 minutes d'utilisation.",
-                    "Lorsque vous faites un kill, vous obtenez 30 secondes d'utilisation supplémentaires.",
+                    "Lorsque cet item est activé, vous obtenez §9Speed 1§r et §cForce 1§r.",
+                    "Vous avez §l2 minutes§r d'utilisation.",
+                    "Lorsque vous faites un kill, vous obtenez §l30 secondes d'utilisation§r supplémentaires.",
                     "Vous pouvez vérifier le temps qu'il vous reste avec un clic gauche."
             };
         }
@@ -196,9 +197,9 @@ public class Nya extends NinjagoRole {
         }
     }
 
-    private static class DepthStriderBook extends EnchantBookPower {
+    public static class DepthStriderBook extends EnchantBookPower {
         public DepthStriderBook() {
-            super("§rLivre Depth Strider 3", Enchantment.DEPTH_STRIDER, 3);
+            super("§9Livre Depth Strider 3", Enchantment.DEPTH_STRIDER, 3);
         }
 
         @Override

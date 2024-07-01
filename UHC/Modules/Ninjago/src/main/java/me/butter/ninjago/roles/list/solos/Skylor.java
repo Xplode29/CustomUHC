@@ -103,7 +103,7 @@ public class Skylor extends NinjagoRole {
             player.addSpeed(target.getSpeed());
 
             player.addMaxHealth(target.getMaxHealth() - 20);
-            player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Vous avez copie les effets de " + target.getName()));
+            player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Vous avez copié les effets de " + target.getName()));
 
             return true;
         }

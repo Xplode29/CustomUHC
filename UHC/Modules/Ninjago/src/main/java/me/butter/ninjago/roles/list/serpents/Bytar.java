@@ -11,6 +11,7 @@ import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -30,9 +31,9 @@ public class Bytar extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "A l'annonce des roles, vous obtenez le pseudo de Skalidor.",
-                "Lorsque vous effectuez un kill, vous obtenez 3% de résistance supplémentaire",
-                "Au debut du jour, vous obtenez Lenteur 1 pendant 30 secondes."
+                "A l'annonce des roles, vous obtenez le pseudo de §1Skalidor§r.",
+                "Lorsque vous effectuez un kill, vous obtenez §73% de Résistance§r supplémentaires.",
+                "Au debut du jour, vous etes ralenti pendant 30 secondes."
         };
     }
 
@@ -61,10 +62,12 @@ public class Bytar extends NinjagoRole {
     public void onKillPlayer(UHCPlayerDeathEvent event) {
         if(event.getKiller() != null && event.getKiller().equals(getUHCPlayer())) {
             getUHCPlayer().addResi(3);
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous gagnez 3% de resistance."));
         }
     }
 
     private static class DiggingPower extends TargetPlayerItemPower {
+
         public DiggingPower() {
             super("Creusage", Material.NETHER_STAR, 20, 15 * 60, -1);
         }
@@ -72,7 +75,7 @@ public class Bytar extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "Vous passez en mode Spectateur pendant 3 secondes puis etes teleporte derriere le joueur vise."
+                    "Vous passez en mode Spectateur pendant 3 secondes puis etes téléporté derriere le joueur visé."
             };
         }
 
@@ -96,8 +99,13 @@ public class Bytar extends NinjagoRole {
                     player.getPlayer().setGameMode(GameMode.SURVIVAL);
                     player.setAbleToMove(true);
 
-                    player.getPlayer().teleport(target.getPlayer().getLocation().clone().add(target.getPlayer().getLocation().getDirection().setY(0).normalize().multiply(-2)));
-                    player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez ete teleporte vers " + target.getName()));
+                    Location loc = target.getPlayer().getLocation().clone().add(target.getPlayer().getLocation().getDirection().setY(0).normalize().multiply(-2));
+                    loc.getBlock().setType(Material.AIR);
+                    loc.clone().add(0, 1, 0).getBlock().setType(Material.AIR);
+
+                    player.getPlayer().teleport(loc);
+
+                    player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez ete téléporté vers " + target.getName()));
                 }
             }.runTaskLater(UHCAPI.getInstance(), 3 * 20);
 

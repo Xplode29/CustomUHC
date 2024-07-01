@@ -28,8 +28,8 @@ public class Fangdam extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez Force 1 a 20 blocks de Fangtom. ",
-                "A l'annonce des roles, vous obtenez le pseudo de Pythor et de Fangtom."
+                "Vous possédez §cForce 1§r à 20 blocks de §1Fangtom§r. ",
+                "A l'annonce des roles, vous obtenez le pseudo de §1Pythor§r et de §1Fangtom§r."
         };
     }
 
@@ -84,7 +84,7 @@ public class Fangdam extends NinjagoRole {
     private class FangChat extends CommandPower {
 
         public FangChat() {
-            super("Chat avec Fangtom", "chat", 0, -1);
+            super("Chat avec §1Fangtom§r", "chat", 0, -1);
         }
 
         @Override
@@ -94,7 +94,7 @@ public class Fangdam extends NinjagoRole {
 
         @Override
         public String[] getDescription() {
-            return new String[]{"Vous permet de communiquer avec Fangtom"};
+            return new String[]{"Vous permet de communiquer avec §1Fangtom§r"};
         }
 
         @Override

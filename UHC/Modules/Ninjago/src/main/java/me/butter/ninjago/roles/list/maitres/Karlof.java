@@ -9,6 +9,7 @@ import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.CampEnum;
 import me.butter.ninjago.roles.NinjagoRole;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -32,8 +33,8 @@ public class Karlof extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Vous avez Force 1 permanent",
-                "Vous conaissez la liste des membres de l'alliance"
+                "Vous avez §cForce 1§r permanent.",
+                "Vous connaissez la liste des membres de l'alliance."
         };
     }
 
@@ -59,7 +60,7 @@ public class Karlof extends NinjagoRole {
 
                     if(steelTimer <= 0) {
                         steelActive = false;
-                        getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous n'avez plus assez de temps, votre blindage s'est désactivé !"));
+                        getUHCPlayer().sendMessage(ChatUtils.ERROR.getMessage("Vous n'avez plus assez de temps, votre blindage s'est désactivé !"));
                     }
                 }
             }
@@ -81,23 +82,23 @@ public class Karlof extends NinjagoRole {
     public void onPlayerDeath(UHCPlayerDeathEvent event) {
         if(getUHCPlayer().equals(event.getKiller())) {
             steelTimer += 30;
-            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez gagnez 30 secondes d'utilisation supplémentaires"));
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu 30 secondes de Blindage supplémentaires."));
         }
     }
 
     private class SteelPower extends ItemPower {
 
         public SteelPower() {
-            super("§3Blindage", Material.NETHER_STAR, 0, -1);
+            super(ChatColor.DARK_GRAY + "Blindage", Material.NETHER_STAR, 0, -1);
         }
 
         @Override
         public String[] getDescription() {
             return new String[]{
-                    "Lorsque cet item est activé, vous obtenez Resistance mais vous perdez Force 1 et vous obtenez Lenteur 1. ",
-                    "Vous avez 3 minutes d'utilisation. ",
+                    "Lorsque cet item est activé, vous obtenez §7Resistance 2§r mais vous perdez §cForce 1§r et vous obtenez §7Lenteur 1§r. ",
+                    "Vous avez 3 minutes d'utilisation maximum. ",
                     "Lorsque vous faites un kill, vous obtenez 30 secondes d'utilisation supplémentaires",
-                    "Vous pouvez vérifier le temps qu'il vous reste avec un clic gauche"
+                    "Vous pouvez vérifier le temps qu'il vous reste avec un clic gauche."
             };
         }
 
@@ -131,7 +132,7 @@ public class Karlof extends NinjagoRole {
                 }
             }
             else {
-                player.sendMessage(ChatUtils.ERROR.getMessage("Il vous reste " + GraphicUtils.convertToAccurateTime(steelTimer) + " d'utilisation"));
+                player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Il vous reste " + GraphicUtils.convertToAccurateTime(steelTimer) + " d'utilisation"));
             }
             return false;
         }

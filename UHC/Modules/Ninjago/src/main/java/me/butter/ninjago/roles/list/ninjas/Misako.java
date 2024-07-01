@@ -6,6 +6,7 @@ import me.butter.ninjago.menu.MisakoMenu;
 import me.butter.ninjago.roles.NinjagoRole;
 
 public class Misako extends NinjagoRole {
+
     public Misako() {
         super("Misako", "/roles/ninjas/misako", new InventoryCommand());
     }
@@ -13,7 +14,7 @@ public class Misako extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Vous avez 10% de speed permanent. "
+                "Vous avez §9Speed 0.5§r permanent. "
         };
     }
 
@@ -30,7 +31,7 @@ public class Misako extends NinjagoRole {
 
         @Override
         public String[] getDescription() {
-            return new String[]{"A l'execution, vous pouvez voir l'inventaire du joueur ciblé"};
+            return new String[] {"Observe l'inventaire du joueur ciblé"};
         }
 
         @Override

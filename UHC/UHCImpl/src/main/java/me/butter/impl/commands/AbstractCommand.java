@@ -30,4 +30,8 @@ public abstract class AbstractCommand {
     public String[] getAliases() {
         return aliases;
     }
+
+    public boolean isHidden() {
+        return false;
+    }
 }

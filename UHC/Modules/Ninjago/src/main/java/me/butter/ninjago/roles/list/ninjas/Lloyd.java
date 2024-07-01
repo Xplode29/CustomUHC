@@ -25,8 +25,8 @@ public class Lloyd extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "Vous possédez No Fall ainsi que 2 coeurs supplémentaires permanents",
-                "A chaque debut d'episode, vous pouvez choisir un effet entre Speed, Force et Resistance"
+                "Vous possédez §2No Fall§r ainsi que §l2 coeurs§r supplémentaires permanents.",
+                "A chaque debut d'episode, vous pouvez choisir 10% d'un effet entre §9Speed§r, §cForce§r et §7Resistance§r."
         };
     }
 
@@ -72,8 +72,7 @@ public class Lloyd extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "À l'activation, repousse tous les joueurs dans un rayon de 10 blocks.",
-                    "vous obtenez 10% de l'effet que vous avez choisi au debut d'episode pendant 2 minutes."
+                    "Repousse tous les joueurs dans un rayon de 10 blocks. Vous obtenez 10% de l'effet choisi au debut d'episode pendant 2 minutes."
             };
         }
 
@@ -95,25 +94,28 @@ public class Lloyd extends NinjagoRole {
                 }
             }
 
-            switch (chatEffectChooser.getChosen()) {
-                case 0:
-                    player.addSpeed(10);
-                    Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeSpeed(10), 2 * 60 * 20);
-                    break;
-                case 1:
-                    player.addStrength(10);
-                    Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeStrength(10), 2 * 60 * 20);
-                    break;
-                case 2:
-                    player.addResi(10);
-                    Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeResi(10), 2 * 60 * 20);
-                    break;
-                default:
-                    player.sendMessage(ChatUtils.ERROR.getMessage("Vous n'avez pas choisi d'effet, donc vous n'obtenez pas d'effet."));
-                    break;
+            if(chatEffectChooser != null) {
+                switch (chatEffectChooser.getChosen()) {
+                    case 0:
+                        player.addSpeed(10);
+                        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeSpeed(10), 2 * 60 * 20);
+                        break;
+                    case 1:
+                        player.addStrength(10);
+                        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeStrength(10), 2 * 60 * 20);
+                        break;
+                    case 2:
+                        player.addResi(10);
+                        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.removeResi(10), 2 * 60 * 20);
+                        break;
+                    default:
+                        player.sendMessage(ChatUtils.ERROR.getMessage("Vous n'avez pas choisi d'effet, donc vous n'obtenez pas d'effet."));
+                        break;
+                }
             }
 
             ParticleUtils.tornadoEffect(player.getPlayer(), Color.GREEN);
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));
             return true;
         }
     }

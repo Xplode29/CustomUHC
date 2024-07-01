@@ -22,7 +22,7 @@ public class BorderTimer extends AbstractTimer {
     @Override
     public boolean onTimerDone() {
         UHCAPI.getInstance().getGameHandler().getWorldConfig().setBorderMoving(true);
-        Bukkit.broadcastMessage(ChatUtils.WARNING.getMessage("La bordure commence à se réduire."));
+        Bukkit.broadcastMessage(ChatUtils.ERROR.getMessage("La bordure commence à se réduire."));
         moveBorder();
         return true;
     }

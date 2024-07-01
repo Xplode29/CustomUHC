@@ -16,51 +16,61 @@ public class ChatSnippets {
 
         player.sendMessage(ChatUtils.LINE + "");
         player.sendMessage("");
-        player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage("Vous êtes §r" + role.getCamp().getPrefix() + role.getName()));
+        player.sendMessage(ChatUtils.INDENTED.prefix + "§7" + ChatUtils.ARROW.prefix + "§r" + "Vous êtes " + role.getCamp().getPrefix() + role.getName());
 
-        player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage("Vous devez gagner aves les §r" + role.getCamp().getPrefix() + role.getCamp().getName()));
+        player.sendMessage(ChatUtils.INDENTED.prefix + "§7" + ChatUtils.ARROW.prefix + "§r" + "Vous devez gagner " +
+            (player.getRole().getCamp().isSolo() ? "§eSeul§r" : "aves les " + role.getCamp().getPrefix() + role.getCamp().getName())
+        );
         player.sendMessage("");
 
-        player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Description:"));
+        player.sendMessage(ChatUtils.LIST_HEADER.prefix + "§lDescription§r : ");
         //Before the role presentation
         for(String line : role.getDescription()) {
-            player.sendMessage(ChatUtils.INDENTED.getMessage(line));
+            player.sendMessage(ChatUtils.INDENTED.prefix + "§7" + ChatUtils.ARROW.prefix + "§r" + line);
+            player.sendMessage("");
         }
-        player.sendMessage("");
 
         //Items
         if(role.hasItems()) {
-            player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Items"));
+            player.sendMessage(ChatUtils.LIST_HEADER.prefix + "§lItems§r : ");
             for(Power power : role.getPowers()) {
                 if(power instanceof ItemPower && power.showPower()) {
                     player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage(
-                            power.getName() + "§r: " + String.join("\n ", power.getDescription()) +
-                                    (power.hideCooldowns() ? "" : (
-                                        " (" + ((power.getMaxUses() > 0) ? (power.getMaxUses() + " Utilisation(s)") : "Utilisation infinie") +
-                                        " / " + ((power.getCooldown() > 0) ? (GraphicUtils.convertToAccurateTime(power.getCooldown())) : "Pas de cooldown") + ")"
-                                    ))
+                            power.getName() + "§r" +
+                            (power.hideCooldowns() ? "" : (
+                                " (" + ((power.getMaxUses() > 0) ? (power.getMaxUses() + " Utilisation(s)") : "Utilisation infinie") +
+                                " / " + ((power.getCooldown() > 0) ? (GraphicUtils.convertToAccurateTime(power.getCooldown())) : "Pas de cooldown") + ")"
+                            )) + " : "
                     ));
+
+                    for(String line : power.getDescription()) {
+                        player.sendMessage(ChatUtils.INDENTED_TWICE.prefix + "§7" + ChatUtils.ARROW.prefix + "§r" + line);
+                        player.sendMessage("");
+                    }
                 }
             }
-            player.sendMessage("");
         }
 
         //Commands
         if(role.hasCommands()) {
-            player.sendMessage(ChatUtils.LIST_HEADER.getMessage("Commandes"));
+            player.sendMessage(ChatUtils.LIST_HEADER.prefix + "§lCommandes§r : ");
             for(Power power : role.getPowers()) {
                 if(power instanceof CommandPower && power.showPower()) {
                     CommandPower commandPower = (CommandPower) power;
                     player.sendMessage(ChatUtils.LIST_ELEMENT.getMessage(
-                            power.getName() + "§r (/n " + commandPower.getArgument() + "): " + String.join("\n ", power.getDescription()) +
-                                    (power.hideCooldowns() ? "" : (
-                                        " (" + ((power.getMaxUses() > 0) ? (power.getMaxUses() + " Utilisation(s)") : "Utilisation infinie") +
-                                        " / " + ((power.getCooldown() > 0) ? (GraphicUtils.convertToAccurateTime(power.getCooldown())) : "Pas de cooldown") + ")"
-                                    ))
+                            power.getName() + "§r (§l/n " + commandPower.getArgument() + "§r) " +
+                            (power.hideCooldowns() ? "" :
+                                (" (" + ((power.getMaxUses() > 0) ? (power.getMaxUses() + " Utilisation(s)") : "Utilisation infinie") +
+                                " / " + ((power.getCooldown() > 0) ? (GraphicUtils.convertToAccurateTime(power.getCooldown())) : "Pas de cooldown") + ")")
+                            ) + " : "
                     ));
+
+                    for(String line : power.getDescription()) {
+                        player.sendMessage(ChatUtils.INDENTED_TWICE.prefix + "§7" + ChatUtils.ARROW.prefix + "§r" + line);
+                        player.sendMessage("");
+                    }
                 }
             }
-            player.sendMessage("");
         }
 
         player.sendMessage(ChatUtils.LINE + "");

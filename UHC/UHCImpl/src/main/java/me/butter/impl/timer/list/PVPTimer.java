@@ -19,7 +19,7 @@ public class PVPTimer extends AbstractTimer {
 
     @Override
     public boolean onTimerDone() {
-        Bukkit.broadcastMessage(ChatUtils.WARNING.getMessage("Le PVP est maintenant actif."));
+        Bukkit.broadcastMessage(ChatUtils.ERROR.getMessage("Le PVP est maintenant actif."));
         UHCAPI.getInstance().getGameHandler().getGameConfig().setPvp(true);
 
         return true;

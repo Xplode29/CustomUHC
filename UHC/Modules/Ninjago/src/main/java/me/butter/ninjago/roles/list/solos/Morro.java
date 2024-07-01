@@ -1,9 +1,7 @@
 package me.butter.ninjago.roles.list.solos;
 
-import com.google.common.collect.ImmutableMap;
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;
-import me.butter.api.module.power.EnchantedItemPower;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
@@ -15,7 +13,6 @@ import me.butter.ninjago.roles.list.ninjas.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -41,14 +38,14 @@ public class Morro extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Vous possédez Force 1 ainsi que 2 coeurs supplémentaires permanents.",
-                "Vous connaissez l'identité de Wu. ",
-                "Lorque vous restez 10 minutes à coté d'un ninja, vous êtes informé de son pseudo. ",
-                "Vous obtenez des effets selon les ninjas tués:",
-                ChatUtils.LIST_ELEMENT.getMessage("§9Jay§r: Vous obtenez speed 2"),
-                ChatUtils.LIST_ELEMENT.getMessage("§cKai§r: Vous obtenez fire aspect sur votre épée et flame sur votre arc"),
-                ChatUtils.LIST_ELEMENT.getMessage("§8Cole§r: Vous obtenez résistance 1"),
-                ChatUtils.LIST_ELEMENT.getMessage("§3Zane§r: Vous obtenez un passif (/n freeze).")
+                "Vous possédez §cForce 1§r ainsi que §l2 coeurs§r supplémentaires permanents.",
+                "Vous connaissez l'identité de §aWu§r. ",
+                "Lorsque vous restez 10 minutes à coté d'un ninja, vous êtes informé de son pseudo. ",
+                "Vous obtenez des effets selon les ninjas tués :",
+                " §9Jay§r: Vous obtenez §9Speed 2§r.",
+                " §cKai§r: Vous obtenez son §c§lEpée des Flammes§r et son §c§lArc des Flammes§r",
+                " §8Cole§r: Vous obtenez §7Résistance 1§r.",
+                " §3Zane§r: Vous obtenez un passif (/n freeze)."
         };
     }
 
@@ -129,11 +126,11 @@ public class Morro extends NinjagoRole {
             getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu 40% de speed"));
         }
         if(role instanceof Kai) {
-            FlameBow bow = new FlameBow();
+            Kai.FlameBow bow = new Kai.FlameBow();
             addPower(bow);
             getUHCPlayer().giveItem(bow.getItem(), true);
 
-            FlameSword book = new FlameSword();
+            Kai.FlameSword book = new Kai.FlameSword();
             addPower(book);
             getUHCPlayer().giveItem(book.getItem(), true);
 
@@ -160,7 +157,7 @@ public class Morro extends NinjagoRole {
         public String[] getDescription() {
             return new String[]{
                     "Active / désactive votre passif (uniquement après avoir tué Zane). ",
-                    "Lorqu'il est activé, vous avez 5% de chance d'infliger slowness 1 pendant 5 secondes lorsque vous tapez un joueur"
+                    "Lorqu'il est activé, vous avez 5% de chance d'infliger §2Lenteur 1§r pendant 5 secondes lorsque vous tapez un joueur"
             };
         }
 
@@ -195,7 +192,7 @@ public class Morro extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[]{
-                    "Active / désactive votre passif. Lorqu'il est activé, vous êtes invisible, même avec votre armure"
+                    "Active / désactive votre passif. Lorqu'il est activé, vous êtes invisible, même avec votre armure."
             };
         }
 
@@ -216,33 +213,6 @@ public class Morro extends NinjagoRole {
                 }
                 return false;
             }
-        }
-    }
-
-    private static class FlameBow extends EnchantedItemPower {
-
-        public FlameBow() {
-            super("Arc de flamme", Material.BOW, ImmutableMap.of(Enchantment.ARROW_DAMAGE, 3, Enchantment.ARROW_FIRE, 1));
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[]{
-                    "Un arc enchanté Power 2 Flame 1."
-            };
-        }
-    }
-
-    private static class FlameSword extends EnchantedItemPower {
-        public FlameSword() {
-            super("Epee des flammes", Material.DIAMOND_SWORD, ImmutableMap.of(Enchantment.DAMAGE_ALL, 3, Enchantment.FIRE_ASPECT, 1));
-        }
-
-        @Override
-        public String[] getDescription() {
-            return new String[]{
-                    "Une epee enchantee Fire Aspect 1."
-            };
         }
     }
 }

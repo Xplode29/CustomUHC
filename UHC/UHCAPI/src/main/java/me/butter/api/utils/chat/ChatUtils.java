@@ -13,10 +13,10 @@ public enum ChatUtils {
 
     GLOBAL_INFO("§8[§e§lGlobal§r§8]§r "),
     PLAYER_INFO("§8[§e§lPlayer§r§8]§r "),
-    ERROR("§c│ "),
-    WARNING("§c│ "),
+    ERROR("§l§c⚠§r§c "),
 
     INDENTED(" "),
+    INDENTED_TWICE("   "),
     LIST_HEADER("▷ "),
     LIST_ELEMENT("  ◆ "),
     SUBLIST_ELEMENT("    - "),

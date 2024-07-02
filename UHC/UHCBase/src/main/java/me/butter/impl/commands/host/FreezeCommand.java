@@ -1,7 +1,6 @@
 package me.butter.impl.commands.host;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.commands.AbstractCommand;

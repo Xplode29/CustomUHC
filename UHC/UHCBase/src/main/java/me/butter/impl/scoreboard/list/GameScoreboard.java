@@ -5,7 +5,6 @@ import me.butter.api.utils.GraphicUtils;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.scoreboard.AbstractScoreboard;
 import me.butter.impl.scoreboard.DuplicateString;
-import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Arrays;

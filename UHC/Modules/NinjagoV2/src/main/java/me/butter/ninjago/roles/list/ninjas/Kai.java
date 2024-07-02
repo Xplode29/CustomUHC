@@ -2,25 +2,21 @@ package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;
-import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ParticleEffects;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.NinjagoV2;
 import me.butter.ninjago.roles.NinjagoRole;
 import me.butter.ninjago.roles.powers.SpinjitzuPower;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.List;
-import java.util.Random;
 
 public class Kai extends NinjagoRole {
 

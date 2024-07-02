@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ParticleBuilder {

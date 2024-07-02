@@ -7,11 +7,13 @@ import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.UHCBase;
 import me.butter.ninjago.roles.NinjagoRole;
 import me.butter.ninjago.roles.powers.SpinjitzuPower;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 

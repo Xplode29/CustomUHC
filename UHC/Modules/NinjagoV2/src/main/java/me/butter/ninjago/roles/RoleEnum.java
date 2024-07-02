@@ -1,6 +1,8 @@
 package me.butter.ninjago.roles;
 
-import me.butter.ninjago.roles.list.ninjas.*;
+import me.butter.ninjago.roles.list.ninjas.Cole;
+import me.butter.ninjago.roles.list.ninjas.Jay;
+import me.butter.ninjago.roles.list.ninjas.Kai;
 import org.bukkit.Material;
 
 public enum RoleEnum {

@@ -88,4 +88,9 @@ public abstract class AbstractScoreboard implements CustomScoreboard {
 
         this.lines = newLines;
     }
+
+    @Override
+    public Scoreboard getScoreboard() {
+        return scoreboard;
+    }
 }

@@ -39,10 +39,10 @@ public class RoleMenu extends PaginatedMenu {
                                 .setName("§r" + role.getName() + " §7(" + amount + ")")
                                 .addEnchant(Enchantment.DIG_SPEED, 1)
                                 .hideItemFlags()
-                                .toItemStack();
+                                .build();
                     }
                     else {
-                        return new ItemBuilder(role.getIcon()).setName("§r" + role.getName() + " §7(" + amount + ")").toItemStack();
+                        return new ItemBuilder(role.getIcon()).setName("§r" + role.getName() + " §7(" + amount + ")").build();
                     }
                 }
 

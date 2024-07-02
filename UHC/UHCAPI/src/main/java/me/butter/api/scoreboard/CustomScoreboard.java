@@ -1,6 +1,7 @@
 package me.butter.api.scoreboard;
 
 import me.butter.api.player.UHCPlayer;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,4 +14,6 @@ public interface CustomScoreboard {
     void update(); void updatePlayer(UHCPlayer uhcPlayer);
 
     void setTitle(String title); void setLine(int line, String text); void setLines(List<String> newLines);
+
+    Scoreboard getScoreboard();
 }

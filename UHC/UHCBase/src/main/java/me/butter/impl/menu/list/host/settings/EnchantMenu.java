@@ -46,7 +46,7 @@ public class EnchantMenu extends PaginatedMenu {
                     .setName("§r" + enchant.getName())
                     .addLoreLine((selected == 0 ? "§a" : "§7") + "Fer: " + enchant.getIronLevel() + " / " + enchant.getMaxLevel())
                     .addLoreLine((selected == 1 ? "§a" : "§7") + "Diamant: " + enchant.getDiamondLevel() + " / " + enchant.getMaxLevel())
-                    .toItemStack();
+                    .build();
         }
 
         @Override

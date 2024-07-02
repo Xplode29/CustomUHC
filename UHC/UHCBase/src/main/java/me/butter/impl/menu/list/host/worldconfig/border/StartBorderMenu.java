@@ -86,7 +86,7 @@ public class StartBorderMenu extends AbstractMenu {
         buttons.put(22, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.BARRIER).setName("§rTaille Initiale: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize()).toItemStack();
+                return new ItemBuilder(Material.BARRIER).setName("§rTaille Initiale: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize()).build();
             }
         });
 

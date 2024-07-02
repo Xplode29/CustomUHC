@@ -24,7 +24,7 @@ public class MainNinjagoMenu extends AbstractMenu {
         buttons.put(22, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.DIAMOND).setName("§rRoles").toItemStack();
+                return new ItemBuilder(Material.DIAMOND).setName("§rRoles").build();
             }
 
             @Override

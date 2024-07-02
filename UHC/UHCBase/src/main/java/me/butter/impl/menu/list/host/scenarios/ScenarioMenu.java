@@ -38,7 +38,7 @@ public class ScenarioMenu extends PaginatedMenu {
                     builder.addEnchant(Enchantment.DIG_SPEED, 1);
                     builder.hideEnchants();
                 }
-                return builder.toItemStack();
+                return builder.build();
             }
 
             @Override
@@ -57,7 +57,7 @@ public class ScenarioMenu extends PaginatedMenu {
                     builder.addEnchant(Enchantment.DIG_SPEED, 1);
                     builder.hideEnchants();
                 }
-                return builder.toItemStack();
+                return builder.build();
             }
 
             @Override
@@ -96,7 +96,7 @@ public class ScenarioMenu extends PaginatedMenu {
                                 .hideEnchants();
                     }
 
-                    return builder.toItemStack();
+                    return builder.build();
                 }
 
                 @Override

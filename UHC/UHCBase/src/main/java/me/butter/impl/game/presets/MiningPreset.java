@@ -10,9 +10,9 @@ public class MiningPreset extends AbstractPreset {
     public MiningPreset() {
         super("Minage", Material.IRON_PICKAXE, new String[] {});
 
-        addToStartingInventory(0, new ItemBuilder(Material.IRON_PICKAXE).addEnchant(Enchantment.DIG_SPEED, 3).setUnbreakable().toItemStack());
-        addToStartingInventory(1, new ItemBuilder(Material.IRON_AXE).addEnchant(Enchantment.DIG_SPEED, 3).setUnbreakable().toItemStack());
-        addToStartingInventory(2, new ItemBuilder(Material.IRON_SPADE).addEnchant(Enchantment.DIG_SPEED, 3).setUnbreakable().toItemStack());
+        addToStartingInventory(0, new ItemBuilder(Material.IRON_PICKAXE).addEnchant(Enchantment.DIG_SPEED, 3).setUnbreakable().build());
+        addToStartingInventory(1, new ItemBuilder(Material.IRON_AXE).addEnchant(Enchantment.DIG_SPEED, 3).setUnbreakable().build());
+        addToStartingInventory(2, new ItemBuilder(Material.IRON_SPADE).addEnchant(Enchantment.DIG_SPEED, 3).setUnbreakable().build());
 
         addToStartingInventory(4, new ItemStack(Material.WATER_BUCKET));
         addToStartingInventory(5, new ItemStack(Material.COOKED_BEEF, 64));

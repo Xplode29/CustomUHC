@@ -25,7 +25,7 @@ public class DropsMenu extends AbstractMenu {
         buttons.put(20, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.APPLE).setName("§rPommes: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getAppleDropRate() + "%").toItemStack();
+                return new ItemBuilder(Material.APPLE).setName("§rPommes: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getAppleDropRate() + "%").build();
             }
 
             @Override
@@ -46,7 +46,7 @@ public class DropsMenu extends AbstractMenu {
         buttons.put(22, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.FLINT).setName("§rSilex: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getFlintDropRate() + "%").toItemStack();
+                return new ItemBuilder(Material.FLINT).setName("§rSilex: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getFlintDropRate() + "%").build();
             }
 
             @Override
@@ -67,7 +67,7 @@ public class DropsMenu extends AbstractMenu {
         buttons.put(24, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.ENDER_PEARL).setName("§rEnder Pearls: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getEnderPearlDropRate() + "%").toItemStack();
+                return new ItemBuilder(Material.ENDER_PEARL).setName("§rEnder Pearls: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getEnderPearlDropRate() + "%").build();
             }
 
             @Override

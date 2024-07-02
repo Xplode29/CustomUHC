@@ -27,7 +27,7 @@ public class OresMenu extends AbstractMenu {
                 return new ItemBuilder(Material.EXP_BOTTLE)
                         .setName("§rExp Boost: +" + UHCAPI.getInstance().getGameHandler().getWorldConfig().getExpBoost() + "%")
                         .setLore("§7Clic gauche pour augmenter l'exp.", "§7Clic droit pour baisser.")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -51,7 +51,7 @@ public class OresMenu extends AbstractMenu {
                 return new ItemBuilder(Material.DIAMOND_ORE)
                         .setName("§rDiamond Limit: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getDiamondLimit())
                         .setLore("§7Clic gauche pour augmenter la limite de diamants.", "§7Clic droit pour baisser.")
-                        .toItemStack();
+                        .build();
             }
 
             @Override

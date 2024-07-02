@@ -85,7 +85,7 @@ public class StartSpawnWeaponsMenu extends AbstractMenu {
             public ItemStack getIcon() {
                 return new ItemBuilder(Material.WATCH)
                         .setName("Debut de l'apparition des armes: " + GraphicUtils.convertToAccurateTime(scenario.getStartTimer()))
-                        .toItemStack();
+                        .build();
             }
         });
 

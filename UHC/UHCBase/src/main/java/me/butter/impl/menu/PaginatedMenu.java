@@ -41,7 +41,7 @@ public abstract class PaginatedMenu extends AbstractMenu {
             map.put(size - 6, new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
-                    return new ItemBuilder(Material.ARROW).setName("§rPage Précédente").toItemStack();
+                    return new ItemBuilder(Material.ARROW).setName("§rPage Précédente").build();
                 }
 
                 @Override
@@ -59,7 +59,7 @@ public abstract class PaginatedMenu extends AbstractMenu {
             map.put(size - 4, new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
-                    return new ItemBuilder(Material.ARROW).setName("§rPage Suivante").toItemStack();
+                    return new ItemBuilder(Material.ARROW).setName("§rPage Suivante").build();
                 }
 
                 @Override

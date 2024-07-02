@@ -24,7 +24,7 @@ public class CampMenu extends AbstractMenu {
         buttons.put(19, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(CampEnum.NINJA.getIcon()).setName("§rNinja").toItemStack();
+                return new ItemBuilder(CampEnum.NINJA.getIcon()).setName("§rNinja").build();
             }
 
             @Override
@@ -36,7 +36,7 @@ public class CampMenu extends AbstractMenu {
         buttons.put(21, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(CampEnum.SNAKE.getIcon()).setName("§rSerpents").toItemStack();
+                return new ItemBuilder(CampEnum.SNAKE.getIcon()).setName("§rSerpents").build();
             }
 
             @Override
@@ -48,7 +48,7 @@ public class CampMenu extends AbstractMenu {
         buttons.put(23, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(CampEnum.MASTER.getIcon()).setName("§rMaitres").toItemStack();
+                return new ItemBuilder(CampEnum.MASTER.getIcon()).setName("§rMaitres").build();
             }
 
             @Override
@@ -60,7 +60,7 @@ public class CampMenu extends AbstractMenu {
         buttons.put(25, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(CampEnum.SOLO.getIcon()).setName("§rSolitaires").toItemStack();
+                return new ItemBuilder(CampEnum.SOLO.getIcon()).setName("§rSolitaires").build();
             }
 
             @Override

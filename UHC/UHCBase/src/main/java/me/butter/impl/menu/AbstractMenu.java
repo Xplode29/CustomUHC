@@ -43,13 +43,13 @@ public abstract class AbstractMenu implements Menu {
 
         if(hasGlass) {
             for (int i : new int[]{0, 1, 7, 8, 9, 17, size - 18, size - 10, size - 9, size - 8, size - 2, size - 1}) {
-                this.inventory.setItem(i, new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").toItemStack());
+                this.inventory.setItem(i, new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").build());
             }
         }
 
         if(previousMenu != null) {
             this.inventory.setItem(
-                size - 5, new ItemBuilder(Material.ARROW).setName("§rRetour").toItemStack()
+                size - 5, new ItemBuilder(Material.ARROW).setName("§rRetour").build()
             );
         }
 

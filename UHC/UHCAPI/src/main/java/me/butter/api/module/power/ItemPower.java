@@ -27,7 +27,7 @@ public abstract class ItemPower extends Power {
     }
 
     public ItemStack getItem() {
-        return new ItemBuilder(getMaterial()).setName("§l" + getName() + "§r").toItemStack();
+        return new ItemBuilder(getMaterial()).setName("§l" + getName() + "§r").build();
     }
 
     public void onUsePower(UHCPlayer player, Action clickAction) {

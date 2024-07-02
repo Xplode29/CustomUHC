@@ -168,7 +168,7 @@ public class Garmadon extends NinjagoRole {
                                         "vous passez en duo avec Lloyd",
                                         "Vous obtiendrez alors tous les deux §9Speed 1§r permanent."
                                 )
-                                .toItemStack();
+                                .build();
                     }
 
                     @Override
@@ -199,7 +199,7 @@ public class Garmadon extends NinjagoRole {
                                         "le Spinjitzu qui vous octroit §9Speed 1§r",
                                         "pendant 1 minute a son activation."
                                 )
-                                .toItemStack();
+                                .build();
                     }
 
                     @Override

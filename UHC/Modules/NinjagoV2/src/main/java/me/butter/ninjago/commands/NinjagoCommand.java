@@ -8,6 +8,7 @@ import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.commands.AbstractCommand;
+import me.butter.ninjago.commands.list.ColorCommand;
 import me.butter.ninjago.commands.list.CompoCommand;
 import me.butter.ninjago.commands.list.ListEffectsCommand;
 import me.butter.ninjago.commands.list.RoleCommand;
@@ -30,6 +31,7 @@ public class NinjagoCommand implements TabExecutor {
         commands.add(new ListEffectsCommand());
         commands.add(new RoleCommand());
         commands.add(new CompoCommand());
+        commands.add(new ColorCommand());
     }
 
     @Override

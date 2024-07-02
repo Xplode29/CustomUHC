@@ -29,7 +29,7 @@ public class WorldConfigMenu extends AbstractMenu {
                 return new ItemBuilder(Material.IRON_DOOR)
                         .setName("Changer de monde")
                         .setLore("§7Cliquez pour se teleporter à un monde.")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -44,7 +44,7 @@ public class WorldConfigMenu extends AbstractMenu {
                 return new ItemBuilder(Material.DIAMOND_ORE)
                         .setName("Configuration des minerais")
                         .setLore("§7Cliquez pour configurer les minerais.")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -59,7 +59,7 @@ public class WorldConfigMenu extends AbstractMenu {
                 return new ItemBuilder(Material.BARRIER)
                         .setName("Bordures")
                         .setLore("§7Cliquez pour modifier les bordures.")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -74,7 +74,7 @@ public class WorldConfigMenu extends AbstractMenu {
                 return new ItemBuilder(Material.APPLE)
                         .setName("Drops")
                         .setLore("§7Cliquez pour modifier les drops.")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -93,7 +93,7 @@ public class WorldConfigMenu extends AbstractMenu {
                             (UHCAPI.getInstance().getGameHandler().getWorldConfig().isNetherActivated() ? "§cdesactiver" : "§aactiver") +
                             " §7le nether."
                         )
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -117,7 +117,7 @@ public class WorldConfigMenu extends AbstractMenu {
                             (UHCAPI.getInstance().getGameHandler().getWorldConfig().isNetherActivated() ? "§cdesactiver" : "§aactiver") +
                             " §7l'end."
                         )
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -137,7 +137,7 @@ public class WorldConfigMenu extends AbstractMenu {
                 return new ItemBuilder(Material.DAYLIGHT_DETECTOR)
                         .setName("Cycle Jour-Nuit")
                         .setLore("§7Cliquez pour modifier le cycle jour-nuit.")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -152,7 +152,7 @@ public class WorldConfigMenu extends AbstractMenu {
                 return new ItemBuilder(Material.DIRT)
                         .setName("Génération")
                         .setLore("§7Cliquez pour générer un nouveau monde.")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -167,7 +167,7 @@ public class WorldConfigMenu extends AbstractMenu {
                 return new ItemBuilder(Material.LEAVES)
                         .setName("Prégénération")
                         .setLore("§7Cliquez pour lancer la pregeneration du monde.")
-                        .toItemStack();
+                        .build();
             }
 
             @Override

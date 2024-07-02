@@ -27,7 +27,7 @@ public abstract class AbstractItem implements CustomItem {
 
     @Override
     public ItemStack format(Material material, String name) {
-        return new ItemBuilder(material).setName(name).setUnbreakable().toItemStack();
+        return new ItemBuilder(material).setName(name).setUnbreakable().build();
     }
 
     @Override

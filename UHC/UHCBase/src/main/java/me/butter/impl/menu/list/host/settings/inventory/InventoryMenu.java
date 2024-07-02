@@ -38,7 +38,7 @@ public class InventoryMenu extends AbstractMenu {
             buttons.put(i, new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
-                    return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").toItemStack();
+                    return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").build();
                 }
             });
         }
@@ -47,7 +47,7 @@ public class InventoryMenu extends AbstractMenu {
             buttons.put(i, new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
-                    return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").toItemStack();
+                    return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").build();
                 }
             });
         }
@@ -65,7 +65,7 @@ public class InventoryMenu extends AbstractMenu {
         buttons.put(50, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.ANVIL).setName("§rModifier l'inventaire").toItemStack();
+                return new ItemBuilder(Material.ANVIL).setName("§rModifier l'inventaire").build();
             }
 
             @Override
@@ -84,7 +84,7 @@ public class InventoryMenu extends AbstractMenu {
         buttons.put(53, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.REDSTONE_BLOCK).setName("§rPresets").toItemStack();
+                return new ItemBuilder(Material.REDSTONE_BLOCK).setName("§rPresets").build();
             }
 
             @Override

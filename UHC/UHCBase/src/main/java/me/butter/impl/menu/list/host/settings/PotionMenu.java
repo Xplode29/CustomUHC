@@ -47,7 +47,7 @@ public class PotionMenu extends PaginatedMenu {
                     .addLoreLine((selected == 0 ? "§e" : "§7") + "Level: " + potionEffect.getLevel() + " / " + potionEffect.getMaxLevel())
                     .addLoreLine((selected == 1 ? "§e" : "§7") + "Splash: " + (potionEffect.canBeSplash() ? "§aON" : "§cOFF"))
                     .addLoreLine((selected == 2 ? "§e" : "§7") + "Amplified: " + (potionEffect.canBeAmplified() ? "§aON" : "§cOFF"))
-                    .toItemStack();
+                    .build();
         }
 
         @Override

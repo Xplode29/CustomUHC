@@ -27,7 +27,7 @@ public class BorderMenu extends AbstractMenu {
                 return new ItemBuilder(Material.BARRIER)
                         .setName("§rBorder Initiale: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize())
                         .setLore("§7Cliquez pour modifier la taille de la bordure initiale.")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -42,7 +42,7 @@ public class BorderMenu extends AbstractMenu {
                 return new ItemBuilder(Material.BARRIER)
                         .setName("§rBorder Finale: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize())
                         .setLore("§7Cliquez pour modifier la taille de la bordure finale.")
-                        .toItemStack();
+                        .build();
             }
 
             @Override

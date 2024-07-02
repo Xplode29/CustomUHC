@@ -26,7 +26,7 @@ public class TimerMenu extends PaginatedMenu {
             buttons.add(new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
-                    return new ItemBuilder(timer.getIcon()).setName("§r" + timer.getName() + ": " + GraphicUtils.convertToAccurateTime(timer.getMaxTimer())).toItemStack();
+                    return new ItemBuilder(timer.getIcon()).setName("§r" + timer.getName() + ": " + GraphicUtils.convertToAccurateTime(timer.getMaxTimer())).build();
                 }
 
                 @Override

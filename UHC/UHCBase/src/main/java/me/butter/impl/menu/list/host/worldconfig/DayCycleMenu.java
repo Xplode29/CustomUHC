@@ -26,7 +26,7 @@ public class DayCycleMenu extends AbstractMenu {
         buttons.put(20, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.BARRIER).setName("§rCycle jour-nuit " + (UHCAPI.getInstance().getGameHandler().getGameConfig().isDayCycleActivated() ? "§aActivé" : "§cDésactivé")).toItemStack();
+                return new ItemBuilder(Material.BARRIER).setName("§rCycle jour-nuit " + (UHCAPI.getInstance().getGameHandler().getGameConfig().isDayCycleActivated() ? "§aActivé" : "§cDésactivé")).build();
             }
 
             @Override
@@ -46,7 +46,7 @@ public class DayCycleMenu extends AbstractMenu {
                 return new ItemBuilder(Material.DAYLIGHT_DETECTOR)
                         .setName("§rDurée d'une journée: " + GraphicUtils.convertToAccurateTime(
                                 UHCAPI.getInstance().getGameHandler().getGameConfig().getDayDuration()
-                        )).toItemStack();
+                        )).build();
             }
 
             @Override
@@ -76,7 +76,7 @@ public class DayCycleMenu extends AbstractMenu {
                 return new ItemBuilder(Material.WATCH)
                         .setName("§rDurée d'un episode: " + GraphicUtils.convertToAccurateTime(
                                 UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisodeDuration()
-                        )).toItemStack();
+                        )).build();
             }
 
             @Override

@@ -1,44 +1,42 @@
-package me.butter.impl.menu.list.host.worldconfig;
+package me.butter.ninjago.coloredNames;
 
+import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.impl.menu.PaginatedMenu;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class WorldSelectMenu extends PaginatedMenu {
-    public WorldSelectMenu() {
-        super("Mondes", 5 * 9);
+public class PlayerNametagMenu extends PaginatedMenu {
+    public PlayerNametagMenu() {
+        super("Joueurs", 5 * 9);
     }
 
     @Override
     public List<Button> getAllButtons() {
-        List<Button> buttons = new ArrayList<>();
-
-        for(World world : Bukkit.getWorlds()) {
+        List<Button> buttons = super.getAllButtons();
+        for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
             buttons.add(new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
-                    return new ItemBuilder(Material.GRASS).setName("§r" + world.getName()).build();
+                    return new ItemBuilder(Material.SKULL_ITEM ,1, (byte) 3)
+                            .setName(player.getName())
+                            .setSkullOwner(player.getName())
+                            .build();
                 }
 
                 @Override
                 public void onClick(UHCPlayer player, ClickType clickType) {
-                    closeMenu();
-                    player.getPlayer().teleport(new Location(world, 0, 100, 0));
+                    getOpener().openMenu(new ChooseColorMenu(player), true);
                 }
             });
         }
-
         return buttons;
     }
 }

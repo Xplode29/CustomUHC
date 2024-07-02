@@ -86,7 +86,7 @@ public class FinalBorderMenu extends AbstractMenu {
         buttons.put(22, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.BARRIER).setName("§rTaille Finale: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize()).toItemStack();
+                return new ItemBuilder(Material.BARRIER).setName("§rTaille Finale: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getFinalBorderSize()).build();
             }
         });
 

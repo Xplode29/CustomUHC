@@ -33,7 +33,7 @@ public class GoldenWeaponConfigMenu extends AbstractMenu {
             public ItemStack getIcon() {
                 return new ItemBuilder(Material.WATCH)
                         .setName("Apparition des armes: " + GraphicUtils.convertToAccurateTime(scenario.getStartTimer()))
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -52,7 +52,7 @@ public class GoldenWeaponConfigMenu extends AbstractMenu {
             public ItemStack getIcon() {
                 return new ItemBuilder(Material.WATCH)
                         .setName("Temps entre chaque apparition: " + GraphicUtils.convertToAccurateTime(scenario.getTimeBetweenSpawn()))
-                        .toItemStack();
+                        .build();
             }
 
             @Override

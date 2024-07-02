@@ -30,7 +30,7 @@ public class SettingsMenu extends AbstractMenu {
                 return new ItemBuilder(Material.ENCHANTED_BOOK)
                         .setName("Enchantements")
                         .addLoreLine("§7Cliquez pour modifier les enchantements")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -45,7 +45,7 @@ public class SettingsMenu extends AbstractMenu {
                 return new ItemBuilder(Material.WATCH)
                         .setName("Timers")
                         .addLoreLine("§7Cliquez pour modifier les timers")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -60,7 +60,7 @@ public class SettingsMenu extends AbstractMenu {
                 return new ItemBuilder(Material.POTION)
                         .setName("Potions")
                         .addLoreLine("§7Cliquez pour modifier les potions")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -75,7 +75,7 @@ public class SettingsMenu extends AbstractMenu {
                 return new ItemBuilder(Material.DIAMOND_HELMET)
                         .setName("Limites de stuff")
                         .addLoreLine("§7Cliquez pour modifier les limites de stuff")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -90,7 +90,7 @@ public class SettingsMenu extends AbstractMenu {
                 return new ItemBuilder(Material.BOOK_AND_QUILL)
                         .setName("Items autorisés")
                         .addLoreLine("§7Cliquez pour modifer les items autorisés")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -105,7 +105,7 @@ public class SettingsMenu extends AbstractMenu {
                 return new ItemBuilder(Material.CHEST)
                         .setName("Inventaire")
                         .addLoreLine("§7Cliquez pour modifer l'inventaire de départ")
-                        .toItemStack();
+                        .build();
             }
 
             @Override

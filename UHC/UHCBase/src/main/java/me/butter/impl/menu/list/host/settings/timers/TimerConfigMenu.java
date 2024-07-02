@@ -91,7 +91,7 @@ public class TimerConfigMenu extends AbstractMenu {
         buttons.put(22, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(timer.getIcon()).setName("§r" + timer.getName() + ": " + GraphicUtils.convertToAccurateTime(timer.getMaxTimer())).toItemStack();
+                return new ItemBuilder(timer.getIcon()).setName("§r" + timer.getName() + ": " + GraphicUtils.convertToAccurateTime(timer.getMaxTimer())).build();
             }
         });
 

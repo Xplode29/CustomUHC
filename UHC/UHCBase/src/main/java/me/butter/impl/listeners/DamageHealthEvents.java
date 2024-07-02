@@ -177,7 +177,7 @@ public class DamageHealthEvents implements Listener {
                 }
 
                 if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
-                    if(UHCAPI.getInstance().getModuleHandler().hasModule()) {
+                    if(UHCAPI.getInstance().getModuleHandler().hasModule() && UHCAPI.getInstance().getModuleHandler().getModule().hasRoles()) {
                         if(!UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().isEmpty()) {
                             List<Camp> camps = getCamps();
 

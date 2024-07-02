@@ -4,6 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.camp.Camp;
 import me.butter.api.module.roles.Role;
 import me.butter.api.module.roles.RoleType;
+import me.butter.ninjago.coloredNames.NametagManager;
 import me.butter.ninjago.commands.NinjagoCommand;
 import me.butter.ninjago.listener.CycleEvents;
 import me.butter.ninjago.roles.RoleEnum;
@@ -21,6 +22,8 @@ public final class NinjagoV2 extends JavaPlugin {
 
     //private GoldenWeaponManager goldenWeaponManager;
 
+    private NametagManager nametagManager;
+
     @Override
     public void onLoad() {
         instance = this;
@@ -31,6 +34,8 @@ public final class NinjagoV2 extends JavaPlugin {
         rolesList = new ArrayList<>();
 
         UHCAPI.getInstance().getModuleHandler().setModule(new NinjagoModule());
+
+        nametagManager = new NametagManager();
 
         //goldenWeaponManager = new GoldenWeaponManager();
 
@@ -97,5 +102,9 @@ public final class NinjagoV2 extends JavaPlugin {
 
     public void setRolesList(List<Role> rolesList) {
         this.rolesList = rolesList;
+    }
+
+    public NametagManager getNametagManager() {
+        return nametagManager;
     }
 }

@@ -26,7 +26,7 @@ public abstract class EnchantedItemPower extends ItemPower {
         for(Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
             builder.addEnchant(entry.getKey(), entry.getValue());
         }
-        return builder.toItemStack();
+        return builder.build();
     }
 
     @Override

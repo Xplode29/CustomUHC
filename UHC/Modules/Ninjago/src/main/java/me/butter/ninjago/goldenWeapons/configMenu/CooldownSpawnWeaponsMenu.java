@@ -85,7 +85,7 @@ public class CooldownSpawnWeaponsMenu extends AbstractMenu {
             public ItemStack getIcon() {
                 return new ItemBuilder(Material.WATCH)
                         .setName("Temps entre apparition: " + GraphicUtils.convertToAccurateTime(scenario.getTimeBetweenSpawn()))
-                        .toItemStack();
+                        .build();
             }
         });
 

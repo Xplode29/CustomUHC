@@ -64,7 +64,7 @@ public class AbstractGoldenWeapon extends AbstractItem {
                 .addEnchant(Enchantment.DURABILITY, 1)
                 .hideEnchants()
                 .setUnbreakable()
-                .toItemStack();
+                .build();
     }
 
     public UHCPlayer getHolder() {

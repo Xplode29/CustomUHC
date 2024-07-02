@@ -130,14 +130,14 @@ public class ItemBuilder {
             im.setOwner(owner);
             this.is.setItemMeta(im);
         } catch (ClassCastException ignored) {
-        }
 
+        }
         return this;
     }
 
-    public ItemBuilder addEnchant(Enchantment ench, int level) {
+    public ItemBuilder addEnchant(Enchantment enchant, int level) {
         ItemMeta im = this.is.getItemMeta();
-        im.addEnchant(ench, level, true);
+        im.addEnchant(enchant, level, true);
         this.is.setItemMeta(im);
         return this;
     }
@@ -262,7 +262,7 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemStack toItemStack() {
+    public ItemStack build() {
         return this.is;
     }
 }

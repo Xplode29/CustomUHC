@@ -35,7 +35,7 @@ public class MainMenu extends AbstractMenu {
                 return new ItemBuilder(Material.REDSTONE_TORCH_ON)
                         .setName("Presets")
                         .addLoreLine("§7Cliquez pour choisir un preset")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -50,7 +50,7 @@ public class MainMenu extends AbstractMenu {
                 return new ItemBuilder(Material.BEACON)
                         .setName("Scenarios")
                         .addLoreLine("§7Cliquez pour voir les scenarios")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -68,7 +68,7 @@ public class MainMenu extends AbstractMenu {
                         return new ItemBuilder(module.getIcon())
                                 .setName(module.getMainColor() + module.getName())
                                 .addLoreLine("§7Cliquez pour ouvrir le menu du " + module.getName())
-                                .toItemStack();
+                                .build();
                     }
 
                     @Override
@@ -89,7 +89,7 @@ public class MainMenu extends AbstractMenu {
             public ItemStack getIcon() {
                 return new ItemBuilder((UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting() ? Material.FIREBALL : Material.SLIME_BALL))
                         .setName("§r" + (UHCAPI.getInstance().getGameHandler().getGameConfig().isStarting() ? "Arreter" : "Lancer"))
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -120,7 +120,7 @@ public class MainMenu extends AbstractMenu {
                 return new ItemBuilder(Material.DIRT)
                         .setName("Configuration du monde")
                         .addLoreLine("§7Cliquez pour ouvrir la configuration du monde")
-                        .toItemStack();
+                        .build();
             }
 
             @Override
@@ -135,7 +135,7 @@ public class MainMenu extends AbstractMenu {
                 return new ItemBuilder(Material.DIODE)
                         .setName("Paramètres")
                         .addLoreLine("§7Cliquez pour ouvrir les paramètres")
-                        .toItemStack();
+                        .build();
             }
 
             @Override

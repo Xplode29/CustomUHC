@@ -20,6 +20,6 @@ public abstract class RightClickItemPower extends ItemPower {
 
     @Override
     public ItemStack getItem() {
-        return new ItemBuilder(getMaterial()).setName("§l" + getName() + "§r - §lClick Droit§r").toItemStack();
+        return new ItemBuilder(getMaterial()).setName("§l" + getName() + "§r - §lClick Droit§r").build();
     }
 }

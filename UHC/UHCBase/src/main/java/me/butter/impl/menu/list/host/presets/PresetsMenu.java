@@ -29,7 +29,7 @@ public class PresetsMenu extends AbstractMenu {
         buttons.put(20, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.DIAMOND_PICKAXE).setName("§rMinage").toItemStack();
+                return new ItemBuilder(Material.DIAMOND_PICKAXE).setName("§rMinage").build();
             }
 
             @Override
@@ -60,7 +60,7 @@ public class PresetsMenu extends AbstractMenu {
         buttons.put(24, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.DIAMOND_SWORD).setName("§rMeetup").toItemStack();
+                return new ItemBuilder(Material.DIAMOND_SWORD).setName("§rMeetup").build();
             }
 
             @Override

@@ -27,7 +27,7 @@ public class RulesViewMenu extends PaginatedMenu {
         buttonMap.put(4, new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.CHEST).setName("§rVoir l'inventaire de départ").toItemStack();
+                return new ItemBuilder(Material.CHEST).setName("§rVoir l'inventaire de départ").build();
             }
 
             @Override
@@ -45,42 +45,42 @@ public class RulesViewMenu extends PaginatedMenu {
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.BOW).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isBow() ? "§a" : "§c") + "Arc").toItemStack();
+                return new ItemBuilder(Material.BOW).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isBow() ? "§a" : "§c") + "Arc").build();
             }
         });
 
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.ENDER_PEARL).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isEnderPearl() ? "§a" : "§c") + "Ender Pearl").toItemStack();
+                return new ItemBuilder(Material.ENDER_PEARL).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isEnderPearl() ? "§a" : "§c") + "Ender Pearl").build();
             }
         });
 
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.FISHING_ROD).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isRod() ? "§a" : "§c") + "Canne à pèche").toItemStack();
+                return new ItemBuilder(Material.FISHING_ROD).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isRod() ? "§a" : "§c") + "Canne à pèche").build();
             }
         });
 
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.SNOW_BALL).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isProjectile() ? "§a" : "§c") + "Projectiles").toItemStack();
+                return new ItemBuilder(Material.SNOW_BALL).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isProjectile() ? "§a" : "§c") + "Projectiles").build();
             }
         });
 
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.LAVA_BUCKET).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isLavaBucket() ? "§a" : "§c") + "Seau de lave").toItemStack();
+                return new ItemBuilder(Material.LAVA_BUCKET).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isLavaBucket() ? "§a" : "§c") + "Seau de lave").build();
             }
         });
 
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.FLINT_AND_STEEL).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isFlintAndSteel() ? "§a" : "§c") + "Briquet").toItemStack();
+                return new ItemBuilder(Material.FLINT_AND_STEEL).setName((UHCAPI.getInstance().getGameHandler().getItemConfig().isFlintAndSteel() ? "§a" : "§c") + "Briquet").build();
             }
         });
 
@@ -90,7 +90,7 @@ public class RulesViewMenu extends PaginatedMenu {
                 public ItemStack getIcon() {
                     return new ItemBuilder(timer.getIcon()).setName(
                             "§r" + timer.getName() + ": " + GraphicUtils.convertToAccurateTime(timer.getMaxTimer())
-                    ).toItemStack();
+                    ).build();
                 }
             });
         }
@@ -98,21 +98,21 @@ public class RulesViewMenu extends PaginatedMenu {
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.APPLE).setName("§rPommes: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getAppleDropRate() + "%").toItemStack();
+                return new ItemBuilder(Material.APPLE).setName("§rPommes: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getAppleDropRate() + "%").build();
             }
         });
 
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.FLINT).setName("§rSilex: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getFlintDropRate() + "%").toItemStack();
+                return new ItemBuilder(Material.FLINT).setName("§rSilex: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getFlintDropRate() + "%").build();
             }
         });
 
         buttons.add(new ButtonImpl() {
             @Override
             public ItemStack getIcon() {
-                return new ItemBuilder(Material.ENDER_PEARL).setName("§rEnder Pearls: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getEnderPearlDropRate() + "%").toItemStack();
+                return new ItemBuilder(Material.ENDER_PEARL).setName("§rEnder Pearls: " + UHCAPI.getInstance().getGameHandler().getWorldConfig().getEnderPearlDropRate() + "%").build();
             }
         });
 

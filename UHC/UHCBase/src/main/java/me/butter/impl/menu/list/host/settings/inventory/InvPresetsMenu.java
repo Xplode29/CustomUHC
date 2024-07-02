@@ -25,7 +25,7 @@ public class InvPresetsMenu extends PaginatedMenu {
             buttons.add(new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
-                    return new ItemBuilder(preset.getIcon()).setName("§r" + preset.getName()).toItemStack();
+                    return new ItemBuilder(preset.getIcon()).setName("§r" + preset.getName()).build();
                 }
 
                 @Override

@@ -39,7 +39,7 @@ public class MisakoMenu extends AbstractMenu {
             buttons.put(i, new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
-                    return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").toItemStack();
+                    return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").build();
                 }
             });
         }
@@ -48,7 +48,7 @@ public class MisakoMenu extends AbstractMenu {
             buttons.put(i, new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
-                    return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").toItemStack();
+                    return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").build();
                 }
             });
         }

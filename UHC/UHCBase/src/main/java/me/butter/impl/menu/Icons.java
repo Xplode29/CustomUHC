@@ -29,6 +29,6 @@ public enum Icons {
         return (new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()))
                 .setTexture(getBase())
                 .setName("§r" + name)
-                .toItemStack();
+                .build();
     }
 }

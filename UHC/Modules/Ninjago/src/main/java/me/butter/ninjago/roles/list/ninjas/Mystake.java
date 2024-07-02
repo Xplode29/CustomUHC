@@ -67,7 +67,8 @@ public class Mystake extends NinjagoRole {
 
             target.getPlayer().teleport(new Location(target.getPlayer().getWorld(), randomX, target.getPlayer().getWorld().getHighestBlockYAt(randomX, randomZ), randomZ));
 
-            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez teleporte " + target.getName() + "!"));
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez téléporté " + target.getName() + "!"));
+            target.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez été téléporté par Mystake !"));
             return true;
         }
     }

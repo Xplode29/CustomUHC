@@ -128,7 +128,7 @@ public class Nya extends NinjagoRole {
 
         @Override
         public String[] getDescription() {
-            return new String[]{
+            return new String[] {
                     "Lorsque cet item est activé, vous obtenez §9Speed 1§r et §cForce 1§r.",
                     "Vous avez §l2 minutes§r d'utilisation.",
                     "Lorsque vous faites un kill, vous obtenez §l30 secondes d'utilisation§r supplémentaires.",
@@ -171,7 +171,7 @@ public class Nya extends NinjagoRole {
                     player.sendMessage(ChatUtils.ERROR.getMessage("Vous n'avez plus assez de temps !"));
                 }
                 else {
-                    player.sendMessage(ChatUtils.ERROR.getMessage("Il vous reste " + GraphicUtils.convertToAccurateTime(maxSamuraiTimer - samuraiTimer) + " d'utilisation"));
+                    player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Il vous reste " + GraphicUtils.convertToAccurateTime(maxSamuraiTimer - samuraiTimer) + " d'utilisation"));
                 }
             }
             return false;

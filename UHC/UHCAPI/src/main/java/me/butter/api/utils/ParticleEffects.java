@@ -3,38 +3,15 @@ package me.butter.api.utils;
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
 import net.minecraft.server.v1_8_R3.EnumParticle;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
-public class ParticleUtils {
-
-    public static void showParticleToPlayer(UHCPlayer player, Location loc, EnumParticle particle, Color color) {
-        if(player.getPlayer() == null) return;
-
-        PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-                EnumParticle.REDSTONE, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), (float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255, (float) 1, 0
-        );
-
-        ((CraftPlayer) player.getPlayer()).getHandle().playerConnection.sendPacket(packet);
-    }
-
-    public static void showParticleToPlayers(List<UHCPlayer> players, Location loc, EnumParticle particle, Color color) {
-        PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-                EnumParticle.REDSTONE, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), (float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255, (float) 1, 0
-        );
-
-        for(UHCPlayer player : players) {
-            if(player.getPlayer() == null) continue;
-            ((CraftPlayer) player.getPlayer()).getHandle().playerConnection.sendPacket(packet);
-        }
-    }
+public class ParticleEffects {
 
     public static void zoneEffect(UHCPlayer player, Location center, int size, Color color) {
         for(int i = 0; i < 64; i++) {
@@ -44,7 +21,8 @@ public class ParticleUtils {
                     0,
                     size * Math.sin(alpha)
             );
-            showParticleToPlayer(player, loc, EnumParticle.REDSTONE, color);
+
+            new ParticleBuilder(EnumParticle.REDSTONE).addPlayer(player).setLocation(loc).setColor(color).build();
         }
     }
 
@@ -62,7 +40,15 @@ public class ParticleUtils {
                             (0.5 + height) * Math.sin(alpha) / 2
                     );
 
-                    showParticleToPlayers(UHCAPI.getInstance().getPlayerHandler().getPlayers(), loc, EnumParticle.REDSTONE, color);
+                    new ParticleBuilder(EnumParticle.REDSTONE)
+                            .setPlayers(
+                                    UHCAPI.getInstance().getPlayerHandler().getPlayers().stream()
+                                    .filter(uhcPlayer -> uhcPlayer.getPlayer() != null && uhcPlayer.getLocation().getWorld().equals(loc.getWorld()) && uhcPlayer.getLocation().distance(loc) < 50.0)
+                                    .collect(Collectors.toList())
+                            )
+                            .setLocation(loc)
+                            .setColor(color)
+                            .build();
                 }
                 height += 0.2;
 

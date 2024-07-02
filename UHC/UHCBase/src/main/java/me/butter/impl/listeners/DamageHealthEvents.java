@@ -31,7 +31,12 @@ public class DamageHealthEvents implements Listener {
     public void onEntityDamaged(EntityDamageEvent event) {
         if(!(event.getEntity() instanceof Player)) return;
 
-        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
+        UHCPlayer player = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
+
+        if(!player.isAbleToMove()) {
+            event.setCancelled(true);
+            return;
+        }
 
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY ||
             UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
@@ -41,7 +46,7 @@ public class DamageHealthEvents implements Listener {
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
             if (UHCAPI.getInstance().getGameHandler().getGameConfig().isInvincibility()) {
                 event.setCancelled(true);
-            } else if (event.getCause() == EntityDamageEvent.DamageCause.FALL && uhcPlayer != null && uhcPlayer.hasNoFall()) {
+            } else if (event.getCause() == EntityDamageEvent.DamageCause.FALL && player != null && player.hasNoFall()) {
                 event.setCancelled(true);
             }
         }
@@ -60,6 +65,11 @@ public class DamageHealthEvents implements Listener {
             UHCPlayer victim = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
             if(victim != null) {
                 event.setDamage(event.getDamage() * (1 - victim.getResi() / 100.0f));
+
+                if(!victim.isAbleToMove()) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
 
             if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {

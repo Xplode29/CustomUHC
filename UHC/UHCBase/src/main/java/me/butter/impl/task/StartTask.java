@@ -29,8 +29,11 @@ public class StartTask extends BukkitRunnable {
         for (UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby()) {
             if(timer == 0) {
                 uhcPlayer.clearEffects();
+                uhcPlayer.setAbleToMove(true);
+
                 UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, uhcPlayer);
                 UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(GameScoreboard.class, uhcPlayer);
+
                 uhcPlayer.setPlayerState(PlayerState.IN_GAME);
 
                 uhcPlayer.sendTitle("Bonne Chance !", ChatColor.GREEN);

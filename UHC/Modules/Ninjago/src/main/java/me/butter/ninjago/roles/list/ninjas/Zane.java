@@ -4,7 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.power.TargetCommandPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ParticleUtils;
+import me.butter.api.utils.ParticleEffects;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
@@ -135,7 +135,7 @@ public class Zane extends NinjagoRole {
                 u.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous ete ralenti par Zane !"));
             }
 
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.WHITE);
+            ParticleEffects.tornadoEffect(player.getPlayer(), Color.WHITE);
             player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));
             return true;
         }

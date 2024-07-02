@@ -10,14 +10,22 @@ public enum CampEnum {
     MASTER(new MaitreCamp(), Material.EMERALD),
     SOLO(new SoloCamp(), Material.DIAMOND),
 
-    DUO_LLOYD_GARMADON(new LloydGarmadonCamp(), Material.EMERALD);
+    DUO_LLOYD_GARMADON(new LloydGarmadonCamp(), Material.EMERALD, true);
 
     private final Camp camp;
     private final Material icon;
+    private final boolean hidden;
 
     CampEnum(Camp camp, Material icon) {
         this.camp = camp;
         this.icon = icon;
+        this.hidden = false;
+    }
+
+    CampEnum(Camp camp, Material icon, boolean hidden) {
+        this.camp = camp;
+        this.icon = icon;
+        this.hidden = hidden;
     }
 
     public Camp getCamp() {
@@ -26,5 +34,9 @@ public enum CampEnum {
 
     public Material getIcon() {
         return icon;
+    }
+
+    public boolean isHidden() {
+        return hidden;
     }
 }

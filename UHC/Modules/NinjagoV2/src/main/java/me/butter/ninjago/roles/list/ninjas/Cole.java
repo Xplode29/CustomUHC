@@ -1,24 +1,25 @@
 package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
-import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.power.TargetBlockItemPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.EpisodeEvent;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.NinjagoV2;
 import me.butter.ninjago.roles.NinjagoRole;
+import me.butter.ninjago.roles.powers.SpinjitzuPower;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.Random;
 
 public class Cole extends NinjagoRole {
@@ -29,7 +30,7 @@ public class Cole extends NinjagoRole {
     int coups = 0;
 
     public Cole() {
-        super("Cole", "/roles/ninjas/cole", new StoneWall(), new SpinjitzuPower());
+        super("Cole", "/roles/ninjas/cole", new StoneWall(), new EarthSpinjitzu());
     }
 
     @Override
@@ -154,43 +155,17 @@ public class Cole extends NinjagoRole {
         }
     }
 
-    private static class SpinjitzuPower extends RightClickItemPower {
+    private static class EarthSpinjitzu extends SpinjitzuPower {
 
-        public SpinjitzuPower() {
-            super(ChatColor.GRAY + "Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);
+        public EarthSpinjitzu() {
+            super(ChatColor.GRAY, Material.NETHER_STAR, 15 * 60, -1, new String[] {
+                    "Vous obtenez 10 coeurs d'absorbtion pendant 2 minutes."
+            });
         }
 
         @Override
-        public String[] getDescription() {
-            return new String[] {
-                    "Repousse tous les joueurs dans un rayon de 10 blocks. Vous obtenez §710% de Résistance§r pendant 2 minute."
-            };
-        }
-
-        @Override
-        public boolean onEnable(UHCPlayer player, Action clickAction) {
-            Location center = player.getPlayer().getLocation();
-
-            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
-                if(uhcPlayer == null || uhcPlayer == player || uhcPlayer.getPlayer() == null) continue;
-
-                if(uhcPlayer.isNextTo(player, 10)) {
-                    double angle = Math.atan2(uhcPlayer.getLocation().getZ() - center.getZ(), uhcPlayer.getLocation().getX() - center.getX());
-                    Vector newVelocity = new Vector(
-                            1.5 * Math.cos(angle),
-                            0.5,
-                            1.5 * Math.sin(angle)
-                    );
-                    uhcPlayer.getPlayer().setVelocity(newVelocity);
-                }
-            }
-
-            player.addResi(10);
-            Bukkit.getScheduler().runTaskLater(NinjagoV2.getInstance(), () -> player.removeResi(10), 2 * 60 * 20);
-
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.GRAY);
-            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));
-            return true;
+        public void applyEffects(UHCPlayer player, List<UHCPlayer> players) {
+            player.addPotionEffect(PotionEffectType.ABSORPTION, 2 * 60, 5);
         }
     }
 }

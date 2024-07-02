@@ -9,9 +9,6 @@ import me.butter.impl.scoreboard.list.GameScoreboard;
 import me.butter.impl.scoreboard.list.LobbyScoreboard;
 import me.butter.impl.tab.list.MainTab;
 import me.butter.ninjago.commands.NinjagoCommand;
-import me.butter.ninjago.goldenNinja.GoldenNinjaScenario;
-import me.butter.ninjago.goldenWeapons.GoldenWeaponManager;
-import me.butter.ninjago.goldenWeapons.GoldenWeaponsScenario;
 import me.butter.ninjago.listener.CycleEvents;
 import me.butter.ninjago.roles.RoleEnum;
 import org.bukkit.Bukkit;
@@ -26,7 +23,7 @@ public final class NinjagoV2 extends JavaPlugin {
     private static NinjagoV2 instance;
     private List<Role> rolesList;
 
-    private GoldenWeaponManager goldenWeaponManager;
+    //private GoldenWeaponManager goldenWeaponManager;
 
     @Override
     public void onLoad() {
@@ -39,10 +36,10 @@ public final class NinjagoV2 extends JavaPlugin {
 
         UHCAPI.getInstance().getModuleHandler().setModule(new NinjagoModule());
 
-        goldenWeaponManager = new GoldenWeaponManager();
+        //goldenWeaponManager = new GoldenWeaponManager();
 
-        UHCAPI.getInstance().getScenarioHandler().addScenario(new GoldenNinjaScenario());
-        UHCAPI.getInstance().getScenarioHandler().addScenario(new GoldenWeaponsScenario());
+        //UHCAPI.getInstance().getScenarioHandler().addScenario(new GoldenNinjaScenario());
+        //UHCAPI.getInstance().getScenarioHandler().addScenario(new GoldenWeaponsScenario());
 
         registerCommands();
         registerListeners();
@@ -104,9 +101,5 @@ public final class NinjagoV2 extends JavaPlugin {
 
     public void setRolesList(List<Role> rolesList) {
         this.rolesList = rolesList;
-    }
-
-    public GoldenWeaponManager getGoldenWeaponManager() {
-        return goldenWeaponManager;
     }
 }

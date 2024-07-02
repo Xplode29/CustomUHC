@@ -4,7 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.module.power.TargetBlockItemPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ParticleUtils;
+import me.butter.api.utils.ParticleEffects;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.EpisodeEvent;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
@@ -188,7 +188,7 @@ public class Cole extends NinjagoRole {
             player.addResi(10);
             Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> player.removeResi(10), 2 * 60 * 20);
 
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.GRAY);
+            ParticleEffects.tornadoEffect(player.getPlayer(), Color.GRAY);
             player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));
             return true;
         }

@@ -6,7 +6,7 @@ import me.butter.api.module.power.TargetBlockItemPower;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.GraphicUtils;
-import me.butter.api.utils.ParticleUtils;
+import me.butter.api.utils.ParticleEffects;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
@@ -243,7 +243,7 @@ public class Ash extends NinjagoRole {
                         }
 
                         for(int i = -5; i < 5; i++) {
-                            ParticleUtils.zoneEffect(player, center.clone().add(0, i, 0), 25, Color.GRAY);
+                            ParticleEffects.zoneEffect(player, center.clone().add(0, i, 0), 25, Color.GRAY);
                         }
 
                         smokeTimer--;

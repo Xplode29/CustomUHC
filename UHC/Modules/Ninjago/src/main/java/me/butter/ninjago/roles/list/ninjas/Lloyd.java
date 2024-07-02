@@ -4,7 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ParticleUtils;
+import me.butter.api.utils.ParticleEffects;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.EpisodeEvent;
 import me.butter.ninjago.goldenNinja.ChatEffectChooser;
@@ -114,7 +114,7 @@ public class Lloyd extends NinjagoRole {
                 }
             }
 
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.GREEN);
+            ParticleEffects.tornadoEffect(player.getPlayer(), Color.GREEN);
             player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));
             return true;
         }

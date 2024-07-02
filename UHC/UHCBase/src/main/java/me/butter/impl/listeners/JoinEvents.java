@@ -5,8 +5,8 @@ import me.butter.api.game.GameState;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.BlockUtils;
-import me.butter.api.utils.ParticleUtils;
+import me.butter.api.utils.WorldUtils;
+import me.butter.api.utils.ParticleEffects;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.scoreboard.list.GameScoreboard;
 import me.butter.impl.scoreboard.list.LobbyScoreboard;
@@ -14,6 +14,7 @@ import me.butter.impl.tab.list.MainTab;
 import net.minecraft.server.v1_8_R3.MobEffect;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEffect;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,6 +22,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.List;
 
 public class JoinEvents implements Listener {
 
@@ -37,8 +40,12 @@ public class JoinEvents implements Listener {
         if (!generate) {
             //Build the spawn
             int spawnSize = 40, spawnHeight = 10;
-            BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2, spawnLocation.getBlockY() - 1, spawnLocation.getBlockZ() - spawnSize/2, spawnSize, spawnHeight, spawnSize, Material.BARRIER);
-            BlockUtils.fillBlocks(spawnLocation.getWorld(), spawnLocation.getBlockX() - spawnSize/2 + 1, spawnLocation.getBlockY(), spawnLocation.getBlockZ() - spawnSize/2 + 1, spawnSize - 2, spawnHeight - 1, spawnSize - 2, Material.AIR);
+            List<Block> cube = WorldUtils.getCube(spawnLocation.clone().subtract((double) spawnSize / 2, 0, (double) spawnSize / 2), spawnSize, spawnHeight, spawnSize, true);
+
+            for(Block block : cube) {
+                block.setType(Material.AIR);
+            }
+
             generate = true;
             spawnLocation.getChunk().load();
         }
@@ -66,7 +73,7 @@ public class JoinEvents implements Listener {
             UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, uhcPlayer);
             Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(spawnLocation), 2);
 
-            ParticleUtils.tornadoEffect(uhcPlayer.getPlayer(), Color.fromRGB(255, 255, 255));
+            ParticleEffects.tornadoEffect(uhcPlayer.getPlayer(), Color.fromRGB(255, 255, 255));
 
             uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Bienvenue en Ninjago UHC !"));
             uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Cet UHC est encore est beta, donc envoie les bugs sur le discord !"));

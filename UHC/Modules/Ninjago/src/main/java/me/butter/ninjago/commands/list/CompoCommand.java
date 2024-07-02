@@ -22,6 +22,8 @@ public class CompoCommand extends AbstractCommand {
         sender.sendMessage(ChatUtils.LINE.prefix);
         sender.sendMessage("");
         for(CampEnum campEnum : CampEnum.values()) {
+            if(campEnum.isHidden()) continue;
+
             int rolesAmount = 0;
             Map<String, Integer> roles = new HashMap<>();
 

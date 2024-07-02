@@ -23,24 +23,26 @@ public class HostCommands implements TabExecutor {
     private final List<AbstractCommand> commands = new ArrayList<>();
 
     public HostCommands() {
-        commands.add(new EffectCommand());
-        commands.add(new ReviveCommand());
         commands.add(new SaveInvCommand());
-        commands.add(new CoHostCommand());
         commands.add(new StartCommand());
         commands.add(new StopCommand());
-        commands.add(new TeleportCommand());
-        commands.add(new ConfigCommand());
-        commands.add(new SayCommand());
-        commands.add(new ForceTimerCommand());
-        commands.add(new ViewInvCommand());
-        commands.add(new SetGroupCommand());
-        commands.add(new ResetPowersCommand());
-        commands.add(new ChatCommand());
-        commands.add(new SpecCommand());
 
+        commands.add(new EffectCommand());
+        commands.add(new ConfigCommand());
+        commands.add(new SetGroupCommand());
+        commands.add(new ReviveCommand());
+        commands.add(new FinalHealCommand());
+
+        commands.add(new SayCommand());
+        commands.add(new ViewInvCommand());
+        commands.add(new SpecCommand());
+        commands.add(new FreezeCommand());
+        commands.add(new CoHostCommand());
+        commands.add(new ChatCommand());
 
         commands.add(new GiveRoleCommand());
+        commands.add(new ResetPowersCommand());
+        commands.add(new ForceTimerCommand());
     }
 
     @Override

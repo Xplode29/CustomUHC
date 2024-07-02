@@ -5,7 +5,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.power.EnchantedItemPower;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ParticleUtils;
+import me.butter.api.utils.ParticleEffects;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.roles.NinjagoRole;
 import org.bukkit.Color;
@@ -106,7 +106,7 @@ public class Wu extends NinjagoRole {
 
             player.addPotionEffect(PotionEffectType.REGENERATION, 30, 2);
 
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.YELLOW);
+            ParticleEffects.tornadoEffect(player.getPlayer(), Color.YELLOW);
             player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez utilisé votre Spinjitzu !"));
             return true;
         }

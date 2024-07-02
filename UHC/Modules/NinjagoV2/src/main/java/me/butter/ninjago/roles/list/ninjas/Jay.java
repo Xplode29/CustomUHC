@@ -2,18 +2,18 @@ package me.butter.ninjago.roles.list.ninjas;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;
-import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
-import me.butter.ninjago.NinjagoV2;
+import me.butter.impl.UHCBase;
 import me.butter.ninjago.roles.NinjagoRole;
+import me.butter.ninjago.roles.powers.SpinjitzuPower;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.util.Vector;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.List;
 
 public class Jay extends NinjagoRole {
 
@@ -21,7 +21,7 @@ public class Jay extends NinjagoRole {
     private int coups = 0;
 
     public Jay() {
-        super("Jay", "/roles/ninjas/jay", new SpinjitzuPower());
+        super("Jay", "/roles/ninjas/jay", new LightningSpinjitzu());
         addPower(new LightningCommand());
     }
 
@@ -69,13 +69,13 @@ public class Jay extends NinjagoRole {
     private class LightningCommand extends CommandPower {
 
         public LightningCommand() {
-            super("§9Foudre", "foudre", 0, -1);
+            super("§9Passif", "foudre", 0, -1);
         }
 
         @Override
         public String[] getDescription() {
             return new String[]{
-                    "Active / désactive votre passif. Lorsqu'il est activé, vous faites tomber un éclair qui inflige §c1 coeur§r de dégâts sur la personne frappé §ltous les 10 coups§r. "};
+                    "Lorsqu'il est activé, vous faites tomber un éclair qui inflige §c1 coeur§r de dégâts sur la personne frappé §ltous les 10 coups§r. "};
         }
 
         @Override
@@ -96,43 +96,18 @@ public class Jay extends NinjagoRole {
         }
     }
 
-    private static class SpinjitzuPower extends RightClickItemPower {
+    private static class LightningSpinjitzu extends SpinjitzuPower {
 
-        public SpinjitzuPower() {
-            super("§9Spinjitzu", Material.NETHER_STAR, 20 * 60, -1);
+        public LightningSpinjitzu() {
+            super(ChatColor.BLUE, Material.NETHER_STAR, 15 * 60, -1, new String[] {
+                    "Les joueurs touchés sont immobilisés pendant 2 secondes. Ils sont invulnérables pendant cette période de temps."
+            });
         }
 
         @Override
-        public String[] getDescription() {
-            return new String[] {
-                    "Repousse tous les joueurs dans un rayon de 10 blocks. Vous obtenez §910% de speed§r pendant 2 minutes."
-            };
-        }
-
-        @Override
-        public boolean onEnable(UHCPlayer player, Action clickAction) {
-            Location center = player.getPlayer().getLocation();
-
-            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
-                if(uhcPlayer == null || uhcPlayer == player || uhcPlayer.getPlayer() == null) continue;
-
-                if(uhcPlayer.isNextTo(player, 10)) {
-                    double angle = Math.atan2(uhcPlayer.getLocation().getZ() - center.getZ(), uhcPlayer.getLocation().getX() - center.getX());
-                    Vector newVelocity = new Vector(
-                            1.5 * Math.cos(angle),
-                            0.5,
-                            1.5 * Math.sin(angle)
-                    );
-                    uhcPlayer.getPlayer().setVelocity(newVelocity);
-                }
-            }
-
-            player.addSpeed(10);
-            Bukkit.getScheduler().runTaskLater(NinjagoV2.getInstance(), () -> player.removeSpeed(10), 2 * 60 * 20);
-
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.BLUE);
-            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));
-            return true;
+        public void applyEffects(UHCPlayer player, List<UHCPlayer> players) {
+            Bukkit.getScheduler().runTaskLater(UHCBase.getInstance(), () -> players.forEach(p -> p.setAbleToMove(false)), 2 * 20);
+            Bukkit.getScheduler().runTaskLater(UHCBase.getInstance(), () -> players.forEach(p -> p.setAbleToMove(true)), 4 * 20);
         }
     }
 }

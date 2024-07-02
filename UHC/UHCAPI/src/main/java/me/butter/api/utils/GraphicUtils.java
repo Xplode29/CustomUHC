@@ -1,6 +1,7 @@
 package me.butter.api.utils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 
 public class GraphicUtils {
 
@@ -20,5 +21,28 @@ public class GraphicUtils {
 
         return com.google.common.base.Strings.repeat("" + completedColor + symbol, progressBars)
                 + com.google.common.base.Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
+    }
+
+    public static Color convertToColor(ChatColor color) {
+        switch (color) {
+            case BLUE:
+                return Color.BLUE;
+            case GREEN:
+                return Color.GREEN;
+            case RED:
+                return Color.RED;
+            case YELLOW:
+                return Color.YELLOW;
+            case AQUA:
+                return Color.AQUA;
+            case GRAY:
+                return Color.GRAY;
+            case BLACK:
+                return Color.BLACK;
+            case GOLD:
+                return Color.ORANGE;
+            default:
+                return Color.WHITE;
+        }
     }
 }

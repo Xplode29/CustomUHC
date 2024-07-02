@@ -8,7 +8,7 @@ import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ItemBuilder;
-import me.butter.api.utils.ParticleUtils;
+import me.butter.api.utils.ParticleEffects;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.impl.menu.AbstractMenu;
@@ -294,7 +294,7 @@ public class Garmadon extends NinjagoRole {
             player.addSpeed(10);
             Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> player.removeSpeed(10), 2 * 60 * 20);
 
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.PURPLE);
+            ParticleEffects.tornadoEffect(player.getPlayer(), Color.PURPLE);
             return true;
         }
     }

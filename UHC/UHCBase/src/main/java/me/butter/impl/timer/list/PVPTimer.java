@@ -1,6 +1,7 @@
 package me.butter.impl.timer.list;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.timer.AbstractTimer;
 import org.bukkit.Bukkit;
@@ -27,8 +28,16 @@ public class PVPTimer extends AbstractTimer {
 
     @Override
     public void onUpdate(int timer) {
-        if ((getMaxTimer() - 300) - timer == 0) {
+        if ((getMaxTimer() - 5 * 60) - timer == 0) {
             Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Le PVP sera actif dans 5 minutes !"));
+        }
+
+        if ((getMaxTimer() - 60) - timer == 0) {
+            for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                if(player.getPlayer() == null) continue;
+                player.getPlayer().setHealth(player.getPlayer().getMaxHealth());
+            }
+            Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Final heal !"));
         }
     }
 }

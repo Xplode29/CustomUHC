@@ -4,7 +4,7 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;
 import me.butter.api.module.power.RightClickItemPower;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.ParticleUtils;
+import me.butter.api.utils.ParticleEffects;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
@@ -130,7 +130,7 @@ public class Jay extends NinjagoRole {
             player.addSpeed(10);
             Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> player.removeSpeed(10), 2 * 60 * 20);
 
-            ParticleUtils.tornadoEffect(player.getPlayer(), Color.BLUE);
+            ParticleEffects.tornadoEffect(player.getPlayer(), Color.BLUE);
             player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));
             return true;
         }

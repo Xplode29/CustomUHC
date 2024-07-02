@@ -488,6 +488,10 @@ public class UHCPlayerImpl implements UHCPlayer {
 
     @Override
     public void addPotionEffect(PotionEffectType effect, int duration, int level) {
+        if(getPlayer() != null) {
+            getPlayer().addPotionEffect(new PotionEffect(effect, (duration == -1 ? Integer.MAX_VALUE : duration * 20), level - 1, false, false));
+        }
+
         for(Potion potion : playerPotionEffects) {
             if(potion.getEffect() == effect && potion.getLevel() == level && !potion.isPacket()) {
                 potion.setDuration(duration);
@@ -495,13 +499,18 @@ public class UHCPlayerImpl implements UHCPlayer {
             }
         }
         playerPotionEffects.add(new PotionImpl(effect, duration, level, false));
-
-        if(getPlayer() == null) return;
-        getPlayer().addPotionEffect(new PotionEffect(effect, (duration == -1 ? Integer.MAX_VALUE : duration * 20), level - 1, false, false));
     }
 
     @Override
     public void addPacketPotionEffect(PotionEffectType effect, int duration, int level) {
+        if(getPlayer() != null) {
+            PacketPlayOutEntityEffect packet = new PacketPlayOutEntityEffect(
+                    getPlayer().getEntityId(),
+                    new MobEffect(effect.getId(), (duration == -1 ? Integer.MAX_VALUE : (duration + 1) * 20), level - 1)
+            );
+            ((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(packet);
+        }
+
         for(Potion potion : playerPotionEffects) {
             if(potion.getEffect() == effect && potion.getLevel() == level && potion.isPacket()) {
                 potion.setDuration(duration);
@@ -510,31 +519,26 @@ public class UHCPlayerImpl implements UHCPlayer {
         }
         playerPotionEffects.add(new PotionImpl(effect, duration, level, true));
 
-        if(getPlayer() == null) return;
-        PacketPlayOutEntityEffect packet = new PacketPlayOutEntityEffect(
-                getPlayer().getEntityId(),
-                new MobEffect(effect.getId(), (duration == -1 ? Integer.MAX_VALUE : duration * 20), level - 1)
-        );
-        ((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(packet);
     }
 
     @Override
     public void removePotionEffect(PotionEffectType effect) {
-        playerPotionEffects.removeIf(potion -> potion.getEffect() == effect && !potion.isPacket());
-        if (getPlayer() != null)
+        if (getPlayer() != null && playerPotionEffects.stream().anyMatch(potion -> potion.getEffect() == effect && !potion.isPacket())) {
             getPlayer().removePotionEffect(effect);
+        }
+        playerPotionEffects.removeIf(potion -> potion.getEffect() == effect && !potion.isPacket());
     }
 
     @Override
     public void removePacketPotionEffect(PotionEffectType effect) {
+        if (getPlayer() != null && playerPotionEffects.stream().anyMatch(potion -> potion.getEffect() == effect && potion.isPacket())) {
+            PacketPlayOutRemoveEntityEffect packet = new PacketPlayOutRemoveEntityEffect(
+                    getPlayer().getEntityId(),
+                    new MobEffect(effect.getId(), Integer.MAX_VALUE, 0)
+            );
+            ((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(packet);
+        }
         playerPotionEffects.removeIf(potion -> potion.getEffect() == effect && potion.isPacket());
-
-        if(getPlayer() == null) return;
-        PacketPlayOutRemoveEntityEffect packet = new PacketPlayOutRemoveEntityEffect(
-                getPlayer().getEntityId(),
-                new MobEffect(effect.getId(), Integer.MAX_VALUE, 0)
-        );
-        ((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(packet);
     }
 
     @Override

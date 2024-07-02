@@ -53,9 +53,8 @@ public class Acidicus extends NinjagoRole {
                     getUHCPlayer().removePotionEffect(PotionEffectType.SLOW_DIGGING);
                 if(getUHCPlayer().hasPotionEffect(PotionEffectType.WEAKNESS))
                     getUHCPlayer().removePotionEffect(PotionEffectType.WEAKNESS);
-                if(getUHCPlayer().getSpeed() < 0) {
-                    getUHCPlayer().addSpeed(-getUHCPlayer().getSpeed());
-                }
+                if(getUHCPlayer().hasPotionEffect(PotionEffectType.SLOW))
+                    getUHCPlayer().removePotionEffect(PotionEffectType.SLOW);
             }
         }.runTaskTimer(Ninjago.getInstance(), 0, 20);
     }
@@ -98,8 +97,7 @@ public class Acidicus extends NinjagoRole {
                     Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> damaged.addStrength(15), 10 * 20);
                 }
                 if(coups % 50 == 0) {
-                    damaged.removeSpeed(20);
-                    Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> damaged.addSpeed(20), 10 * 20);
+                    damaged.addPotionEffect(PotionEffectType.SLOW, 10, 1);
                 }
             }
         }
@@ -117,7 +115,7 @@ public class Acidicus extends NinjagoRole {
                     "Lorsque vous tapez un joueur avec, vous infligez des effets en fonction du nombre de coups (les effets sont cumulables).",
                     " Tous les 20 coups, vous infligez §2Poison 1§r pendant 5 secondes.",
                     " Tous les 30 coups, vous infligez §3Faiblesse 1§r pendant 10 secondes.",
-                    " Tous les 50 coups, vous ralentissez le joueur frappé pendant 10 secondes."
+                    " Tous les 50 coups, vous infligez §3Lenteur 1§r pendant 10 secondes."
             };
         }
     }

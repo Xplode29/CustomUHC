@@ -93,6 +93,8 @@ public class TeleportingTask extends BukkitRunnable {
         uhcPlayer.setInventory(UHCAPI.getInstance().getGameHandler().getInventoriesConfig().getStartingInventory());
         uhcPlayer.saveInventory();
 
+        uhcPlayer.setRole(null);
+
         Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> uhcPlayer.getPlayer().teleport(uhcPlayer.getSpawnLocation()), 10);
     }
 }

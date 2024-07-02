@@ -15,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collections;
@@ -54,8 +55,7 @@ public class Bytar extends NinjagoRole {
     @Override
     public void onDay() {
         getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous etes ralenti pendant 30 secondes !"));
-        getUHCPlayer().removeSpeed(20);
-        Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> getUHCPlayer().addSpeed(20), 30 * 20);
+        getUHCPlayer().addPotionEffect(PotionEffectType.SLOW, 5, 1);
     }
 
     @EventHandler

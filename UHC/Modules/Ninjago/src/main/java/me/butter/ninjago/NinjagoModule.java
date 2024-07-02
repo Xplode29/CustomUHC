@@ -40,7 +40,7 @@ public class NinjagoModule implements Module {
 
     @Override
     public String getDoc() {
-        return "https://butteronpancakes.gitbook.io/ninjago-uhc" + " \nDiscord Ninjago: " + "https://discord.gg/g954jWXstQ";
+        return "https://butteronpancakes.gitbook.io/ninjago-uhc-v1";
     }
 
     @Override

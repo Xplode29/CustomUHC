@@ -8,8 +8,12 @@ import me.butter.api.utils.ParticleUtils;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.NinjagoV2;
 import me.butter.ninjago.roles.NinjagoRole;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.event.block.Action;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -130,11 +134,9 @@ public class Zane extends NinjagoRole {
             }
 
             for(UHCPlayer u : slowed) {
-                u.removeSpeed(20);
+                u.addPotionEffect(PotionEffectType.SLOW, 60, 1);
                 u.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous ete ralenti par Zane !"));
             }
-
-            Bukkit.getScheduler().runTaskLater(NinjagoV2.getInstance(), () -> slowed.forEach(u -> u.addSpeed(20)), 60 * 20);
 
             ParticleUtils.tornadoEffect(player.getPlayer(), Color.WHITE);
             player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez votre Spinjitzu !"));

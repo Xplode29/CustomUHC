@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -103,8 +104,7 @@ public class Morro extends NinjagoRole {
         if(damager.equals(getUHCPlayer()) && damaged != null) {
             if(freezeActivated) {
                 if(new Random().nextInt(100) <= 5) {
-                    damaged.removeSpeed(20);
-                    Bukkit.getScheduler().runTaskLater(NinjagoV2.getInstance(), () -> damaged.addSpeed(20), 5 * 20);
+                    damaged.addPotionEffect(PotionEffectType.SLOW, 10, 1);
                     getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez ralenti " + damaged.getName() + " !"));
                 }
             }
@@ -157,7 +157,7 @@ public class Morro extends NinjagoRole {
         public String[] getDescription() {
             return new String[]{
                     "Active / désactive votre passif (uniquement après avoir tué Zane). ",
-                    "Lorqu'il est activé, vous avez 5% de chance d'infliger §2Lenteur 1§r pendant 5 secondes lorsque vous tapez un joueur"
+                    "Lorsqu'il est activé, vous avez 5% de chance d'infliger §2Lenteur 1§r pendant 10 secondes lorsque vous tapez un joueur"
             };
         }
 

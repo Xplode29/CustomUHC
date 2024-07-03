@@ -17,7 +17,7 @@ public class Ed extends NinjagoRole {
     boolean nextToJay;
 
     public Ed() {
-        super("Ed", "/roles/ninjas/ed");
+        super("Ed", "/roles/ninjas-14/ed");
     }
 
     @Override

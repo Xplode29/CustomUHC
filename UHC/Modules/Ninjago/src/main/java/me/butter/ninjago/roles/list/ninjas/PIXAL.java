@@ -23,7 +23,7 @@ public class PIXAL extends NinjagoRole {
     private UHCPlayer zane;
 
     public PIXAL() {
-        super("PIXAL", "/roles/ninjas/pixal");
+        super("PIXAL", "/roles/ninjas-14/pixal");
         addPower(new EffectsCommand());
     }
 

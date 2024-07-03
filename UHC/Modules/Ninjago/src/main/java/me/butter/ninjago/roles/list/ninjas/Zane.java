@@ -23,7 +23,7 @@ import java.util.List;
 public class Zane extends NinjagoRole {
 
     public Zane() {
-        super("Zane", "/roles/ninjas/zane", new SpinjitzuPower(), new TraqueCommand());
+        super("Zane", "/roles/ninjas-14/zane", new SpinjitzuPower(), new TraqueCommand());
     }
 
     @Override

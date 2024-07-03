@@ -39,7 +39,7 @@ public class Ash extends NinjagoRole {
     int timeSinceTp = 0;
 
     public Ash() {
-        super("Ash", "/roles/alliance-des-elements/ash");
+        super("Ash", "/roles/alliance-des-elements-4/ash");
         addPower(new HideKillsCommand());
         addPower(new SmokePower());
     }

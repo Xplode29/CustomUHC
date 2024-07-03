@@ -21,7 +21,7 @@ public class Fangtom extends NinjagoRole {
     private boolean nextToDuo;
 
     public Fangtom() {
-        super("Fangtom", "/roles/serpent/fangtom");
+        super("Fangtom", "/roles/serpent-10/fangtom");
         addPower(new FangChat());
     }
 

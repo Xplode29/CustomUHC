@@ -78,7 +78,7 @@ public class NinjagoCommand implements TabExecutor {
 
         String typing = strings.length > 0 ? strings[strings.length - 1] : "";
 
-        if(strings.length == 1) {
+        if(strings.length < 2) {
             List<String> arguments = new ArrayList<>();
 
             if(sender.getRole() != null) {
@@ -88,28 +88,30 @@ public class NinjagoCommand implements TabExecutor {
                     }
                 }
             }
-
             for(AbstractCommand command : commands) {
                 arguments.add(command.getArgument());
             }
+
             return arguments.stream().filter(argument -> argument.startsWith(typing)).collect(Collectors.toList());
         }
-        else if (strings.length == 2) {
+        else {
             for(AbstractCommand command : commands) {
                 if(command.getArgument().equalsIgnoreCase(strings[0]) || Arrays.stream(command.getAliases()).anyMatch(alias -> alias.equalsIgnoreCase(strings[0]))) {
                     return command.onTabComplete(sender, s, strings).stream().filter(argument -> argument.startsWith(typing)).collect(Collectors.toList());
                 }
             }
 
-            if(sender.getRole() == null || sender.getPlayerState() != PlayerState.IN_GAME) return Collections.emptyList();
-            for(Power power : sender.getRole().getPowers()) {
-                if(power instanceof TargetCommandPower) {
-                    if(strings[0].equalsIgnoreCase(((TargetCommandPower) power).getArgument())) {
-                        return UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().stream().map(UHCPlayer::getName).filter(argument -> argument.startsWith(typing)).collect(Collectors.toList());
+            if(strings.length == 2 && sender.getRole() != null && sender.getPlayerState()== PlayerState.IN_GAME) {
+                for(Power power : sender.getRole().getPowers()) {
+                    if(power instanceof TargetCommandPower) {
+                        if(strings[0].equalsIgnoreCase(((TargetCommandPower) power).getArgument())) {
+                            return UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().stream().map(UHCPlayer::getName).filter(argument -> argument.startsWith(typing)).collect(Collectors.toList());
+                        }
                     }
                 }
             }
+
+            return Collections.emptyList();
         }
-        return Collections.emptyList();
     }
 }

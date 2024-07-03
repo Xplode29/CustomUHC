@@ -17,7 +17,7 @@ public class Mystake extends NinjagoRole {
     private boolean isOni = false;
 
     public Mystake() {
-        super("Mystake", "/roles/ninjas/mystake");
+        super("Mystake", "/roles/ninjas-14/mystake");
         addPower(new TravellerTea());
         addPower(new OniCommand());
     }

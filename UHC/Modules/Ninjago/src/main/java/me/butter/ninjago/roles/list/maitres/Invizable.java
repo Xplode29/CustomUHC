@@ -22,7 +22,7 @@ public class Invizable extends NinjagoRole {
     List<String> maitres;
 
     public Invizable() {
-        super("Invizable", "/roles/alliance-des-elements/invizable", new BlindPowerPlayer());
+        super("Invizable", "/roles/alliance-des-elements-4/invizable", new BlindPowerPlayer());
     }
 
     @Override

@@ -36,6 +36,7 @@ public class NametagManager implements Listener {
         avaliableColors.put("gold", ChatColor.GOLD);
         avaliableColors.put("gray", ChatColor.GRAY);
         avaliableColors.put("light_purple", ChatColor.LIGHT_PURPLE);
+        avaliableColors.put("white", ChatColor.WHITE);
         avaliableColors.put("orange", ChatColor.GOLD);
 
         Bukkit.getPluginManager().registerEvents(this, NinjagoV2.getInstance());

@@ -19,7 +19,7 @@ public class Slithraa extends NinjagoRole {
     private UHCPlayer skales;
 
     public Slithraa() {
-        super("Slithraa", "/roles/serpent/slithraa");
+        super("Slithraa", "/roles/serpent-10/slithraa");
     }
 
     @Override

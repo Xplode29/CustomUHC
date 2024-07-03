@@ -17,7 +17,7 @@ public class Griffin extends NinjagoRole {
     List<String> maitres;
 
     public Griffin() {
-        super("Griffin Turner", "/roles/alliance-des-elements/griffin-turner", new SpeedCommand());
+        super("Griffin Turner", "/roles/alliance-des-elements-4/griffin-turner", new SpeedCommand());
     }
 
     @Override

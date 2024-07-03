@@ -18,7 +18,7 @@ public class Lloyd extends NinjagoRole {
     ChatEffectChooser chatEffectChooser;
 
     public Lloyd() {
-        super("Lloyd", "/roles/ninjas/lloyd");
+        super("Lloyd", "/roles/ninjas-14/lloyd");
         addPower(new SpinjitzuPower());
     }
 

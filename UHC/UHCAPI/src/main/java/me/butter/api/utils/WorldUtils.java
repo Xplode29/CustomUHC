@@ -18,7 +18,11 @@ public class WorldUtils {
         for (int x = bx; x <= bx + width; x++) {
             for (int y = by; y <= by + height; y++) {
                 for (int z = bz; z <= bz + depth; z++) {
-                    if (filled || (x >= bx + width && y >= by + height && z >= bz + depth)) {
+                    if (filled || (
+                        x == bx || x == bx + width ||
+                        y == by || y == by + height ||
+                        z == bz || z == bz + depth
+                    )) {
                         blocks.add(new Location(start.getWorld(), x, y, z).getBlock());
                     }
                 }

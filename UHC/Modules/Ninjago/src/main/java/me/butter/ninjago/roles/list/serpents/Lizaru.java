@@ -19,7 +19,7 @@ public class Lizaru extends NinjagoRole {
     private UHCPlayer acidicus;
 
     public Lizaru() {
-        super("Lizaru", "/roles/serpent/lizaru", new Bite());
+        super("Lizaru", "/roles/serpent-10/lizaru", new Bite());
     }
 
     @Override

@@ -10,9 +10,13 @@ import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
 import me.butter.ninjago.roles.list.ninjas.*;
+import net.minecraft.server.v1_8_R3.IChatBaseComponent;
+import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
+import net.minecraft.server.v1_8_R3.WorldSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -198,19 +202,51 @@ public class Morro extends NinjagoRole {
 
         @Override
         public boolean onEnable(UHCPlayer player, Action clickAction) {
+            if(player.getPlayer() == null) return false;
+
             visible = !visible;
             if(visible) {
-                player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous êtes maintenant visible"));
-                for(Player p : Bukkit.getOnlinePlayers()) {
-                    p.showPlayer(player.getPlayer());
+                for(UHCPlayer u : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                    if(u.getPlayer() == null || u == getUHCPlayer()) continue;
+
+                    PacketPlayOutPlayerInfo info = new PacketPlayOutPlayerInfo(
+                            PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER,
+                            ((CraftPlayer) player.getPlayer()).getHandle()
+                    );
+                    info.new PlayerInfoData(
+                            ((CraftPlayer) player.getPlayer()).getProfile(),
+                            1,
+                            WorldSettings.EnumGamemode.valueOf(player.getPlayer().getGameMode().name()),
+                            IChatBaseComponent.ChatSerializer.a(player.getName())
+                    );
+                    ((CraftPlayer) u.getPlayer()).getHandle().playerConnection.sendPacket(info);
+
+                    u.getPlayer().showPlayer(player.getPlayer());
                 }
+
+                player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous êtes maintenant visible"));
                 return true;
             }
             else {
-                player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous êtes maintenant invisible"));
                 for(UHCPlayer u : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                    if(u.getPlayer() == null || u == getUHCPlayer()) continue;
+
                     u.getPlayer().hidePlayer(player.getPlayer());
+
+                    PacketPlayOutPlayerInfo info = new PacketPlayOutPlayerInfo(
+                            PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
+                            ((CraftPlayer) player.getPlayer()).getHandle()
+                    );
+                    info.new PlayerInfoData(
+                            ((CraftPlayer) player.getPlayer()).getProfile(),
+                            1,
+                            WorldSettings.EnumGamemode.valueOf(player.getPlayer().getGameMode().name()),
+                            IChatBaseComponent.ChatSerializer.a(player.getName())
+                    );
+                    ((CraftPlayer) u.getPlayer()).getHandle().playerConnection.sendPacket(info);
                 }
+
+                player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous êtes maintenant invisible"));
                 return false;
             }
         }

@@ -29,7 +29,7 @@ public class Acidicus extends NinjagoRole {
     private final CrochetSword crochetSword;
 
     public Acidicus() {
-        super("Acidicus", "/roles/serpent/acidicus");
+        super("Acidicus", "/roles/serpent-10/arcturus");
         addPower(new VeninCommand());
         addPower(crochetSword = new CrochetSword());
     }

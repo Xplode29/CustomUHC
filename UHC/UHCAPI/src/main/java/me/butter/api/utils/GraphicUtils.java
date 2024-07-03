@@ -2,6 +2,7 @@ package me.butter.api.utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.DyeColor;
 
 public class GraphicUtils {
 

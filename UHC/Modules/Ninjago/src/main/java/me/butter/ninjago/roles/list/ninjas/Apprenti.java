@@ -25,7 +25,7 @@ public class Apprenti extends NinjagoRole {
     private UHCPlayer master;
 
     public Apprenti() {
-        super("Apprenti", "/roles/ninjas/apprenti-du-dojo");
+        super("Apprenti", "/roles/ninjas-14/apprenti-du-dojo");
     }
 
     @Override

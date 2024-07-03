@@ -8,7 +8,7 @@ import me.butter.ninjago.roles.NinjagoRole;
 public class Misako extends NinjagoRole {
 
     public Misako() {
-        super("Misako", "/roles/ninjas/misako", new InventoryCommand());
+        super("Misako", "/roles/ninjas-14/misako", new InventoryCommand());
     }
 
     @Override

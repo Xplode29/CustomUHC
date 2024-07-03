@@ -26,7 +26,7 @@ public class Karlof extends NinjagoRole {
     private int steelTimer = 3 * 60;
 
     public Karlof() {
-        super("Karlof", "/roles/alliance-des-elements/karlof");
+        super("Karlof", "/roles/alliance-des-elements-4/karlof");
         addPower(new SteelPower());
     }
 

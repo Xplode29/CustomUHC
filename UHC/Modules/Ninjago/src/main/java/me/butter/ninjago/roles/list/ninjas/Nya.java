@@ -32,7 +32,7 @@ public class Nya extends NinjagoRole {
     private UHCPlayer finalKay;
 
     public Nya() {
-        super("Nya", "/roles/ninjas/nya");
+        super("Nya", "/roles/ninjas-14/nya");
         addPower(new SamuraiPower());
     }
 

@@ -26,7 +26,7 @@ public class Wu extends NinjagoRole {
     private UHCPlayer ninja;
 
     public Wu() {
-        super("Wu", "/roles/ninjas/wu", new StickPower(), new SpinjitzuPower());
+        super("Wu", "/roles/ninjas-14/wu", new StickPower(), new SpinjitzuPower());
     }
 
     @Override

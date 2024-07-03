@@ -25,7 +25,7 @@ public class Bytar extends NinjagoRole {
     private UHCPlayer skalidor;
 
     public Bytar() {
-        super("Bytar", "/roles/serpent/bytar", new DiggingPower());
+        super("Bytar", "/roles/serpent-10/bytar", new DiggingPower());
     }
 
     @Override

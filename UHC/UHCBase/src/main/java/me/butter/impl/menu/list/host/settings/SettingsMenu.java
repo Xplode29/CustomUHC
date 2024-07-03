@@ -80,7 +80,7 @@ public class SettingsMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
-                //UHCAPI.getInstance().getMenuHandler().openMenu(player, new TimerMenu(), true);
+                UHCAPI.getInstance().getMenuHandler().openMenu(player, new AuthorizedItemsMenu(), true);
             }
         }); //Equipement (menu pas fait)
 
@@ -88,14 +88,9 @@ public class SettingsMenu extends AbstractMenu {
             @Override
             public ItemStack getIcon() {
                 return new ItemBuilder(Material.BOOK_AND_QUILL)
-                        .setName("Items autorisés")
-                        .addLoreLine("§7Cliquez pour modifer les items autorisés")
+                        .setName("Paramètres de la partie")
+                        .addLoreLine("§7Cliquez pour modifer la partie")
                         .build();
-            }
-
-            @Override
-            public void onClick(UHCPlayer uhcPlayer, ClickType clickType) {
-                UHCAPI.getInstance().getMenuHandler().openMenu(uhcPlayer, new AuthorizedItemsMenu(), true);
             }
         }); //Rules
 

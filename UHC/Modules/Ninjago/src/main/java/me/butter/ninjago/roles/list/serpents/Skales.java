@@ -21,7 +21,7 @@ public class Skales extends NinjagoRole {
     private UHCPlayer pythor;
 
     public Skales() {
-        super("Skales", "/roles/serpent/skales", new InfectPower());
+        super("Skales", "/roles/serpent-10/skales", new InfectPower());
     }
 
     @Override

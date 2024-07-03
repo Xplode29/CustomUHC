@@ -21,7 +21,7 @@ public class Jay extends NinjagoRole {
     private int coups = 0;
 
     public Jay() {
-        super("Jay", "/roles/ninjas/jay", new SpinjitzuPower());
+        super("Jay", "/roles/ninjas-14/jay", new SpinjitzuPower());
         addPower(new LightningCommand());
     }
 

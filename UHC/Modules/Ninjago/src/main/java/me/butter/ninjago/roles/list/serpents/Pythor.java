@@ -26,7 +26,7 @@ public class Pythor extends NinjagoRole {
     private final List<String> list = new ArrayList<>();
 
     public Pythor() {
-        super("Pythor", "/roles/serpent/pythor", new EaterPower(), new InvokeCommand());
+        super("Pythor", "/roles/serpent-10/pythor", new EaterPower(), new InvokeCommand());
     }
 
     @Override

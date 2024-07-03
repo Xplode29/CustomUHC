@@ -29,12 +29,12 @@ public class Cole extends NinjagoRole {
     int coups = 0;
 
     public Cole() {
-        super("Cole", "/roles/ninjas/cole", new StoneWall(), new SpinjitzuPower());
+        super("Cole", "/roles/ninjas-14/cole", new StoneWall(), new SpinjitzuPower());
     }
 
     @Override
     public String[] getDescription() {
-        return new String[]{
+        return new String[] {
                 "A partir du 3eme episode, vous avez 3% de chance de devenir un fantome lors de la mort d'un joueur.",
                 "Lorsque vous etes un fantome, vous avez §3Faiblesse 1§r le jour et §9Speed 1§r la nuit.",
                 "De plus, vous esquivez un coup §ltous les 10 coups§r subits."

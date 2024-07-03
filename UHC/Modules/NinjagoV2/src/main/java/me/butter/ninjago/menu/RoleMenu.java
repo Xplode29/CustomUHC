@@ -35,7 +35,7 @@ public class RoleMenu extends PaginatedMenu {
                 @Override
                 public ItemStack getIcon() {
                     if(amount > 0) {
-                        return new ItemBuilder(role.getIcon())
+                        return new ItemBuilder(role.getIcon(), amount)
                                 .setName("§r" + role.getName() + " §7(" + amount + ")")
                                 .addEnchant(Enchantment.DIG_SPEED, 1)
                                 .hideItemFlags()

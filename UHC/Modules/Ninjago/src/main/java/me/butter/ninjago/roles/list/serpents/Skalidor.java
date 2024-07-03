@@ -15,7 +15,7 @@ public class Skalidor extends NinjagoRole {
     private UHCPlayer pythor;
 
     public Skalidor() {
-        super("Skalidor", "/roles/serpent/skalidor");
+        super("Skalidor", "/roles/serpent-10/skalidor");
     }
 
     @Override

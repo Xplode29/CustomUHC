@@ -18,7 +18,7 @@ import org.bukkit.util.Vector;
 public class Kai extends NinjagoRole {
 
     public Kai() {
-        super("Kai", "/roles/ninjas/kai", new FlameBow(), new FlameSword(), new SpinjitzuPower());
+        super("Kai", "/roles/ninjas-14/kai", new FlameBow(), new FlameSword(), new SpinjitzuPower());
     }
 
     @Override

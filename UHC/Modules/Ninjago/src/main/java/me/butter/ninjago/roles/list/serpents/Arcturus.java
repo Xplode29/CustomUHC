@@ -19,7 +19,7 @@ public class Arcturus extends NinjagoRole {
     private UHCPlayer pythor;
 
     public Arcturus() {
-        super("Arcturus", "/roles/serpent/arcturus");
+        super("Arcturus", "/roles/serpent-10/arcturus");
     }
 
     @Override

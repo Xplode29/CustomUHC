@@ -1,15 +1,19 @@
 package me.butter.ninjago.coloredNames;
 
+import com.mojang.authlib.GameProfile;
 import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.BlockColor;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.impl.menu.PaginatedMenu;
 import me.butter.ninjago.NinjagoV2;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,14 +33,18 @@ public class ChooseColorMenu extends PaginatedMenu {
     @Override
     public List<Button> getAllButtons() {
         List<Button> buttons = super.getAllButtons();
-        for(Map.Entry<String, ChatColor> entry : NinjagoV2.getInstance().getNametagManager().getAvaliableColors().entrySet()) {
+
+        for(int i = 0; i < 16; i++) {
+            ChatColor color = BlockColor.getChatColor(Material.WOOL, (byte) i);
+            if(color == ChatColor.BLACK && i != 15) continue;
+            ItemStack coloredWool = new ItemBuilder(Material.WOOL, 1, (byte) i)
+                    .setName(color + selectedPlayer.getName())
+                    .build();
+
             buttons.add(new ButtonImpl() {
                 @Override
                 public ItemStack getIcon() {
-                    return new ItemBuilder(Material.WOOL)
-                            .setDyeColor(DyeColor.BLUE)
-                            .setName(entry.getValue() + selectedPlayer.getName())
-                            .build();
+                    return coloredWool;
                 }
 
                 @Override
@@ -45,13 +53,15 @@ public class ChooseColorMenu extends PaginatedMenu {
                             getOpener().getPlayer(),
                             NinjagoV2.getInstance().getNametagManager().getTeam(
                                     getOpener().getPlayer(),
-                                    entry.getValue()
+                                    color
                             ),
                             selectedPlayer.getName()
                     );
+                    closeMenu();
                 }
             });
         }
+
         return buttons;
     }
 }

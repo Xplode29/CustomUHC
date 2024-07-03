@@ -32,7 +32,7 @@ public class JoinEvents implements Listener {
 
     public JoinEvents() {
         this.generate = false;
-        spawnLocation = new Location(Bukkit.getWorld("world"), 0.0D, 201, 0.0D);
+        spawnLocation = new Location(Bukkit.getWorld("world"), 0.0D, 202, 0.0D);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -40,10 +40,16 @@ public class JoinEvents implements Listener {
         if (!generate) {
             //Build the spawn
             int spawnSize = 40, spawnHeight = 10;
-            List<Block> cube = WorldUtils.getCube(spawnLocation.clone().subtract((double) spawnSize / 2, 0, (double) spawnSize / 2), spawnSize, spawnHeight, spawnSize, true);
+            List<Block> cube = WorldUtils.getCube(
+                    spawnLocation.clone().subtract((double) spawnSize / 2, 2, (double) spawnSize / 2),
+                    spawnSize,
+                    spawnHeight,
+                    spawnSize,
+                    false
+            );
 
             for(Block block : cube) {
-                block.setType(Material.AIR);
+                block.setType(Material.BARRIER);
             }
 
             generate = true;

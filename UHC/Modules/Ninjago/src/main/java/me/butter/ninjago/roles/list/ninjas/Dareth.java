@@ -14,7 +14,7 @@ import org.bukkit.event.EventHandler;
 public class Dareth extends NinjagoRole {
 
     public Dareth() {
-        super("Dareth", "/roles/ninjas/dareth", new Bow());
+        super("Dareth", "/roles/ninjas-14/dareth", new Bow());
     }
 
     @Override

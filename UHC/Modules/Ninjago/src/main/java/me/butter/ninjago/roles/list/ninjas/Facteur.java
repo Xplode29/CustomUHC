@@ -21,7 +21,7 @@ public class Facteur extends NinjagoRole {
     boolean canSendMessage = true;
 
     public Facteur() {
-        super("Facteur", "/roles/ninjas/facteur");
+        super("Facteur", "/roles/ninjas-14/facteur");
         addPower(new LetterCommand());
     }
 

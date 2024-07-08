@@ -9,11 +9,9 @@ import me.butter.impl.menu.PaginatedMenu;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scoreboard.Team;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PlayerNametagMenu extends PaginatedMenu {

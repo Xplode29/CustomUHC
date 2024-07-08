@@ -17,8 +17,8 @@ public class ScenarioHandlerImpl implements ScenarioHandler {
 
         scenarios.add(new CutCleanScenario());
         scenarios.add(new HasteyBoysScenario());
-        scenarios.add(new TimberScenario());
-        scenarios.add(new NoDropScenario());
+        scenarios.add(new TimberPvpScenario());
+        scenarios.add(new SafeOresScenario());
         scenarios.add(new SafeMinerScenario());
         scenarios.add(new FireLessScenario());
     }

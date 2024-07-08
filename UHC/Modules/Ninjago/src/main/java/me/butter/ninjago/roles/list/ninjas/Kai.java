@@ -47,7 +47,7 @@ public class Kai extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[]{
-                    "Un arc enchanté Power 2 Flame 1."
+                    "Un arc enchanté Power 3 Flame 1."
             };
         }
     }
@@ -60,7 +60,7 @@ public class Kai extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[]{
-                    "Une epee enchantee Fire Aspect 1."
+                    "Une epee enchantée Sharpness 3 Fire Aspect 1."
             };
         }
     }

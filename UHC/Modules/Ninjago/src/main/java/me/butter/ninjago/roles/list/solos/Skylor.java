@@ -18,7 +18,7 @@ import java.util.List;
 public class Skylor extends NinjagoRole {
 
     public Skylor() {
-        super("Skylor", "/roles/solitaires/skylor", new CopyCommand());
+        super("Skylors", "/roles/solitaires/skylor", new CopyCommand());
     }
 
     @Override

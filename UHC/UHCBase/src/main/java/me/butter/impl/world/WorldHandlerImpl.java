@@ -2,6 +2,7 @@ package me.butter.impl.world;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.api.world.NewOrePopulator;
 import me.butter.api.world.OrePopulator;
 import me.butter.api.world.WorldHandler;
 import me.butter.impl.UHCBase;
@@ -28,14 +29,14 @@ public class WorldHandlerImpl implements WorldHandler {
         BiomeSwapper.init();
         Bukkit.getPluginManager().registerEvents(new WorldListener(), UHCAPI.getInstance());
 
-        this.orePopulator = new OrePopulator();
+        this.orePopulator = new NewOrePopulator();
 
         orePopulator.addRule(new OrePopulator.Rule(Material.COAL_ORE, 2, 0, 128, 17));
         orePopulator.addRule(new OrePopulator.Rule(Material.IRON_ORE, 5, 0, 64, 9));
         orePopulator.addRule(new OrePopulator.Rule(Material.GOLD_ORE, 2, 0, 32, 9));
+        orePopulator.addRule(new OrePopulator.Rule(Material.LAPIS_ORE, 3, 0, 32, 7));
         orePopulator.addRule(new OrePopulator.Rule(Material.REDSTONE_ORE, 3, 0, 16, 8));
         orePopulator.addRule(new OrePopulator.Rule(Material.DIAMOND_ORE, 1, 0, 16, 8));
-        orePopulator.addRule(new OrePopulator.Rule(Material.LAPIS_ORE, 3, 0, 32, 7));
 
         this.createWorld(this.worldName);
     }
@@ -75,10 +76,6 @@ public class WorldHandlerImpl implements WorldHandler {
             }catch (Exception e){
                 e.printStackTrace();
             }
-
-            this.world.getWorldBorder().setCenter(new Location(this.world, 0.0D, 0.0D, 0.0D));
-            this.world.getWorldBorder().setSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize());
-            this.world.getWorldBorder().setDamageAmount(0.0D);
 
             UHCAPI.getInstance().getGameHandler().getWorldConfig().setWorldGenerated(true);
         }, 20);

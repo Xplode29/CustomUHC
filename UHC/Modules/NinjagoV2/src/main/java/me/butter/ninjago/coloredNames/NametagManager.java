@@ -13,7 +13,6 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class NametagManager implements Listener {

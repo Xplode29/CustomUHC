@@ -42,10 +42,10 @@ public class EnchantMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getIcon() {
-            return new ItemBuilder((enchant.getIronLevel() + enchant.getDiamondLevel() > 0 ? Material.ENCHANTED_BOOK : Material.BOOK))
+            return new ItemBuilder((enchant.getAllLevel() + enchant.getDiamondLevel() > 0 ? Material.ENCHANTED_BOOK : Material.BOOK))
                     .setName("§r" + enchant.getName())
-                    .addLoreLine((selected == 0 ? "§a" : "§7") + "Fer: " + enchant.getIronLevel() + " / " + enchant.getMaxLevel())
-                    .addLoreLine((selected == 1 ? "§a" : "§7") + "Diamant: " + enchant.getDiamondLevel() + " / " + enchant.getMaxLevel())
+                    .addLoreLine((selected == 0 ? "§a" : "§7") + "Diamant: " + enchant.getDiamondLevel() + " / " + enchant.getMaxLevel())
+                    .addLoreLine((selected == 1 ? "§a" : "§7") + "Autres: " + enchant.getAllLevel() + " / " + enchant.getMaxLevel())
                     .build();
         }
 
@@ -58,19 +58,19 @@ public class EnchantMenu extends PaginatedMenu {
         public void onClick(UHCPlayer player, ClickType clickType) {
             if (clickType == ClickType.LEFT) {
                 if(selected == 0) {
-                    if(enchant.getIronLevel() < enchant.getMaxLevel()) {
-                        enchant.setIronLevel(enchant.getIronLevel() + 1);
-                    }
-                    else {
-                        enchant.setIronLevel(0);
-                    }
-                }
-                else if(selected == 1) {
                     if(enchant.getDiamondLevel() < enchant.getMaxLevel()) {
                         enchant.setDiamondLevel(enchant.getDiamondLevel() + 1);
                     }
                     else {
                         enchant.setDiamondLevel(0);
+                    }
+                }
+                else if(selected == 1) {
+                    if(enchant.getAllLevel() < enchant.getMaxLevel()) {
+                        enchant.setAllLevel(enchant.getAllLevel() + 1);
+                    }
+                    else {
+                        enchant.setAllLevel(0);
                     }
                 }
             }

@@ -4,8 +4,10 @@ import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
 import me.butter.impl.scenario.AbstractScenario;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 public class SafeMinerScenario extends AbstractScenario {
@@ -17,10 +19,16 @@ public class SafeMinerScenario extends AbstractScenario {
     public String[] getDescription() {
         return new String[] {
                 "Supprime les degats issus",
-                "du feu ou de la lave",
-                "et divise par 2 les degats recus",
-                "en dessous de la couche 50"
+                "du feu ou de la lave,",
+                "Divise par 2 les degats recus et",
+                "empeche aussi les items de burn",
+                "en dessous de la couche 50.",
         };
+    }
+
+    @EventHandler
+    public void onItemBurn(EntityCombustEvent event) {
+        if(event.getEntity() instanceof Item) event.setCancelled(true);
     }
 
     @EventHandler

@@ -1,7 +1,5 @@
 package me.butter.ninjago.coloredNames;
 
-import com.mojang.authlib.GameProfile;
-import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.BlockColor;
@@ -9,16 +7,12 @@ import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.impl.menu.PaginatedMenu;
 import me.butter.ninjago.NinjagoV2;
-import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.Map;
 
 public class ChooseColorMenu extends PaginatedMenu {
 

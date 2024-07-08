@@ -46,7 +46,7 @@ public class CutCleanScenario extends AbstractScenario {
 
                     if(cookedMats.get(item.getType()) == Material.IRON_INGOT)
                         event.setExpToDrop(event.getExpToDrop() + 5);
-                    if(cookedMats.get(item.getType()) == Material.GOLD_ORE)
+                    if(cookedMats.get(item.getType()) == Material.GOLD_INGOT)
                         event.setExpToDrop(event.getExpToDrop() + 8);
 
                     modified = true;

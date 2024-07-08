@@ -37,6 +37,11 @@ public class Arcturus extends NinjagoRole {
     }
 
     @Override
+    public boolean isInList() {
+        return true;
+    }
+
+    @Override
     public void onGiveRole() {
         if(!UHCAPI.getInstance().getGameHandler().getGameConfig().isDay()) {
             getUHCPlayer().addStrength(15);

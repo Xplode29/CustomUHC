@@ -2,11 +2,9 @@ package me.butter.ninjago.commands.list;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.chat.ChatSnippets;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.commands.AbstractCommand;
 import me.butter.ninjago.NinjagoV2;
-import me.butter.ninjago.coloredNames.ChooseColorMenu;
 import me.butter.ninjago.coloredNames.PlayerNametagMenu;
 import org.bukkit.ChatColor;
 

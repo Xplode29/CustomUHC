@@ -20,7 +20,7 @@ public class CoHostCommand extends AbstractCommand {
     @Override
     public void onCommand(UHCPlayer sender, String command, String[] args) {
 
-        if(!UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().equals(sender)) {
+        if(!sender.equals(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost())) {
             sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Seul le host peut utiliser cette commande !"));
             return;
         }

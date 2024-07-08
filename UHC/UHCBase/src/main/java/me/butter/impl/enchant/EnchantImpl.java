@@ -8,14 +8,14 @@ public class EnchantImpl implements Enchant {
     private Enchantment enchantment;
     private String name;
     private boolean enabled;
-    private int ironLimit, diamondLimit, maxLevel;
+    private int allLimit, diamondLimit, maxLevel;
 
     public EnchantImpl(Enchantment enchantment, String name, int maxLevel) {
         this.enchantment = enchantment;
         this.name = name;
         this.maxLevel = maxLevel;
 
-        this.ironLimit = maxLevel;
+        this.allLimit = maxLevel;
         this.diamondLimit = maxLevel;
         this.enabled = true;
     }
@@ -31,13 +31,13 @@ public class EnchantImpl implements Enchant {
     }
 
     @Override
-    public int getIronLevel() {
-        return ironLimit;
+    public int getAllLevel() {
+        return allLimit;
     }
 
     @Override
-    public void setIronLevel(int ironLimit) {
-        this.ironLimit = ironLimit;
+    public void setAllLevel(int allLimit) {
+        this.allLimit = allLimit;
     }
 
     @Override

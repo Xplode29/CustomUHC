@@ -9,3 +9,4 @@ commands:
   n:
     description: Commande principale du mode de jeu
     usage: /n <argument>
+    aliases: ni, ninjago, nj

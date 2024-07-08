@@ -31,7 +31,7 @@ public class Pythor extends NinjagoRole {
 
     @Override
     public String[] getDescription() {
-        return new String[]{
+        return new String[] {
                 "Vous possédez §9Speed 1§r permanent et §cForce 1§r la nuit.",
                 "Vous connaissez une liste contenant : §1Skales§r, §1Acidicus§r, §1Skalidor§r, §1Fangtom§r, §1Fangdam§r, §1Arcturus§r et §aEd§r.",
                 "Attention, §aEd§r ne gagne pas avec les serpents."

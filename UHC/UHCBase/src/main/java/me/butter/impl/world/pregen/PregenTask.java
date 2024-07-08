@@ -34,15 +34,16 @@ public class PregenTask extends BukkitRunnable {
     public void run() {
         for (int i = 0; i < 40 && !finished; i++) {
             Location loc = new Location(world, x, 0, z);
-            if (!loc.getChunk().isLoaded())
-                loc.getWorld().loadChunk(loc.getChunk().getX(), loc.getChunk().getZ(), true);
+            loc.getWorld().getChunkAt(loc.getChunk().getX(), loc.getChunk().getZ()).load(true);
             x += 16;
             currentChunkLoad ++;
             if (x > -startX) {
                 x = startX;
                 z += 16;
                 if (z > -startZ) {
+                    this.world.getWorldBorder().setCenter(new Location(this.world, 0.0D, 0.0D, 0.0D));
                     this.world.getWorldBorder().setSize(UHCAPI.getInstance().getGameHandler().getWorldConfig().getStartingBorderSize() * 2);
+                    this.world.getWorldBorder().setDamageAmount(0.0D);
                     finished = true;
                     cancel();
                     Bukkit.getScheduler().runTaskLater(UHCBase.getInstance(), StructureBuilderTask::new, 20);

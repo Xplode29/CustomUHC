@@ -117,20 +117,12 @@ public class InventoriesEvents implements Listener {
                             player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getDiamondLevel() + " sur les items en diamant."));
                         }
                     }
-                    else if (result.getType().name().contains("IRON")) {
-                        if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getIronLevel()) {
-                            result.removeEnchantment(enchant.getEnchantment());
-                            if(enchant.getIronLevel() > 0)
-                                result.addEnchantment(enchant.getEnchantment(), enchant.getIronLevel());
-                            player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getIronLevel() + " sur les items en fer."));
-                        }
-                    }
                     else {
-                        if (result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getMaxLevel()) {
+                        if(result.getEnchantmentLevel(enchant.getEnchantment()) > enchant.getAllLevel()) {
                             result.removeEnchantment(enchant.getEnchantment());
-                            if(enchant.getMaxLevel() > 0)
-                                result.addEnchantment(enchant.getEnchantment(), enchant.getMaxLevel());
-                            player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getMaxLevel() + "."));
+                            if(enchant.getAllLevel() > 0)
+                                result.addEnchantment(enchant.getEnchantment(), enchant.getAllLevel());
+                            player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getAllLevel() + "."));
                         }
                     }
                 }
@@ -158,20 +150,12 @@ public class InventoriesEvents implements Listener {
                         player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getDiamondLevel() + " sur les items en diamant."));
                     }
                 }
-                else if (result.getType().name().contains("IRON")) {
-                    if(level > enchant.getIronLevel()) {
-                        event.getEnchantsToAdd().remove(enchant.getEnchantment());
-                        if(enchant.getIronLevel() > 0)
-                            event.getEnchantsToAdd().put(enchant.getEnchantment(), enchant.getIronLevel());
-                        player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getIronLevel() + " sur les items en fer."));
-                    }
-                }
                 else {
-                    if(level > enchant.getMaxLevel()) {
+                    if(level > enchant.getAllLevel()) {
                         event.getEnchantsToAdd().remove(enchant.getEnchantment());
-                        if(enchant.getMaxLevel() > 0)
-                            event.getEnchantsToAdd().put(enchant.getEnchantment(), enchant.getMaxLevel());
-                        player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getMaxLevel() + "."));
+                        if(enchant.getAllLevel() > 0)
+                            event.getEnchantsToAdd().put(enchant.getEnchantment(), enchant.getAllLevel());
+                        player.sendMessage(ChatUtils.ERROR.getMessage("L'enchantement " + enchant.getName() + " est désactivé au dessus du niveau " + enchant.getAllLevel() + "."));
                     }
                 }
             }

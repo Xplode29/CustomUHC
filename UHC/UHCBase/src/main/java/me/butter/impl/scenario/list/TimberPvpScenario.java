@@ -13,17 +13,19 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimberScenario extends AbstractScenario {
+public class TimberPvpScenario extends AbstractScenario {
 
-    public TimberScenario() {
-        super("Timber", Material.DIAMOND_AXE);
+    public TimberPvpScenario() {
+        super("Timber PVP", Material.DIAMOND_AXE);
     }
 
     @EventHandler
     public void onBlockBreak(CustomBlockBreakEvent event) {
-        if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME && !UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) {
+        if(UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()) return;
+
+        if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
             if(event.getBlockBroken().getType() == Material.LOG || event.getBlockBroken().getType() == Material.LOG_2) {
-                new breakRunnable(event.getBlockBroken());
+                new breakRunnable(event.getBlockBroken(), 64);
             }
         }
     }
@@ -31,24 +33,34 @@ public class TimberScenario extends AbstractScenario {
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Les arbres sont minés en un coup."
+                "Les arbres sont minés en un coup.",
+                "Se désactive au PVP."
         };
     }
 
     private static class breakRunnable extends BukkitRunnable {
         private final Block block;
 
-        public breakRunnable(Block block) {
+        int amount;
+
+        public breakRunnable(Block block, int amount) {
             this.block = block;
+            this.amount = amount;
+
             this.runTaskLater(UHCAPI.getInstance(), 3);
         }
 
         @Override
         public void run() {
+            if(amount == 0) {
+                cancel();
+                return;
+            }
+
             for(Block b : getNearbyBlocks(block.getLocation(), 1)) {
                 if(b.getType() == Material.LOG || b.getType() == Material.LOG_2) {
                     b.breakNaturally();
-                    new breakRunnable(b);
+                    new breakRunnable(b, amount - 1);
                 }
             }
             cancel();

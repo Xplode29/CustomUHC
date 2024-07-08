@@ -114,7 +114,7 @@ public class WorldConfigMenu extends AbstractMenu {
                         .setName("End - " + (UHCAPI.getInstance().getGameHandler().getWorldConfig().isEnderActivated() ? "§aON" : "§cOFF"))
                         .setLore(
                             "§7Cliquez pour " +
-                            (UHCAPI.getInstance().getGameHandler().getWorldConfig().isNetherActivated() ? "§cdesactiver" : "§aactiver") +
+                            (UHCAPI.getInstance().getGameHandler().getWorldConfig().isEnderActivated() ? "§cdesactiver" : "§aactiver") +
                             " §7l'end."
                         )
                         .build();

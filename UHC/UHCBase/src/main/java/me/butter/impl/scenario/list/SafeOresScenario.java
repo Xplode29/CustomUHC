@@ -10,9 +10,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class NoDropScenario extends AbstractScenario {
-    public NoDropScenario() {
+public class SafeOresScenario extends AbstractScenario {
+    public SafeOresScenario() {
         super("SafeOres", Material.DIAMOND_PICKAXE);
     }
 
@@ -28,7 +29,7 @@ public class NoDropScenario extends AbstractScenario {
                 for(ItemStack item : event.getDrops()) {
                     if(
                         event.getUhcPlayer().getPlayer().getInventory().firstEmpty() > -1 ||
-                        event.getUhcPlayer().getPlayer().getInventory().contains(item)
+                        Arrays.stream(event.getUhcPlayer().getPlayer().getInventory().getContents()).noneMatch(itemStack -> itemStack.getType() == item.getType())
                     ) {
                         event.getUhcPlayer().giveItem(item, false);
                     }

@@ -20,6 +20,7 @@ public class NinjagoRole implements Role, Listener {
     private UHCPlayer uhcPlayer;
 
     private Camp camp;
+    private Camp startCamp;
 
     public NinjagoRole(String name, String doc, Power... powers) {
         this.name = name;
@@ -50,6 +51,16 @@ public class NinjagoRole implements Role, Listener {
     @Override
     public void setCamp(Camp camp) {
         this.camp = camp;
+    }
+
+    @Override
+    public Camp getStartCamp() {
+        return startCamp;
+    }
+
+    @Override
+    public void setStartCamp(Camp camp) {
+        this.startCamp = camp;
     }
 
     @Override

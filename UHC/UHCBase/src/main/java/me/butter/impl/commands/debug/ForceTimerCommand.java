@@ -1,4 +1,4 @@
-package me.butter.impl.commands.host;
+package me.butter.impl.commands.debug;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;

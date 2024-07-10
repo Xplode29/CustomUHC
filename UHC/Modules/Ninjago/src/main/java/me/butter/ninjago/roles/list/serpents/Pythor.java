@@ -33,7 +33,7 @@ public class Pythor extends NinjagoRole {
     public String[] getDescription() {
         return new String[] {
                 "Vous possédez §9Speed 1§r permanent et §cForce 1§r la nuit.",
-                "Vous connaissez une liste contenant : §1Skales§r, §1Acidicus§r, §1Skalidor§r, §1Fangtom§r, §1Fangdam§r, §1Arcturus§r et §aEd§r.",
+                "Vous connaissez une liste contenant : §5Skales§r, §5Acidicus§r, §5Skalidor§r, §5Fangtom§r, §5Fangdam§r, §5Arcturus§r et §aEd§r.",
                 "Attention, §aEd§r ne gagne pas avec les serpents."
         };
     }
@@ -121,7 +121,7 @@ public class Pythor extends NinjagoRole {
             player.addResi(20);
             player.removeSpeed(20);
 
-            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
                 uhcPlayer.sendMessage(ChatUtils.GLOBAL_INFO.getMessage("Le Grand devoreur a ete invoque !"));
                 if(uhcPlayer.getPlayer() != null)
                     uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.ENDERDRAGON_GROWL, 3.0F, 1.0F);
@@ -134,7 +134,7 @@ public class Pythor extends NinjagoRole {
     private static class EaterPower extends RightClickItemPower {
 
         public EaterPower() {
-            super("Grand Devoreur", Material.NETHER_STAR, 20 * 60, 2);
+            super("Grand Devoreur", Material.NETHER_STAR, 20 * 60, -1);
         }
 
         @Override

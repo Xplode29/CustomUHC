@@ -26,14 +26,14 @@ public class Arcturus extends NinjagoRole {
     public String[] getDescription() {
         return new String[]{
                 "Vous possédez §cForce 1§r la nuit",
-                "A l'annonce des roles, vous obtenez le pseudo de §1Pythor§r.",
+                "A l'annonce des roles, vous obtenez le pseudo de §5Pythor§r.",
                 "Lorsque vous retirez votre armure, vous obtenez §bInvisibilité§r et §2No fall§r."
         };
     }
 
     @Override
     public List<String> additionalDescription() {
-        return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(pythor == null ? "Pas de §1Pythor§r" : "§1Pythor§r:" + pythor.getName()));
+        return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(pythor == null ? "Pas de §5Pythor§r" : "§5Pythor§r:" + pythor.getName()));
     }
 
     @Override
@@ -61,10 +61,12 @@ public class Arcturus extends NinjagoRole {
             if(!invisible && getUHCPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 getUHCPlayer().setNoFall(false);
                 getUHCPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
+                getUHCPlayer().setNameTagVisible(true);
             }
             if(invisible && !getUHCPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 getUHCPlayer().setNoFall(true);
                 getUHCPlayer().addPotionEffect(PotionEffectType.INVISIBILITY, -1, 1);
+                getUHCPlayer().setNameTagVisible(false);
             }
         }, 0, 10);
     }

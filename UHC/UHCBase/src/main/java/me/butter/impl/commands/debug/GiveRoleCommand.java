@@ -1,4 +1,4 @@
-package me.butter.impl.commands.host;
+package me.butter.impl.commands.debug;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.ItemPower;
@@ -47,6 +47,7 @@ public class GiveRoleCommand extends AbstractCommand {
                     try {
                         Role role = roleType.getRoleClass().newInstance();
                         role.setCamp(roleType.getCamp());
+                        role.setStartCamp(roleType.getCamp());
 
                         role.setUHCPlayer(target);
                         target.setRole(role);
@@ -79,7 +80,9 @@ public class GiveRoleCommand extends AbstractCommand {
     @Override
     public List<String> onTabComplete(UHCPlayer sender, String command, String[] args) {
         if(args.length == 2) {
-            return UHCAPI.getInstance().getPlayerHandler().getPlayers().stream().map(UHCPlayer::getName).collect(Collectors.toList());
+            return UHCAPI.getInstance().getPlayerHandler().getPlayersConnected().stream()
+                    .filter(player -> player.getPlayer() != null)
+                    .map(UHCPlayer::getName).collect(Collectors.toList());
         }
         if(args.length == 3) {
             if(UHCAPI.getInstance().getModuleHandler().hasModule() && UHCAPI.getInstance().getModuleHandler().getModule().hasRoles()) {

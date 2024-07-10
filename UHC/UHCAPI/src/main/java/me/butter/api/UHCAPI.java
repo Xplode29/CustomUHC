@@ -7,6 +7,7 @@ import me.butter.api.game.GameHandler;
 import me.butter.api.item.ItemHandler;
 import me.butter.api.menu.MenuHandler;
 import me.butter.api.module.ModuleHandler;
+import me.butter.api.nametagColor.NametagColorHandler;
 import me.butter.api.player.PlayerHandler;
 import me.butter.api.potion.PotionEffectHandler;
 import me.butter.api.scenario.ScenarioHandler;
@@ -62,4 +63,6 @@ public abstract class UHCAPI extends JavaPlugin {
     public abstract PotionEffectHandler getPotionEffectHandler();
 
     public abstract CustomEntitiesHandler getCustomEntitiesHandler();
+
+    public abstract NametagColorHandler getNametagColorHandler();
 }

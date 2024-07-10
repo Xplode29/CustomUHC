@@ -16,7 +16,18 @@ import java.util.Random;
 
 public class FireSaber extends AbstractGoldenWeapon implements Listener {
     public FireSaber() {
-        super("Sabre de feu", Material.BLAZE_ROD, 0);
+        super("Sabre de feu",
+                new String[] {
+                        "Vous attribue 5% de force",
+                        "(10% si vous êtes Kai ou Lloyd).",
+                        "Lorsque vous avez cet item",
+                        "dans votre inventaire, vous",
+                        "avez 10% de chance d'enflammer",
+                        "le joueur frappé."
+                },
+                Material.BLAZE_ROD,
+                0
+        );
     }
 
     @EventHandler
@@ -29,7 +40,7 @@ public class FireSaber extends AbstractGoldenWeapon implements Listener {
 
         if(damager.equals(getHolder())) {
             if((new Random()).nextInt(100) <= 10) {
-                target.getPlayer().setFireTicks(3 * 20);
+                target.getPlayer().setFireTicks(5 * 20);
             }
         }
     }

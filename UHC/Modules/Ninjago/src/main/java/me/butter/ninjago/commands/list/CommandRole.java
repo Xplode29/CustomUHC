@@ -5,8 +5,8 @@ import me.butter.api.utils.chat.ChatSnippets;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.commands.AbstractCommand;
 
-public class RoleCommand extends AbstractCommand {
-    public RoleCommand() {
+public class CommandRole extends AbstractCommand {
+    public CommandRole() {
         super("role", "me");
     }
 

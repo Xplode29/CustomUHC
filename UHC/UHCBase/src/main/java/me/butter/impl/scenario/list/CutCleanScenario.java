@@ -9,7 +9,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CutCleanScenario extends AbstractScenario {
     private final Map<Material, Material> cookedMats = new HashMap<>();
@@ -33,6 +36,14 @@ public class CutCleanScenario extends AbstractScenario {
         cookedMats.put(Material.SANDSTONE, Material.SANDSTONE);
         cookedMats.put(Material.STONE, Material.COBBLESTONE);
         cookedMats.put(Material.COBBLESTONE, Material.COBBLESTONE);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] {
+                "La nourriture et les minerais ",
+                "sont directement cuits."
+        };
     }
 
     @EventHandler
@@ -67,24 +78,13 @@ public class CutCleanScenario extends AbstractScenario {
             if(event.getEntity() == null || event.getDrops() == null) {
                 return;
             }
-            Collection<ItemStack> drops = event.getDrops();
-            event.getDrops().clear();
-            for(ItemStack item : drops) {
+
+            for(ItemStack item : new ArrayList<>(event.getDrops())) {
                 if(cookedMats.containsKey(item.getType())) {
+                    event.getDrops().remove(item);
                     event.getDrops().add(new ItemStack(cookedMats.get(item.getType()), item.getAmount()));
-                }
-                else {
-                    event.getDrops().add(item);
                 }
             }
         }
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] {
-                "La nourriture et les minerais ",
-                "sont directement cuits."
-        };
     }
 }

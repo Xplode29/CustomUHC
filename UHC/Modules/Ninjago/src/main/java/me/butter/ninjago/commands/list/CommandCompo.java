@@ -12,8 +12,8 @@ import me.butter.ninjago.roles.CampEnum;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CompoCommand extends AbstractCommand {
-    public CompoCommand() {
+public class CommandCompo extends AbstractCommand {
+    public CommandCompo() {
         super("compo", "roles");
     }
 
@@ -29,7 +29,7 @@ public class CompoCommand extends AbstractCommand {
 
             if(UHCAPI.getInstance().getTimerHandler().getTimer(RoleTimer.class).isFired()) {
                 for (UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
-                    if(uhcPlayer.getRole() != null && uhcPlayer.getRole().getCamp() == campEnum.getCamp()) {
+                    if(uhcPlayer.getRole() != null && uhcPlayer.getRole().getStartCamp() == campEnum.getCamp()) {
                         if(!roles.containsKey(uhcPlayer.getRole().getName())) {
                             roles.put(uhcPlayer.getRole().getName(), 1);
                         } else {

@@ -42,7 +42,7 @@ public class StructureBuilderTask extends BukkitRunnable {
         UHCAPI.getInstance().getStructureHandler().spawnStructure(structure);
 
         if(currentStructure < maxStructures) {
-            UHCAPI.getInstance().getPlayerHandler().getPlayers().forEach(p -> p.sendActionBar(
+            UHCAPI.getInstance().getPlayerHandler().getPlayersConnected().forEach(p -> p.sendActionBar(
                     "§8[§6§lPregen§8] §7Creation des structures : " + (int) ((currentStructure / maxStructures) * 100) + "%"
             ));
         }

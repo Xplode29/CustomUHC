@@ -10,7 +10,7 @@ public class SnakeCamp implements Camp {
 
     @Override
     public String getPrefix() {
-        return "§1";
+        return "§5";
     }
 
     @Override

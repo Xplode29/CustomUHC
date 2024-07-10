@@ -27,7 +27,7 @@ public class NewOrePopulator extends OrePopulator {
                         case 4: y--; break;
                         case 5: z--; break;
                     }
-                    doesContinue = world.getBlockAt(x, y, z).getType() == Material.STONE || world.getBlockAt(x, y, z).getType() != rule.id;
+                    doesContinue = world.getBlockAt(x, y, z).getType() == Material.STONE;
                 }
             }
         }

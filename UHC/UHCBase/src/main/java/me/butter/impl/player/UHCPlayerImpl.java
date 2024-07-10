@@ -6,6 +6,7 @@ import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.Potion;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.chat.ChatUtils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
@@ -28,7 +29,10 @@ public class UHCPlayerImpl implements UHCPlayer {
     private String playerName;
     private PlayerState playerState;
 
+    private Map<UHCPlayer, ChatColor> coloredNametags;
+
     private Role role;
+    private boolean nameTagVisible;
 
     private boolean canPickItems, noFall, disconnected, canMove;
     private int diamondMined, disconnectionTime;
@@ -47,11 +51,15 @@ public class UHCPlayerImpl implements UHCPlayer {
         this.playerName = player.getName();
         this.playerState = PlayerState.IN_SPEC;
 
+        coloredNametags = new HashMap<>();
+
         this.canPickItems = true;
         this.noFall = false;
         this.diamondMined = 0;
         this.disconnected = false;
         this.disconnectionTime = 0;
+
+        setNameTagVisible(true);
 
         this.canMove = true;
 
@@ -159,6 +167,42 @@ public class UHCPlayerImpl implements UHCPlayer {
     }
 
     @Override
+    public Map<UHCPlayer, ChatColor> getColoredNametags() {
+        return coloredNametags;
+    }
+
+    @Override
+    public void setColoredNametags(Map<UHCPlayer, ChatColor> coloredNametags) {
+        this.coloredNametags = coloredNametags;
+    }
+
+    @Override
+    public void addColoredNametag(UHCPlayer player, ChatColor color) {
+        if(coloredNametags.containsKey(player)) {
+            coloredNametags.replace(player, color);
+        }
+        else {
+            coloredNametags.put(player, color);
+        }
+    }
+
+    @Override
+    public void removeColoredNametag(UHCPlayer player) {
+        coloredNametags.remove(player);
+    }
+
+    @Override
+    public boolean isNameTagVisible() {
+        return nameTagVisible;
+    }
+
+    @Override
+    public void setNameTagVisible(boolean visible) {
+        nameTagVisible = visible;
+        UHCAPI.getInstance().getNametagColorHandler().updatePlayerColor(this);
+    }
+
+    @Override
     public boolean isDisconnected() {
         return disconnected;
     }
@@ -242,7 +286,7 @@ public class UHCPlayerImpl implements UHCPlayer {
                 uhcPlayer.getPlayer().showPlayer(getPlayer());
             }
 
-            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
                 if(uhcPlayer.getPlayer() == null || uhcPlayer.getPlayerState() == PlayerState.IN_GAME) continue;
                 getPlayer().hidePlayer(uhcPlayer.getPlayer());
             }
@@ -260,6 +304,7 @@ public class UHCPlayerImpl implements UHCPlayer {
     @Override
     public void resetPlayer() {
         this.playerState = PlayerState.IN_SPEC;
+        coloredNametags = new HashMap<>();
 
         this.canPickItems = true;
         this.noFall = false;
@@ -414,6 +459,7 @@ public class UHCPlayerImpl implements UHCPlayer {
         }
         else if(canGoToStash) {
             addItemToStash(itemToGive);
+            sendMessage(ChatUtils.ERROR.getMessage("Un item a été ajouté dans votre /full car vous n'avez plus de place"));
         }
         else {
             getPlayer().getLocation().getWorld().dropItem(getPlayer().getLocation(), itemToGive);

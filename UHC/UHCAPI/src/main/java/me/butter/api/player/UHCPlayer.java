@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface UHCPlayer {
@@ -31,6 +32,11 @@ public interface UHCPlayer {
     boolean isNextTo(UHCPlayer player, int radius);
 
     PlayerState getPlayerState(); void setPlayerState(PlayerState newState);
+
+    Map<UHCPlayer, ChatColor> getColoredNametags(); void setColoredNametags(Map<UHCPlayer, ChatColor> coloredNametags);
+    void addColoredNametag(UHCPlayer player, ChatColor color); void removeColoredNametag(UHCPlayer player);
+
+    boolean isNameTagVisible(); void setNameTagVisible(boolean visible);
 
     boolean isDisconnected(); void setDisconnected(boolean isDisconnected);
     int getDisconnectionTime(); void setDisconnectionTime(int time);

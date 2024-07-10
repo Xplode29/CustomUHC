@@ -22,7 +22,7 @@ public class Skalidor extends NinjagoRole {
     public String[] getDescription() {
         return new String[]{
                 "Vous possédez §7Resistance 1§r le jour et §cForce 1§r la nuit.",
-                "A l'annonce des roles, vous obtenez le pseudo de §1Pythor§r."
+                "A l'annonce des roles, vous obtenez le pseudo de §5Pythor§r."
         };
     }
 

@@ -13,7 +13,7 @@ public class FinalHealCommand extends AbstractCommand {
 
     @Override
     public void onCommand(UHCPlayer sender, String command, String[] args) {
-        for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+        for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
             if(player.getPlayer() == null) continue;
             player.getPlayer().setHealth(player.getPlayer().getMaxHealth());
         }

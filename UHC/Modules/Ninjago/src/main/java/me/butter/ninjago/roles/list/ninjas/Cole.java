@@ -117,7 +117,7 @@ public class Cole extends NinjagoRole {
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "Place un mur de 9x9 sur le bloc visé."
+                    "Place un mur sur le bloc visé."
             };
         }
 
@@ -136,7 +136,7 @@ public class Cole extends NinjagoRole {
                         return;
                     }
 
-                    for(int i = -5; i <= 5; i++) {
+                    for(int i = -10; i <= 10; i++) {
                         Block block = target.getWorld().getBlockAt(
                                 (int) (target.getX() + i * orthogonal.getX()),
                                 y,

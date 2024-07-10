@@ -20,6 +20,8 @@ public class Skales extends NinjagoRole {
 
     private UHCPlayer pythor;
 
+    private static int timeToInfect = 7 * 60;
+
     public Skales() {
         super("Skales", "/roles/serpent-10/skales", new InfectPower());
     }
@@ -28,7 +30,7 @@ public class Skales extends NinjagoRole {
     public String[] getDescription() {
         return new String[]{
                 "Vous possédez §cForce 1§r la nuit. ",
-                "A l'annonce des roles, vous obtenez le pseudo de §1Pythor§r."
+                "A l'annonce des roles, vous obtenez le pseudo de §5Pythor§r."
         };
     }
 
@@ -93,10 +95,9 @@ public class Skales extends NinjagoRole {
         }
 
         private class InfectRunnable extends BukkitRunnable {
+
             UHCPlayer player, target;
             int timer;
-
-            int timeToInfect = 7;
 
             public InfectRunnable(UHCPlayer player, UHCPlayer target) {
                 this.player = player;

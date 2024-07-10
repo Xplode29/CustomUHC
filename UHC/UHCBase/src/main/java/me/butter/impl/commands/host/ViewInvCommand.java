@@ -35,7 +35,9 @@ public class ViewInvCommand extends AbstractCommand {
     @Override
     public List<String> onTabComplete(UHCPlayer sender, String command, String[] args) {
         if(args.length == 2) {
-            return UHCAPI.getInstance().getPlayerHandler().getPlayers().stream().map(UHCPlayer::getName).collect(Collectors.toList());
+            return UHCAPI.getInstance().getPlayerHandler().getPlayersConnected().stream()
+                    .filter(player -> player.getPlayer() != null)
+                    .map(UHCPlayer::getName).collect(Collectors.toList());
         }
         return new ArrayList<>();
     }

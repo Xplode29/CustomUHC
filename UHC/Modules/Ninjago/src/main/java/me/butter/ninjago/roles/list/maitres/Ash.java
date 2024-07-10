@@ -47,6 +47,7 @@ public class Ash extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[] {
+                "Vous avez No Fall permanent",
                 "Vous connaissez la liste des membres de l'alliance"
         };
     }
@@ -59,6 +60,11 @@ public class Ash extends NinjagoRole {
     @Override
     public List<String> additionalDescription() {
         return Collections.singletonList("Membres de l'alliance: " + maitres.stream().map(UHCPlayer::getName).collect(Collectors.joining(", ")));
+    }
+
+    @Override
+    public void onGiveRole() {
+        getUHCPlayer().setNoFall(true);
     }
 
     @Override
@@ -139,14 +145,14 @@ public class Ash extends NinjagoRole {
     private class SmokePower extends TargetBlockItemPower {
 
         public SmokePower() {
-            super(ChatColor.GRAY + "Ecran de Fumée", Material.NETHER_STAR, 20, 15 * 60, -1);
+            super(ChatColor.GRAY + "Ecran de Fumée", Material.NETHER_STAR, 20, 10 * 60, -1);
         }
 
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "Recouvre de fumée une zone de 25 blocks de rayon pendant 2 minutes. (Cooldown: 15 minutes / Utilisation infinie)",
-                    "Dans cette zone, vous possédez §9Speed 1§r et vous esquivez un coup tous les §l10 coups§r subits.",
+                    "Recouvre de fumée une zone de 30 blocks de rayon pendant 2 minutes. (Cooldown: 15 minutes / Utilisation infinie)",
+                    "Dans cette zone, vous possédez §cForce 1§r et vous esquivez un coup tous les §l10 coups§r subits.",
                     "De plus, vous pouvez vous téléporter sur un bloc present dans la zone a l'aide d'un clic droit. (Cooldown: 10 secondes / Utilisation infinie)"
             };
         }
@@ -225,25 +231,25 @@ public class Ash extends NinjagoRole {
                 if(isSmokePlaced) {
                     if(smokeTimer <= 0) {
                         isSmokePlaced = false;
-                        if(hasSpeed && center.distance(player.getPlayer().getLocation()) > 25) {
-                            player.removeSpeed(20);
+                        if(hasSpeed && center.distance(player.getPlayer().getLocation()) > 30) {
+                            player.removeStrength(15);
                             hasSpeed = false;
                         }
                     }
                     else {
-                        if(!hasSpeed && center.distance(player.getPlayer().getLocation()) <= 25) {
-                            player.addSpeed(20);
+                        if(!hasSpeed && center.distance(player.getPlayer().getLocation()) <= 30) {
+                            player.addStrength(15);
                             hasSpeed = true;
                             player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous entrez dans votre zone !"));
                         }
-                        if(hasSpeed && center.distance(player.getPlayer().getLocation()) > 25) {
-                            player.removeSpeed(20);
+                        if(hasSpeed && center.distance(player.getPlayer().getLocation()) > 30) {
+                            player.removeStrength(15);
                             hasSpeed = false;
                             player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous sortez de votre zone !"));
                         }
 
                         for(int i = -5; i < 5; i++) {
-                            ParticleEffects.zoneEffect(player, center.clone().add(0, i, 0), 25, Color.GRAY);
+                            ParticleEffects.zoneEffect(player, center.clone().add(0, i, 0), 30, Color.GRAY);
                         }
 
                         smokeTimer--;

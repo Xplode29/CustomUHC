@@ -54,6 +54,7 @@ public class RoleTimer extends AbstractTimer {
                 try {
                     Role role = roleType.getRoleClass().newInstance();
                     role.setCamp(roleType.getCamp());
+                    role.setStartCamp(roleType.getCamp());
                     roleList.add(role);
                     index++;
                 }

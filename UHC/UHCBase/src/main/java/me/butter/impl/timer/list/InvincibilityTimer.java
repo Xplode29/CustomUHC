@@ -32,7 +32,7 @@ public class InvincibilityTimer extends AbstractTimer {
     @Override
     public void onUpdate(int timer) {
         if (getMaxTimer() >= timer) {
-            UHCAPI.getInstance().getPlayerHandler().getPlayers().forEach(uhcPlayer -> uhcPlayer.sendActionBar(
+            UHCAPI.getInstance().getPlayerHandler().getPlayersConnected().forEach(uhcPlayer -> uhcPlayer.sendActionBar(
                     "§eInvincibilité §8" + " §8[" + GraphicUtils.getProgressBar(timer, getMaxTimer(), 10, '|', ChatColor.GREEN, ChatColor.GRAY) + "§8]"
             ));
         }

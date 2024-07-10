@@ -17,7 +17,18 @@ public class EarthScyte extends AbstractGoldenWeapon {
     List<UHCPlayer> nearPlayers;
 
     public EarthScyte() {
-        super("Faux de terre", Material.DIAMOND_HOE, 10 * 60);
+        super("Faux de terre",
+                new String[] {
+                        "Vous attribue 5% de résistance",
+                        "(10% si vous êtes Cole ou Lloyd).",
+                        "Click droit : Vous immobilisez ",
+                        "tous les joueurs (vous inclus)",
+                        "autour de vous pendant 10 secondes.",
+                        "Cooldown : 10 min"
+                },
+                Material.DIAMOND_HOE,
+                10 * 60
+        );
 
         nearPlayers = new ArrayList<>();
     }

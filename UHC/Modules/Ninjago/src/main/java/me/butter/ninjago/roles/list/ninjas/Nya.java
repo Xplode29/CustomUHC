@@ -57,31 +57,25 @@ public class Nya extends NinjagoRole {
 
         if(finalKay == null) return;
         Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), new Runnable() {
-            boolean nextToKay = false;
             int bookTimer = 0;
 
             @Override
             public void run() {
-                if(getUHCPlayer() == null) {
+                if(getUHCPlayer() == null || finalKay == null) {
                     return;
                 }
 
-                if(finalKay == null) return;
-                if(getUHCPlayer().isNextTo(finalKay, 10) && !nextToKay) {
-                    nextToKay = true;
-                }
-                else if(!getUHCPlayer().isNextTo(finalKay, 10) && nextToKay) {
-                    nextToKay = false;
-                    bookTimer = 0;
-                }
+                if(getUHCPlayer().isNextTo(finalKay, 10)) {
+                    if(!bookGiven) {
+                        bookTimer++;
+                        if(bookTimer >= maxBookTimer) {
+                            DepthStriderBook book = new DepthStriderBook();
+                            addPower(book);
+                            getUHCPlayer().giveItem(book.getItem(), true);
+                            bookGiven = true;
 
-                if(nextToKay && !bookGiven) {
-                    bookTimer++;
-                    if(bookTimer >= maxBookTimer) {
-                        DepthStriderBook book = new DepthStriderBook();
-                        addPower(book);
-                        getUHCPlayer().giveItem(book.getItem(), true);
-                        bookGiven = true;
+                            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu un livre Depth Strider 3 !"));
+                        }
                     }
                 }
             }

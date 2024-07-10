@@ -33,15 +33,6 @@ public class GameTask extends BukkitRunnable {
 
         UHCAPI.getInstance().getGameHandler().getGameConfig().setTimer(UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer() + 1);
 
-        for (UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
-            if(player.isDisconnected()) {
-                player.setDisconnectionTime(player.getDisconnectionTime() + 1);
-                if(player.getDisconnectionTime() >= 20 * 60) {
-                    player.setPlayerState(PlayerState.DEAD);
-                }
-            }
-        }
-
         for (Scenario scenario : UHCAPI.getInstance().getScenarioHandler().getEnabledScenarios()) {
             scenario.onUpdate(UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer());
         }

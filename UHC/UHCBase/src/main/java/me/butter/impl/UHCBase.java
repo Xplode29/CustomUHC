@@ -9,6 +9,7 @@ import me.butter.api.game.GameState;
 import me.butter.api.item.ItemHandler;
 import me.butter.api.menu.MenuHandler;
 import me.butter.api.module.ModuleHandler;
+import me.butter.api.nametagColor.NametagColorHandler;
 import me.butter.api.player.PlayerHandler;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
@@ -20,10 +21,9 @@ import me.butter.api.tab.TabHandler;
 import me.butter.api.timer.TimerHandler;
 import me.butter.api.world.WorldHandler;
 import me.butter.impl.clickablechat.ClickableChatHandlerImpl;
-import me.butter.impl.commands.CommandDoc;
-import me.butter.impl.commands.CommandFull;
-import me.butter.impl.commands.CommandRules;
-import me.butter.impl.commands.HostCommands;
+import me.butter.impl.commands.*;
+import me.butter.impl.commands.debug.DebugCommands;
+import me.butter.impl.commands.host.HostCommands;
 import me.butter.impl.customEntities.CustomEntitiesHandlerImpl;
 import me.butter.impl.enchant.EnchantHandlerImpl;
 import me.butter.impl.game.GameHandlerImpl;
@@ -31,6 +31,7 @@ import me.butter.impl.item.ItemHandlerImpl;
 import me.butter.impl.listeners.*;
 import me.butter.impl.menu.MenuHandlerImpl;
 import me.butter.impl.module.ModuleHandlerImpl;
+import me.butter.impl.nametagColor.NametagColorHandlerImpl;
 import me.butter.impl.player.PlayerHandlerImpl;
 import me.butter.impl.player.PotionUpdaterTask;
 import me.butter.impl.potion.PotionEffectHandlerImpl;
@@ -65,6 +66,7 @@ public final class UHCBase extends UHCAPI {
     private ClickableChatHandler clickableChatHandler;
     private PotionEffectHandler potionEffectHandler;
     private CustomEntitiesHandler customEntitiesHandler;
+    private NametagColorHandler nametagColorHandler;
 
     @Override
     public void onLoad() {
@@ -91,6 +93,7 @@ public final class UHCBase extends UHCAPI {
         clickableChatHandler = new ClickableChatHandlerImpl();
         potionEffectHandler = new PotionEffectHandlerImpl();
         customEntitiesHandler = new CustomEntitiesHandlerImpl();
+        nametagColorHandler = new NametagColorHandlerImpl();
 
         registerListeners();
         registerCommands();
@@ -112,9 +115,17 @@ public final class UHCBase extends UHCAPI {
 
             UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
             UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, uhcPlayer);
+
+            for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                if(onlinePlayer != player) {
+                    player.showPlayer(onlinePlayer);
+                }
+            }
         }
 
         new PotionUpdaterTask();
+
+        Bukkit.getScheduler().runTaskLater(this, CommandsRemover::clearBukkitCommands, 5 * 20);
     }
 
     @Override
@@ -134,9 +145,7 @@ public final class UHCBase extends UHCAPI {
 
     void registerCommands() {
         getCommand("host").setExecutor(new HostCommands());
-        getCommand("rules").setExecutor(new CommandRules());
-        getCommand("full").setExecutor(new CommandFull());
-        getCommand("doc").setExecutor(new CommandDoc());
+        getCommand("debug").setExecutor(new DebugCommands());
     }
 
     void registerListeners() {
@@ -221,5 +230,10 @@ public final class UHCBase extends UHCAPI {
     @Override
     public CustomEntitiesHandler getCustomEntitiesHandler() {
         return customEntitiesHandler;
+    }
+
+    @Override
+    public NametagColorHandler getNametagColorHandler() {
+        return nametagColorHandler;
     }
 }

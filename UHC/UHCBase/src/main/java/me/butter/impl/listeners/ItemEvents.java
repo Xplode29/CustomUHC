@@ -127,11 +127,14 @@ public class ItemEvents implements Listener {
 
         if(event.getItem().getType() == Material.GOLDEN_APPLE && uhcPlayer.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
             event.setCancelled(true);
+
             uhcPlayer.getPlayer().setHealth(Math.min(20, uhcPlayer.getPlayer().getHealth() + 1));
             uhcPlayer.getPlayer().removePotionEffect(PotionEffectType.ABSORPTION);
             uhcPlayer.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2 * 60 * 20, 0, false, false));
             uhcPlayer.getPlayer().removePotionEffect(PotionEffectType.REGENERATION);
             uhcPlayer.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5 * 20, 1, false, false));
+
+            uhcPlayer.getPlayer().getItemInHand().setAmount(uhcPlayer.getPlayer().getItemInHand().getAmount() - 1);
         }
     }
 }

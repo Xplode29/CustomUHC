@@ -64,12 +64,14 @@ public class Invizable extends NinjagoRole {
                 getUHCPlayer().removeResi(40);
                 getUHCPlayer().setNoFall(false);
                 getUHCPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
+                getUHCPlayer().setNameTagVisible(true);
             }
             if(invisible && !getUHCPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 getUHCPlayer().addStrength(15);
                 getUHCPlayer().addResi(40);
                 getUHCPlayer().setNoFall(true);
                 getUHCPlayer().addPotionEffect(PotionEffectType.INVISIBILITY, -1, 1);
+                getUHCPlayer().setNameTagVisible(false);
             }
         }, 0, 10);
     }

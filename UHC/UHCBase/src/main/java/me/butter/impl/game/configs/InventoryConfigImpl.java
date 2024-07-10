@@ -2,8 +2,8 @@ package me.butter.impl.game.configs;
 
 import me.butter.api.game.Preset;
 import me.butter.api.game.configs.InventoryConfig;
-import me.butter.impl.game.presets.MeetupPreset;
-import me.butter.impl.game.presets.MiningPreset;
+import me.butter.impl.game.invPresets.MeetupPreset;
+import me.butter.impl.game.invPresets.MiningPreset;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;

@@ -18,7 +18,18 @@ import java.util.Random;
 public class LightingNunchakus extends AbstractGoldenWeapon implements Listener {
 
     public LightingNunchakus() {
-        super("Nunchakus electriques", Material.STICK, 0);
+        super(
+                "Nunchakus electriques",
+                new String[] {
+                        "Vous attribue 5% de speed",
+                        "(10% si vous êtes Jay ou Lloyd).",
+                        "Lorsque vous avez cet item",
+                        "dans votre inventaire, vous",
+                        "avez 10% de faire spawn",
+                        "un éclair sur le joueur frappé."
+                },
+                Material.STICK,
+                0);
     }
 
     @EventHandler

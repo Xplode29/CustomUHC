@@ -8,9 +8,7 @@ import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.commands.AbstractCommand;
-import me.butter.ninjago.commands.list.CompoCommand;
-import me.butter.ninjago.commands.list.ListEffectsCommand;
-import me.butter.ninjago.commands.list.RoleCommand;
+import me.butter.ninjago.commands.list.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -27,9 +25,13 @@ public class NinjagoCommand implements TabExecutor {
     private final List<AbstractCommand> commands = new ArrayList<>();
 
     public NinjagoCommand() {
-        commands.add(new ListEffectsCommand());
-        commands.add(new RoleCommand());
-        commands.add(new CompoCommand());
+        commands.add(new CommandEffects());
+        commands.add(new CommandRole());
+        commands.add(new CommandCompo());
+        commands.add(new CommandDoc());
+        commands.add(new CommandFull());
+        commands.add(new CommandRules());;
+        commands.add(new CommandColor());
     }
 
     @Override
@@ -103,7 +105,7 @@ public class NinjagoCommand implements TabExecutor {
                 for(Power power : sender.getRole().getPowers()) {
                     if(power instanceof TargetCommandPower) {
                         if(strings[0].equalsIgnoreCase(((TargetCommandPower) power).getArgument())) {
-                            return UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().stream().map(UHCPlayer::getName).filter(argument -> argument.startsWith(typing)).collect(Collectors.toList());
+                            return UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().stream().filter(uhcPlayer -> uhcPlayer.getPlayer() != null).map(UHCPlayer::getName).filter(argument -> argument.startsWith(typing)).collect(Collectors.toList());
                         }
                     }
                 }

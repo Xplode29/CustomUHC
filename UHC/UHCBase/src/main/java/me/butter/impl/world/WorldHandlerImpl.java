@@ -67,7 +67,6 @@ public class WorldHandlerImpl implements WorldHandler {
             WorldCreator creator = new WorldCreator(worldName);
 
             this.setWorld(creator.createWorld());
-            this.getWorld().getPopulators().add(this.orePopulator);
 
             Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage("Le monde a bien été créé avec succès !"));
 

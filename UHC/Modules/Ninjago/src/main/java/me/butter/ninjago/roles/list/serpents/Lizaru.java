@@ -25,7 +25,7 @@ public class Lizaru extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "A l'annonce des roles, vous obtenez le pseudo de §1Acidicus§r.",
+                "A l'annonce des roles, vous obtenez le pseudo de §5Acidicus§r.",
         };
     }
 

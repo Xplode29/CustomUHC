@@ -46,8 +46,8 @@ public class DamageHealthEvents implements Listener {
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
             if (UHCAPI.getInstance().getGameHandler().getGameConfig().isInvincibility()) {
                 event.setCancelled(true);
-            } else if (event.getCause() == EntityDamageEvent.DamageCause.FALL && player != null && player.hasNoFall()) {
-                event.setCancelled(true);
+            } else if (event.getCause() == EntityDamageEvent.DamageCause.FALL && player.hasNoFall()) {
+                event.setDamage(0);
             }
         }
     }
@@ -155,7 +155,7 @@ public class DamageHealthEvents implements Listener {
                         uhcPlayer.getPlayer().hidePlayer(uhcVictim.getPlayer());
                     }
 
-                    for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                    for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
                         if(uhcPlayer.getPlayer() == null) continue;
                         uhcVictim.getPlayer().showPlayer(uhcPlayer.getPlayer());
                     }
@@ -169,7 +169,7 @@ public class DamageHealthEvents implements Listener {
                     if(!UHCAPI.getInstance().getModuleHandler().hasModule() || !UHCAPI.getInstance().getModuleHandler().getModule().hasCustomDeath()) {
                         ChatSnippets.playerDeath(uhcVictim);
 
-                        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
                             if(uhcPlayer.getPlayer() == null) continue;
                             uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.WITHER_DEATH, 6.0F, 1.0F);
                         }
@@ -181,7 +181,7 @@ public class DamageHealthEvents implements Listener {
                         if(!UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().isEmpty()) {
                             List<Camp> camps = getCamps();
 
-                            if(camps.size() > 1) return;
+                            if(camps.size() != 1) return;
 
                             Camp camp = camps.get(0);
 
@@ -197,12 +197,12 @@ public class DamageHealthEvents implements Listener {
                                 Bukkit.broadcastMessage("Les " + camp.getPrefix() + camp.getName() + "§r ont gagnes !");
                             }
                             Bukkit.broadcastMessage("");
-                            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
                                 if(uhcPlayer.getRole() != null && (
                                         uhcPlayer.getPlayerState() == PlayerState.IN_GAME ||
                                                 uhcPlayer.getPlayerState() == PlayerState.DEAD
                                 )) {
-                                    Bukkit.broadcastMessage(uhcPlayer.getName() + " (" + uhcPlayer.getRole().getCamp().getPrefix() + uhcPlayer.getRole().getName() + "§r) : " + uhcPlayer.getKilledPlayers().size() + " kill(s)");
+                                    Bukkit.broadcastMessage(uhcPlayer.getName() + " (" + uhcPlayer.getRole().getStartCamp().getPrefix() + uhcPlayer.getRole().getName() + "§r) : " + uhcPlayer.getKilledPlayers().size() + " kill(s)");
                                 }
                             }
                             Bukkit.broadcastMessage("");
@@ -219,7 +219,7 @@ public class DamageHealthEvents implements Listener {
                         Bukkit.broadcastMessage("");
                         Bukkit.broadcastMessage("Le joueur " + winner.getName() + " a gagne !");
                         Bukkit.broadcastMessage("");
-                        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+                        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
                             if(uhcPlayer.getRole() != null && (
                                     uhcPlayer.getPlayerState() == PlayerState.IN_GAME ||
                                             uhcPlayer.getPlayerState() == PlayerState.DEAD
@@ -265,7 +265,7 @@ public class DamageHealthEvents implements Listener {
         }
 
         String message = getMessage(event);
-        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts()) {
+        for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInSpec()) {
             uhcPlayer.sendMessage(message);
         }
     }

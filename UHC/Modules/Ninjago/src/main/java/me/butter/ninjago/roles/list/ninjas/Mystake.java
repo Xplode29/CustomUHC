@@ -76,13 +76,13 @@ public class Mystake extends NinjagoRole {
     private class OniCommand extends CommandPower {
 
         public OniCommand() {
-            super("§1Forme Oni", "oni", 0, 1);
+            super("§5Forme Oni", "oni", 0, 1);
         }
 
         @Override
         public String[] getDescription() {
             return new String[] {
-                    "Active votre §1Forme Oni§r. Vous gagnez alors §7Resistance 1§r permanent.",
+                    "Active votre §5Forme Oni§r. Vous gagnez alors §7Resistance 1§r permanent.",
                     "Cependant, vous obtenez §3Faiblesse 1§r le jour et vous ne pouvez plus utiliser le The de Voyageur.",
                     "Attention, cette forme ne peut pas être annulée."
             };
@@ -97,7 +97,7 @@ public class Mystake extends NinjagoRole {
                 player.removeStrength(15);
             }
 
-            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez active votre §1Forme Oni§r !"));
+            player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez active votre §5Forme Oni§r !"));
             return true;
         }
     }

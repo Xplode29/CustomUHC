@@ -19,7 +19,7 @@ public class PotionUpdaterTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        for (UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayers()) {
+        for (UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
             if (uhcPlayer.getPlayer() == null || uhcPlayer.getPlayerState() == PlayerState.DEAD || uhcPlayer.getPotionEffects() == null) {
                 continue;
             }

@@ -96,7 +96,8 @@ public class Skylor extends NinjagoRole {
             player.removeMaxHealth(player.getMaxHealth() - 20);
 
             for(Potion potion : target.getPotionEffects()) {
-                player.addPotionEffect(potion.getEffect(), potion.getDuration(), potion.getLevel());
+                if(potion.isPacket()) player.addPacketPotionEffect(potion.getEffect(), potion.getDuration(), potion.getLevel());
+                else player.addPotionEffect(potion.getEffect(), potion.getDuration(), potion.getLevel());
             }
             player.addResi(target.getResi());
             player.addStrength(target.getStrength());

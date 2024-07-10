@@ -33,6 +33,11 @@ public class GoldenWeaponChestMenu extends AbstractMenu {
 
             @Override
             public void onClick(UHCPlayer player, ClickType clickType) {
+                if(chest.getWeapon().getHolder() != null) {
+                    closeMenu();
+                    return;
+                }
+
                 chest.getWeapon().setHolder(player);
                 chest.getWeapon().onPickup();
 

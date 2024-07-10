@@ -5,8 +5,8 @@ import me.butter.api.game.Preset;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.ItemBuilder;
-import me.butter.impl.game.presets.MeetupPreset;
-import me.butter.impl.game.presets.MiningPreset;
+import me.butter.impl.game.invPresets.MeetupPreset;
+import me.butter.impl.game.invPresets.MiningPreset;
 import me.butter.impl.menu.AbstractMenu;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.impl.timer.list.*;
@@ -43,11 +43,11 @@ public class PresetsMenu extends AbstractMenu {
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setStartingBorderSize(1000);
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setFinalBorderSize(200);
 
-                UHCAPI.getInstance().getGameHandler().getWorldConfig().setDiamondLimit(22);
+                UHCAPI.getInstance().getGameHandler().getWorldConfig().setDiamondLimit(20);
                 UHCAPI.getInstance().getGameHandler().getWorldConfig().setExpBoost(50);
                 UHCAPI.getInstance().getGameHandler().getGameConfig().setDayCycleActivated(true);
                 UHCAPI.getInstance().getGameHandler().getGameConfig().setDayDuration(5 * 60);
-                UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(10 * 60);
+                UHCAPI.getInstance().getGameHandler().getGameConfig().setEpisodeDuration(20 * 60);
 
                 UHCAPI.getInstance().getTimerHandler().getTimer(InvincibilityTimer.class).setMaxTimer(60);
                 UHCAPI.getInstance().getTimerHandler().getTimer(RoleTimer.class).setMaxTimer(20 * 60);

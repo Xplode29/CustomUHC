@@ -1,6 +1,7 @@
 package me.butter.ninjago.goldenWeapons;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
 import me.butter.ninjago.goldenWeapons.list.EarthScyte;
 import me.butter.ninjago.goldenWeapons.list.FireSaber;
@@ -81,6 +82,7 @@ public class GoldenWeaponManager implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         UHCPlayer player = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(event.getPlayer());
         if(player == null) return;
+        if(player.getPlayerState() != PlayerState.IN_GAME) return;
 
         if(event.hasBlock()) {
             for(StructChestHolder chestHolder : chests) {

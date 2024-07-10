@@ -51,10 +51,12 @@ public class Facteur extends NinjagoRole {
             if(!invisible && getUHCPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 getUHCPlayer().setNoFall(false);
                 getUHCPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
+                getUHCPlayer().setNameTagVisible(true);
             }
             if(invisible && !getUHCPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 getUHCPlayer().setNoFall(true);
                 getUHCPlayer().addPotionEffect(PotionEffectType.INVISIBILITY, -1, 1);
+                getUHCPlayer().setNameTagVisible(false);
             }
         }, 0, 10);
     }

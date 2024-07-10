@@ -62,8 +62,12 @@ public class GoldenNinjaScenario extends AbstractScenario {
             for(UHCPlayer uhcPlayer : players) {
                 if(uhcPlayer.getRole() instanceof NinjagoRole) {
                     NinjagoRole role = (NinjagoRole) uhcPlayer.getRole();
-                    if(role.getCamp() == CampEnum.MASTER.getCamp()) continue;
-                    uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage(goldenNinja.getName() + " est le ninja d'or !"));
+                    if(role.getStartCamp() != CampEnum.MASTER.getCamp()) {
+                        uhcPlayer.sendMessage(ChatUtils.LINE.prefix);
+                        uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage(goldenNinja.getName() + " est le ninja d'or !"));
+                        uhcPlayer.sendMessage(ChatUtils.LINE.prefix);
+                    }
+                    uhcPlayer.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Le ninja d'or a été annoncé"));
                 }
             }
         }

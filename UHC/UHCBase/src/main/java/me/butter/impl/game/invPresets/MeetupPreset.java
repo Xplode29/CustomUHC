@@ -1,4 +1,4 @@
-package me.butter.impl.game.presets;
+package me.butter.impl.game.invPresets;
 
 import me.butter.api.utils.ItemBuilder;
 import org.bukkit.Material;

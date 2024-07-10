@@ -1,6 +1,7 @@
 package me.butter.impl.listeners;
 
 
+import me.butter.api.UHCAPI;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
@@ -11,8 +12,16 @@ import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
+import org.bukkit.event.world.WorldInitEvent;
 
 public class WorldListener implements Listener {
+
+    @EventHandler
+    public void onWorldInit(WorldInitEvent event) {
+        if(event.getWorld().getName().equals("arena")) {
+            event.getWorld().getPopulators().add(UHCAPI.getInstance().getWorldHandler().getOrePopulator());
+        }
+    }
 
     @EventHandler
     public void onThunderChange(ThunderChangeEvent event) {

@@ -1,12 +1,12 @@
-package me.butter.ninjago.coloredNames;
+package me.butter.impl.menu.list.player.color;
 
+import me.butter.api.UHCAPI;
 import me.butter.api.menu.Button;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.BlockColor;
 import me.butter.api.utils.ItemBuilder;
 import me.butter.impl.menu.ButtonImpl;
 import me.butter.impl.menu.PaginatedMenu;
-import me.butter.ninjago.NinjagoV2;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
@@ -43,15 +43,11 @@ public class ChooseColorMenu extends PaginatedMenu {
 
                 @Override
                 public void onClick(UHCPlayer player, ClickType clickType) {
-                    NinjagoV2.getInstance().getNametagManager().setPlayerToTeam(
-                            getOpener().getPlayer(),
-                            NinjagoV2.getInstance().getNametagManager().getTeam(
-                                    getOpener().getPlayer(),
-                                    color
-                            ),
-                            selectedPlayer.getName()
+                    UHCAPI.getInstance().getNametagColorHandler().setPlayerToTeam(
+                            getOpener(),
+                            color,
+                            selectedPlayer
                     );
-                    closeMenu();
                 }
             });
         }

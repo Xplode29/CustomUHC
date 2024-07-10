@@ -2,22 +2,37 @@ package me.butter.ninjago.goldenWeapons.list;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.ItemBuilder;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.ninjago.goldenWeapons.AbstractGoldenWeapon;
 import me.butter.ninjago.roles.list.ninjas.Lloyd;
 import me.butter.ninjago.roles.list.ninjas.Zane;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 public class IceShuriken extends AbstractGoldenWeapon implements Listener {
 
     public IceShuriken() {
-        super("Shurikens de glace", Material.SNOW_BALL, 5 * 60);
+        super(
+                "Shurikens de glace",
+                new String[] {
+                        "Vous attribue 1 coeur supplémentaire",
+                        "(2 si vous êtes Zane ou Lloyd).",
+                        "Click droit : Vous infligez ",
+                        "Lenteur 1 au joueur touché",
+                        "par la boule de neige.",
+                        "Cooldown : 5 min"
+                },
+                Material.SNOW_BALL,
+                5 * 60
+        );
     }
 
     @Override
@@ -31,6 +46,13 @@ public class IceShuriken extends AbstractGoldenWeapon implements Listener {
 
         getHolder().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous utilisez les shurikens de glace !"));
         return true;
+    }
+
+    @Override
+    public ItemStack getItemStack() {
+        ItemStack shuriken = super.getItemStack();
+        shuriken.setAmount(2);
+        return shuriken;
     }
 
     @EventHandler

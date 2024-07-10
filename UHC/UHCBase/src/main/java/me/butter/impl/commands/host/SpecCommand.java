@@ -22,20 +22,20 @@ public class SpecCommand extends AbstractCommand {
     @Override
     public void onCommand(UHCPlayer sender, String command, String[] args) {
         if(args.length < 3) {
-            sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Usage : /h spec <joueur> <add|remove>"));
+            sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Usage : /h spec <add|remove> <joueur>"));
             return;
         }
 
-        UHCPlayer target = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(args[1]);
+        UHCPlayer target = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(args[2]);
 
         if(target == null) {
-            sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + args[1] + " n'existe pas !"));
+            sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + args[2] + " n'existe pas !"));
             return;
         }
 
-        if(args[2].equals("add")) {
+        if(args[1].equals("add")) {
             if(target.getPlayerState() == PlayerState.IN_SPEC) {
-                sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + args[1] + " est déja un spectateur !"));
+                sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + args[2] + " est déja un spectateur !"));
                 return;
             }
             target.setPlayerState(PlayerState.IN_SPEC);
@@ -43,14 +43,14 @@ public class SpecCommand extends AbstractCommand {
 
             Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(target.getName() + " est maintenant un spectateur."));
         }
-        else if (args[2].equals("remove")) {
+        else if (args[1].equals("remove")) {
             if(UHCAPI.getInstance().getGameHandler().getGameState() != GameState.LOBBY) {
                 sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Vous ne pouvez pas retirer un spectateur pendant la partie !"));
                 return;
             }
 
             if(target.getPlayerState() != PlayerState.IN_SPEC) {
-                sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + args[1] + " n'est pas un spectateur !"));
+                sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + args[2] + " n'est pas un spectateur !"));
                 return;
             }
 
@@ -60,17 +60,26 @@ public class SpecCommand extends AbstractCommand {
             Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(target.getName() + " n'est maintenant plus un spectateur."));
         }
         else {
-            sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Usage : /h cohost <joueur> <add|remove>"));
+            sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Usage : /h spec <add|remove> <joueur>"));
         }
     }
 
     @Override
     public List<String> onTabComplete(UHCPlayer sender, String command, String[] args) {
         if(args.length == 2) {
-            return UHCAPI.getInstance().getPlayerHandler().getPlayers().stream().map(UHCPlayer::getName).collect(Collectors.toList());
+            return Lists.newArrayList("add", "remove");
         }
         if(args.length == 3) {
-            return Lists.newArrayList("add", "remove");
+            if(args[1].equals("add")) {
+                return UHCAPI.getInstance().getPlayerHandler().getAllPlayers().stream()
+                        .filter(uhcPlayer -> uhcPlayer.getPlayerState() != PlayerState.IN_SPEC)
+                        .map(UHCPlayer::getName).collect(Collectors.toList());
+            }
+            if(args[1].equals("remove")) {
+                return UHCAPI.getInstance().getPlayerHandler().getAllPlayers().stream()
+                        .filter(uhcPlayer -> uhcPlayer.getPlayerState() == PlayerState.IN_SPEC)
+                        .map(UHCPlayer::getName).collect(Collectors.toList());
+            }
         }
         return new ArrayList<>();
     }

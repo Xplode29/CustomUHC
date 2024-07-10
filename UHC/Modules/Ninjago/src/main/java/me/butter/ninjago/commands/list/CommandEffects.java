@@ -4,8 +4,8 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatSnippets;
 import me.butter.impl.commands.AbstractCommand;
 
-public class ListEffectsCommand extends AbstractCommand {
-    public ListEffectsCommand() {
+public class CommandEffects extends AbstractCommand {
+    public CommandEffects() {
         super("effects");
     }
 

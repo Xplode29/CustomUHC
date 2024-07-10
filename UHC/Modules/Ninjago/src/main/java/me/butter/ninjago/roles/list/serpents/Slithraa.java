@@ -25,7 +25,7 @@ public class Slithraa extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "A l'annonce des roles, vous obtenez le pseudo de §1Skales§r.",
+                "A l'annonce des roles, vous obtenez le pseudo de §5Skales§r.",
                 "Lorsque vous effectuez un kill, vous obtenez §c3% de force§r supplémentaire",
                 "Si Skales meurt, vous obtenez §9Speed 1§r permanent."
         };
@@ -39,25 +39,11 @@ public class Slithraa extends NinjagoRole {
                 break;
             }
         }
-
-        if(skales != null) {
-            Bukkit.getScheduler().runTaskTimer(Ninjago.getInstance(), () -> {
-                if(skales == null) return;
-
-                if(skales.getPlayerState() != PlayerState.IN_GAME) {
-                    if(!hadEffects) {
-                        getUHCPlayer().addSpeed(20);
-                        getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu §9Speed 1§r suite a la mort de §1Skales§r."));
-                        hadEffects = true;
-                    }
-                }
-            }, 0, 20);
-        }
     }
 
     @Override
     public List<String> additionalDescription() {
-        return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(skales == null ? "Il n'y a pas de §1Skales§r dans cet partie" : "§1Skales§r:" + skales.getName()));
+        return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(skales == null ? "Il n'y a pas de §5Skales§r dans cet partie" : "§5Skales§r:" + skales.getName()));
     }
 
     @EventHandler
@@ -65,6 +51,12 @@ public class Slithraa extends NinjagoRole {
         if(event.getKiller() != null && event.getKiller().equals(getUHCPlayer())) {
             getUHCPlayer().addStrength(3);
             getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu §c3% de force§r."));
+        }
+
+        if(skales != null &&event.getVictim() == skales && !hadEffects) {
+            getUHCPlayer().addSpeed(20);
+            hadEffects = true;
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu §9Speed 1§r suite a la mort de §5Skales§r."));
         }
     }
 }

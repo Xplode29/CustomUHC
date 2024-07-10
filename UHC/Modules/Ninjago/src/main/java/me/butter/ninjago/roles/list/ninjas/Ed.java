@@ -23,7 +23,7 @@ public class Ed extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Vous apparaissez dans la liste de §1Pythor§r.",
+                "Vous apparaissez dans la liste de §5Pythor§r.",
                 "A l'annonce des roles, vous obtenez le pseudo de §aJay§r.",
                 "Vous obtenez §cForce 1§r à 15 blocks de celui-ci."
         };

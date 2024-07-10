@@ -38,7 +38,7 @@ public class Acidicus extends NinjagoRole {
     public String[] getDescription() {
         return new String[]{
                 "Vous n'êtes pas affecté par les §2effets négatifs§r (poison, faiblesse, lenteur, mining fatigue). ",
-                "Vous connaissez l'identité de §1Pythor§r"
+                "Vous connaissez l'identité de §5Pythor§r"
         };
     }
 

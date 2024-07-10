@@ -31,7 +31,7 @@ public class Bytar extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[]{
-                "A l'annonce des roles, vous obtenez le pseudo de §1Skalidor§r.",
+                "A l'annonce des roles, vous obtenez le pseudo de §5Skalidor§r.",
                 "Lorsque vous effectuez un kill, vous obtenez §73% de Résistance§r supplémentaires.",
                 "Au debut du jour, vous etes ralenti pendant 30 secondes."
         };

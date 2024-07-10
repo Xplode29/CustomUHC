@@ -107,7 +107,7 @@ public class Garmadon extends NinjagoRole {
                 if(player.getRole().getCamp().equals(CampEnum.NINJA.getCamp())) count++;
             }
 
-            if(count / total >= 0.5) {
+            if(count / total >= 0.75) {
                 lloyd.addSpeed(20);
                 lloyd.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous passez en duo avec Garmadon et vous gagnez §9Speed 1§r."));
                 lloyd.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Garmadon: " + getUHCPlayer().getName()));
@@ -164,8 +164,8 @@ public class Garmadon extends NinjagoRole {
                                         ChatUtils.LIST_ELEMENT.prefix + "Vous gagnez avec les §aNinjas§r",
                                         ChatUtils.LIST_ELEMENT.prefix + "Lorsque vous vous trouvez à 20 blocks de Lloyd,",
                                         "vous obtenez §7Resistance 1§r",
-                                        ChatUtils.LIST_ELEMENT.prefix + "Lorsque le nombre de ninjas en vie est trop important,",
-                                        "vous passez en duo avec Lloyd",
+                                        ChatUtils.LIST_ELEMENT.prefix + "Lorsque 75% des joueurs en vie",
+                                        "sont du camp des ninjas, vous passez en duo avec Lloyd.",
                                         "Vous obtiendrez alors tous les deux §9Speed 1§r permanent."
                                 )
                                 .build();

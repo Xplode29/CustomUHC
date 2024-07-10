@@ -53,7 +53,7 @@ public class PregenTask extends BukkitRunnable {
         }
 
         if(currentChunkLoad < totalChunkToLoad)
-            UHCAPI.getInstance().getPlayerHandler().getPlayers().forEach(p -> p.sendActionBar(
+            UHCAPI.getInstance().getPlayerHandler().getPlayersConnected().forEach(p -> p.sendActionBar(
                     "§8[§6§lPregen§8] §7Chargement des chunks : " + (int) ((currentChunkLoad / totalChunkToLoad) * 100) + "%"
             ));
     }

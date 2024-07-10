@@ -12,6 +12,14 @@ public class FireLessScenario extends AbstractScenario {
         super("FireLess", Material.LAVA_BUCKET);
     }
 
+    @Override
+    public String[] getDescription() {
+        return new String[] {
+                "Désactive les dégats ",
+                "issus du feu ou de la lave."
+        };
+    }
+
     @EventHandler
     public void onTakeDamage(EntityDamageEvent event) {
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
@@ -21,13 +29,5 @@ public class FireLessScenario extends AbstractScenario {
                 event.setCancelled(true);
             }
         }
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] {
-                "Désactive les dégats ",
-                "issus du feu ou de la lave."
-        };
     }
 }

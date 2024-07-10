@@ -17,14 +17,16 @@ public class GameScoreboard extends AbstractScoreboard {
         super(scoreboard, "§lUHC", Arrays.asList(
                 new DuplicateString("§7§m---------------------", 0).getString(),
                 ChatUtils.formatScoreboard("Host", UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() == null ? "Non défini" : UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().getName()),
-                ChatUtils.formatScoreboard("Joueurs", UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers()),
+                ChatUtils.formatScoreboard("Joueurs",
+                        (int) UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().stream().filter(u -> !u.isDisconnected()).count() + "/" +
+                                UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers()),
                 ChatUtils.formatScoreboard("Groupes", UHCAPI.getInstance().getGameHandler().getGameConfig().getGroupSize() + ""),
                 new DuplicateString("§7§m---------------------", 1).getString(),
                 ChatUtils.formatScoreboard("Episode", String.valueOf(UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisode())),
                 ChatUtils.formatScoreboard("Timer", GraphicUtils.convertToAccurateTime(UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer())),
                 ChatUtils.formatScoreboard("PVP", UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()),
                 new DuplicateString("§7§m---------------------", 2).getString(),
-                ChatUtils.formatScoreboard("Document", "/doc")
+                ChatUtils.formatScoreboard("Document", "/n doc")
         ));
     }
 
@@ -37,14 +39,16 @@ public class GameScoreboard extends AbstractScoreboard {
         setLines(Arrays.asList(
                 new DuplicateString("§7§m---------------------", 0).getString(),
                 ChatUtils.formatScoreboard("Host", UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() == null ? "Non défini" : UHCAPI.getInstance().getGameHandler().getGameConfig().getHost().getName()),
-                ChatUtils.formatScoreboard("Joueurs", UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers()),
+                ChatUtils.formatScoreboard("Joueurs",
+                        (int) UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().stream().filter(u -> !u.isDisconnected()).count() + "/" +
+                                UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers()),
                 ChatUtils.formatScoreboard("Groupes", UHCAPI.getInstance().getGameHandler().getGameConfig().getGroupSize() + ""),
                 new DuplicateString("§7§m---------------------", 1).getString(),
                 ChatUtils.formatScoreboard("Episode", String.valueOf(UHCAPI.getInstance().getGameHandler().getGameConfig().getEpisode())),
                 ChatUtils.formatScoreboard("Timer", GraphicUtils.convertToAccurateTime(UHCAPI.getInstance().getGameHandler().getGameConfig().getTimer())),
                 ChatUtils.formatScoreboard("PVP", UHCAPI.getInstance().getGameHandler().getGameConfig().isPVP()),
                 new DuplicateString("§7§m---------------------", 2).getString(),
-                ChatUtils.formatScoreboard("Document", "/doc")
+                ChatUtils.formatScoreboard("Document", "/n doc")
         ));
         super.update();
     }

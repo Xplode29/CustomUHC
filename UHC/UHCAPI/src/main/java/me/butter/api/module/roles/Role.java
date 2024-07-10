@@ -10,6 +10,7 @@ public interface Role {
     String getName(); String[] getDescription(); String getDoc();
 
     Camp getCamp(); void setCamp(Camp camp);
+    Camp getStartCamp(); void setStartCamp(Camp camp);
 
     List<String> additionalDescription();
 

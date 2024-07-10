@@ -1,15 +1,12 @@
-package me.butter.impl.commands;
+package me.butter.impl.commands.debug;
 
 import me.butter.api.UHCAPI;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.chat.ChatUtils;
-import me.butter.impl.commands.host.*;
-import me.butter.impl.item.list.MenuItem;
-import org.bukkit.Bukkit;
+import me.butter.impl.commands.AbstractCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.craftbukkit.libs.joptsimple.internal.Strings;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -18,31 +15,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HostCommands implements TabExecutor {
+public class DebugCommands implements TabExecutor {
 
     private final List<AbstractCommand> commands = new ArrayList<>();
 
-    public HostCommands() {
-        commands.add(new SaveInvCommand());
-        commands.add(new StartCommand());
-        commands.add(new StopCommand());
-
-        commands.add(new EffectCommand());
-        commands.add(new ConfigCommand());
-        commands.add(new SetGroupCommand());
-        commands.add(new ReviveCommand());
-        commands.add(new FinalHealCommand());
-
-        commands.add(new SayCommand());
-        commands.add(new ViewInvCommand());
-        commands.add(new SpecCommand());
-        commands.add(new FreezeCommand());
-        commands.add(new CoHostCommand());
-        commands.add(new ChatCommand());
-
+    public DebugCommands() {
         commands.add(new GiveRoleCommand());
         commands.add(new ResetPowersCommand());
         commands.add(new ForceTimerCommand());
+        commands.add(new ListPlayersCommand());
     }
 
     @Override
@@ -52,36 +33,8 @@ public class HostCommands implements TabExecutor {
         Player player = (Player) commandSender;
         if(sender == null) return true;
 
-        if(strings.length == 0) {
+        if(strings.length > 0) {
             if(player.isOp()) {
-                if(sender.equals(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost())) {
-                    player.sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + sender.getName() + " est déja le host de la partie !"));
-                    return true;
-                }
-
-                if(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost() != null) {
-                    UHCAPI.getInstance().getItemHandler().removeItemFromPlayer(MenuItem.class, UHCAPI.getInstance().getGameHandler().getGameConfig().getHost());
-                    UHCAPI.getInstance().getGameHandler().getGameConfig().removeCoHost(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost());
-
-                    UHCAPI.getInstance().getMenuHandler().closeMenu(UHCAPI.getInstance().getGameHandler().getGameConfig().getHost());
-                }
-
-                if(!UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts().contains(sender)) {
-                    UHCAPI.getInstance().getItemHandler().giveItemToPlayer(MenuItem.class, sender);
-                    UHCAPI.getInstance().getGameHandler().getGameConfig().addCoHost(sender);
-                }
-
-                UHCAPI.getInstance().getGameHandler().getGameConfig().setHost(sender);
-
-                Bukkit.broadcastMessage(ChatUtils.GLOBAL_INFO.getMessage(sender.getName() + " est maintenant le host de la partie."));
-                return true;
-            }
-        }
-        else {
-            if(
-                player.isOp() ||
-                UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts().contains(sender)
-            ) {
                 for(AbstractCommand command : commands) {
                     if(command.getArgument().equalsIgnoreCase(strings[0]) || Arrays.stream(command.getAliases()).anyMatch(alias -> alias.equalsIgnoreCase(strings[0]))) {
                         command.onCommand(sender, s, strings);
@@ -94,7 +47,6 @@ public class HostCommands implements TabExecutor {
                 return true;
             }
         }
-        sender.sendMessage(ChatUtils.ERROR.getMessage("Usage: /host <" + Strings.join(commands.stream().map(AbstractCommand::getArgument).collect(Collectors.toList()), " | ") + ">"));
         return true;
     }
 

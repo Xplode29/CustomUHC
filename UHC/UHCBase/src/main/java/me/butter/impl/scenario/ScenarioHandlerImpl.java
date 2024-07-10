@@ -15,12 +15,13 @@ public class ScenarioHandlerImpl implements ScenarioHandler {
     public ScenarioHandlerImpl() {
         scenarios = new ArrayList<>();
 
+        scenarios.add(new BetaZombiesScenario());
         scenarios.add(new CutCleanScenario());
-        scenarios.add(new HasteyBoysScenario());
-        scenarios.add(new TimberPvpScenario());
-        scenarios.add(new SafeOresScenario());
-        scenarios.add(new SafeMinerScenario());
         scenarios.add(new FireLessScenario());
+        scenarios.add(new HasteyBoysScenario());
+        scenarios.add(new SafeMinerScenario());
+        scenarios.add(new SafeOresScenario());
+        scenarios.add(new TimberPvpScenario());
     }
 
     @Override

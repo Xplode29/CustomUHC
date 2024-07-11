@@ -51,7 +51,7 @@ public class ColorCommand extends AbstractCommand {
     @Override
     public List<String> onTabComplete(UHCPlayer sender, String command, String[] args) {
         if(args.length == 2) {
-            return UHCAPI.getInstance().getPlayerHandler().getPlayersConnected().stream().map(UHCPlayer::getName).collect(Collectors.toList());
+            return UHCAPI.getInstance().getPlayerHandler().getAllPlayers().stream().map(UHCPlayer::getName).collect(Collectors.toList());
         }
         if(args.length == 3) {
             return new ArrayList<>(UHCAPI.getInstance().getNametagColorHandler().getAvaliableColors().keySet());

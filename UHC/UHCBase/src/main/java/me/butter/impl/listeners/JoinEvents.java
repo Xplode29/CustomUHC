@@ -134,8 +134,8 @@ public class JoinEvents implements Listener {
         event.setJoinMessage(null);
         Bukkit.broadcastMessage(ChatUtils.JOINED.getMessage(
                 player.getDisplayName() + " [" +
-                (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
-                UHCAPI.getInstance().getPlayerHandler().getPlayers().size() + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.DARK_GRAY + "] "
+                (UHCAPI.getInstance().getPlayerHandler().getAllPlayers().size() > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
+                UHCAPI.getInstance().getPlayerHandler().getAllPlayers().size() + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.DARK_GRAY + "] "
         ));
     }
 
@@ -160,8 +160,8 @@ public class JoinEvents implements Listener {
         event.setQuitMessage(null);
         Bukkit.broadcastMessage(ChatUtils.LEFT.getMessage(
                 player.getDisplayName() + " [" +
-                        ((UHCAPI.getInstance().getPlayerHandler().getPlayers().size() - 1) > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
-                        (UHCAPI.getInstance().getPlayerHandler().getPlayers().size() - 1) + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.DARK_GRAY + "] "
+                        ((UHCAPI.getInstance().getPlayerHandler().getAllPlayers().size() - 1) > UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() ? ChatColor.RED : ChatColor.GREEN) +
+                        (UHCAPI.getInstance().getPlayerHandler().getAllPlayers().size() - 1) + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers() + ChatColor.DARK_GRAY + "] "
         ));
 
         if(uhcPlayer.getPlayerState() == PlayerState.IN_LOBBY || uhcPlayer.getPlayerState() == PlayerState.IN_SPEC) UHCAPI.getInstance().getPlayerHandler().removePlayer(uhcPlayer);

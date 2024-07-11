@@ -20,17 +20,24 @@ public class CommandsRemover {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+        List<String> list = getStrings(knownCommands);
+
+        for (String s : list) {
+            knownCommands.remove(s);
+        }
+    }
+
+    private static List<String> getStrings(Map<String, Command> knownCommands) {
         List<String> list = Lists.newArrayList();
         for (Map.Entry<String, Command> entry : knownCommands.entrySet()) {
             if (entry.getKey().equalsIgnoreCase("me")) list.add(entry.getKey());
             if (entry.getKey().equalsIgnoreCase("say")) list.add(entry.getKey());
             if (entry.getKey().startsWith("minecraft:")) list.add(entry.getKey());
             if (entry.getKey().startsWith("worldedit:")) list.add(entry.getKey());
+            if (entry.getKey().startsWith("ninjago:")) list.add(entry.getKey());
+            if (entry.getKey().startsWith("uhcbase:")) list.add(entry.getKey());
         }
-
-        for (String s : list) {
-            knownCommands.remove(s);
-        }
+        return list;
     }
 
     public static CommandMap getCommandMaps() {

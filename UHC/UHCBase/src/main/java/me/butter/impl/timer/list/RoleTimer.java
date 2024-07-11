@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class RoleTimer extends AbstractTimer {
 
@@ -39,7 +40,8 @@ public class RoleTimer extends AbstractTimer {
         List<RoleType> roleComposition = UHCAPI.getInstance().getModuleHandler().getModule().getRoleComposition();
         Collections.shuffle(roleComposition, new Random(new Random().nextLong()));
 
-        List<UHCPlayer> players = new ArrayList<>(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame());
+        List<UHCPlayer> players = UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().stream().filter(player -> !player.isDisconnected()).collect(Collectors.toList());
+
         if(players.isEmpty()) {
             Bukkit.broadcastMessage(ChatUtils.ERROR.getMessage("Il n'y a pas assez de joueurs !"));
             return false;

@@ -19,7 +19,7 @@ public class LobbyScoreboard extends AbstractScoreboard {
                 ChatUtils.formatScoreboard("Joueurs", UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby().size() + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers()),
                 ChatUtils.formatScoreboard("Status", UHCAPI.getInstance().getGameHandler().getGameState().getName()),
                 new DuplicateString("§7§m---------------------", 1).getString(),
-                ChatUtils.formatScoreboard("Document", "/doc")
+                ChatUtils.formatScoreboard("Document", "/n doc")
         ));
     }
 
@@ -35,7 +35,7 @@ public class LobbyScoreboard extends AbstractScoreboard {
                 ChatUtils.formatScoreboard("Joueurs", UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby().size() + "/" + UHCAPI.getInstance().getGameHandler().getGameConfig().getMaxPlayers()),
                 ChatUtils.formatScoreboard("Status", UHCAPI.getInstance().getGameHandler().getGameState().getName()),
                 new DuplicateString("§7§m---------------------", 1).getString(),
-                ChatUtils.formatScoreboard("Document", "/doc")
+                ChatUtils.formatScoreboard("Document", "/n doc")
         ));
         super.update();
     }

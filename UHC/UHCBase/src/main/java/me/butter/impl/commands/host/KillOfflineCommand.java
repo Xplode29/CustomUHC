@@ -38,7 +38,8 @@ public class KillOfflineCommand extends AbstractCommand {
 
     @Override
     public List<String> onTabComplete(UHCPlayer sender, String command, String[] args) {
-        return UHCAPI.getInstance().getPlayerHandler().getPlayersDisconnected().stream()
+        return UHCAPI.getInstance().getPlayerHandler().getAllPlayers().stream()
+                .filter(UHCPlayer::isDisconnected)
                 .map(UHCPlayer::getName).collect(Collectors.toList());
     }
 }

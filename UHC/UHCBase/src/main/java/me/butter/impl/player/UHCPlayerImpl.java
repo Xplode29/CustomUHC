@@ -286,7 +286,7 @@ public class UHCPlayerImpl implements UHCPlayer {
                 uhcPlayer.getPlayer().showPlayer(getPlayer());
             }
 
-            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
+            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getAllPlayers()) {
                 if(uhcPlayer.getPlayer() == null || uhcPlayer.getPlayerState() == PlayerState.IN_GAME) continue;
                 getPlayer().hidePlayer(uhcPlayer.getPlayer());
             }

@@ -76,7 +76,7 @@ public class GoldenWeaponsScenario extends AbstractScenario {
                 return;
             }
 
-            int maxRadius = Math.min((int) (UHCAPI.getInstance().getWorldHandler().getWorld().getWorldBorder().getSize() / 2) - 10, 450);
+            int maxRadius = Math.min((int) (UHCAPI.getInstance().getWorldHandler().getWorld().getWorldBorder().getSize() / 2) - 10, 400);
             int minRadius = maxRadius > 250 ? 250 : 0;
 
             int radius = new Random().nextInt(maxRadius - minRadius) + minRadius;

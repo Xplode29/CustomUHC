@@ -48,7 +48,7 @@ public class NametagColorHandlerImpl implements NametagColorHandler {
 
         Scoreboard scoreboard = player.getScoreboard();
 
-        String teamName = color.name() + (visible ? "_visible" : "_invisible");
+        String teamName = color.name() + (visible ? "_v" : "_i");
 
         for(Team team : scoreboard.getTeams()) {
             if (team.getName().equals(teamName)) {
@@ -81,7 +81,7 @@ public class NametagColorHandlerImpl implements NametagColorHandler {
 
     @Override
     public void updatePlayerColor(UHCPlayer target) {
-        for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
+        for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getAllPlayers()) {
             if(player.getColoredNametags().containsKey(target)) {
                 setPlayerToTeam(player, player.getColoredNametags().get(target), target);
             }

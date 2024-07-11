@@ -64,6 +64,9 @@ public class TeleportingTask extends BukkitRunnable {
                 @Override
                 public void run() {
                     setPlayerInGame(uhcPlayer);
+
+                    uhcPlayer.addPotionEffect(PotionEffectType.BLINDNESS, -1, 10);
+                    Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> uhcPlayer.removeSpeed(100), 20);
                 }
             }.runTaskLater(UHCAPI.getInstance(), 5);
         }
@@ -72,20 +75,17 @@ public class TeleportingTask extends BukkitRunnable {
         }
 
         playerTeleported += 1;
-        UHCAPI.getInstance().getPlayerHandler().getPlayers().forEach(uhcPlayer1 -> uhcPlayer1.sendActionBar(
+        UHCAPI.getInstance().getPlayerHandler().getAllPlayers().forEach(uhcPlayer1 -> uhcPlayer1.sendActionBar(
                 "Téléportation de " + uhcPlayer.getName() + " (" + playerTeleported + "/" + UHCAPI.getInstance().getPlayerHandler().getPlayersInLobby().size() + ")"
         ));
-        UHCAPI.getInstance().getPlayerHandler().getPlayers().forEach(uhcPlayer1 -> uhcPlayer1.getPlayer().playSound(uhcPlayer1.getLocation(), Sound.NOTE_STICKS, 6.0F, 1.0F));
+        UHCAPI.getInstance().getPlayerHandler().getAllPlayers().forEach(uhcPlayer1 -> uhcPlayer1.getPlayer().playSound(uhcPlayer1.getLocation(), Sound.NOTE_STICKS, 6.0F, 1.0F));
 
         this.players.remove(0);
     }
 
-    private void setPlayerInGame(UHCPlayer uhcPlayer) {
+    public static void setPlayerInGame(UHCPlayer uhcPlayer) {
         uhcPlayer.clearEffects();
         uhcPlayer.getPlayer().setGameMode(GameMode.SURVIVAL);
-
-        uhcPlayer.addPotionEffect(PotionEffectType.BLINDNESS, -1, 10);
-        Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> uhcPlayer.removeSpeed(100), 20);
 
         uhcPlayer.clearInventory();
         uhcPlayer.clearStash();

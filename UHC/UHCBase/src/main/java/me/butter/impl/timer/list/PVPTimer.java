@@ -33,7 +33,7 @@ public class PVPTimer extends AbstractTimer {
         }
 
         if ((getMaxTimer() - 60) - timer == 0) {
-            for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
+            for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getAllPlayers()) {
                 if(player.getPlayer() == null) continue;
                 player.getPlayer().setHealth(player.getPlayer().getMaxHealth());
             }

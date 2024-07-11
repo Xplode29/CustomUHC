@@ -223,6 +223,8 @@ public class Morro extends NinjagoRole {
                     u.getPlayer().showPlayer(player.getPlayer());
                 }
 
+                player.removePotionEffect(PotionEffectType.INVISIBILITY);
+
                 player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous êtes maintenant visible"));
                 return true;
             }
@@ -244,6 +246,8 @@ public class Morro extends NinjagoRole {
                     );
                     ((CraftPlayer) u.getPlayer()).getHandle().playerConnection.sendPacket(info);
                 }
+
+                player.addPotionEffect(PotionEffectType.INVISIBILITY, -1, 1);
 
                 player.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous êtes maintenant invisible"));
                 return false;

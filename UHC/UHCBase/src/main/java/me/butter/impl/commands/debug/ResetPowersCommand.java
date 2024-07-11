@@ -41,7 +41,7 @@ public class ResetPowersCommand extends AbstractCommand {
 
     @Override
     public List<String> onTabComplete(UHCPlayer sender, String command, String[] args) {
-        return UHCAPI.getInstance().getPlayerHandler().getPlayersConnected().stream()
+        return UHCAPI.getInstance().getPlayerHandler().getAllPlayers().stream()
                 .filter(player -> player.getPlayer() != null)
                 .map(UHCPlayer::getName).collect(Collectors.toList());
     }

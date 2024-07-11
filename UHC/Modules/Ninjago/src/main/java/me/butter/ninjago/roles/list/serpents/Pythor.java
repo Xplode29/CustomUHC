@@ -1,5 +1,7 @@
 package me.butter.ninjago.roles.list.serpents;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;
 import me.butter.api.module.power.RightClickItemPower;
@@ -121,7 +123,7 @@ public class Pythor extends NinjagoRole {
             player.addResi(20);
             player.removeSpeed(20);
 
-            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
+            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getAllPlayers()) {
                 uhcPlayer.sendMessage(ChatUtils.GLOBAL_INFO.getMessage("Le Grand devoreur a ete invoque !"));
                 if(uhcPlayer.getPlayer() != null)
                     uhcPlayer.getPlayer().playSound(uhcPlayer.getLocation(), Sound.ENDERDRAGON_GROWL, 3.0F, 1.0F);

@@ -43,6 +43,7 @@ public class HostCommands implements TabExecutor {
         commands.add(new CoHostCommand());
         commands.add(new ChatCommand());
         commands.add(new KillOfflineCommand());
+        commands.add(new LateCommand());
     }
 
     @Override

@@ -18,7 +18,7 @@ public class PlayerHandlerImpl implements PlayerHandler {
     }
 
     @Override
-    public List<UHCPlayer> getPlayers() {
+    public List<UHCPlayer> getAllPlayers() {
         return uhcPlayers;
     }
 

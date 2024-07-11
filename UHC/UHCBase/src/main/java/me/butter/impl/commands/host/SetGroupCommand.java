@@ -32,7 +32,7 @@ public class SetGroupCommand extends AbstractCommand {
 
         UHCAPI.getInstance().getGameHandler().getGameConfig().setGroupSize(amount);
 
-        for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getPlayersConnected()) {
+        for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getAllPlayers()) {
             player.sendTitle("Groupe de " + amount, ChatColor.AQUA);
         }
     }
@@ -40,7 +40,7 @@ public class SetGroupCommand extends AbstractCommand {
     @Override
     public List<String> onTabComplete(UHCPlayer sender, String command, String[] args) {
         if(args.length == 2) {
-            return UHCAPI.getInstance().getPlayerHandler().getPlayersConnected().stream().map(UHCPlayer::getName).collect(Collectors.toList());
+            return UHCAPI.getInstance().getPlayerHandler().getAllPlayers().stream().map(UHCPlayer::getName).collect(Collectors.toList());
         }
         if(args.length == 3) {
             return Lists.newArrayList("add", "remove");

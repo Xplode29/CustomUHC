@@ -42,7 +42,7 @@ public class ParticleEffects {
 
                     new ParticleBuilder(EnumParticle.REDSTONE)
                             .setPlayers(
-                                    UHCAPI.getInstance().getPlayerHandler().getPlayersConnected().stream()
+                                    UHCAPI.getInstance().getPlayerHandler().getAllPlayers().stream()
                                     .filter(uhcPlayer -> uhcPlayer.getPlayer() != null && uhcPlayer.getLocation().getWorld().equals(loc.getWorld()) && uhcPlayer.getLocation().distance(loc) < 50.0)
                                     .collect(Collectors.toList())
                             )

@@ -6,19 +6,25 @@ import me.butter.api.module.roles.Role;
 import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.GraphicUtils;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.CampEnum;
 import me.butter.ninjago.roles.NinjagoRole;
 import me.butter.ninjago.roles.list.ninjas.Lloyd;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Skales extends NinjagoRole {
 
     private UHCPlayer pythor;
+    private final List<String> list = new ArrayList<>();
+
+    private boolean pythorDead = false;
 
     private static int timeToInfect = 7 * 60;
 
@@ -30,13 +36,20 @@ public class Skales extends NinjagoRole {
     public String[] getDescription() {
         return new String[]{
                 "Vous possédez §cForce 1§r la nuit. ",
-                "A l'annonce des roles, vous obtenez le pseudo de §5Pythor§r."
+                "A l'annonce des roles, vous obtenez le pseudo de §5Pythor§r.",
+                "Lorsqu'il meurt, vous obtenez une liste contenant : §5Skales§r, §5Acidicus§r, §5Skalidor§r, §5Fangtom§r, §5Fangdam§r, §5Arcturus§r et §aEd§r.",
+                "Attention, §aEd§r ne gagne pas avec les serpents."
         };
     }
 
     @Override
     public List<String> additionalDescription() {
-        return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(pythor == null ? "Pas de Pythor" : "Pythor: " + pythor.getName()));
+        if(pythorDead) {
+            return Collections.singletonList("Liste des serpents (Le role §aEd§r fire dans la liste !) : \n" + String.join(", ", list));
+        }
+        else {
+            return Collections.singletonList(ChatUtils.PLAYER_INFO.getMessage(pythor == null ? "Pas de Pythor" : "Pythor: " + pythor.getName()));
+        }
     }
 
     @Override
@@ -52,6 +65,11 @@ public class Skales extends NinjagoRole {
             if(role instanceof Pythor && role.getUHCPlayer() != null) {
                 pythor = role.getUHCPlayer();
                 break;
+            }
+            if (role instanceof NinjagoRole && role.getUHCPlayer() != null) {
+                if(((NinjagoRole) role).isInList()) {
+                    list.add(role.getUHCPlayer().getName());
+                }
             }
         }
     }
@@ -69,6 +87,15 @@ public class Skales extends NinjagoRole {
     @Override
     public void onNight() {
         getUHCPlayer().addStrength(15);
+    }
+
+    @EventHandler
+    public void onPlayerDie(UHCPlayerDeathEvent event) {
+        if(event.getVictim() == pythor) {
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("§5Pythor§r est mort."));
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Liste des serpents (Le role §aEd§r fire dans la liste !) : \n" + String.join(", ", list)));
+            pythorDead = true;
+        }
     }
 
     public static class InfectPower extends TargetCommandPower {

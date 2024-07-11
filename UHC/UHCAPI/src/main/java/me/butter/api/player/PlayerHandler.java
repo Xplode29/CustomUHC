@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface PlayerHandler {
 
-    List<UHCPlayer> getPlayers();
+    List<UHCPlayer> getAllPlayers();
 
     UHCPlayer getUHCPlayer(String name); UHCPlayer getUHCPlayer(UUID uuid); UHCPlayer getUHCPlayer(Player player);
 

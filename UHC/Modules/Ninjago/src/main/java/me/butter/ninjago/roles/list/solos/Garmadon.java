@@ -33,12 +33,16 @@ import java.util.Map;
 
 public class Garmadon extends NinjagoRole {
     boolean pacted = false;
+
     boolean solo = false;
+
+    boolean nextToLloyd = false;
+    boolean isDuo = false;
 
     UHCPlayer lloyd, wu;
 
     public Garmadon() {
-        super("Garmadon", "/roles/hybrides/garmadon");
+        super("Garmadon", "/roles/solitaires-3/garmadon");
         addPower(new PactePower());
     }
 
@@ -87,6 +91,8 @@ public class Garmadon extends NinjagoRole {
             }
 
             if(event.getVictim().equals(wu)) {
+                getUHCPlayer().addSpeed(20);
+
                 Wu.StickPower stickPower = new Wu.StickPower();
                 addPower(stickPower);
                 getUHCPlayer().giveItem(stickPower.getItem(), true);
@@ -95,7 +101,7 @@ public class Garmadon extends NinjagoRole {
                 addPower(spinjitzuPower);
                 getUHCPlayer().giveItem(spinjitzuPower.getItem(), true);
 
-                getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Wu. Vous obtenez le Baton de Wu et le Spinjitzu."));
+                getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Wu. Vous obtenez le Baton de Wu, §9Speed 1§r et le Spinjitzu."));
             }
         }
         else if(lloyd != null && getUHCPlayer().getPlayerState() == PlayerState.IN_GAME && lloyd.getPlayerState() == PlayerState.IN_GAME) {
@@ -107,13 +113,22 @@ public class Garmadon extends NinjagoRole {
                 if(player.getRole().getCamp().equals(CampEnum.NINJA.getCamp())) count++;
             }
 
-            if(count / total >= 0.75) {
+            if(count / total >= 0.75 && !isDuo) {
                 lloyd.addSpeed(20);
+                getUHCPlayer().addSpeed(20);
+
+                setCamp(CampEnum.DUO_LLOYD_GARMADON.getCamp());
+                lloyd.getRole().setCamp(CampEnum.DUO_LLOYD_GARMADON.getCamp());
+
+                isDuo = true;
+
+                if(nextToLloyd) {
+                    lloyd.addResi(20);
+                }
+
                 lloyd.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous passez en duo avec Garmadon et vous gagnez §9Speed 1§r."));
                 lloyd.sendMessage(ChatUtils.PLAYER_INFO.getMessage("Garmadon: " + getUHCPlayer().getName()));
 
-                setCamp(CampEnum.SOLO.getCamp());
-                getUHCPlayer().addSpeed(20);
                 getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous passez en duo avec Lloyd et vous gagnez §9Speed 1§r."));
             }
         }
@@ -166,7 +181,8 @@ public class Garmadon extends NinjagoRole {
                                         "vous obtenez §7Resistance 1§r",
                                         ChatUtils.LIST_ELEMENT.prefix + "Lorsque 75% des joueurs en vie",
                                         "sont du camp des ninjas, vous passez en duo avec Lloyd.",
-                                        "Vous obtiendrez alors tous les deux §9Speed 1§r permanent."
+                                        "Vous obtiendrez alors tous les deux §9Speed 1§r permanent, ",
+                                        "Et Lloyd obtient §7Résistance 1§r à coté de vous."
                                 )
                                 .build();
                     }
@@ -195,9 +211,9 @@ public class Garmadon extends NinjagoRole {
                                         ChatUtils.LIST_ELEMENT.prefix + "Lorsque vous tuez Lloyd,",
                                         "Vous obtenez §7Resistance 1§r permanent",
                                         ChatUtils.LIST_ELEMENT.prefix + "Vous obtenez le pseudo de Wu.",
-                                        "Lorsque vous le tuez, vous obtenez son Baton et",
-                                        "le Spinjitzu qui vous octroit §9Speed 1§r",
-                                        "pendant 1 minute a son activation."
+                                        "Lorsque vous le tuez, vous obtenez son Baton, §9Speed 1§r et",
+                                        "le Spinjitzu qui vous octroit §9Speed 2§r",
+                                        "pendant 2 minute a son activation."
                                 )
                                 .build();
                     }
@@ -222,7 +238,6 @@ public class Garmadon extends NinjagoRole {
         private class LloydRunnable extends BukkitRunnable {
 
             UHCPlayer garmadon;
-            boolean nextToLloyd = false;
 
             public LloydRunnable(UHCPlayer garmadon) {
                 this.garmadon = garmadon;
@@ -247,12 +262,12 @@ public class Garmadon extends NinjagoRole {
 
                 if(garmadon.isNextTo(lloyd, 20) && !nextToLloyd) {
                     garmadon.addResi(20);
-                    lloyd.addResi(20);
+                    if(isDuo) lloyd.addResi(20);
                     nextToLloyd = true;
                 }
                 else if(!garmadon.isNextTo(lloyd, 20) && nextToLloyd) {
                     garmadon.removeResi(20);
-                    lloyd.removeResi(20);
+                    if(isDuo) lloyd.removeResi(20);
                     nextToLloyd = false;
                 }
             }
@@ -269,7 +284,7 @@ public class Garmadon extends NinjagoRole {
         public String[] getDescription() {
             return new String[] {
                     "À l'activation, repousse tous les joueurs dans un rayon de 10 blocks.",
-                    "vous obtenez Speed 1 pendant 1 minute."
+                    "vous obtenez Speed 2 pendant 2 minute."
             };
         }
 
@@ -291,8 +306,8 @@ public class Garmadon extends NinjagoRole {
                 }
             }
 
-            player.addSpeed(10);
-            Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> player.removeSpeed(10), 2 * 60 * 20);
+            player.addSpeed(20);
+            Bukkit.getScheduler().runTaskLater(Ninjago.getInstance(), () -> player.removeSpeed(20), 2 * 60 * 20);
 
             ParticleEffects.tornadoEffect(player.getPlayer(), Color.PURPLE);
             return true;

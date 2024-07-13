@@ -33,7 +33,7 @@ public class Morro extends NinjagoRole {
     private final GhostPower ghostPower;
 
     public Morro() {
-        super("Morro", "/roles/solitaires/morro");
+        super("Morro", "/roles/solitaires-3/morro");
         addPower(ghostPower = new GhostPower());
 
         ninjasTimers = new HashMap<>();
@@ -42,7 +42,7 @@ public class Morro extends NinjagoRole {
     @Override
     public String[] getDescription() {
         return new String[] {
-                "Vous possédez §cForce 1§r ainsi que §l2 coeurs§r supplémentaires permanents.",
+                "Vous possédez §cForce 1§r, §9Speed 1§r ainsi que §l2 coeurs§r supplémentaires permanents.",
                 "Vous connaissez l'identité de §aWu§r. ",
                 "Lorsque vous restez 10 minutes à coté d'un ninja, vous êtes informé de son pseudo. ",
                 "Vous obtenez des effets selon les ninjas tués :",
@@ -66,6 +66,7 @@ public class Morro extends NinjagoRole {
     @Override
     public void onGiveRole() {
         getUHCPlayer().addStrength(15);
+        getUHCPlayer().addSpeed(20);
         getUHCPlayer().addMaxHealth(4);
 
         new BukkitRunnable() {
@@ -125,8 +126,8 @@ public class Morro extends NinjagoRole {
 
         Role role = event.getVictim().getRole();
         if(role instanceof Jay) {
-            getUHCPlayer().addSpeed(40);
-            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu 40% de speed"));
+            getUHCPlayer().addSpeed(20);
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu Speed 2"));
         }
         if(role instanceof Kai) {
             Kai.FlameBow bow = new Kai.FlameBow();

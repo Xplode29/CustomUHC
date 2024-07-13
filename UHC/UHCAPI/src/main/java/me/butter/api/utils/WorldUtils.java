@@ -8,6 +8,22 @@ import java.util.List;
 
 public class WorldUtils {
 
+    public static boolean isInCube(Location location, Location start, int width, int height, int depth) {
+        if(location.getBlockX() >= start.getBlockX() && location.getBlockX() <= start.getBlockX() + width) {
+            if(location.getBlockY() >= start.getBlockY() && location.getBlockY() <= start.getBlockY() + height) {
+                if(location.getBlockZ() >= start.getBlockZ() && location.getBlockZ() <= start.getBlockZ() + depth) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isInSphere(Location location, Location center, int radius) {
+        return location.distanceSquared(center) <= radius * radius;
+    }
+
     public static List<Block> getCube(Location start, int width, int height, int depth, boolean filled) {
         List<Block> blocks = new ArrayList<>();
 

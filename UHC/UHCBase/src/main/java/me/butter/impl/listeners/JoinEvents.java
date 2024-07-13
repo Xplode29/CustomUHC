@@ -29,18 +29,20 @@ public class JoinEvents implements Listener {
 
     private boolean generate;
     public static Location spawnLocation;
+    public static Location spawnArena;
+    public static int spawnSize = 40, spawnHeight = 10;
 
     public JoinEvents() {
         this.generate = false;
         spawnLocation = new Location(Bukkit.getWorld("world"), 0.0D, 202, 0.0D);
+        spawnArena = new Location(Bukkit.getWorld("world"), 100.0D, 202, 100.0D);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         if (!generate) {
             //Build the spawn
-            int spawnSize = 40, spawnHeight = 10;
-            List<Block> cube = WorldUtils.getCube(
+            List<Block> spawn = WorldUtils.getCube(
                     spawnLocation.clone().subtract((double) spawnSize / 2, 2, (double) spawnSize / 2),
                     spawnSize,
                     spawnHeight,
@@ -48,8 +50,21 @@ public class JoinEvents implements Listener {
                     false
             );
 
-            for(Block block : cube) {
+            for(Block block : spawn) {
                 block.setType(Material.BARRIER);
+            }
+
+            //build the arena
+            List<Block> arena = WorldUtils.getCube(
+                    spawnArena.clone().subtract((double) spawnSize / 2, 2, (double) spawnSize / 2),
+                    spawnSize,
+                    spawnHeight,
+                    spawnSize,
+                    false
+            );
+
+            for(Block block : arena) {
+                block.setType(Material.OBSIDIAN);
             }
 
             generate = true;

@@ -9,12 +9,16 @@ import net.minecraft.server.v1_8_R3.EntityPotion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.entity.Monster;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerAchievementAwardedEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+
+import java.util.Random;
 
 public class OtherEvents implements Listener {
 
@@ -25,6 +29,17 @@ public class OtherEvents implements Listener {
 
         if(!player.isAbleToMove() && (event.getTo().getX() != event.getFrom().getX() || event.getTo().getZ() != event.getFrom().getZ())) {
             event.setTo(event.getFrom());
+        }
+    }
+
+    @EventHandler
+    public void onMobSpawn(CreatureSpawnEvent event) {
+        if(
+            event.getEntity() instanceof Monster &&
+            event.getEntity().getLocation().getY() > 70 &&
+            event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL
+        ) {
+            event.setCancelled(true);
         }
     }
 

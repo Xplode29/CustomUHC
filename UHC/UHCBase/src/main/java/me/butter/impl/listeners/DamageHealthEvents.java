@@ -7,10 +7,13 @@ import me.butter.api.module.power.ItemPower;
 import me.butter.api.module.power.Power;
 import me.butter.api.player.PlayerState;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.WorldUtils;
 import me.butter.api.utils.chat.ChatSnippets;
 import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
+import me.butter.impl.scoreboard.list.LobbyScoreboard;
+import me.butter.impl.tab.list.MainTab;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Enderman;
@@ -38,10 +41,20 @@ public class DamageHealthEvents implements Listener {
             return;
         }
 
-        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY ||
-            UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
+        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
             UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING) {
             event.setCancelled(true);
+        }
+        else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY) {
+            if(WorldUtils.isInCube(
+                    player.getLocation(),
+                    JoinEvents.spawnLocation.clone().subtract((double) JoinEvents.spawnSize / 2, 2, (double) JoinEvents.spawnSize / 2),
+                    JoinEvents.spawnSize,
+                    JoinEvents.spawnHeight,
+                    JoinEvents.spawnSize
+            )) {
+                event.setCancelled(true);
+            }
         }
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
             if (UHCAPI.getInstance().getGameHandler().getGameConfig().isInvincibility()) {
@@ -253,8 +266,22 @@ public class DamageHealthEvents implements Listener {
 
     @EventHandler
     public void onPlayerDie(UHCPlayerDeathEvent event) {
-        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY ||
-                UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
+        if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY) {
+            event.getVictim().resetPlayer();
+            event.getVictim().setPlayerState(PlayerState.IN_LOBBY);
+
+            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
+                UHCAPI.getInstance().getItemHandler().giveLobbyItems(event.getVictim());
+
+                UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, event.getVictim());
+                UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, event.getVictim());
+
+                event.getVictim().getPlayer().teleport(JoinEvents.spawnLocation);
+            }, 10);
+            
+            event.setCancelled(true);
+        }
+        else if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
                 UHCAPI.getInstance().getGameHandler().getGameState() == GameState.STARTING) {
             event.setCancelled(true);
         }

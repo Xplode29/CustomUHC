@@ -4,8 +4,6 @@ import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
 import me.butter.api.module.Module;
 import me.butter.api.module.roles.Role;
-import me.butter.api.player.PlayerState;
-import me.butter.api.player.UHCPlayer;
 import me.butter.api.scenario.Scenario;
 import me.butter.api.timer.Timer;
 import me.butter.impl.UHCBase;

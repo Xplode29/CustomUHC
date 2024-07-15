@@ -21,7 +21,7 @@ import me.butter.api.tab.TabHandler;
 import me.butter.api.timer.TimerHandler;
 import me.butter.api.world.WorldHandler;
 import me.butter.impl.clickablechat.ClickableChatHandlerImpl;
-import me.butter.impl.commands.*;
+import me.butter.impl.commands.CommandsRemover;
 import me.butter.impl.commands.debug.DebugCommands;
 import me.butter.impl.commands.host.HostCommands;
 import me.butter.impl.customEntities.CustomEntitiesHandlerImpl;

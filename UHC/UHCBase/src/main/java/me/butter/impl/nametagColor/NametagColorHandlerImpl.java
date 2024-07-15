@@ -3,7 +3,8 @@ package me.butter.impl.nametagColor;
 import me.butter.api.UHCAPI;
 import me.butter.api.nametagColor.NametagColorHandler;
 import me.butter.api.player.UHCPlayer;
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
+import net.minecraft.server.v1_8_R3.ScoreboardTeam;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -11,7 +12,9 @@ import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NametagColorHandlerImpl implements NametagColorHandler {
 

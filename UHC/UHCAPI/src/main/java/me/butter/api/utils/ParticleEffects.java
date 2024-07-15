@@ -32,6 +32,12 @@ public class ParticleEffects {
 
             public void run() {
                 for(int i = 0; i < 32; i++) {
+                    if(height >= 2.0) {
+                        cancel();
+                    }
+                    //disable particles
+                    cancel();
+
                     double alpha = i * (Math.PI / 16);
 
                     Location loc = player.getLocation().add(
@@ -51,10 +57,6 @@ public class ParticleEffects {
                             .build();
                 }
                 height += 0.2;
-
-                if(height >= 2.0) {
-                    cancel();
-                }
             }
         }.runTaskTimer(UHCAPI.getInstance(), 0, 1);
     }

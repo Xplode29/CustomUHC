@@ -4,7 +4,6 @@ import me.butter.api.UHCAPI;
 import me.butter.api.module.camp.Camp;
 import me.butter.api.module.roles.Role;
 import me.butter.api.module.roles.RoleType;
-import me.butter.impl.nametagColor.NametagColorHandlerImpl;
 import me.butter.ninjago.commands.NinjagoCommand;
 import me.butter.ninjago.listener.CycleEvents;
 import me.butter.ninjago.roles.RoleEnum;

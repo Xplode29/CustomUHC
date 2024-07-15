@@ -1,7 +1,5 @@
 package me.butter.ninjago.roles.list.serpents;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 import me.butter.api.UHCAPI;
 import me.butter.api.module.power.CommandPower;
 import me.butter.api.module.power.RightClickItemPower;

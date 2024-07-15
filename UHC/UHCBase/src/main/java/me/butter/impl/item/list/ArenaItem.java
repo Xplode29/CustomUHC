@@ -4,10 +4,8 @@ import me.butter.api.UHCAPI;
 import me.butter.api.game.Preset;
 import me.butter.api.player.UHCPlayer;
 import me.butter.impl.game.invPresets.MeetupPreset;
-import me.butter.impl.game.invPresets.MiningPreset;
 import me.butter.impl.item.AbstractItem;
 import me.butter.impl.listeners.JoinEvents;
-import me.butter.impl.menu.list.host.MainMenu;
 import org.bukkit.Material;
 
 public class ArenaItem extends AbstractItem {

@@ -7,7 +7,6 @@ import me.butter.api.utils.chat.ChatUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.ninjago.Ninjago;
 import me.butter.ninjago.roles.NinjagoRole;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 
 import java.util.Collections;

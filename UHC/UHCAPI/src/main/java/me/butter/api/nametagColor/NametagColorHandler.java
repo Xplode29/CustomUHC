@@ -2,7 +2,6 @@ package me.butter.api.nametagColor;
 
 import me.butter.api.player.UHCPlayer;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Map;

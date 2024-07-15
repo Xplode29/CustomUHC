@@ -3,7 +3,6 @@ package me.butter.impl.listeners;
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
 import me.butter.api.player.UHCPlayer;
-import me.butter.api.utils.WorldUtils;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.CustomBlockBreakEvent;
 import net.minecraft.server.v1_8_R3.EntityExperienceOrb;

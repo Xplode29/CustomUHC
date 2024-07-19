@@ -38,6 +38,26 @@ public class JoinEvents implements Listener {
         spawnArena = new Location(Bukkit.getWorld("world"), 100.0D, 202, 100.0D);
     }
 
+    public static boolean isInSpawn(UHCPlayer player) {
+        return WorldUtils.isInCube(
+                player.getLocation(),
+                spawnLocation.clone().subtract((double) JoinEvents.spawnSize / 2, 2, (double) JoinEvents.spawnSize / 2),
+                spawnSize,
+                spawnHeight,
+                spawnSize
+        );
+    }
+
+    public static boolean isInArena(UHCPlayer player) {
+        return WorldUtils.isInCube(
+                player.getLocation(),
+                spawnArena.clone().subtract((double) JoinEvents.spawnSize / 2, 2, (double) JoinEvents.spawnSize / 2),
+                spawnSize,
+                spawnHeight,
+                spawnSize
+        );
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         if (!generate) {
@@ -55,15 +75,16 @@ public class JoinEvents implements Listener {
             }
 
             //build the arena
-            List<Block> arena = WorldUtils.getCube(
+            for(Block block : WorldUtils.getCube(
                     spawnArena.clone().subtract((double) spawnSize / 2, 2, (double) spawnSize / 2),
-                    spawnSize,
-                    spawnHeight,
-                    spawnSize,
-                    false
-            );
-
-            for(Block block : arena) {
+                    spawnSize, spawnHeight, spawnSize, true
+            )) {
+                block.setType(Material.AIR);
+            }
+            for(Block block : WorldUtils.getCube(
+                    spawnArena.clone().subtract((double) spawnSize / 2, 2, (double) spawnSize / 2),
+                    spawnSize, spawnHeight, spawnSize, false
+            )) {
                 block.setType(Material.OBSIDIAN);
             }
 
@@ -74,11 +95,16 @@ public class JoinEvents implements Listener {
         Player player = event.getPlayer();
         if (player == null) return;
 
-        UHCPlayer uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player.getUniqueId());
-        if (uhcPlayer == null) {
-            UHCAPI.getInstance().getPlayerHandler().addPlayer(player);
-            uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            p.showPlayer(player);
+            player.showPlayer(p);
         }
+
+        UHCPlayer uhcPlayer;
+        if (UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player.getUniqueId()) == null) {
+            UHCAPI.getInstance().getPlayerHandler().addPlayer(player);
+        }
+        uhcPlayer = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(player);
         uhcPlayer.setName(player.getName());
 
         uhcPlayer.setDisconnected(false);
@@ -88,11 +114,13 @@ public class JoinEvents implements Listener {
             uhcPlayer.resetPlayer();
             uhcPlayer.setPlayerState(PlayerState.IN_LOBBY);
 
-            UHCAPI.getInstance().getItemHandler().giveLobbyItems(uhcPlayer);
-
             UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
             UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, uhcPlayer);
-            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> player.teleport(spawnLocation), 2);
+
+            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
+                player.teleport(spawnLocation);
+                UHCAPI.getInstance().getItemHandler().giveLobbyItems(uhcPlayer);
+            }, 2);
 
             ParticleEffects.tornadoEffect(uhcPlayer.getPlayer(), Color.fromRGB(255, 255, 255));
 

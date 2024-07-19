@@ -10,6 +10,7 @@ import me.butter.api.player.UHCPlayer;
 import me.butter.api.utils.WorldUtils;
 import me.butter.api.utils.chat.ChatSnippets;
 import me.butter.api.utils.chat.ChatUtils;
+import me.butter.impl.UHCBase;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.UHCPlayerDeathEvent;
 import me.butter.impl.scoreboard.list.LobbyScoreboard;
@@ -46,13 +47,7 @@ public class DamageHealthEvents implements Listener {
             event.setCancelled(true);
         }
         else if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY) {
-            if(WorldUtils.isInCube(
-                    player.getLocation(),
-                    JoinEvents.spawnLocation.clone().subtract((double) JoinEvents.spawnSize / 2, 2, (double) JoinEvents.spawnSize / 2),
-                    JoinEvents.spawnSize,
-                    JoinEvents.spawnHeight,
-                    JoinEvents.spawnSize
-            )) {
+            if(!JoinEvents.isInArena(player)) {
                 event.setCancelled(true);
             }
         }
@@ -267,17 +262,21 @@ public class DamageHealthEvents implements Listener {
     @EventHandler
     public void onPlayerDie(UHCPlayerDeathEvent event) {
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY) {
-            event.getVictim().resetPlayer();
-            event.getVictim().setPlayerState(PlayerState.IN_LOBBY);
+            if(JoinEvents.isInArena(event.getVictim())) {
+                event.getVictim().setPlayerState(PlayerState.IN_LOBBY);
 
-            Bukkit.getScheduler().runTaskLater(UHCAPI.getInstance(), () -> {
-                UHCAPI.getInstance().getItemHandler().giveLobbyItems(event.getVictim());
+                event.getVictim().clearEffects();
+                event.getVictim().clearInventory();
+                event.getVictim().clearStash();
 
-                UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, event.getVictim());
-                UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, event.getVictim());
+                Bukkit.getScheduler().runTaskLater(UHCBase.getInstance(), () -> {
+                    UHCAPI.getInstance().getItemHandler().giveLobbyItems(event.getVictim());
+                    UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, event.getVictim());
+                    UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, event.getVictim());
+                }, 10L);
 
-                event.getVictim().getPlayer().teleport(JoinEvents.spawnLocation);
-            }, 10);
+                event.getVictim().setDeathLocation(JoinEvents.spawnLocation);
+            }
             
             event.setCancelled(true);
         }

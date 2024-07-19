@@ -3,6 +3,7 @@ package me.butter.impl.listeners;
 import me.butter.api.UHCAPI;
 import me.butter.api.game.GameState;
 import me.butter.api.player.UHCPlayer;
+import me.butter.api.utils.WorldUtils;
 import me.butter.impl.events.EventUtils;
 import me.butter.impl.events.custom.CustomBlockBreakEvent;
 import net.minecraft.server.v1_8_R3.EntityExperienceOrb;
@@ -37,8 +38,8 @@ public class BlockEvents implements Listener {
         if(uhcPlayer == null) return;
 
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY) {
-            if(!player.isOp()) {
-                    event.setCancelled(true);
+            if(JoinEvents.isInArena(uhcPlayer) || !player.isOp()) {
+                event.setCancelled(true);
             }
         }
         else if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.TELEPORTING ||
@@ -59,7 +60,7 @@ public class BlockEvents implements Listener {
         if(uhcPlayer == null) return;
 
         if (UHCAPI.getInstance().getGameHandler().getGameState() == GameState.LOBBY) {
-            if(!player.isOp()) {
+            if(JoinEvents.isInArena(uhcPlayer) || !player.isOp()) {
                 event.setCancelled(true);
             }
         }

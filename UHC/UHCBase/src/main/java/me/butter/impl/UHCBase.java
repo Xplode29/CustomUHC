@@ -116,10 +116,9 @@ public final class UHCBase extends UHCAPI {
             UHCAPI.getInstance().getScoreboardHandler().setPlayerScoreboard(LobbyScoreboard.class, uhcPlayer);
             UHCAPI.getInstance().getTabHandler().setPlayerTab(MainTab.class, uhcPlayer);
 
-            for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                if(onlinePlayer != player) {
-                    player.showPlayer(onlinePlayer);
-                }
+            for(Player p : Bukkit.getOnlinePlayers()) {
+                p.showPlayer(player);
+                player.showPlayer(p);
             }
         }
 

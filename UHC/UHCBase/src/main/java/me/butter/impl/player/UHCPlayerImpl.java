@@ -1,6 +1,7 @@
 package me.butter.impl.player;
 
 import me.butter.api.UHCAPI;
+import me.butter.api.game.GameState;
 import me.butter.api.menu.Menu;
 import me.butter.api.module.roles.Role;
 import me.butter.api.player.PlayerState;
@@ -277,20 +278,24 @@ public class UHCPlayerImpl implements UHCPlayer {
         setCanPickItems(false);
         getPlayer().teleport(getDeathLocation());
         getPlayer().setGameMode(GameMode.SURVIVAL);
-        setPlayerState(PlayerState.IN_GAME);
-        loadInventory();
+        if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME || UHCAPI.getInstance().getGameHandler().getGameState() == GameState.ENDING) {
+            setPlayerState(PlayerState.IN_GAME);
 
-        if(getPlayer() != null) {
-            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
-                if(uhcPlayer.getPlayer() == null) continue;
-                uhcPlayer.getPlayer().showPlayer(getPlayer());
-            }
+            if(getPlayer() != null) {
+                for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getPlayersInGame()) {
+                    if(uhcPlayer.getPlayer() == null) continue;
+                    uhcPlayer.getPlayer().showPlayer(getPlayer());
+                }
 
-            for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getAllPlayers()) {
-                if(uhcPlayer.getPlayer() == null || uhcPlayer.getPlayerState() == PlayerState.IN_GAME) continue;
-                getPlayer().hidePlayer(uhcPlayer.getPlayer());
+                for(UHCPlayer uhcPlayer : UHCAPI.getInstance().getPlayerHandler().getAllPlayers()) {
+                    if(uhcPlayer.getPlayer() == null || uhcPlayer.getPlayerState() == PlayerState.IN_GAME) continue;
+                    getPlayer().hidePlayer(uhcPlayer.getPlayer());
+                }
             }
         }
+        else setPlayerState(PlayerState.IN_LOBBY);
+
+        loadInventory();
 
         for (Entity entity : getDeathLocation().getWorld().getNearbyEntities(getDeathLocation(), 5, 100, 5)) {
             if (entity instanceof Item) {

@@ -77,7 +77,7 @@ public class ItemHandlerImpl implements ItemHandler, Listener {
         if(UHCAPI.getInstance().getGameHandler().getGameConfig().getCoHosts().contains(uhcPlayer)) {
             giveItemToPlayer(MenuItem.class, uhcPlayer);
         }
-        giveItemToPlayer(ArenaItem.class, uhcPlayer);
+        giveItemToPlayer(ArenaItem.class, 8, uhcPlayer);
     }
 
     @Override

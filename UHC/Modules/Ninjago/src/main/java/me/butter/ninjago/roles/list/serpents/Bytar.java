@@ -54,7 +54,7 @@ public class Bytar extends NinjagoRole {
     @Override
     public void onDay() {
         getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous etes ralenti pendant 30 secondes !"));
-        getUHCPlayer().addPotionEffect(PotionEffectType.SLOW, 5, 1);
+        getUHCPlayer().addPotionEffect(PotionEffectType.SLOW, 30 * 20, 1);
     }
 
     @EventHandler

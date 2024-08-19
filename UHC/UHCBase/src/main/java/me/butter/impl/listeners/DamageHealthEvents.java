@@ -187,6 +187,16 @@ public class DamageHealthEvents implements Listener {
                 if(UHCAPI.getInstance().getGameHandler().getGameState() == GameState.IN_GAME) {
                     if(UHCAPI.getInstance().getModuleHandler().hasModule() && UHCAPI.getInstance().getModuleHandler().getModule().hasRoles()) {
                         if(!UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().isEmpty()) {
+
+                            int groupSize = Math.min(UHCAPI.getInstance().getPlayerHandler().getPlayersInGame().size() / 5, 5);
+                            if(2 < groupSize && groupSize < UHCAPI.getInstance().getGameHandler().getGameConfig().getGroupSize()) {
+                                UHCAPI.getInstance().getGameHandler().getGameConfig().setGroupSize(groupSize);
+
+                                for(UHCPlayer player : UHCAPI.getInstance().getPlayerHandler().getAllPlayers()) {
+                                    player.sendTitle("Groupe de " + groupSize, ChatColor.AQUA);
+                                }
+                            }
+
                             List<Camp> camps = getCamps();
 
                             if(camps.size() != 1) return;

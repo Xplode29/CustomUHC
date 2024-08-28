@@ -27,7 +27,7 @@ public class Invizable extends NinjagoRole {
 
     @Override
     public String[] getDescription() {
-        return new String[]{
+        return new String[] {
                 "Vous avez §9Speed 1§r permanent.",
                 "Lorsque vous enlevez votre armure, vous obtenez §bInvisibilité§r, §2No Fall§r, §cForce 1§r et §7Resistance 2§r. ",
                 "Vous connaissez la liste des membres de l'alliance"

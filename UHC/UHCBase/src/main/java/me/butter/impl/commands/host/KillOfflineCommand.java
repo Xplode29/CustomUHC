@@ -23,7 +23,7 @@ public class KillOfflineCommand extends AbstractCommand {
 
         UHCPlayer target = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer(args[1]);
 
-        if(target == null || target.getPlayer() == null) {
+        if(target == null) {
             sender.getPlayer().sendMessage(ChatUtils.ERROR.getMessage("Le joueur " + args[1] + " n'existe pas !"));
             return;
         }

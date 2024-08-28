@@ -54,21 +54,21 @@ public class Bytar extends NinjagoRole {
     @Override
     public void onDay() {
         getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous etes ralenti pendant 30 secondes !"));
-        getUHCPlayer().addPotionEffect(PotionEffectType.SLOW, 30 * 20, 1);
+        getUHCPlayer().addPotionEffect(PotionEffectType.SLOW, 30, 1);
     }
 
     @EventHandler
     public void onKillPlayer(UHCPlayerDeathEvent event) {
         if(event.getKiller() != null && event.getKiller().equals(getUHCPlayer())) {
-            getUHCPlayer().addResi(3);
-            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous gagnez 3% de resistance."));
+            getUHCPlayer().addResi(5);
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous gagnez 5% de resistance."));
         }
     }
 
     private static class DiggingPower extends TargetPlayerItemPower {
 
         public DiggingPower() {
-            super("Creusage", Material.NETHER_STAR, 20, 15 * 60, -1);
+            super("Creusage", Material.NETHER_STAR, 20, 10 * 60, -1);
         }
 
         @Override

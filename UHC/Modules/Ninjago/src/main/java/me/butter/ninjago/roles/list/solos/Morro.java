@@ -103,7 +103,7 @@ public class Morro extends NinjagoRole {
         if(!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
 
         UHCPlayer damager = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
-        UHCPlayer damaged = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getDamager());
+        UHCPlayer damaged = UHCAPI.getInstance().getPlayerHandler().getUHCPlayer((Player) event.getEntity());
 
         if(damager.equals(getUHCPlayer()) && damaged != null) {
             if(freezeActivated) {
@@ -142,7 +142,7 @@ public class Morro extends NinjagoRole {
         }
         if(role instanceof Cole) {
             getUHCPlayer().addResi(20);
-            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu 20% de resistance"));
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez tué Kai, vous avez obtenu 20% de resistance"));
         }
         if(role instanceof Zane) {
             addPower(new FreezePower());

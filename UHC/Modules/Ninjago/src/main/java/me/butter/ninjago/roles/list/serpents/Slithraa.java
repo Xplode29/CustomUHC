@@ -25,7 +25,7 @@ public class Slithraa extends NinjagoRole {
     public String[] getDescription() {
         return new String[]{
                 "A l'annonce des roles, vous obtenez le pseudo de §5Skales§r.",
-                "Lorsque vous effectuez un kill, vous obtenez §c3% de force§r supplémentaire",
+                "Lorsque vous effectuez un kill, vous obtenez §c5% de force§r supplémentaire",
                 "Si Skales meurt, vous obtenez §9Speed 1§r permanent."
         };
     }
@@ -48,8 +48,8 @@ public class Slithraa extends NinjagoRole {
     @EventHandler
     public void onKillPlayer(UHCPlayerDeathEvent event) {
         if(event.getKiller() != null && event.getKiller().equals(getUHCPlayer())) {
-            getUHCPlayer().addStrength(3);
-            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu §c3% de force§r."));
+            getUHCPlayer().addStrength(5);
+            getUHCPlayer().sendMessage(ChatUtils.PLAYER_INFO.getMessage("Vous avez obtenu §c5% de force§r."));
         }
 
         if(skales != null &&event.getVictim() == skales && !hadEffects) {
